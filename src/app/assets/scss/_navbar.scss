@@ -125,14 +125,15 @@
 
         li {
             display: block;
+            box-sizing: border-box;
             width: 100%;
-            padding: 20px 0;
-            text-align: center;
+            padding: 20px 40px;
+            text-align: left;
             cursor: pointer;
             transition: opacity .2s;
 
             i {
-                display: none;
+                padding-right: 20px;
             }
 
             &.active {
