@@ -101,7 +101,7 @@ $icon-loop2: "\ea2e";
 
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'portfolio' !important;
+  font-family: 'fitness' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -113,6 +113,7 @@ $icon-loop2: "\ea2e";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-activity {
   &:before {
     content: $icon-activity;

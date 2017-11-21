@@ -15,7 +15,7 @@
     &__brand {
         position: relative;
         font-size: 50px;
-        background: $curious-blue;
+        background: $burnt-sienna;
         color: $white;
         width: 100%;
         box-sizing: border-box;
@@ -136,8 +136,8 @@
             }
 
             &.active {
-                color: $curious-blue;
-                border-right: 2px solid $curious-blue;
+                color: $burnt-sienna;
+                border-right: 2px solid $burnt-sienna;
             }
 
             &:hover {
