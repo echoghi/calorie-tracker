@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { handleNav } from './actions';
 
 const mapStateToProps = state => ({
-    data: state.portfolioState.data,
+    data: state.adminState.data,
     home: state.navigationState.home,
-    about: state.navigationState.about,
-    portfolio: state.navigationState.portfolio,
-    contact: state.navigationState.contact
+    tracker: state.navigationState.tracker,
+    calendar: state.navigationState.calendar,
+    reports: state.navigationState.reports,
+    settings: state.navigationState.settings
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -88,7 +89,7 @@ class NavBar extends React.Component {
 		return (
 			<div className="navbar">
 				<div className="navbar__brand">
-					<i className="icon-brand" />
+					<i className="icon-fire" />
 				</div>
 				<div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
 					<div />
@@ -96,10 +97,11 @@ class NavBar extends React.Component {
 					<div />
 				</div>
 				<ul className={this.handleMenuClass()}>
-					<li className={this.handleNavClass('home')} onClick={() => { this.navigate('home'); }}>Home <i className="icon-home" /></li>
-					<li className={this.handleNavClass('about')} onClick={() => { this.navigate('about'); }}>About <i className="icon-user" /></li>
-					<li className={this.handleNavClass('portfolio')} onClick={() => { this.navigate('portfolio'); }}>Portfolio <i className="icon-briefcase" /></li> 
-					<li className={this.handleNavClass('contact')} onClick={() => { this.navigate('contact'); }}>Contact <i className="icon-message-square" /></li>
+					<li className={this.handleNavClass('home')} onClick={() => { this.navigate('home'); }}><i className="icon-home" /> Overview</li>
+					<li className={this.handleNavClass('tracker')} onClick={() => { this.navigate('tracker'); }}><i className="icon-plus-circle" /> Tracker</li>
+					<li className={this.handleNavClass('calendar')} onClick={() => { this.navigate('calendar'); }}><i className="icon-calendar" /> Calendar</li>
+					<li className={this.handleNavClass('reports')} onClick={() => { this.navigate('reports'); }}><i className="icon-bar-chart" /> Reports</li> 
+					<li className={this.handleNavClass('settings')} onClick={() => { this.navigate('settings'); }}><i className="icon-settings" /> Settings</li>
 				</ul>
 			</div>
 		);

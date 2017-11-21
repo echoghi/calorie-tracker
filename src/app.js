@@ -1,5 +1,5 @@
 /**
- * Personal Portfolio 2.0.1
+ * Fitness Tracker 1.0.0
  * Copyright (c) Emile Choghi 2017
  * 
  */
@@ -18,16 +18,17 @@ import thunk from 'redux-thunk';
 import 'whatwg-fetch';
 
 //Reducers
-import { portfolioState, navigationState } from './app/components/reducers';
+import { adminState, navigationState } from './app/components/reducers';
 
 //components
 import Home from './app/components/Home';
-import About from './app/components/About';
-import Portfolio from './app/components/Portfolio';
-import Contact from './app/components/Contact';
+import Tracker from './app/components/Tracker';
+import Reports from './app/components/Reports';
+import Calendar from './app/components/Calendar';
+import Settings from './app/components/Settings';
 
 const portfolioApp = combineReducers({
-    portfolioState,
+    adminState,
     navigationState
 }); 
 
@@ -37,9 +38,10 @@ ReactDOM.render(
      <Provider store={store}>
         <Router history={hashHistory}>
             <Route path={'/'} component={Home} />
-            <Route path={'/about'} component={About} />
-            <Route path={'/portfolio'} component={Portfolio} />
-            <Route path={'/contact'} component={Contact} />
+            <Route path={'/tracker'} component={Tracker} />
+            <Route path={'/reports'} component={Reports} />
+            <Route path={'/calendar'} component={Calendar} />
+            <Route path={'/settings'} component={Settings} />
         </Router>
     </Provider>,
     document.getElementById('app')

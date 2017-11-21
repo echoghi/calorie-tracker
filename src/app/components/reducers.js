@@ -1,9 +1,10 @@
 export function navigationState(
     state = {
         home: false,
-        about: false,
-        portfolio: false,
-        contact: false
+        tracker: false,
+        reports: false,
+        calendar: false,
+        settings: false
     },
     action
 ) {
@@ -11,9 +12,10 @@ export function navigationState(
         case 'NAVIGATE':
             let temp = Object.assign({}, state, {
                     home: false,
-                    about: false,
-                    portfolio: false,
-                    contact: false
+                    tracker: false,
+                    reports: false,
+                    calendar: false,
+                    settings: false
                 });
 
             return Object.assign({}, temp, {
@@ -23,9 +25,10 @@ export function navigationState(
         case 'ACTIVATE_PAGE':
             let temp2 = Object.assign({}, state, {
                     home: false,
-                    about: false,
-                    portfolio: false,
-                    contact: false
+                    tracker: false,
+                    reports: false,
+                    calendar: false,
+                    settings: false
                 });
 
             return Object.assign({}, temp2, {
@@ -37,7 +40,7 @@ export function navigationState(
     }
 }
 
-export function portfolioState(
+export function adminState(
     state = {
         data: {},
         loading: false,
