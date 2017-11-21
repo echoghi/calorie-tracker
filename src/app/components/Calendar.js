@@ -14,21 +14,26 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Calendar extends React.Component {
+	state = {
+		time: moment()
+	};
+
 	componentWillMount() {
 		let { calendar, activatePage } = this.props;
 		window.scrollTo(0, 0);
 
 		if(!calendar) {
-			activatePage('calendar');
+			activatePage('calendar'); 
 		}
 	}
 
 	handleDayClass(day) {
+		let { time } = this.state;
 		let now = moment();
 
-		if(now.date() === day.date()) {
+		if(now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
 			return 'day today';
-		} else if(day.month() !== now.month()) {
+		} else if(day.month() !== time.month()) {
 			return 'day inactive';
 		} else {
 			return 'day';
@@ -36,16 +41,17 @@ class Calendar extends React.Component {
 	}
 
 	renderDays() {
+		let { time } = this.state;
 		let calendarDays = [];
 		let calendar = [];
-		const startWeek = moment().startOf('month').week();
-		const endWeek = moment().endOf('month').week();
+		const startWeek = time.startOf('month').week();
+		const endWeek = time.endOf('month').week();
 
-		for(let week = startWeek; week < endWeek; week++){
-		  calendar.push({
-		    week: week,
-		    days: Array(7).fill(0).map((n, i) => moment().week(week).startOf('week').clone().add(n + i, 'day'))
-		  });
+		for(let week = startWeek; week < endWeek; week++) {
+			calendar.push({
+				week: week,
+				days: Array(7).fill(0).map((n, i) => moment().week(week).startOf('week').clone().add(n + i, 'day'))
+			});
 		}
 
 		for(let i = 0; i < calendar.length; i++) {
@@ -59,12 +65,39 @@ class Calendar extends React.Component {
 		return calendarDays;
 	}
 
+	changeMonth(bool) {
+		let { time } = this.state;
+
+		if(bool) {
+			if(time.date() === 12) {
+				time = moment([]);
+			} else {
+				time = moment([time.format('YYYY'), time.get('month') + 1, time.date()]);
+			}
+		} else {
+			if(time.date() === 1) {
+				time = moment([]);
+			} else {
+				time = moment([time.format('YYYY'), time.get('month') - 1, time.date()]);
+			}
+		}
+
+		this.setState({ time });
+	}
+
 	render() {
+		let month = this.state.time.format('MMMM');
+
 		return (
 			<div>
 				<NavBar />
 				<div className="calendar">
-					<h2>Calendar</h2>
+					<h1>Calendar</h1>
+					<div className="calendar__toggle--month">
+						<i className="icon-chevron-left" onClick={() => this.changeMonth(false)} />
+						<h2>{month}</h2>
+						<i className="icon-chevron-right" onClick={() => this.changeMonth(true)} />
+					</div>
 					<div className="calendar__container">
 						<div className="calendar__head">
 							<span>Sun</span>
