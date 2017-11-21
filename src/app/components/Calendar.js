@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { activatePage } from './actions';
+import moment from 'moment';
 // Components
 import NavBar from './NavBar';
 
@@ -26,11 +27,36 @@ class Calendar extends React.Component {
 		}
 	}
 
+	renderDays() {
+		let days = moment().daysInMonth();
+		let calendarDays = [];
+
+		for(let i = 0; i < days; i++) {
+			calendarDays.push(<div className="day" key={i}>{i+1}</div>);
+		}
+
+		return calendarDays;
+	}
+
 	render() {
 		return (
 			<div>
-				Calendar
 				<NavBar />
+				<div className="calendar">
+					<h2>Calendar</h2>
+					<div className="calendar__container">
+						<div className="calendar__head">
+							<span>Mon</span>
+							<span>Tue</span>
+							<span>Wed</span>
+							<span>Thu</span>
+							<span>Fri</span>
+							<span>Sat</span>
+							<span>Sun</span>
+						</div>
+						{this.renderDays()}
+					</div>
+				</div>
 			</div>
 		);
 	}
