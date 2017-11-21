@@ -14,10 +14,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Calendar extends React.Component {
-	state = {
-		width   : 0
-	};
-
 	componentWillMount() {
 		let { calendar, activatePage } = this.props;
 		window.scrollTo(0, 0);
@@ -32,7 +28,9 @@ class Calendar extends React.Component {
 		let calendarDays = [];
 
 		for(let i = 0; i < days; i++) {
-			calendarDays.push(<div className="day" key={i}>{i+1}</div>);
+			calendarDays.push(<div className="day" key={i}>
+								<div className="number">{i+1}</div>
+							</div>);
 		}
 
 		return calendarDays;

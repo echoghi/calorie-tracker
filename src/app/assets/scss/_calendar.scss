@@ -4,6 +4,7 @@
         border: 1px solid $mystic;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         border-radius: 3px;
+        background: $white;
     }
 
     &__head {
@@ -24,5 +25,10 @@
         box-sizing: border-box;
         width: 14.285714285714285714285714285714%;
         height: 150px;
+    }
+
+    .number {
+        padding: 15px;
+        box-sizing: border-box;
     }
 }
