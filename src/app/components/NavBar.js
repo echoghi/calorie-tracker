@@ -103,6 +103,8 @@ class NavBar extends React.Component {
 					<li className={this.handleNavClass('reports')} onClick={() => { this.navigate('reports'); }}><i className="icon-bar-chart" /> Reports</li> 
 					<li className={this.handleNavClass('settings')} onClick={() => { this.navigate('settings'); }}><i className="icon-settings" /> Settings</li>
 				</ul>
+				<div className="navbar__top"> 
+				</div>
 			</div>
 		);
 	}

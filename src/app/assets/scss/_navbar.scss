@@ -30,6 +30,16 @@
         }
     }
 
+    &__top {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 80px;
+        background: $white;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); 
+        z-index: -1;
+    }
+
     .hamburger {
         position: absolute;
         display: none;

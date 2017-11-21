@@ -8,6 +8,7 @@ html, body {
     position: relative;
     font: $primary-font;
     font-family: 'Eczar', serif;
+    background: $alabaster;
     color: $limed-spruce;
     width: 100%;
     padding: 0;
@@ -19,11 +20,11 @@ a {
     text-decoration: none;
 }
 
-.home,
-.about,
-.portfolio,
-.contact {
-    margin-top: 80px;
+.overview,
+.tracker,
+.reports,
+.settings {
+    padding: 80px 0 0 250px;
 }
 
 .clearfix:after {

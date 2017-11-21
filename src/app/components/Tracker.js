@@ -30,7 +30,9 @@ class Tracker extends React.Component {
 		return (
 			<div>
 				<NavBar />
-				Tracker
+				<div className="tracker">
+					Tracker
+				</div>
 			</div>
 		);
 	}
