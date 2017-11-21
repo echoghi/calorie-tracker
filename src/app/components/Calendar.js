@@ -24,13 +24,24 @@ class Calendar extends React.Component {
 	}
 
 	renderDays() {
-		let days = moment().daysInMonth();
 		let calendarDays = [];
+		let calendar = [];
+		const startWeek = moment().startOf('month').week();
+		const endWeek = moment().endOf('month').week();
 
-		for(let i = 0; i < days; i++) {
-			calendarDays.push(<div className="day" key={i}>
-								<div className="number">{i+1}</div>
-							</div>);
+		for(let week = startWeek; week < endWeek; week++){
+		  calendar.push({
+		    week: week,
+		    days: Array(7).fill(0).map((n, i) => moment().week(week).startOf('week').clone().add(n + i, 'day'))
+		  });
+		}
+
+		for(let i = 0; i < calendar.length; i++) {
+			for(let j = 0; j < calendar[i].days.length; j++) {
+				calendarDays.push(<div className={calendar[i].days[j].month() !== moment().month() ? 'day inactive' : 'day'} key={calendar[i].days[j].date()}>
+									<div className="number">{calendar[i].days[j].date()}</div>
+								</div>);
+			}
 		}
 
 		return calendarDays;
@@ -44,13 +55,13 @@ class Calendar extends React.Component {
 					<h2>Calendar</h2>
 					<div className="calendar__container">
 						<div className="calendar__head">
+							<span>Sun</span>
 							<span>Mon</span>
 							<span>Tue</span>
 							<span>Wed</span>
 							<span>Thu</span>
 							<span>Fri</span>
 							<span>Sat</span>
-							<span>Sun</span>
 						</div>
 						{this.renderDays()}
 					</div>
