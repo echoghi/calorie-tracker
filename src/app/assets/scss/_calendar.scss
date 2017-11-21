@@ -34,6 +34,10 @@
             background: $polar;
             opacity: .65  
         }
+
+        &.today {
+            color: $burnt-sienna;
+        }
     }
 
     .number {

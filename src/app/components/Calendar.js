@@ -23,6 +23,18 @@ class Calendar extends React.Component {
 		}
 	}
 
+	handleDayClass(day) {
+		let now = moment();
+
+		if(now.date() === day.date()) {
+			return 'day today';
+		} else if(day.month() !== now.month()) {
+			return 'day inactive';
+		} else {
+			return 'day';
+		}
+	}
+
 	renderDays() {
 		let calendarDays = [];
 		let calendar = [];
@@ -38,7 +50,7 @@ class Calendar extends React.Component {
 
 		for(let i = 0; i < calendar.length; i++) {
 			for(let j = 0; j < calendar[i].days.length; j++) {
-				calendarDays.push(<div className={calendar[i].days[j].month() !== moment().month() ? 'day inactive' : 'day'} key={calendar[i].days[j].date()}>
+				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={calendar[i].days[j].date()}>
 									<div className="number">{calendar[i].days[j].date()}</div>
 								</div>);
 			}
