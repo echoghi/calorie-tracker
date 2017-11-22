@@ -47,16 +47,16 @@ class Calendar extends React.Component {
 		const startWeek = time.startOf('month').week();
 		const endWeek = time.endOf('month').week();
 
-		for(let week = startWeek; week < endWeek; week++) {
+		for(let week = startWeek; week <= endWeek; week++) {
 			calendar.push({
 				week: week,
-				days: Array(7).fill(0).map((n, i) => moment().week(week).startOf('week').clone().add(n + i, 'day'))
+				days: Array(7).fill(0).map((n, i) => time.week(week).startOf('week').clone().add(n + i, 'day'))
 			});
 		}
 
 		for(let i = 0; i < calendar.length; i++) {
 			for(let j = 0; j < calendar[i].days.length; j++) {
-				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={calendar[i].days[j].date()}>
+				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}`}>
 									<div className="number">{calendar[i].days[j].date()}</div>
 								</div>);
 			}
@@ -69,19 +69,19 @@ class Calendar extends React.Component {
 		let { time } = this.state;
 
 		if(bool) {
-			if(time.date() === 12) {
-				time = moment([]);
+			if(time.date() === 11) {
+				time = moment([time.get('year') + 1, 0, time.date()]);
 			} else {
-				time = moment([time.format('YYYY'), time.get('month') + 1, time.date()]);
+				time = moment([time.get('year'), time.get('month') + 1, time.date()]);
 			}
 		} else {
-			if(time.date() === 1) {
-				time = moment([]);
+			if(time.date() === 0) {
+				time = moment([time.get('year') - 1, 13, time.date()]);
 			} else {
-				time = moment([time.format('YYYY'), time.get('month') - 1, time.date()]);
+				time = moment([time.get('year'), time.get('month') - 1, time.date()]);
 			}
 		}
-
+		console.log(time.get('year'), time.get('month'), time.date());
 		this.setState({ time });
 	}
 
