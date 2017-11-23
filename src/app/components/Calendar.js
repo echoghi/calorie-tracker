@@ -96,15 +96,15 @@ class Calendar extends React.Component {
 
 		if(bool) {
 			if(time.get('month') === 11) {
-				time = moment([time.get('year') + 1, 0, time.date()]);
+				time = moment([time.get('year') + 1, 0, 1]);
 			} else {
-				time = moment([time.get('year'), time.get('month') + 1, time.date()]);
+				time = moment([time.get('year'), time.get('month') + 1, 1]);
 			}
 		} else {
 			if(time.get('month') === 0) {
-				time = moment([time.get('year') - 1, 11, time.date()]);
+				time = moment([time.get('year') - 1, 11, 1]);
 			} else {
-				time = moment([time.get('year'), time.get('month') - 1, time.date()]);
+				time = moment([time.get('year'), time.get('month') - 1, 1]);
 			}
 		}
 
