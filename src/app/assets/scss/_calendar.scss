@@ -7,6 +7,12 @@
         background: $white;
     }
 
+    h4 {
+        text-align: center;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
     &__head {
         display: flex;
 
@@ -38,6 +44,7 @@
         h2 {
             display: inline-block;
             padding: 10px;
+            margin-bottom: 0;
         }
     }
 

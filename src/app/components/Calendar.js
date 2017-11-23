@@ -44,19 +44,44 @@ class Calendar extends React.Component {
 		let { time } = this.state;
 		let calendarDays = [];
 		let calendar = [];
-		const startWeek = time.startOf('month').week();
-		const endWeek = time.endOf('month').week();
+		let startWeek = time.clone().startOf('month').week();
+		let endWeek = time.clone().endOf('month').week();
 
-		for(let week = startWeek; week <= endWeek; week++) {
-			calendar.push({
-				week: week,
-				days: Array(7).fill(0).map((n, i) => time.week(week).startOf('week').clone().add(n + i, 'day'))
-			});
+		if(startWeek > endWeek) {
+			calendar = [
+				{
+					week: 48,
+					days: Array(7).fill(0).map((n, i) => time.week(48).startOf('week').clone().add(n + i, 'day'))
+				},
+				{
+					week: 49,
+					days: Array(7).fill(0).map((n, i) => time.week(49).startOf('week').clone().add(n + i, 'day'))
+				},
+				{
+					week: 50,
+					days: Array(7).fill(0).map((n, i) => time.week(50).startOf('week').clone().add(n + i, 'day'))
+				},
+				{
+					week: 51,
+					days: Array(7).fill(0).map((n, i) => time.week(51).startOf('week').clone().add(n + i, 'day'))
+				},
+				{
+					week: 52,
+					days: Array(14).fill(0).map((n, i) => time.week(52).startOf('week').clone().add(n + i, 'day'))
+				}
+			];
+		} else {
+			for(let week = startWeek; week <= endWeek; week++) {
+				calendar.push({
+					week: week,
+					days: Array(7).fill(0).map((n, i) => time.week(week).startOf('week').clone().add(n + i, 'day'))
+				});
+			}
 		}
 
 		for(let i = 0; i < calendar.length; i++) {
 			for(let j = 0; j < calendar[i].days.length; j++) {
-				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}`}>
+				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
 									<div className="number">{calendar[i].days[j].date()}</div>
 								</div>);
 			}
@@ -67,26 +92,28 @@ class Calendar extends React.Component {
 
 	changeMonth(bool) {
 		let { time } = this.state;
+		time = time.clone();
 
 		if(bool) {
-			if(time.date() === 11) {
+			if(time.get('month') === 11) {
 				time = moment([time.get('year') + 1, 0, time.date()]);
 			} else {
 				time = moment([time.get('year'), time.get('month') + 1, time.date()]);
 			}
 		} else {
-			if(time.date() === 0) {
-				time = moment([time.get('year') - 1, 13, time.date()]);
+			if(time.get('month') === 0) {
+				time = moment([time.get('year') - 1, 11, time.date()]);
 			} else {
 				time = moment([time.get('year'), time.get('month') - 1, time.date()]);
 			}
 		}
-		console.log(time.get('year'), time.get('month'), time.date());
+
 		this.setState({ time });
 	}
 
 	render() {
 		let month = this.state.time.format('MMMM');
+		let year = this.state.time.format('YYYY');
 
 		return (
 			<div>
@@ -98,6 +125,7 @@ class Calendar extends React.Component {
 						<h2>{month}</h2>
 						<i className="icon-chevron-right" onClick={() => this.changeMonth(true)} />
 					</div>
+					<h4>{year}</h4>
 					<div className="calendar__container">
 						<div className="calendar__head">
 							<span>Sun</span>
