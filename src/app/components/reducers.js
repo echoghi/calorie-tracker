@@ -1,3 +1,5 @@
+import { userData } from './nutritionData';
+
 export function navigationState(
     state = {
         home: false,
@@ -42,7 +44,7 @@ export function navigationState(
 
 export function adminState(
     state = {
-        data: {},
+        data: userData,
         loading: false,
         success: null,
         error: null
