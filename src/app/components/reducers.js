@@ -1,7 +1,7 @@
 export function navigationState(
     state = {
         home: false,
-        tracker: false,
+        nutrition: false,
         reports: false,
         calendar: false,
         settings: false
@@ -12,7 +12,7 @@ export function navigationState(
         case 'NAVIGATE':
             let temp = Object.assign({}, state, {
                     home: false,
-                    tracker: false,
+                    nutrition: false,
                     reports: false,
                     calendar: false,
                     settings: false
@@ -25,7 +25,7 @@ export function navigationState(
         case 'ACTIVATE_PAGE':
             let temp2 = Object.assign({}, state, {
                     home: false,
-                    tracker: false,
+                    nutrition: false,
                     reports: false,
                     calendar: false,
                     settings: false

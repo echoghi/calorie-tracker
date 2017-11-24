@@ -1,0 +1,53 @@
+.nutrition {
+    &__overview {
+        margin: 30px 0;
+        display: flex;
+        justify-content: space-between;
+
+        &--box {
+            display: inline-block;
+            height: 250px;
+            width: 30%;
+            border: 1px solid $mystic;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            background: $white;
+            text-align: center;
+
+            h1,
+            span {
+                display: inline-block;
+            }
+
+            span {
+                font-size: 50px;
+            }
+
+            h1 {
+                font-size: 100px;
+                margin-bottom: 0;
+            }
+
+            h3 {
+                font-size: 20px;
+                text-transform: uppercase;
+            }
+        }
+
+        &--head {
+            width: 60%;
+            text-align: left;
+            margin: 20px auto;
+        }
+    }
+
+    &__add {
+        display: inline-block;
+        height: 300px;
+        width: 100%;
+        border: 1px solid $mystic;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        background: $white;
+    }
+}
