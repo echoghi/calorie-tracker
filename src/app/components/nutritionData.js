@@ -7,7 +7,7 @@ export const userData = {
 		bloodType : null,
 		goals: {
 			nutrition: {
-				calories: 3000,
+				calories: 1925,
 				protein: 180,
 				carbs: 200,
 				fat: 80
@@ -30,6 +30,21 @@ export const userData = {
 						unit: 'miligrams',
 						unitShort: 'mg'
 					}
+				]
+			},
+			fitness: {
+				calories: 0,
+				exercise: 0
+			}
+		},
+		{
+			day: moment([2017, 10, 25]),
+			nutrition: {
+				calories: 0,
+				fat: 0,
+				carbs: 0,
+				protein: 0,
+				supplements: [
 				]
 			},
 			fitness: {
