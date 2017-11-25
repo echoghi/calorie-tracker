@@ -6,7 +6,7 @@
 
         &--box {
             display: inline-block;
-            height: 250px;
+            height: 270px;
             width: 30%;
             border: 1px solid $mystic;
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
@@ -32,9 +32,27 @@
             }
 
             h3 {
-                font-size: 20px;
+                font-size: 25px;
                 text-transform: uppercase;
                 color: $cold-purple;
+            }
+        }
+
+        &--calories {
+            display: inline-block;
+            height: 450px;
+            width: 49%;
+            border: 1px solid $mystic;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            background: $white;
+            text-align: center;
+
+            h3 {
+                padding: 15px 30px;
+                font-size: 25px;
+                text-align: left;
+                margin-bottom: 0;
             }
         }
 

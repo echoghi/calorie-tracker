@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { activatePage } from './actions';
-// Components
-import NavBar from './NavBar';
 
 const mapStateToProps = state => ({
     tracker: state.navigationState.tracker
@@ -28,8 +26,8 @@ class Settings extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<NavBar />
+			<div classNames="settings">
+				Settings
 			</div>
 		);
 	}

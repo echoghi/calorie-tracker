@@ -65,7 +65,7 @@ module.exports = function(env) {
             }),
             new webpack.BannerPlugin({
                 banner:
-                    `Emile Choghi's Portfolio ` +
+                    `Health Dashboard ` +
                     `Version: ` +
                     PACKAGE.version +
                     ` Date: ` +
@@ -94,7 +94,7 @@ module.exports = function(env) {
                     // (which should be serving on http://localhost:8080/)
                     // through BrowserSync
                     proxy: 'http://localhost:8080/',
-                    logPrefix: 'Portfolio - App'
+                    logPrefix: 'Health Dashboard'
                 },
                 // plugin options
                 {

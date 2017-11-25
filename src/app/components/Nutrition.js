@@ -4,9 +4,12 @@ import { activatePage } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
+let ProgressBar = require('react-progressbar.js');
+let Line = ProgressBar.Line;
+let Circle = ProgressBar.Circle;
 
 const mapStateToProps = state => ({
-    tracker: state.navigationState.tracker,
+    nutrition: state.navigationState.nutrition,
     data: state.adminState.data
 });
 
@@ -19,17 +22,17 @@ class Nutrition extends React.Component {
 		now: moment(),
 		day: {},
 		calories: 0,
-		fats: 0,
+		fat: 0,
 		carbs: 0
 	};
 
 	componentWillMount() {
-		let { tracker, activatePage } = this.props;
+		let { nutrition, activatePage } = this.props;
 		window.scrollTo(0, 0);
 
 		this.mapDayToState();
 
-		if(!tracker) {
+		if(!nutrition) {
 			activatePage('nutrition');
 		}
 	}
@@ -47,8 +50,92 @@ class Nutrition extends React.Component {
 		this.setState({ day });
 	}
 
+	renderProgressBar(type) {
+		let { day } = this.state;
+		let { data } = this.props;
+		let color;
+		let progress;
+
+		if(type === 'protein') {
+			color = '#F5729C';
+			progress = day.nutrition.protein / data.user.goals.nutrition.protein;
+		} else if (type === 'carbs') {
+			color = '#7BD4F8';
+			progress = day.nutrition.carbs / data.user.goals.nutrition.carbs;
+		} else {
+			color = '#55F3B3';
+			progress = day.nutrition.fat / data.user.goals.nutrition.fat;
+		}
+
+		let options = {
+            strokeWidth: 3,
+            color: color,
+            trailColor: '#f4f4f4',
+            text: {
+            	value: `${Math.round((progress * 100))}% of daily goal`,
+            	style: {
+		            color: '#a2a7d9',
+		            margin: '15px 0 0 0'
+		        }
+            }
+        };
+
+        // For demo purposes so the container has some dimensions.
+        // Otherwise progress bar won't be shown
+        let containerStyle = {
+            width: '80%',
+            margin: '30px auto'
+        };
+
+        return (
+            <Line
+                progress={progress}
+                options={options}
+                initialAnimate={true}
+                containerStyle={containerStyle}
+                containerClassName={'.progressbar'} />
+        );
+	}
+
+	renderCalorieBox() {
+		let { day } = this.state;
+		let { data } = this.props;
+		let progress = day.nutrition.calories / data.user.goals.nutrition.calories;
+		let options = {
+            strokeWidth: 4,
+            color: '#8E81E3',
+            trailColor: '#f4f4f4',
+            text: {
+            	value: `${day.nutrition.calories} cal`,
+            	style: {
+		            color: '#a2a7d9',
+		            margin: '-155px 0 0 0',
+		            fontSize: '40px'
+		        }
+            }
+        };
+        let containerStyle = {
+            width: '300px',
+            height: '30px',
+            margin: '30px auto 10px auto'
+        };
+
+        return (
+        	<div className="nutrition__overview--calories">
+        		<h3>Total Calories</h3>
+	            <Circle
+	                progress={progress}
+	                options={options}
+	                initialAnimate={true}
+	                containerStyle={containerStyle}
+	                containerClassName={'.calorie__progress-bar'} />
+	        </div>
+        );
+	}
+
 	render() {
 		let { day } = this.state;
+		let { protein, carbs, fat } = day.nutrition;
 
 		return (
 			<div>
@@ -58,25 +145,31 @@ class Nutrition extends React.Component {
 					<div className="nutrition__overview">
 						<div className="nutrition__overview--box">
 							<div className="nutrition__overview--head">
-								<h1>{day.nutrition.protein}</h1>
+								<h1>{protein}</h1>
 								<span>g</span>
 								<h3>Protein</h3>
 							</div>
+							{this.renderProgressBar('protein')}
 						</div>
 						<div className="nutrition__overview--box">
 							<div className="nutrition__overview--head">
-								<h1>{day.nutrition.carbs}</h1>
+								<h1>{carbs}</h1>
 								<span>g</span>
 								<h3>Carbohydrates</h3>
 							</div>
+							{this.renderProgressBar('carbs')}
 						</div>
 						<div className="nutrition__overview--box">
 							<div className="nutrition__overview--head">
-								<h1>{day.nutrition.fat}</h1>
+								<h1>{fat}</h1>
 								<span>g</span>
 								<h3>Fat</h3>
 							</div>
+							{this.renderProgressBar('fat')}
 						</div>
+					</div>
+					<div className="nutrition__overview">
+						{this.renderCalorieBox()}
 					</div>
 					<div className="nutrition__add">
 					</div>

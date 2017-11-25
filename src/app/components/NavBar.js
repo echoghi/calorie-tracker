@@ -5,7 +5,7 @@ import { handleNav } from './actions';
 const mapStateToProps = state => ({
     data: state.adminState.data,
     home: state.navigationState.home,
-    tracker: state.navigationState.tracker,
+    nutrition: state.navigationState.nutrition,
     calendar: state.navigationState.calendar,
     reports: state.navigationState.reports,
     settings: state.navigationState.settings
