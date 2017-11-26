@@ -1,4 +1,9 @@
 .nutrition {
+    h3 {
+        font-size: 20px;
+        color: $cold-purple;
+    }
+
     &__overview {
         margin: 40px 0;
         display: flex;

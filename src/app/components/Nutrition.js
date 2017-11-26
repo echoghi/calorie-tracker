@@ -148,6 +148,7 @@ class Nutrition extends React.Component {
 				<NavBar />
 				<div className="nutrition">
 					<h1>Nutrition</h1>
+					<h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
 					<div className="nutrition__overview">
 						<div className="nutrition__overview--box">
 							<div className="nutrition__overview--head">
