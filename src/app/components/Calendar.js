@@ -136,7 +136,11 @@ class Calendar extends React.Component {
 		let now = moment();
 
 		if(now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
-			return 'day today';
+			if(day.month() !== time.month()) {
+				return 'day today inactive';
+			} else {
+				return 'day today';
+			}
 		} else if(day.month() !== time.month()) {
 			return 'day inactive';
 		} else {
@@ -174,23 +178,28 @@ class Calendar extends React.Component {
 			calendar = [
 				{
 					week: 48,
-					days: Array(7).fill(0).map((n, i) => time.week(48).startOf('week').clone().add(n + i, 'day'))
+					days: Array(7).fill(0).map((n, i) => time.week(48).startOf('week').clone().add(n + i, 'day')),
+					data: []
 				},
 				{
 					week: 49,
-					days: Array(7).fill(0).map((n, i) => time.week(49).startOf('week').clone().add(n + i, 'day'))
+					days: Array(7).fill(0).map((n, i) => time.week(49).startOf('week').clone().add(n + i, 'day')),
+					data: []
 				},
 				{
 					week: 50,
-					days: Array(7).fill(0).map((n, i) => time.week(50).startOf('week').clone().add(n + i, 'day'))
+					days: Array(7).fill(0).map((n, i) => time.week(50).startOf('week').clone().add(n + i, 'day')),
+					data: []
 				},
 				{
 					week: 51,
-					days: Array(7).fill(0).map((n, i) => time.week(51).startOf('week').clone().add(n + i, 'day'))
+					days: Array(7).fill(0).map((n, i) => time.week(51).startOf('week').clone().add(n + i, 'day')),
+					data: []
 				},
 				{
 					week: 52,
-					days: Array(14).fill(0).map((n, i) => time.week(52).startOf('week').clone().add(n + i, 'day'))
+					days: Array(14).fill(0).map((n, i) => time.week(52).startOf('week').clone().add(n + i, 'day')),
+					data: []
 				}
 			];
 		} else {
