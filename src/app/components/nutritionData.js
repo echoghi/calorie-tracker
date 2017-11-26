@@ -35,8 +35,9 @@ export const userData = {
 				]
 			},
 			fitness: {
-				calories: 0,
-				exercise: 0
+				calories: 2215,
+				exercise: 6,
+				stand: 12
 			}
 		},
 		{
@@ -53,7 +54,8 @@ export const userData = {
 			},
 			fitness: {
 				calories: 0,
-				exercise: 0
+				exercise: 0,
+				stand: 0
 			}
 		}
 	]
