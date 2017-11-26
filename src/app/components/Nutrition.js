@@ -62,24 +62,31 @@ class Nutrition extends React.Component {
 		let { data } = this.props;
 		let color;
 		let progress;
+		let text;
 
 		if(type === 'protein') {
 			color = '#F5729C';
 			progress = day.nutrition.protein / data.user.goals.nutrition.protein;
+			text = day.nutrition.protein / data.user.goals.nutrition.protein;
 		} else if (type === 'carbs') {
 			color = '#7BD4F8';
 			progress = day.nutrition.carbs / data.user.goals.nutrition.carbs;
+			text = day.nutrition.carbs / data.user.goals.nutrition.carbs;
 		} else {
 			color = '#55F3B3';
 			progress = day.nutrition.fat / data.user.goals.nutrition.fat;
+			text = day.nutrition.carbs / data.user.goals.nutrition.carbs;
 		}
+
+		progress = progress > 1 ? progress = 1 : progress;
+		text = `${Math.round((text * 100))}% of daily goal`;
 
 		let options = {
             strokeWidth: 3,
             color: color,
             trailColor: '#f4f4f4',
             text: {
-            	value: `${Math.round((progress * 100))}% of daily goal`,
+            	value: text,
             	style: {
 		            color: '#a2a7d9',
 		            margin: '15px 0 0 0'
