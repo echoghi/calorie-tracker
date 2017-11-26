@@ -115,6 +115,7 @@ class Nutrition extends React.Component {
 		let { data } = this.props;
 		let calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
 		let progress = day.nutrition.calories / calorieGoal;
+		let text = day.nutrition.calories / calorieGoal;
 		let options = {
             strokeWidth: 4,
             color: '#8E81E3',
@@ -134,6 +135,10 @@ class Nutrition extends React.Component {
             margin: '30px auto 10px auto'
         };
 
+        // Prevent progress bar bug by converting 100%+ to 100%
+		progress = progress > 1 ? progress = 1 : progress;
+		text = `${Math.round(text * 100)}% of daily goal`;
+
         return (
         	<div className="nutrition__overview--calories">
         		<h3>Total Calories</h3>
@@ -143,7 +148,7 @@ class Nutrition extends React.Component {
 	                initialAnimate={true}
 	                containerStyle={containerStyle}
 	                containerClassName={'.calorie__progress-bar'} />
-                <span>{`${Math.round(progress * 100)}% of daily goal`}</span>
+                <span>{text}</span>
 	        </div>
         );
 	}
