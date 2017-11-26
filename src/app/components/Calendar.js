@@ -1,16 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage } from './actions';
+import { activatePage, handleNav, loadNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
 
 const mapStateToProps = state => ({
-    calendar: state.navigationState.calendar
+    calendar: state.navigationState.calendar,
+    data: state.adminState.data
 });
 
 const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page))
+    activatePage: page => dispatch(activatePage(page)),
+    handleNav: page => dispatch(handleNav(page)),
+    loadNutritionData: data => dispatch(loadNutritionData(data))
 });
 
 class Calendar extends React.Component {
@@ -27,6 +30,20 @@ class Calendar extends React.Component {
 		}
 	}
 
+	navigateToNutrition(day) {
+		let { data, handleNav, loadNutritionData } = this.props;
+		let dayData;
+
+		for(let i = 0; i < data.calendar.length; i++) {
+			if(data.calendar[i].day.date() === day.date() && data.calendar[i].day.month() === day.month() && data.calendar[i].day.year() === day.year()) {
+				dayData = data.calendar[i];
+			}
+		}
+
+		loadNutritionData(dayData);
+		handleNav('nutrition');
+	}
+
 	handleDayClass(day) {
 		let { time } = this.state;
 		let now = moment();
@@ -37,6 +54,24 @@ class Calendar extends React.Component {
 			return 'day inactive';
 		} else {
 			return 'day';
+		}
+	}
+
+	handleIconClass(day) {
+		let now = moment();
+		let { data } = this.props;
+		let dayData;
+
+		for(let i = 0; i < data.calendar.length; i++) {
+			if(data.calendar[i].day.date() === day.date() && data.calendar[i].day.month() === day.month() && data.calendar[i].day.year() === day.year()) {
+				dayData = data.calendar[i];
+			}
+		}
+
+		if(now.date() >= day.date() && now.month() >= day.month() && now.year() >= day.year() && dayData) {
+			return 'icon-info';
+		} else {
+			return 'icon-info hidden';
 		}
 	}
 
@@ -83,6 +118,7 @@ class Calendar extends React.Component {
 			for(let j = 0; j < calendar[i].days.length; j++) {
 				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
 									<div className="number">{calendar[i].days[j].date()}</div>
+									<span onClick={() => this.navigateToNutrition(calendar[i].days[j])} className={this.handleIconClass(calendar[i].days[j])} />
 								</div>);
 			}
 		}

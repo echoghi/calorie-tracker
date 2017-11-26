@@ -45,6 +45,7 @@ export function navigationState(
 export function adminState(
     state = {
         data: userData,
+        activeDay: {},
         loading: false,
         success: null,
         error: null
@@ -52,6 +53,17 @@ export function adminState(
     action
 ) {
     switch (action.type) {
+
+        case 'LOAD_NUTRITION_DATA':
+            return Object.assign({}, state, {
+                activeDay: action.data
+            });
+
+        case 'RESET_NUTRITION_DATA':
+            return Object.assign({}, state, {
+                activeDay: {}
+            });
+
         case 'LOADING_DATA':
             return Object.assign({}, state, {
                 loading: true

@@ -49,6 +49,7 @@
     }
 
     .day {
+        position: relative;
         border: 1px solid $mystic;
         display: inline-block;
         box-sizing: border-box;
@@ -62,6 +63,23 @@
 
         &.today {
             color: $burnt-sienna;
+        }
+
+        .icon-info {
+            opacity: .8;
+            cursor: pointer;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 10px;
+
+            &.hidden {
+                display: none;
+            }
+            
+            &:hover {
+                color: $burnt-sienna;
+            }
         }
     }
 

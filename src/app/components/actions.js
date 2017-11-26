@@ -1,4 +1,6 @@
 import { hashHistory } from 'react-router';
+export const LOAD_NUTRITION_DATA = 'LOAD_NUTRITION_DATA';
+export const RESET_NUTRITION_DATA = 'RESET_NUTRITION_DATA';
 export const LOADING_DATA = 'LOADING_DATA';
 export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const DATA_ERROR = 'DATA_ERROR';
@@ -7,6 +9,19 @@ export const RESET_FORM = 'RESET_FORM';
 export const FORM_SUCCESS = 'FORM_SUCCESS';
 export const FORM_ERROR = 'FORM_ERROR';
 export const ACTIVATE_PAGE = 'ACTIVATE_PAGE';
+
+export function loadNutritionData(data) {
+    return {
+        type: LOAD_NUTRITION_DATA,
+        data
+    };
+}
+
+export function resetNutritionData() {
+    return {
+        type: RESET_NUTRITION_DATA
+    };
+}
 
 export function receiveData(data) {
     return {

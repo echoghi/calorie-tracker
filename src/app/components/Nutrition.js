@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage } from './actions';
+import { activatePage, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
@@ -10,20 +10,19 @@ let Circle = ProgressBar.Circle;
 
 const mapStateToProps = state => ({
     nutrition: state.navigationState.nutrition,
-    data: state.adminState.data
+    data: state.adminState.data,
+    activeDay: state.adminState.activeDay
 });
 
 const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page))
+    activatePage: page => dispatch(activatePage(page)),
+    resetNutritionData: () => dispatch(resetNutritionData())
 });
 
 class Nutrition extends React.Component {
 	state = {
 		now: moment(),
-		day: {},
-		calories: 0,
-		fat: 0,
-		carbs: 0
+		day: {}
 	};
 
 	componentWillMount() {
@@ -37,13 +36,21 @@ class Nutrition extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.props.resetNutritionData();
+	}
+
 	mapDayToState = () => {
-		let { data } = this.props;
+		let { data, activeDay } = this.props;
 		let { now, day } = this.state;
 
-		for(let i = 0; i < data.calendar.length; i++) {
-			if(data.calendar[i].day.date() === now.date() && data.calendar[i].day.month() === now.month() && data.calendar[i].day.year() === now.year()) {
-				day = data.calendar[i];
+		if(!_.isEmpty(activeDay)) {
+			day = activeDay;
+		} else {
+			for(let i = 0; i < data.calendar.length; i++) {
+				if(data.calendar[i].day.date() === now.date() && data.calendar[i].day.month() === now.month() && data.calendar[i].day.year() === now.year()) {
+					day = data.calendar[i];
+				}
 			}
 		}
 
@@ -80,8 +87,6 @@ class Nutrition extends React.Component {
             }
         };
 
-        // For demo purposes so the container has some dimensions.
-        // Otherwise progress bar won't be shown
         let containerStyle = {
             width: '80%',
             margin: '30px auto'
@@ -109,7 +114,7 @@ class Nutrition extends React.Component {
             	value: `${day.nutrition.calories} cal`,
             	style: {
 		            color: '#a2a7d9',
-		            margin: '-155px 0 0 0',
+		            margin: '-175px 0 0 0',
 		            fontSize: '40px'
 		        }
             }
@@ -129,6 +134,7 @@ class Nutrition extends React.Component {
 	                initialAnimate={true}
 	                containerStyle={containerStyle}
 	                containerClassName={'.calorie__progress-bar'} />
+                <span>{`${Math.round(progress * 100)}% of daily goal`}</span>
 	        </div>
         );
 	}

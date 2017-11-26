@@ -17,6 +17,8 @@ export const userData = {
 	calendar: [
 		{
 			day: moment([2017, 10, 24]),
+			mood: 4,
+			hasInfo: true,
 			nutrition: {
 				calories: 1525,
 				fat: 65,
@@ -39,11 +41,13 @@ export const userData = {
 		},
 		{
 			day: moment([2017, 10, 25]),
+			mood: 4,
+			hasInfo: true,
 			nutrition: {
-				calories: 0,
-				fat: 0,
-				carbs: 0,
-				protein: 0,
+				calories: 945,
+				fat: 43,
+				carbs: 113,
+				protein: 28,
 				supplements: [
 				]
 			},

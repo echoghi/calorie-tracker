@@ -7,6 +7,7 @@
  // SCSS
 /*eslint-disable*/
 import Styles from './app/assets/scss/style.scss';
+import _ from 'lodash';
 /*eslint-enable*/
 
 import React from 'react';
