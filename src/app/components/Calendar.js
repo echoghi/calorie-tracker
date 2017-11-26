@@ -71,7 +71,7 @@ class Calendar extends React.Component {
             margin: '0 auto'
         };
         let proteinOptions = {
-            strokeWidth: 6,
+            strokeWidth: 7,
             color: '#F5729C',
             trailColor: '#f4f4f4'
         };
@@ -81,7 +81,7 @@ class Calendar extends React.Component {
             margin: '-80px auto'
         };
         let carbOptions = {
-            strokeWidth: 6,
+            strokeWidth: 8,
             color: '#7BD4F8',
             trailColor: '#f4f4f4'
         };
@@ -91,7 +91,7 @@ class Calendar extends React.Component {
             margin: '20px auto'
         };
         let fatOptions = {
-            strokeWidth: 6,
+            strokeWidth: 9,
             color: '#55F3B3',
             trailColor: '#f4f4f4'
         };
