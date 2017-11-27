@@ -7,7 +7,7 @@ export const userData = {
 		bloodType : null,
 		goals: {
 			nutrition: {
-				calories: 1925,
+				calories: 2000,
 				protein: 180,
 				carbs: 200,
 				fat: 80
@@ -67,10 +67,10 @@ export const userData = {
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
-				calories: 1170,
-				fat: 102,
-				carbs: 99,
-				protein: 121,
+				calories: 2010,
+				fat: 131,
+				carbs: 166,
+				protein: 194,
 				meals: [
 					{
 						name: 'In n\' Out 3x3',
@@ -133,9 +133,9 @@ export const userData = {
 				]
 			},
 			fitness: {
-				calories: 0,
-				exercise: 0,
-				stand: 0
+				calories: 2457,
+				exercise: 76,
+				stand: 15
 			}
 		}
 	]

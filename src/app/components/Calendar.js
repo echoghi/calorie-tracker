@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { activatePage, handleNav, loadNutritionData } from './actions';
 import moment from 'moment';
-let ProgressBar = require('react-progressbar.js');
-let Circle = ProgressBar.Circle;
+import ProgressBar from 'react-progressbar.js';
+let { Circle } = ProgressBar;
 // Components
 import NavBar from './NavBar';
 

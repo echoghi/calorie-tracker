@@ -4,9 +4,8 @@ import { activatePage, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
-let ProgressBar = require('react-progressbar.js');
-let Line = ProgressBar.Line;
-let Circle = ProgressBar.Circle;
+import ProgressBar from 'react-progressbar.js';
+let { Circle, Line } = ProgressBar;
 
 const mapStateToProps = state => ({
     nutrition: state.navigationState.nutrition,
@@ -63,8 +62,7 @@ class Nutrition extends React.Component {
 
 		return (
         	<div className="nutrition__overview--meals">
-        		<h3>Logged Meals</h3>
-        		<h4>{day.nutrition.meals.length}</h4>
+        		<h3>{`Logged Meals (${day.nutrition.meals.length})`}</h3>
         		<div className="nutrition__overview--table">
         			<div className="nutrition__overview--table-head">
 						<div className="thead__name">Name</div>
