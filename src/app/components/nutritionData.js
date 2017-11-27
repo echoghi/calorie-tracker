@@ -63,10 +63,10 @@ export const userData = {
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
-				calories: 0,
-				fat: 0,
-				carbs: 0,
-				protein: 0,
+				calories: 860,
+				fat: 97,
+				carbs: 93,
+				protein: 71,
 				supplements: [
 				]
 			},

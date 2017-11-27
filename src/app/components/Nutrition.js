@@ -75,7 +75,7 @@ class Nutrition extends React.Component {
 		} else {
 			color = '#55F3B3';
 			progress = day.nutrition.fat / data.user.goals.nutrition.fat;
-			text = day.nutrition.carbs / data.user.goals.nutrition.carbs;
+			text = day.nutrition.carbs / data.user.goals.nutrition.fat;
 		}
 
 		// Prevent progress bar bug by converting 100%+ to 100%
