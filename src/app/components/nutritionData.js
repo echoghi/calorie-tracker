@@ -32,6 +32,8 @@ export const userData = {
 						unit: 'miligrams',
 						unitShort: 'mg'
 					}
+				],
+				meals: [
 				]
 			},
 			fitness: {
@@ -50,6 +52,8 @@ export const userData = {
 				carbs: 260,
 				protein: 142,
 				supplements: [
+				],
+				meals: [
 				]
 			},
 			fitness: {
@@ -67,6 +71,22 @@ export const userData = {
 				fat: 97,
 				carbs: 93,
 				protein: 71,
+				meals: [
+					{
+						name: 'In n\' Out 3x3',
+						calories: 860,
+						fat: 55,
+						carbs: 39,
+						protein: 52
+					},
+					{
+						name: 'In n\' Out animal fries',
+						calories: 750,
+						fat: 42,
+						carbs: 54,
+						protein: 19
+					}
+				],
 				supplements: [
 				]
 			},

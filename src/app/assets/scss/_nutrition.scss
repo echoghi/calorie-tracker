@@ -43,7 +43,8 @@
             }
         }
 
-        &--calories {
+        &--calories,
+        &--meals {
             position: relative;
             display: inline-block;
             height: 450px;
@@ -54,7 +55,8 @@
             background: $white;
             text-align: center;
 
-            h3 {
+            h3,
+            h4 {
                 padding: 15px 30px;
                 font-size: 25px;
                 text-align: left;
@@ -74,6 +76,84 @@
         &--head {
             width: 60%;
             margin: 20px auto;
+        }
+
+        &--meals {
+            h4 {
+                color: $cold-purple;
+                padding: 0 30px;
+                font-size: 25px;
+                text-align: left;
+                margin: 0;
+            }
+        }
+
+        &--table {
+            height: 275px;
+            overflow-y: auto;
+            margin: 15px;
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid $mystic;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            background: $white;
+        }
+
+        &--table-head {
+            display: flex;
+            background: $white; 
+            padding: 15px;
+            text-align: center;
+
+            div {
+                display: inline-flex;
+                box-sizing: border-box;
+                font-size: 20px;
+                font-weight: bold;
+                padding: 10px;
+
+                &.thead__name {
+                    width: 200px;
+                }
+
+                &.thead__calories,
+                &.thead__protein,
+                &.thead__fat,
+                &.thead__carbs {
+                    width: 100px;
+                }
+            }
+        }
+
+        &--meal {
+            display: flex;
+
+            div {
+                display: inline-flex;
+                justify-content: space-between;
+                padding: 25px;
+                font-size: 17px;
+                font-weight: bold;
+                border-top: 1px solid $mystic;
+                border-bottom: 1px solid $mystic;
+                box-sizing: border-box;
+
+                &.name {
+                    width: 200px;
+                }
+
+                &.calories,
+                &.protein,
+                &.fat,
+                &.carbs {
+                    width: 100px;
+                }
+            }
+
+            &:nth-child(even) {
+                background: $mystic;
+            }
         }
     }
 

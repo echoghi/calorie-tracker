@@ -57,6 +57,36 @@ class Nutrition extends React.Component {
 		this.setState({ day });
 	}
 
+	renderMealBox() {
+		let { day } = this.state;
+		//let { data } = this.props;
+
+		return (
+        	<div className="nutrition__overview--meals">
+        		<h3>Logged Meals</h3>
+        		<h4>{day.nutrition.meals.length}</h4>
+        		<div className="nutrition__overview--table">
+        			<div className="nutrition__overview--table-head">
+						<div className="thead__name">Name</div>
+						<div className="thead__calories">Calories</div>
+						<div className="thead__protein">Protein</div>
+						<div className="thead__carbs">Carbs</div>
+						<div className="thead__fat">Fat</div>
+					</div>
+	        		{_.map(day.nutrition.meals, (meal, index) => (
+						<div className="nutrition__overview--meal" key={index}>
+							<div className="name">{meal.name}</div>
+							<div className="calories">{`${meal.calories}g`}</div>
+							<div className="protein">{`${meal.protein}g`}</div>
+							<div className="carbs">{`${meal.carbs}g`}</div>
+							<div className="fat">{`${meal.fat}g`}</div>
+						</div>
+					))}
+				</div>
+	        </div>
+        );
+	}
+
 	renderProgressBar(type) {
 		let { day } = this.state;
 		let { data } = this.props;
@@ -191,8 +221,7 @@ class Nutrition extends React.Component {
 					</div>
 					<div className="nutrition__overview">
 						{this.renderCalorieBox()}
-					</div>
-					<div className="nutrition__add">
+						{this.renderMealBox()}
 					</div>
 				</div>
 			</div>
