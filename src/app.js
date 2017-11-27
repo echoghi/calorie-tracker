@@ -24,7 +24,7 @@ import { adminState, navigationState } from './app/components/reducers';
 //components
 import Home from './app/components/Home';
 import Nutrition from './app/components/Nutrition';
-import Reports from './app/components/Reports';
+import Activity from './app/components/Activity';
 import Calendar from './app/components/Calendar';
 import Settings from './app/components/Settings';
 
@@ -40,7 +40,7 @@ ReactDOM.render(
         <Router history={hashHistory}>
             <Route path={'/'} component={Home} />
             <Route path={'/nutrition'} component={Nutrition} />
-            <Route path={'/reports'} component={Reports} />
+            <Route path={'/activity'} component={Activity} />
             <Route path={'/calendar'} component={Calendar} />
             <Route path={'/settings'} component={Settings} />
         </Router>

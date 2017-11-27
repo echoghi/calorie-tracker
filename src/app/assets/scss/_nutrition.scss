@@ -93,7 +93,7 @@
             overflow-y: auto;
             margin: 15px;
             margin-top: 30px;
-            padding: 15px;
+            padding: 15px 0;
             border: 1px solid $mystic;
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
             border-radius: 3px;
@@ -114,14 +114,14 @@
                 padding: 10px;
 
                 &.thead__name {
-                    width: 200px;
+                    width: 40%;
                 }
 
                 &.thead__calories,
                 &.thead__protein,
                 &.thead__fat,
                 &.thead__carbs {
-                    width: 100px;
+                    width: 15%;
                 }
             }
         }
@@ -140,14 +140,15 @@
                 box-sizing: border-box;
 
                 &.name {
-                    width: 200px;
+                    width: 40%;
+                    text-align: left;
                 }
 
                 &.calories,
                 &.protein,
                 &.fat,
                 &.carbs {
-                    width: 100px;
+                    width: 15%;
                 }
             }
 

@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
     home: state.navigationState.home,
     nutrition: state.navigationState.nutrition,
     calendar: state.navigationState.calendar,
-    reports: state.navigationState.reports,
+    activity: state.navigationState.activity,
     settings: state.navigationState.settings
 });
 
@@ -98,9 +98,9 @@ class NavBar extends React.Component {
 				</div>
 				<ul className={this.handleMenuClass()}>
 					<li className={this.handleNavClass('home')} onClick={() => { this.navigate('home'); }}><i className="icon-home" /> Overview</li>
-					<li className={this.handleNavClass('nutrition')} onClick={() => { this.navigate('nutrition'); }}><i className="icon-plus-circle" /> Nutrition</li>
 					<li className={this.handleNavClass('calendar')} onClick={() => { this.navigate('calendar'); }}><i className="icon-calendar" /> Calendar</li>
-					<li className={this.handleNavClass('reports')} onClick={() => { this.navigate('reports'); }}><i className="icon-bar-chart" /> Reports</li> 
+					<li className={this.handleNavClass('nutrition')} onClick={() => { this.navigate('nutrition'); }}><i className="icon-plus-circle" /> Nutrition</li>
+					<li className={this.handleNavClass('activity')} onClick={() => { this.navigate('activity'); }}><i className="icon-bar-chart" /> Activity</li> 
 					<li className={this.handleNavClass('settings')} onClick={() => { this.navigate('settings'); }}><i className="icon-settings" /> Settings</li>
 				</ul>
 				<div className="navbar__top"> 

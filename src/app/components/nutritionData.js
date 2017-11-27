@@ -67,10 +67,10 @@ export const userData = {
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
-				calories: 860,
-				fat: 97,
-				carbs: 93,
-				protein: 71,
+				calories: 1170,
+				fat: 102,
+				carbs: 99,
+				protein: 121,
 				meals: [
 					{
 						name: 'In n\' Out 3x3',
@@ -88,6 +88,48 @@ export const userData = {
 					}
 				],
 				supplements: [
+					{
+						name: 'ephedrine sulfate',
+						type: 'stimulant',
+						dosage: 50,
+						unit: 'miligrams',
+						unitShort: 'mg'
+					},
+					{
+						name: 'Omega 3 (EPA/DHA)',
+						type: 'fatty acid',
+						dosage: 230,
+						unit: 'miligrams',
+						unitShort: 'mg'
+					},
+					{
+						name: 'Vitamin D',
+						type: 'vitamin',
+						dosage: 1080,
+						unit: 'IU',
+						unitShort: 'iu'
+					},
+					{
+						name: 'Vitamin A',
+						type: 'vitamin',
+						dosage: 150,
+						unit: 'IU',
+						unitShort: 'iu'
+					},
+					{
+						name: 'Vitamin E',
+						type: 'vitamin',
+						dosage: 2,
+						unit: 'IU',
+						unitShort: 'iu'
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'organic acid',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					}
 				]
 			},
 			fitness: {

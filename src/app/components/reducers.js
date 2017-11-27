@@ -4,7 +4,7 @@ export function navigationState(
     state = {
         home: false,
         nutrition: false,
-        reports: false,
+        activity: false,
         calendar: false,
         settings: false
     },
@@ -15,7 +15,7 @@ export function navigationState(
             let temp = Object.assign({}, state, {
                     home: false,
                     nutrition: false,
-                    reports: false,
+                    activity: false,
                     calendar: false,
                     settings: false
                 });
@@ -28,7 +28,7 @@ export function navigationState(
             let temp2 = Object.assign({}, state, {
                     home: false,
                     nutrition: false,
-                    reports: false,
+                    activity: false,
                     calendar: false,
                     settings: false
                 });
