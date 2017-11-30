@@ -4,6 +4,8 @@ import { activatePage, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import ProgressBar from 'react-progressbar.js';
 let { Circle, Line } = ProgressBar;
 
@@ -56,6 +58,59 @@ class Nutrition extends React.Component {
 		this.setState({ day });
 	}
 
+	renderMealsTable() {
+		let { day } = this.state;
+
+		return(<ReactTable
+	          data={day.nutrition.meals}
+	          noDataText="No Meals Found"
+	          columns={[
+	            {
+	              Header: 'Meals',
+	              columns: [
+	                {
+	                  Header: 'Name',
+	                  id: 'name',
+	                  accessor: d => d.name
+	                },
+	                {
+	                  Header: 'Type',
+	                  id: 'type',
+	                  accessor: d => d.type
+	                }
+	              ]
+	            },
+	            {
+	              Header: 'Nutritional Information (g)',
+	              columns: [
+	                {
+	                  Header: 'Calories',
+	                  id: 'calories',
+	                  accessor: d => d.calories
+	                },
+	                {
+	                  Header: 'Protein',
+	                  id: 'protein',
+	                  accessor: d => d.protein
+	                },
+	                {
+	                  Header: 'Carbohydrates',
+	                  id: 'carbs',
+	                  accessor: d => d.carbs
+	                },
+	                {
+	                  Header: 'Fat',
+	                  id: 'fat',
+	                  accessor: d => d.fat
+	                }
+	              ]
+	            }
+	          ]}
+	          defaultPageSize={10}
+	          className='-striped -highlight'
+        />);
+	}
+
 	renderMealBox() {
 		let { day } = this.state;
 		//let { data } = this.props;
@@ -63,24 +118,6 @@ class Nutrition extends React.Component {
 		return (
         	<div className="nutrition__overview--meals">
         		<h3>{`Logged Meals (${day.nutrition.meals.length})`}</h3>
-        		<div className="nutrition__overview--table">
-        			<div className="nutrition__overview--table-head">
-						<div className="thead__name">Name</div>
-						<div className="thead__calories">Calories</div>
-						<div className="thead__protein">Protein</div>
-						<div className="thead__carbs">Carbs</div>
-						<div className="thead__fat">Fat</div>
-					</div>
-	        		{_.map(day.nutrition.meals, (meal, index) => (
-						<div className="nutrition__overview--meal" key={index}>
-							<div className="name">{meal.name}</div>
-							<div className="calories">{`${meal.calories}g`}</div>
-							<div className="protein">{`${meal.protein}g`}</div>
-							<div className="carbs">{`${meal.carbs}g`}</div>
-							<div className="fat">{`${meal.fat}g`}</div>
-						</div>
-					))}
-				</div>
 	        </div>
         );
 	}
@@ -103,7 +140,7 @@ class Nutrition extends React.Component {
 		} else {
 			color = '#55F3B3';
 			progress = day.nutrition.fat / data.user.goals.nutrition.fat;
-			text = day.nutrition.carbs / data.user.goals.nutrition.fat;
+			text = day.nutrition.fat / data.user.goals.nutrition.fat;
 		}
 
 		// Prevent progress bar bug by converting 100%+ to 100%
@@ -221,6 +258,7 @@ class Nutrition extends React.Component {
 						{this.renderCalorieBox()}
 						{this.renderMealBox()}
 					</div>
+					{this.renderMealsTable()}
 				</div>
 			</div>
 		);

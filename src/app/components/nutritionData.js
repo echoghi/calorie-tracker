@@ -1,4 +1,5 @@
 import moment from 'moment';
+//import firebase from './firebase.js';
 
 export const userData = {
 	user: {
@@ -10,7 +11,7 @@ export const userData = {
 				calories: 2000,
 				protein: 180,
 				carbs: 200,
-				fat: 80
+				fat: 70
 			}
 		}
 	},
@@ -143,31 +144,109 @@ export const userData = {
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
-				calories: 120,
-				fat: 0,
-				carbs: 24,
-				protein: 0,
+				calories: 1500,
+				fat: 50,
+				carbs: 121,
+				protein: 138,
 				meals: [
 				],
 				supplements: [
+					{
+						name: 'ephedrine sulfate',
+						type: 'stimulant',
+						dosage: 50,
+						unit: 'miligrams',
+						unitShort: 'mg'
+					},
+					{
+						name: 'Omega 3 (EPA/DHA)',
+						type: 'fatty acid',
+						dosage: 230,
+						unit: 'miligrams',
+						unitShort: 'mg'
+					},
+					{
+						name: 'Vitamin D',
+						type: 'vitamin',
+						dosage: 1080,
+						unit: 'IU',
+						unitShort: 'iu'
+					},
+					{
+						name: 'Vitamin A',
+						type: 'vitamin',
+						dosage: 150,
+						unit: 'IU',
+						unitShort: 'iu'
+					},
+					{
+						name: 'Vitamin E',
+						type: 'vitamin',
+						dosage: 2,
+						unit: 'IU',
+						unitShort: 'iu'
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'organic acid',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					}
 				]
 			},
 			fitness: {
-				calories: 0,
-				exercise: 0,
-				stand: 0
+				calories: 2241,
+				exercise: 1,
+				stand: 13
 			}
 		},
         {
             day: moment([2017, 10, 28]),
+            mood: 3,
+            hasInfo: true,
+            nutrition: {
+                calories: 1800,
+                fat: 60,
+                carbs: 151,
+                protein: 165,
+                meals: [
+                ],
+                supplements: [
+                ]
+            },
+            fitness: {
+                calories: 2308,
+                exercise: 0,
+                stand: 14
+            }
+        },
+        {
+            day: moment([2017, 10, 29]),
             mood: 4,
             hasInfo: true,
             nutrition: {
-                calories: 540,
-                fat: 31,
-                carbs: 48,
-                protein: 27,
+                calories: 2245,
+                fat: 88,
+                carbs: 115,
+                protein: 156,
                 meals: [
+                	{
+						name: 'Spaghetti w/ Meatballs',
+						type: 'Home Cooked',
+						calories: 780,
+						fat: 27,
+						carbs: 72,
+						protein: 60
+					},
+					{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					}
                 ],
                 supplements: [
                 ]
@@ -180,3 +259,7 @@ export const userData = {
         }
 	]
 };
+
+//let usersRef = firebase.database().ref('users');
+
+//usersRef.push(userData);
