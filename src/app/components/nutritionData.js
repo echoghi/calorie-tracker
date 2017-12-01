@@ -256,6 +256,42 @@ export const userData = {
                 exercise: 0,
                 stand: 0
             }
+        },
+        {
+            day: moment([2017, 10, 30]),
+            mood: 4,
+            hasInfo: true,
+            nutrition: {
+                calories: 1530,
+                fat: 70,
+                carbs: 132,
+                protein: 72,
+                meals: [
+                	{
+						name: 'Whole Foods Golden Gate Sandwhich',
+						type: 'Deli',
+						calories: 1040,
+						fat: 52,
+						carbs: 75,
+						protein: 53
+					},
+					{
+						name: 'Whole Foods Breakfast Sandwhich',
+						type: 'Frozen Food',
+						calories: 360,
+						fat: 18,
+						carbs: 31,
+						protein: 19
+					}
+                ],
+                supplements: [
+                ]
+            },
+            fitness: {
+                calories: 0,
+                exercise: 0,
+                stand: 0
+            }
         }
 	]
 };
