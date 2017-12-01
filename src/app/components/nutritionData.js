@@ -75,6 +75,7 @@ export const userData = {
 				meals: [
 					{
 						name: 'In n\' Out 3x3',
+						type: 'Fast Food',
 						calories: 860,
 						fat: 55,
 						carbs: 39,
@@ -82,51 +83,51 @@ export const userData = {
 					},
 					{
 						name: 'In n\' Out animal fries',
+						type: 'Fast Food',
 						calories: 750,
 						fat: 42,
 						carbs: 54,
 						protein: 19
-					}
-				],
-				supplements: [
-					{
+					},
+						{
 						name: 'ephedrine sulfate',
-						type: 'stimulant',
+						type: 'Supplement',
+						classification: 'stimulant',
 						dosage: 50,
 						unit: 'miligrams',
 						unitShort: 'mg'
 					},
 					{
 						name: 'Omega 3 (EPA/DHA)',
-						type: 'fatty acid',
+						type: 'Supplement',
 						dosage: 230,
 						unit: 'miligrams',
 						unitShort: 'mg'
 					},
 					{
 						name: 'Vitamin D',
-						type: 'vitamin',
+						type: 'Supplement',
 						dosage: 1080,
 						unit: 'IU',
 						unitShort: 'iu'
 					},
 					{
 						name: 'Vitamin A',
-						type: 'vitamin',
+						type: 'Supplement',
 						dosage: 150,
 						unit: 'IU',
 						unitShort: 'iu'
 					},
 					{
 						name: 'Vitamin E',
-						type: 'vitamin',
+						type: 'Supplement',
 						dosage: 2,
 						unit: 'IU',
 						unitShort: 'iu'
 					},
 					{
 						name: 'Creatine Monohydrate',
-						type: 'organic acid',
+						type: 'Supplement',
 						dosage: 5,
 						unit: 'grams',
 						unitShort: 'g'
@@ -149,46 +150,45 @@ export const userData = {
 				carbs: 121,
 				protein: 138,
 				meals: [
-				],
-				supplements: [
 					{
 						name: 'ephedrine sulfate',
-						type: 'stimulant',
+						type: 'Supplement',
+						classification: 'stimulant',
 						dosage: 50,
 						unit: 'miligrams',
 						unitShort: 'mg'
 					},
 					{
 						name: 'Omega 3 (EPA/DHA)',
-						type: 'fatty acid',
+						type: 'Supplement',
 						dosage: 230,
 						unit: 'miligrams',
 						unitShort: 'mg'
 					},
 					{
 						name: 'Vitamin D',
-						type: 'vitamin',
+						type: 'Supplement',
 						dosage: 1080,
 						unit: 'IU',
 						unitShort: 'iu'
 					},
 					{
 						name: 'Vitamin A',
-						type: 'vitamin',
+						type: 'Supplement',
 						dosage: 150,
 						unit: 'IU',
 						unitShort: 'iu'
 					},
 					{
 						name: 'Vitamin E',
-						type: 'vitamin',
+						type: 'Supplement',
 						dosage: 2,
 						unit: 'IU',
 						unitShort: 'iu'
 					},
 					{
 						name: 'Creatine Monohydrate',
-						type: 'organic acid',
+						type: 'Supplement',
 						dosage: 5,
 						unit: 'grams',
 						unitShort: 'g'
@@ -211,8 +211,6 @@ export const userData = {
                 carbs: 151,
                 protein: 165,
                 meals: [
-                ],
-                supplements: [
                 ]
             },
             fitness: {
@@ -247,8 +245,6 @@ export const userData = {
 						carbs: 81,
 						protein: 55
 					}
-                ],
-                supplements: [
                 ]
             },
             fitness: {
