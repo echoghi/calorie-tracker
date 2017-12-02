@@ -288,6 +288,54 @@ export const userData = {
                 exercise: 0,
                 stand: 0
             }
+        },
+        {
+            day: moment([2017, 11, 1]),
+            mood: 4,
+            hasInfo: true,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ],
+                supplements: [
+                ]
+            },
+            fitness: {
+                calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: moment([2017, 11, 2]),
+            mood: 4,
+            hasInfo: true,
+            nutrition: {
+                calories: 1015,
+                fat: 40,
+                carbs: 81,
+                protein: 55,
+                meals: [
+                	{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					}
+                ],
+                supplements: [
+                ]
+            },
+            fitness: {
+                calories: 0,
+                exercise: 0,
+                stand: 0
+            }
         }
 	]
 };

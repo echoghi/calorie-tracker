@@ -159,7 +159,7 @@ class Calendar extends React.Component {
 			}
 		}
 
-		if(now.date() >= day.date() && now.month() >= day.month() && now.year() >= day.year() && dayData) {
+		if(now.isAfter(day) && dayData) {
 			return 'icon-info';
 		} else {
 			return 'icon-info hidden';
