@@ -4,6 +4,8 @@ import { activatePage, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import ProgressBar from 'react-progressbar.js';
@@ -20,10 +22,24 @@ const mapDispatchToProps = dispatch => ({
     resetNutritionData: () => dispatch(resetNutritionData())
 });
 
+// Reusable validation constuctor for each input
+let inputObj = () => {
+    this.valid = false;
+    this.dirty = false;
+};
+
 class Nutrition extends React.Component {
 	state = {
 		now: moment(),
-		day: {}
+		day: {},
+		validation: {
+			name: new inputObj(),
+			type: new inputObj(),
+			calories: new inputObj(),
+			protein: new inputObj(),
+			carbs: new inputObj(),
+			fat: new inputObj()
+		}
 	};
 
 	componentWillMount() {
@@ -111,13 +127,122 @@ class Nutrition extends React.Component {
         />);
 	}
 
+	/**
+     * Validate Inputs
+     *
+     * @return valid - validation status 
+     */
+    validateInputs() {
+        let valid = true;
+        // Check for incompleted fields
+        for (let key in this.state.validation) {
+            if (!this.state.validation[key]['valid']) {
+                return false;
+            }
+        }
+
+        return valid;
+    }
+
+	onChange = event => {
+		// create a shallow copy of the state to mutate
+        let obj = Object.assign({}, this.state);
+        // Set value in obj to eventually send to the state
+        obj[event.target.name] = event.target.value;
+        // Mark input as dirty (interacted with)
+        obj['validation'][event.target.name]['dirty'] = true;
+
+        // Remove non-numbers from macro inputs
+        if(event.target.name !== 'name' && event.target.name !== 'type') {
+        	event.target.value = event.target.value.replace(/[^0-9]/g, '');
+            obj[event.target.name] = event.target.value;
+        }
+
+        // If there is any value, mark it valid
+        if (event.target.value !== '') {
+            obj['validation'][event.target.name]['valid'] = true;
+        } else {
+            obj['validation'][event.target.name]['valid'] = false;
+        }
+
+        this.setState(obj);
+	}
+
+	onSubmit = () => {
+		if(this.validateInputs()) {
+			console.log('submit!');
+		} else {
+			console.log('error');
+			// create a shallow copy of the state to mutate
+            let obj = Object.assign({}, this.state);
+            // If there is an invalid input, mark all as dirty on submit to alert the user
+            for (let attr in this.state.validation) {
+                if (obj['validation'][attr]) {
+                    obj['validation'][attr]['dirty'] = true;
+                }
+            }
+            this.setState(obj);
+		}
+	}
+
 	renderMealBox() {
-		let { day } = this.state;
+		let { day, validation } = this.state;
 		//let { data } = this.props;
 
 		return (
         	<div className="nutrition__overview--meals">
         		<h3>{`Logged Meals (${day.nutrition.meals.length})`}</h3>
+        		<div className="add__meal">
+        			<div className="add__meal--input">
+	        			<TextField
+	        			  name="name"
+					      errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
+					      onChange={this.onChange}
+					      floatingLabelText="Name"
+					    />
+					    <TextField
+	        			  name="type"
+					      errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
+					      onChange={this.onChange}
+					      floatingLabelText="Type"
+					    />
+					</div>
+					<div className="add__meal--input">
+	        			<TextField
+	        			  name="calories"
+					      errorText={!validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''}
+					      onChange={this.onChange}
+					      floatingLabelText="Calories"
+					    />
+					    <TextField
+	        			  name="protein"
+					      errorText={!validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''}
+					      onChange={this.onChange}
+					      floatingLabelText="Protein"
+					    />
+					</div>
+					<div className="add__meal--input">
+	        			<TextField
+	        			  name="carbs"
+					      errorText={!validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''}
+					      onChange={this.onChange}
+					      floatingLabelText="Carbohydrates"
+					    />
+					    <TextField
+        				  name="fat"
+					      errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
+					      onChange={this.onChange}
+					      floatingLabelText="Fat"
+					    />
+					</div>
+					<RaisedButton
+                        label="Save"
+                        className="add__meal--save"
+                        onClick={this.onSubmit}
+                        backgroundColor="#ed5454"
+                        labelColor="#fff"
+                    />
+			  	</div>
 	        </div>
         );
 	}
@@ -213,7 +338,7 @@ class Nutrition extends React.Component {
 	                initialAnimate={true}
 	                containerStyle={containerStyle}
 	                containerClassName={'.calorie__progress-bar'} />
-                <span>{text}</span>
+                <span className="subhead">{text}</span>
 	        </div>
         );
 	}

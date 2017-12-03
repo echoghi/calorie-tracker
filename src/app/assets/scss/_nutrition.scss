@@ -64,7 +64,7 @@
                 margin-bottom: 0;
             }
 
-            span {
+            span.subhead {
                 top: 270px;
                 position: absolute;
                 font-size: 20px;
@@ -86,6 +86,27 @@
                 font-size: 25px;
                 text-align: left;
                 margin: 0;
+            }
+
+            .add__meal {
+                &--input {
+                    display: flex;
+                    padding: 5px 30px;
+                    justify-content: space-between;
+                    /* stylelint-disable */
+                    div {
+                        position: inline-flex;
+                        width: 45% !important;
+                    }
+                    /* stylelint-enable */
+                }
+
+                &--save {
+                    float: right;
+                    margin: 20px 30px;
+                    margin-top: 50px;
+
+                }
             }
         }
 

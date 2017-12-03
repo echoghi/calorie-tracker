@@ -22,28 +22,31 @@ import 'whatwg-fetch';
 import { adminState, navigationState } from './app/components/reducers';
 
 //components
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Home from './app/components/Home';
 import Nutrition from './app/components/Nutrition';
 import Activity from './app/components/Activity';
 import Calendar from './app/components/Calendar';
 import Settings from './app/components/Settings';
 
-const portfolioApp = combineReducers({
+const adminApp = combineReducers({
     adminState,
     navigationState
 }); 
 
-export const store = compose(applyMiddleware(thunk))(createStore)(portfolioApp);
+export const store = compose(applyMiddleware(thunk))(createStore)(adminApp);
 
 ReactDOM.render(
-     <Provider store={store}>
-        <Router history={hashHistory}>
-            <Route path={'/'} component={Home} />
-            <Route path={'/nutrition'} component={Nutrition} />
-            <Route path={'/activity'} component={Activity} />
-            <Route path={'/calendar'} component={Calendar} />
-            <Route path={'/settings'} component={Settings} />
-        </Router>
-    </Provider>,
+    <MuiThemeProvider>
+         <Provider store={store}>
+            <Router history={hashHistory}>
+                <Route path={'/'} component={Home} />
+                <Route path={'/nutrition'} component={Nutrition} />
+                <Route path={'/activity'} component={Activity} />
+                <Route path={'/calendar'} component={Calendar} />
+                <Route path={'/settings'} component={Settings} />
+            </Router>
+        </Provider>
+    </MuiThemeProvider>,
     document.getElementById('app')
 );

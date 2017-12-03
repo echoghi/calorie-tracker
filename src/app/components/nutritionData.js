@@ -22,7 +22,6 @@ export const userData = {
             	year: 2017
             },
 			mood: 4,
-			hasInfo: true,
 			nutrition: {
 				calories: 1525,
 				fat: 65,
@@ -76,7 +75,6 @@ export const userData = {
             	year: 2017
             },
 			mood: 4,
-			hasInfo: true,
 			nutrition: {
 				calories: 2010,
 				fat: 131,
@@ -157,7 +155,6 @@ export const userData = {
             	year: 2017
             },
 			mood: 4,
-			hasInfo: true,
 			nutrition: {
 				calories: 1500,
 				fat: 50,
@@ -222,7 +219,6 @@ export const userData = {
             	year: 2017
             },
             mood: 3,
-            hasInfo: true,
             nutrition: {
                 calories: 1800,
                 fat: 60,
@@ -244,7 +240,6 @@ export const userData = {
             	year: 2017
             },
             mood: 4,
-            hasInfo: true,
             nutrition: {
                 calories: 2245,
                 fat: 88,
@@ -282,7 +277,6 @@ export const userData = {
             	year: 2017
             },
             mood: 4,
-            hasInfo: true,
             nutrition: {
                 calories: 1530,
                 fat: 70,
@@ -322,7 +316,6 @@ export const userData = {
             	year: 2017
             },
             mood: 4,
-            hasInfo: true,
             nutrition: {
                 calories: 1200,
                 fat: 45,
@@ -346,12 +339,11 @@ export const userData = {
             	year: 2017
             },
             mood: 4,
-            hasInfo: true,
             nutrition: {
-                calories: 1015,
-                fat: 40,
-                carbs: 81,
-                protein: 55,
+                calories: 1425,
+                fat: 58,
+                carbs: 138,
+                protein: 62,
                 meals: [
                 	{
 						name: 'Chipotle double chicken bowl w/queso',
