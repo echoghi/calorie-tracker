@@ -1,4 +1,3 @@
-import moment from 'moment';
 //import firebase from './firebase.js';
 
 export const userData = {
@@ -17,7 +16,11 @@ export const userData = {
 	},
 	calendar: [
 		{
-			day: moment([2017, 10, 24]),
+			day: {
+            	month: 10,
+            	date: 24,
+            	year: 2017
+            },
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
@@ -25,16 +28,15 @@ export const userData = {
 				fat: 65,
 				carbs: 172,
 				protein: 90,
-				supplements: [
+				meals: [
 					{
 						name: 'ephedrine sulfate',
-						type: 'stimulant',
+						type: 'Supplement',
+						classification: 'stimulant',
 						dosage: 25,
 						unit: 'miligrams',
 						unitShort: 'mg'
 					}
-				],
-				meals: [
 				]
 			},
 			fitness: {
@@ -44,7 +46,11 @@ export const userData = {
 			}
 		},
 		{
-			day: moment([2017, 10, 25]),
+			day: {
+            	month: 10,
+            	date: 25,
+            	year: 2017
+            },
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
@@ -64,7 +70,11 @@ export const userData = {
 			}
 		},
 		{
-			day: moment([2017, 10, 26]),
+			day: {
+            	month: 10,
+            	date: 26,
+            	year: 2017
+            },
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
@@ -89,7 +99,7 @@ export const userData = {
 						carbs: 54,
 						protein: 19
 					},
-						{
+					{
 						name: 'ephedrine sulfate',
 						type: 'Supplement',
 						classification: 'stimulant',
@@ -141,7 +151,11 @@ export const userData = {
 			}
 		},
 		{
-			day: moment([2017, 10, 27]),
+			day: {
+            	month: 10,
+            	date: 27,
+            	year: 2017
+            },
 			mood: 4,
 			hasInfo: true,
 			nutrition: {
@@ -202,7 +216,11 @@ export const userData = {
 			}
 		},
         {
-            day: moment([2017, 10, 28]),
+            day: {
+            	month: 10,
+            	date: 28,
+            	year: 2017
+            },
             mood: 3,
             hasInfo: true,
             nutrition: {
@@ -220,7 +238,11 @@ export const userData = {
             }
         },
         {
-            day: moment([2017, 10, 29]),
+            day: {
+            	month: 10,
+            	date: 29,
+            	year: 2017
+            },
             mood: 4,
             hasInfo: true,
             nutrition: {
@@ -254,7 +276,11 @@ export const userData = {
             }
         },
         {
-            day: moment([2017, 10, 30]),
+            day: {
+            	month: 10,
+            	date: 30,
+            	year: 2017
+            },
             mood: 4,
             hasInfo: true,
             nutrition: {
@@ -290,14 +316,18 @@ export const userData = {
             }
         },
         {
-            day: moment([2017, 11, 1]),
+            day: {
+            	month: 11,
+            	date: 1,
+            	year: 2017
+            },
             mood: 4,
             hasInfo: true,
             nutrition: {
-                calories: 0,
-                fat: 0,
-                carbs: 0,
-                protein: 0,
+                calories: 1200,
+                fat: 45,
+                carbs: 87,
+                protein: 120,
                 meals: [
                 ],
                 supplements: [
@@ -310,7 +340,11 @@ export const userData = {
             }
         },
         {
-            day: moment([2017, 11, 2]),
+            day: {
+            	month: 11,
+            	date: 2,
+            	year: 2017
+            },
             mood: 4,
             hasInfo: true,
             nutrition: {

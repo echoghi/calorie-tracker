@@ -1,5 +1,11 @@
 import { userData } from './nutritionData';
-
+import moment from 'moment';
+// Cpnvert days to moment objects
+for(let i = 0; i < userData.calendar.length; i++) {
+    let { year, date, month } = userData.calendar[i].day;
+    userData.calendar[i].day = moment([year, month, date]);
+}
+console.log(userData);
 export function navigationState(
     state = {
         home: false,
