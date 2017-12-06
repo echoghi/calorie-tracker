@@ -51,7 +51,6 @@ export const userData = {
             	year: 2017
             },
 			mood: 4,
-			hasInfo: true,
 			nutrition: {
 				calories: 2577,
 				fat: 111,
@@ -139,6 +138,14 @@ export const userData = {
 						dosage: 5,
 						unit: 'grams',
 						unitShort: 'g'
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
 					}
 				]
 			},
@@ -265,9 +272,9 @@ export const userData = {
                 ]
             },
             fitness: {
-                calories: 0,
-                exercise: 0,
-                stand: 0
+                calories: 2253,
+                exercise: 2,
+                stand: 11
             }
         },
         {
@@ -299,14 +306,12 @@ export const userData = {
 						carbs: 31,
 						protein: 19
 					}
-                ],
-                supplements: [
                 ]
             },
             fitness: {
-                calories: 0,
-                exercise: 0,
-                stand: 0
+                calories: 2441,
+                exercise: 11,
+                stand: 13
             }
         },
         {
@@ -317,19 +322,32 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 1200,
-                fat: 45,
-                carbs: 87,
-                protein: 120,
+                calories: 1480,
+                fat: 49,
+                carbs: 99,
+                protein: 170,
                 meals: [
-                ],
-                supplements: [
+                	{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					}
                 ]
             },
             fitness: {
-                calories: 0,
-                exercise: 0,
-                stand: 0
+                calories: 2743,
+                exercise: 66,
+                stand: 12
             }
         },
         {
@@ -338,12 +356,12 @@ export const userData = {
             	date: 2,
             	year: 2017
             },
-            mood: 4,
+            mood: 3,
             nutrition: {
-                calories: 1425,
-                fat: 58,
-                carbs: 138,
-                protein: 62,
+                calories: 1705,
+                fat: 62,
+                carbs: 150,
+                protein: 112,
                 meals: [
                 	{
 						name: 'Chipotle double chicken bowl w/queso',
@@ -352,9 +370,155 @@ export const userData = {
 						fat: 40,
 						carbs: 81,
 						protein: 55
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
 					}
-                ],
-                supplements: [
+                ]
+            },
+            fitness: {
+                calories: 2622,
+                exercise: 58,
+                stand: 11
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 3,
+            	year: 2017
+            },
+            mood: 3,
+            nutrition: {
+                calories: 3110,
+                fat: 166,
+                carbs: 222,
+                protein: 161,
+                meals: [
+                	{
+						name: 'Five Guys fries',
+						type: 'Fast Food',
+						calories: 500,
+						fat: 20,
+						carbs: 72,
+						protein: 4
+					},
+					{
+						name: 'Five Guys cheeseburger',
+						type: 'Fast Food',
+						calories: 720,
+						fat: 43,
+						carbs: 45,
+						protein: 36
+					},
+					{
+						name: 'In n\' Out 3x3',
+						type: 'Fast Food',
+						calories: 860,
+						fat: 55,
+						carbs: 39,
+						protein: 52
+					},
+					{
+						name: 'In n\' Out animal fries',
+						type: 'Fast Food',
+						calories: 750,
+						fat: 42,
+						carbs: 54,
+						protein: 19
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					}
+                ]
+            },
+            fitness: {
+                calories: 2482,
+                exercise: 44,
+                stand: 13 
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 4,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2285,
+                fat: 80,
+                carbs: 170,
+                protein: 165,
+                meals: [
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					},
+					{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					}
+                ]
+            },
+            fitness: {
+                calories: 2387,
+                exercise: 10,
+                stand: 14
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 5,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2160,
+                fat: 70,
+                carbs: 230,
+                protein: 75,
+                meals: [
                 ]
             },
             fitness: {

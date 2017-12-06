@@ -236,7 +236,7 @@ class Nutrition extends React.Component {
 					    />
 					</div>
 					<RaisedButton
-                        label="Save"
+                        label="Add Meal"
                         className="add__meal--save"
                         onClick={this.onSubmit}
                         backgroundColor="#ed5454"
