@@ -47,12 +47,24 @@ class Calendar extends React.Component {
 	}
 
 	renderDayProgressCircles(day) {
-		let { data } = this.props;
+		const { data } = this.props;
+		let { time } = this.state;
+		let now = moment();
+		let animate;
 		let calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
 		let calorieProgress = day.nutrition.calories / calorieGoal;
 		let proteinProgress = day.nutrition.protein / data.user.goals.nutrition.protein;
 		let carbProgress = day.nutrition.carbs / data.user.goals.nutrition.carbs;
 		let fatProgress = day.nutrition.fat / data.user.goals.nutrition.fat;
+
+		// Only animate today's calendar box
+		if(now.date() === day.day.date() && now.month() === day.day.month() && now.year() === day.day.year()) {
+			animate = false;
+
+			if(day.day.month() === time.month()) {
+				animate = true;
+			}
+		}
 
 		// Prevent progress bar bug by converting 100%+ to 100%
 		calorieProgress = calorieProgress > 1 ? calorieProgress = 1 : calorieProgress;
@@ -106,25 +118,25 @@ class Calendar extends React.Component {
         		<Circle
 	                progress={calorieProgress}
 	                options={calorieOptions}
-	                initialAnimate={true}
+	                initialAnimate={animate}
 	                containerStyle={calorieContainerStyle}
 	                containerClassName={'.day__overview--calories'} />
                	<Circle
 	                progress={proteinProgress}
 	                options={proteinOptions}
-	                initialAnimate={true}
+	                initialAnimate={animate}
 	                containerStyle={proteinContainerStyle}
 	                containerClassName={'.day__overview--protein'} />
 	            <Circle
 	                progress={carbProgress}
 	                options={carbOptions}
-	                initialAnimate={true}
+	                initialAnimate={animate}
 	                containerStyle={carbContainerStyle}
 	                containerClassName={'.day__overview--carbs'} />
 	            <Circle
 	                progress={fatProgress}
 	                options={fatOptions}
-	                initialAnimate={true}
+	                initialAnimate={animate}
 	                containerStyle={fatContainerStyle}
 	                containerClassName={'.day__overview--fats'} />
 	        </div>
