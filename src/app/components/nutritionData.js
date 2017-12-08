@@ -522,7 +522,81 @@ export const userData = {
                 ]
             },
             fitness: {
-                calories: 0,
+                calories: 2392,
+                exercise: 12,
+                stand: 14
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 6,
+            	year: 2017
+            },
+            mood: 2,
+            nutrition: {
+                calories: 1450,
+                fat: 90,
+                carbs: 60,
+                protein: 85,
+                meals: [
+                ]
+            },
+            fitness: {
+                calories: 2310,
+                exercise: 3,
+                stand: 16
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 7,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2205,
+                fat: 80,
+                carbs: 208,
+                protein: 138,
+                meals: [
+                	{
+						name: 'Whole Foods Breakfast Sandwhich',
+						type: 'Frozen Food',
+						calories: 360,
+						fat: 18,
+						carbs: 31,
+						protein: 19
+					},
+                	{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					},
+					{
+						name: 'Starbucks Venti Peppermint Mocha w/no whip',
+						type: 'Starbucks',
+						calories: 540,
+						fat: 16,
+						carbs: 83,
+						protein: 14
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					}
+                ]
+            },
+            fitness: {
+            	calories: 0,
                 exercise: 0,
                 stand: 0
             }
