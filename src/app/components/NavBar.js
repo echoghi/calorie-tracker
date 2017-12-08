@@ -1,6 +1,8 @@
 import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { handleNav } from './actions';
+import { auth, provider } from './firebase.js';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -19,7 +21,8 @@ class NavBar extends React.Component {
 	state = {
 		width   : 0,
   		menuOpen: false,
-  		mobile  : false
+  		mobile  : false,
+  		user: null
 	};
 
 	handleMenu = () => {
@@ -73,6 +76,12 @@ class NavBar extends React.Component {
     }
 
 	componentDidMount() {
+		auth.onAuthStateChanged(user => {
+		    if (user) {
+	      		this.setState({ user });
+		    } 
+	  	});
+
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
 	}
@@ -83,6 +92,46 @@ class NavBar extends React.Component {
 
 	updateWindowDimensions = () => {
 		this.setState({ width: window.innerWidth});
+	}
+
+	logIn = () => {
+		auth.signInWithPopup(provider) 
+	    .then((result) => {
+			const user = result.user;
+			this.setState({
+				user
+			});
+	    });
+	}
+
+	logOut = () => {
+		auth.signOut()
+		.then(() => {
+			this.setState({
+				user: null
+			});
+		});
+	}
+
+	renderUserMenu() {
+		if(!this.state.user) {
+			return (<RaisedButton
+                    label="Login"
+                    className="login__button"
+                    onClick={this.logIn}
+                    backgroundColor="#ed5454"
+                    labelColor="#fff"
+                />);
+		} else {
+			return (<RaisedButton
+                    label="Logout"
+                    className="logout__button"
+                    onClick={this.logOut}
+                    backgroundColor="#ed5454"
+                    labelColor="#fff"
+                />);
+
+		}
 	}
 
 	render() {
@@ -104,6 +153,7 @@ class NavBar extends React.Component {
 					<li className={this.handleNavClass('settings')} onClick={() => { this.navigate('settings'); }}><i className="icon-settings" /> Settings</li>
 				</ul>
 				<div className="navbar__top"> 
+					{this.renderUserMenu()}
 				</div>
 			</div>
 		);

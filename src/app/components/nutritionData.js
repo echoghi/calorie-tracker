@@ -596,6 +596,27 @@ export const userData = {
                 ]
             },
             fitness: {
+            	calories: 2335,
+                exercise: 8,
+                stand: 14
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 8,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 20,
+                fat: 0,
+                carbs: 4,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
             	calories: 0,
                 exercise: 0,
                 stand: 0

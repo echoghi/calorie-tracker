@@ -168,4 +168,10 @@
             }
         }
     }
+
+    .login__button,
+    .logout__button {
+        float: right;
+        margin: 20px 30px
+    }
 }
