@@ -9,6 +9,7 @@ export const RESET_FORM = 'RESET_FORM';
 export const FORM_SUCCESS = 'FORM_SUCCESS';
 export const FORM_ERROR = 'FORM_ERROR';
 export const ACTIVATE_PAGE = 'ACTIVATE_PAGE';
+export const SAVE_USER_DATA = 'SAVE_USER_DATA';
 
 export function loadNutritionData(data) {
     return {
@@ -70,6 +71,13 @@ export function activatePage(page) {
     return {
         type: ACTIVATE_PAGE,
         data: page
+    };
+}
+
+export function saveUserData(data) {
+    return {
+        type: SAVE_USER_DATA,
+        data
     };
 }
 

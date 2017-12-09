@@ -185,7 +185,7 @@
     .greeting {
         display: inline-block;
         height: 100%;
-        margin-left: 280px !important;
+        margin-left: 275px !important;
 
         .paper,
          h3 {
@@ -193,6 +193,7 @@
         }
 
         h3 {
+            margin: 0 15px;
             transform: translateY(-100%);
             -webkit-transform: translateY(-100%);
             -ms-transform: translateY(-100%);

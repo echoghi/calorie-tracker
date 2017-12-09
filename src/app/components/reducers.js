@@ -60,6 +60,7 @@ export function navigationState(
 export function adminState(
     state = {
         data: userData,
+        userData: {},
         activeDay: {},
         loading: false,
         success: null,
@@ -107,6 +108,11 @@ export function adminState(
                 loading: false,
                 success: true,
                 error: false
+            });
+
+        case 'SAVE_USER_DATA':
+            return Object.assign({}, state, {
+                userData: action.data
             });
 
         case 'FORM_SUCCESS':

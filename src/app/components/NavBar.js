@@ -6,7 +6,7 @@ import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { connect } from 'react-redux';
-import { handleNav } from './actions';
+import { handleNav, saveUserData } from './actions';
 import { auth, provider } from './firebase.js';
 
 const mapStateToProps = state => ({
@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    handleNav: page => dispatch(handleNav(page))
+    handleNav: page => dispatch(handleNav(page)),
+    saveUserData: data => dispatch(saveUserData(data))
 });
 
 class NavBar extends React.Component {
@@ -84,6 +85,7 @@ class NavBar extends React.Component {
 		auth.onAuthStateChanged(user => {
 		    if (user) {
 		    	console.log(user);
+		    	this.props.saveUserData(user);
 	      		this.setState({ user });
 		    } 
 	  	});
@@ -104,6 +106,8 @@ class NavBar extends React.Component {
 		auth.signInWithPopup(provider) 
 	    .then((result) => {
 			const user = result.user;
+			this.props.saveUserData(user);
+
 			this.setState({
 				user
 			});
@@ -113,6 +117,7 @@ class NavBar extends React.Component {
 	logOut = () => {
 		auth.signOut()
 		.then(() => {
+			this.props.saveUserData({});
 			this.setState({
 				user: null
 			});
@@ -121,9 +126,9 @@ class NavBar extends React.Component {
 
 	renderGreeting() {
 		const style = {
-			height: 60,
-			width: 60,
-			margin: 10,
+			height: 50,
+			width: 50,
+			margin: 15,
 			textAlign: 'center',
 			display: 'inline-block'
 		};

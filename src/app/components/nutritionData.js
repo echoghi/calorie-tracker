@@ -609,10 +609,10 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 30,
-                fat: 0,
-                carbs: 6,
-                protein: 0,
+                calories: 1000,
+                fat: 35,
+                carbs: 50,
+                protein: 40,
                 meals: [
                 ]
             },
@@ -625,6 +625,6 @@ export const userData = {
 	]
 };
 
-//let usersRef = firebase.database().ref('users');
+//firebase.database().ref('users/emchoghi@gmail.com').set(user);
 
 //usersRef.push(userData);
