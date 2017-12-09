@@ -1,5 +1,10 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { connect } from 'react-redux';
 import { handleNav } from './actions';
 import { auth, provider } from './firebase.js';
@@ -78,6 +83,7 @@ class NavBar extends React.Component {
 	componentDidMount() {
 		auth.onAuthStateChanged(user => {
 		    if (user) {
+		    	console.log(user);
 	      		this.setState({ user });
 		    } 
 	  	});
@@ -113,6 +119,25 @@ class NavBar extends React.Component {
 		});
 	}
 
+	renderGreeting() {
+		const style = {
+			height: 60,
+			width: 60,
+			margin: 10,
+			textAlign: 'center',
+			display: 'inline-block'
+		};
+
+		if(this.state.user) {
+			return (<div className="greeting">
+						<Paper style={style} zDepth={1} rounded={false} className="paper">
+							<img className="user__img" src={this.state.user.photoURL} />
+						</Paper>
+						<h3>Welcome back, {this.state.user.displayName}</h3>
+				</div>);
+		}
+	}
+
 	renderUserMenu() {
 		if(!this.state.user) {
 			return (<RaisedButton
@@ -123,14 +148,15 @@ class NavBar extends React.Component {
                     labelColor="#fff"
                 />);
 		} else {
-			return (<RaisedButton
-                    label="Logout"
-                    className="logout__button"
-                    onClick={this.logOut}
-                    backgroundColor="#ed5454"
-                    labelColor="#fff"
-                />);
-
+			return (<IconMenu
+				      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+				      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+				      className="logout__button"
+				    >
+				      <MenuItem primaryText="Settings" onClick={() => this.navigate('settings')}/>
+				      <MenuItem primaryText="Log Out" onClick={this.logOut}/>
+				    </IconMenu>);
 		}
 	}
 
@@ -152,7 +178,8 @@ class NavBar extends React.Component {
 					<li className={this.handleNavClass('activity')} onClick={() => { this.navigate('activity'); }}><i className="icon-bar-chart" /> Activity</li> 
 					<li className={this.handleNavClass('settings')} onClick={() => { this.navigate('settings'); }}><i className="icon-settings" /> Settings</li>
 				</ul>
-				<div className="navbar__top"> 
+				<div className="navbar__top">
+					{this.renderGreeting()} 
 					{this.renderUserMenu()}
 				</div>
 			</div>

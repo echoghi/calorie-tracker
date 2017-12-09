@@ -168,10 +168,38 @@
             }
         }
     }
-
+/* stylelint-disable */
     .login__button,
     .logout__button {
         float: right;
+    }
+
+    .login__button {
         margin: 20px 30px
+    }
+
+    .logout__button {
+        margin: 15px 30px
+    }
+
+    .greeting {
+        display: inline-block;
+        height: 100%;
+        margin-left: 280px !important;
+
+        .paper,
+         h3 {
+            display: inline-block
+        }
+
+        h3 {
+            transform: translateY(-100%);
+            -webkit-transform: translateY(-100%);
+            -ms-transform: translateY(-100%);
+        }
+
+        .user__img {
+            height: 100%;
+        }
     }
 }

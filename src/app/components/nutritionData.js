@@ -609,9 +609,9 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 20,
+                calories: 30,
                 fat: 0,
-                carbs: 4,
+                carbs: 6,
                 protein: 0,
                 meals: [
                 ]

@@ -10,6 +10,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import ProgressBar from 'react-progressbar.js';
 let { Circle, Line } = ProgressBar;
+import firebase from 'firebase';
 
 const mapStateToProps = state => ({
     nutrition: state.navigationState.nutrition,
@@ -20,6 +21,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     activatePage: page => dispatch(activatePage(page)),
     resetNutritionData: () => dispatch(resetNutritionData())
+});
+
+let starCountRef = firebase.database().ref('users');
+starCountRef.on('value', function(snapshot) {
+  console.log(snapshot.val());
 });
 
 // Reusable validation constuctor for each input
