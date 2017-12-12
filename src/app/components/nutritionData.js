@@ -617,6 +617,129 @@ export const userData = {
                 ]
             },
             fitness: {
+            	calories: 2638,
+                exercise: 52,
+                stand: 12
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 9,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2120,
+                fat: 60,
+                carbs: 164,
+                protein: 150,
+                meals: [
+                	{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2688,
+                exercise: 68,
+                stand: 15
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 10,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2433,
+                fat: 120,
+                carbs: 140,
+                protein: 190,
+                meals: [
+                	{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2685,
+                exercise: 68,
+                stand: 14
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 11,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 1295,
+                fat: 46,
+                carbs: 93,
+                protein: 105,
+                meals: [
+                	{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					},
+					{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					}
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 12,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 120,
+                fat: 0,
+                carbs: 24,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
             	calories: 0,
                 exercise: 0,
                 stand: 0
