@@ -7,6 +7,7 @@ import NavBar from './NavBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import ReactTable from 'react-table';
+import Anime from 'react-anime';
 import 'react-table/react-table.css';
 import ProgressBar from 'react-progressbar.js';
 let { Circle, Line } = ProgressBar;
@@ -353,42 +354,52 @@ class Nutrition extends React.Component {
 		let { day } = this.state;
 		let { protein, carbs, fat } = day.nutrition;
 
+		let transition = {
+			delay: (el, index) => index * 240,
+			duration: 2000,
+			opacity: [0,1]
+		};
+
 		return (
 			<div>
 				<NavBar />
 				<div className="nutrition">
 					<h1>Nutrition</h1>
 					<h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
-					<div className="nutrition__overview">
-						<div className="nutrition__overview--box">
-							<div className="nutrition__overview--head">
-								<h1>{protein}</h1>
-								<span>g</span>
-								<h3>Protein</h3>
+					<Anime {...transition}>
+						<div className="nutrition__overview">
+							<div className="nutrition__overview--box">
+								<div className="nutrition__overview--head">
+									<h1>{protein}</h1>
+									<span>g</span>
+									<h3>Protein</h3>
+								</div>
+								{this.renderProgressBar('protein')}
 							</div>
-							{this.renderProgressBar('protein')}
-						</div>
-						<div className="nutrition__overview--box">
-							<div className="nutrition__overview--head">
-								<h1>{carbs}</h1>
-								<span>g</span>
-								<h3>Carbohydrates</h3>
+							<div className="nutrition__overview--box">
+								<div className="nutrition__overview--head">
+									<h1>{carbs}</h1>
+									<span>g</span>
+									<h3>Carbohydrates</h3>
+								</div>
+								{this.renderProgressBar('carbs')}
 							</div>
-							{this.renderProgressBar('carbs')}
-						</div>
-						<div className="nutrition__overview--box">
-							<div className="nutrition__overview--head">
-								<h1>{fat}</h1>
-								<span>g</span>
-								<h3>Fat</h3>
+							<div className="nutrition__overview--box">
+								<div className="nutrition__overview--head">
+									<h1>{fat}</h1>
+									<span>g</span>
+									<h3>Fat</h3>
+								</div>
+								{this.renderProgressBar('fat')}
 							</div>
-							{this.renderProgressBar('fat')}
 						</div>
-					</div>
-					<div className="nutrition__overview">
-						{this.renderCalorieBox()}
-						{this.renderMealBox()}
-					</div>
+					</Anime>
+					<Anime {...transition}>
+						<div className="nutrition__overview">
+							{this.renderCalorieBox()}
+							{this.renderMealBox()}
+						</div>
+					</Anime>
 					{this.renderMealsTable()}
 				</div>
 			</div>

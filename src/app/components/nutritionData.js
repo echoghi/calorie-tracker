@@ -688,10 +688,10 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 1295,
-                fat: 46,
-                carbs: 93,
-                protein: 105,
+                calories: 2282,
+                fat: 89,
+                carbs: 181,
+                protein: 155,
                 meals: [
                 	{
 						name: '2 scoops of Syntha 6 protein powder',
@@ -719,9 +719,9 @@ export const userData = {
                 ]
             },
             fitness: {
-            	calories: 0,
-                exercise: 0,
-                stand: 0
+            	calories: 2071,
+                exercise: 1,
+                stand: 12
             }
         },
         {
@@ -732,9 +732,66 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 120,
+                calories: 2000,
+                fat: 60,
+                carbs: 150,
+                protein: 150,
+                meals: [
+                	{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2225,
+                exercise: 1,
+                stand: 12
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 13,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 1107,
+                fat: 40,
+                carbs: 93,
+                protein: 63,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 2226,
+                exercise: 1,
+                stand: 11
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 14,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
                 fat: 0,
-                carbs: 24,
+                carbs: 0,
                 protein: 0,
                 meals: [
                 ]
