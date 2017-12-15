@@ -811,12 +811,12 @@ export const userData = {
             	date: 14,
             	year: 2017
             },
-            mood: 4,
+            mood: 3,
             nutrition: {
-                calories: 1500,
-                fat: 50,
-                carbs: 126,
-                protein: 90,
+                calories: 2500,
+                fat: 100,
+                carbs: 200,
+                protein: 160,
                 meals: [
                 	{
 						name: 'Whole Foods Breakfast Sandwhich',
@@ -842,10 +842,10 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 10,
-                fat: 0,
-                carbs: 2,
-                protein: 0,
+                calories: 1340,
+                fat: 69,
+                carbs: 112,
+                protein: 67,
                 meals: [
                 ]
             },
