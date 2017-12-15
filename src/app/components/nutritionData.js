@@ -715,6 +715,14 @@ export const userData = {
 						fat: 40,
 						carbs: 81,
 						protein: 55
+					},
+					{
+						name: 'Whole Foods Breakfast Sandwhich',
+						type: 'Frozen Food',
+						calories: 360,
+						fat: 18,
+						carbs: 31,
+						protein: 19
 					}
                 ]
             },
@@ -751,6 +759,14 @@ export const userData = {
 						dosage: 5,
 						unit: 'grams',
 						unitShort: 'g'
+					},
+					{
+						name: 'Whole Foods Breakfast Sandwhich',
+						type: 'Frozen Food',
+						calories: 360,
+						fat: 18,
+						carbs: 31,
+						protein: 19
 					}
                 ]
             },
@@ -768,11 +784,19 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 1107,
-                fat: 40,
-                carbs: 93,
-                protein: 63,
+                calories: 1467,
+                fat: 58,
+                carbs: 124,
+                protein: 82,
                 meals: [
+           	 		{
+						name: 'Whole Foods Breakfast Sandwhich',
+						type: 'Frozen Food',
+						calories: 360,
+						fat: 18,
+						carbs: 31,
+						protein: 19
+					}
                 ]
             },
             fitness: {
@@ -789,9 +813,38 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 0,
+                calories: 1500,
+                fat: 50,
+                carbs: 126,
+                protein: 90,
+                meals: [
+                	{
+						name: 'Whole Foods Breakfast Sandwhich',
+						type: 'Frozen Food',
+						calories: 360,
+						fat: 18,
+						carbs: 31,
+						protein: 19
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2327,
+                exercise: 1,
+                stand: 15
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 15,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 10,
                 fat: 0,
-                carbs: 0,
+                carbs: 2,
                 protein: 0,
                 meals: [
                 ]
