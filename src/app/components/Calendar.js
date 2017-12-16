@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { activatePage, handleNav, loadNutritionData } from './actions';
 import moment from 'moment';
+import Anime from 'react-anime';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
 // Components
@@ -160,6 +161,38 @@ class Calendar extends React.Component {
 		}
 	}
 
+	handleTransition(day) {
+		let { time } = this.state;
+		let now = moment();
+		let transition;
+
+		if(now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
+			if(day.month() !== time.month()) {
+				transition = false;
+			} else {
+				transition = true;
+			}
+		} else if(day.month() !== time.month()) {
+			transition = false;
+		} else {
+			transition = true;
+		}
+
+		if(transition) {
+			return {
+				delay: (el, index) => index * 240,
+				duration: 2000,
+				opacity: [0,1]
+			};
+		} else {
+			return {
+				delay: (el, index) => index * 240,
+				duration: 2000,
+				opacity: [0,.65]
+			};
+		}
+	}
+
 	handleIconClass(day) {
 		let now = moment();
 		let { data } = this.props;
@@ -233,11 +266,13 @@ class Calendar extends React.Component {
 					}
 				}
 
-				calendarDays.push(<div className={this.handleDayClass(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
-									<div className="number">{calendar[i].days[j].date()}</div>
-									{calendar[i].data[j] ? this.renderDayProgressCircles(calendar[i].data[j]) : ''}
-									<span onClick={() => this.navigateToNutrition(calendar[i].days[j])} className={this.handleIconClass(calendar[i].days[j])} />
-								</div>);
+				calendarDays.push(<Anime {...this.handleTransition(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
+									<div className={this.handleDayClass(calendar[i].days[j])}>
+										<div className="number">{calendar[i].days[j].date()}</div>
+										{calendar[i].data[j] ? this.renderDayProgressCircles(calendar[i].data[j]) : ''}
+										<span onClick={() => this.navigateToNutrition(calendar[i].days[j])} className={this.handleIconClass(calendar[i].days[j])} />
+									</div>
+								</Anime>);
 			}
 		}
 
@@ -272,6 +307,7 @@ class Calendar extends React.Component {
 		return (
 			<div>
 				<NavBar />
+
 				<div className="calendar">
 					<h1>Calendar</h1>
 					<div className="calendar__toggle--month">
