@@ -269,7 +269,7 @@ class Calendar extends React.Component {
 				calendarDays.push(<Anime {...this.handleTransition(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
 									<div className={this.handleDayClass(calendar[i].days[j])}>
 										<div className="number">{calendar[i].days[j].date()}</div>
-										{calendar[i].data[j] ? this.renderDayProgressCircles(calendar[i].data[j]) : ''}
+										{calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? this.renderDayProgressCircles(calendar[i].data[j]) : ''}
 										<span onClick={() => this.navigateToNutrition(calendar[i].days[j])} className={this.handleIconClass(calendar[i].days[j])} />
 									</div>
 								</Anime>);

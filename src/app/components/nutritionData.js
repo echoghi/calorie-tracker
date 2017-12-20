@@ -863,10 +863,158 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 370,
-                fat: 8,
-                carbs: 78,
-                protein: 12,
+                calories: 2500,
+                fat: 74,
+                carbs: 210,
+                protein: 160,
+                meals: [
+					{
+						name: 'Starbucks Sausage, Cheddar & Egg Breakfast Sandwich',
+						type: 'Breakfast/Starbucks',
+						calories: 500,
+						fat: 28,
+						carbs: 41,
+						protein: 15
+					},
+					{
+						name: 'Starbucks Grande Peppermint Mocha',
+						type: 'Breakfast/Starbucks',
+						calories: 360,
+						fat: 8,
+						carbs: 60,
+						protein: 12
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2631,
+                exercise: 23,
+                stand: 16
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 17,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2275,
+                fat: 90,
+                carbs: 213,
+                protein: 116,
+                meals: [
+                	{
+						name: 'Starbucks Sausage, Cheddar & Egg Breakfast Sandwich',
+						type: 'Breakfast',
+						calories: 500,
+						fat: 28,
+						carbs: 41,
+						protein: 15
+					},
+					{
+						name: 'Starbucks Grande Peppermint Mocha',
+						type: 'Breakfast/Starbucks',
+						calories: 360,
+						fat: 8,
+						carbs: 60,
+						protein: 12
+					},
+					{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2301,
+                exercise: 3,
+                stand: 12
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 18,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2015,
+                fat: 75,
+                carbs: 150,
+                protein: 140,
+                meals: [
+                	{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+                	{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2311,
+                exercise: 5,
+                stand: 14
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 19,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 1600,
+                fat: 75,
+                carbs: 135,
+                protein: 120,
+                meals: [
+                	{
+						name: 'Guru Lite',
+						type: 'Energy Drink',
+						calories: 10,
+						fat: 0,
+						carbs: 2,
+						protein: 0
+					}
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 20,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
                 meals: [
                 ]
             },
