@@ -6,6 +6,7 @@ import moment from 'moment';
 import NavBar from './NavBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import AutoComplete from 'material-ui/AutoComplete';
 import ReactTable from 'react-table';
 import Anime from 'react-anime';
 import 'react-table/react-table.css';
@@ -39,6 +40,7 @@ class Nutrition extends React.Component {
 	state = {
 		now: moment(),
 		day: {},
+		types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks'],
 		validation: {
 			name: new inputObj(),
 			type: new inputObj(),
@@ -202,45 +204,65 @@ class Nutrition extends React.Component {
         		<div className="add__meal">
         			<div className="add__meal--input">
 	        			<TextField
-	        			  name="name"
-					      errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
-					      onChange={this.onChange}
-					      floatingLabelText="Name"
-					    />
+							name="name"
+							errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
+							onChange={this.onChange}
+							floatingLabelText="Name"
+							style={{
+								'width': '45%'
+							}}
+						/>
+						<AutoComplete
+							floatingLabelText="Type"
+							errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
+							dataSource={this.state.types}
+							filter={AutoComplete.caseInsensitiveFilter}
+							onUpdateInput={this.onChange}
+							fullWidth={true}
+							style={{
+								'width': '45%'
+							}}
+				        />
+			        </div>
+					<div className="add__meal--input">
+	        			<TextField
+							name="calories"
+							errorText={!validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''}
+							onChange={this.onChange}
+							floatingLabelText="Calories"
+							style={{
+								'width': '45%'
+							}}
+						/>
 					    <TextField
-	        			  name="type"
-					      errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
-					      onChange={this.onChange}
-					      floatingLabelText="Type"
-					    />
+							name="protein"
+							errorText={!validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''}
+							onChange={this.onChange}
+							floatingLabelText="Protein"
+							style={{
+								'width': '45%'
+							}}
+						/>
 					</div>
 					<div className="add__meal--input">
 	        			<TextField
-	        			  name="calories"
-					      errorText={!validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''}
-					      onChange={this.onChange}
-					      floatingLabelText="Calories"
-					    />
+							name="carbs"
+							errorText={!validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''}
+							onChange={this.onChange}
+							floatingLabelText="Carbohydrates"
+							style={{
+								'width': '45%'
+							}}
+						/>
 					    <TextField
-	        			  name="protein"
-					      errorText={!validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''}
-					      onChange={this.onChange}
-					      floatingLabelText="Protein"
-					    />
-					</div>
-					<div className="add__meal--input">
-	        			<TextField
-	        			  name="carbs"
-					      errorText={!validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''}
-					      onChange={this.onChange}
-					      floatingLabelText="Carbohydrates"
-					    />
-					    <TextField
-        				  name="fat"
-					      errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
-					      onChange={this.onChange}
-					      floatingLabelText="Fat"
-					    />
+							name="fat"
+							errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
+							onChange={this.onChange}
+							floatingLabelText="Fat"
+							style={{
+								'width': '45%'
+							}}
+						/>
 					</div>
 					<RaisedButton
                         label="Add Meal"

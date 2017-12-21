@@ -998,9 +998,9 @@ export const userData = {
                 ]
             },
             fitness: {
-            	calories: 0,
-                exercise: 0,
-                stand: 0
+            	calories: 2321,
+                exercise: 7,
+                stand: 13
             }
         },
         {
@@ -1011,11 +1011,27 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 0,
-                fat: 0,
-                carbs: 0,
-                protein: 0,
+                calories: 540,
+                fat: 16,
+                carbs: 83,
+                protein: 14,
                 meals: [
+                	{
+						name: 'Starbucks Venti Peppermint Mocha w/no whip',
+						type: 'Starbucks',
+						calories: 540,
+						fat: 16,
+						carbs: 83,
+						protein: 14
+					},
+					{
+						name: 'Starbucks Sausage, Cheddar & Egg Breakfast Sandwich',
+						type: 'Breakfast/Starbucks',
+						calories: 500,
+						fat: 28,
+						carbs: 41,
+						protein: 15
+					}
                 ]
             },
             fitness: {

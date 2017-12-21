@@ -93,12 +93,6 @@
                     display: flex;
                     padding: 5px 30px;
                     justify-content: space-between;
-                    /* stylelint-disable */
-                    div {
-                        position: inline-flex;
-                        width: 45% !important;
-                    }
-                    /* stylelint-enable */
                 }
 
                 &--save {
