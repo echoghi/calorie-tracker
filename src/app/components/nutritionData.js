@@ -1011,10 +1011,10 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 540,
-                fat: 16,
-                carbs: 83,
-                protein: 14,
+                calories: 3240,
+                fat: 130,
+                carbs: 250,
+                protein: 190,
                 meals: [
                 	{
 						name: 'Starbucks Venti Peppermint Mocha w/no whip',
@@ -1031,6 +1031,83 @@ export const userData = {
 						fat: 28,
 						carbs: 41,
 						protein: 15
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					},
+					{
+						name: '4 Chick-Fil-A Chicken Strips',
+						type: 'Fast Food',
+						calories: 470,
+						fat: 23,
+						carbs: 29,
+						protein: 37
+					},
+					{
+						name: '8 Chick-Fil-A Fried Chicken Nuggets',
+						type: 'Fast Food',
+						calories: 260,
+						fat: 12,
+						carbs: 9,
+						protein: 28
+					},
+					{
+						name: 'Chick-Fil-A Sauce',
+						type: 'Fast Food',
+						calories: 140,
+						fat: 13,
+						carbs: 6,
+						protein: 0
+					},
+					{
+						name: 'Chick-Fil-A Waffle Fries',
+						type: 'Fast Food',
+						calories: 360,
+						fat: 18,
+						carbs: 43,
+						protein: 5
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2424,
+                exercise: 9,
+                stand: 16
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 21,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 1225,
+                fat: 46,
+                carbs: 106,
+                protein: 63,
+                meals: [
+                	{
+						name: 'Chipotle double chicken bowl w/queso',
+						type: 'Mexican/Fast Food',
+						calories: 1015,
+						fat: 40,
+						carbs: 81,
+						protein: 55
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
 					}
                 ]
             },
