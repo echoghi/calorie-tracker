@@ -1088,10 +1088,10 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 1225,
-                fat: 46,
-                carbs: 106,
-                protein: 63,
+                calories: 2000,
+                fat: 90,
+                carbs: 160,
+                protein: 110,
                 meals: [
                 	{
 						name: 'Chipotle double chicken bowl w/queso',
@@ -1100,8 +1100,29 @@ export const userData = {
 						fat: 40,
 						carbs: 81,
 						protein: 55
-					},
-					{
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2380,
+                exercise: 7,
+                stand: 15
+            }
+        },
+         {
+            day: {
+            	month: 11,
+            	date: 22,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2250,
+                fat: 85,
+                carbs: 160,
+                protein: 190,
+                meals: [
+                	{
 						name: '2 scoops of Syntha 6 protein powder',
 						type: 'Supplement',
 						calories: 280,
