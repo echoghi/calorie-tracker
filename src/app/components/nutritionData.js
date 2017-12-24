@@ -1146,10 +1146,10 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 2000,
-                fat: 70,
-                carbs: 160,
-                protein: 60,
+                calories: 2700,
+                fat: 90,
+                carbs: 238,
+                protein: 78,
                 meals: [
                 	{
 						name: 'Starbucks Grande Peppermint Mocha w/whip',
@@ -1159,6 +1159,27 @@ export const userData = {
 						carbs: 63,
 						protein: 13
 					}
+                ]
+            },
+            fitness: {
+            	calories: 2625,
+                exercise: 31,
+                stand: 19
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 24,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 850,
+                fat: 35,
+                carbs: 140,
+                protein: 20,
+                meals: [
                 ]
             },
             fitness: {

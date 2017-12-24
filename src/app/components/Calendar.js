@@ -196,8 +196,6 @@ class Calendar extends React.Component {
 	}
 
 	renderExerciseIcon(data) {
-		console.log(data);
-
 		if(data && data.fitness.exercise >= 30) {
 			return <img className="exercise__icon" src={runnerIcon} />;
 		}
