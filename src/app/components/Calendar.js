@@ -7,6 +7,8 @@ import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
 // Components
 import NavBar from './NavBar';
+// Images
+import runnerIcon from '../assets/images/apple-runner.png';
 
 const mapStateToProps = state => ({
     calendar: state.navigationState.calendar,
@@ -193,6 +195,14 @@ class Calendar extends React.Component {
 		}
 	}
 
+	renderExerciseIcon(data) {
+		console.log(data);
+
+		if(data && data.fitness.exercise >= 30) {
+			return <img className="exercise__icon" src={runnerIcon} />;
+		}
+	}
+
 	handleIconClass(day) {
 		let now = moment();
 		let { data } = this.props;
@@ -269,6 +279,7 @@ class Calendar extends React.Component {
 				calendarDays.push(<Anime {...this.handleTransition(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
 									<div className={this.handleDayClass(calendar[i].days[j])}>
 										<div className="number">{calendar[i].days[j].date()}</div>
+										{this.renderExerciseIcon(calendar[i].data[j])}
 										{calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? this.renderDayProgressCircles(calendar[i].data[j]) : ''}
 										<span onClick={() => this.navigateToNutrition(calendar[i].days[j])} className={this.handleIconClass(calendar[i].days[j])} />
 									</div>
