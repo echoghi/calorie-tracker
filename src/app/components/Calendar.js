@@ -5,6 +5,7 @@ import moment from 'moment';
 import Anime from 'react-anime';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
+import ReactTooltip from 'react-tooltip';
 // Components
 import NavBar from './NavBar';
 // Images
@@ -195,9 +196,17 @@ class Calendar extends React.Component {
 		}
 	}
 
-	renderExerciseIcon(data) {
+	renderExerciseIcon(data, day) {
 		if(data && data.fitness.exercise >= 30) {
-			return <img className="exercise__icon" src={runnerIcon} />;
+			return <img className="exercise__icon" src={runnerIcon} data-for={`${day.date()}-${day.get('month')}`} data-tip='tooltip'/>;
+		}
+	}
+
+	renderExerciseTooltip(data, day) {
+		if(data && data.fitness.exercise >= 30) {
+			return (<ReactTooltip class='exercise_tip' type='info' id={`${day.date()}-${day.get('month')}`}>
+						<span>You met your exercise goal with {data.fitness.exercise} minutes of activity</span>
+					</ReactTooltip>);
 		}
 	}
 
@@ -277,9 +286,10 @@ class Calendar extends React.Component {
 				calendarDays.push(<Anime {...this.handleTransition(calendar[i].days[j])} key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}>
 									<div className={this.handleDayClass(calendar[i].days[j])}>
 										<div className="number">{calendar[i].days[j].date()}</div>
-										{this.renderExerciseIcon(calendar[i].data[j])}
+										{this.renderExerciseIcon(calendar[i].data[j], calendar[i].days[j])}
 										{calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? this.renderDayProgressCircles(calendar[i].data[j]) : ''}
 										<span onClick={() => this.navigateToNutrition(calendar[i].days[j])} className={this.handleIconClass(calendar[i].days[j])} />
+										{this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])}
 									</div>
 								</Anime>);
 			}
