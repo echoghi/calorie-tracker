@@ -1196,10 +1196,31 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 865,
-                fat: 44,
-                carbs: 93,
-                protein: 46,
+                calories: 2200,
+                fat: 90,
+                carbs: 170,
+                protein: 115,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 2336,
+                exercise: 15,
+                stand: 15
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 26,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 1600,
+                fat: 60,
+                carbs: 135,
+                protein: 70,
                 meals: [
                 ]
             },
