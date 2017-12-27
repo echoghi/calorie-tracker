@@ -1201,6 +1201,22 @@ export const userData = {
                 carbs: 170,
                 protein: 115,
                 meals: [
+                	{
+						name: 'Bai Bolivia Black Cherry',
+						type: 'Energy Drink',
+						calories: 5,
+						fat: 0,
+						carbs: 9,
+						protein: 0
+					},
+					{
+						name: 'Bai Bogota Blackberry Lime',
+						type: 'Energy Drink',
+						calories: 5,
+						fat: 0,
+						carbs: 9,
+						protein: 0
+					}
                 ]
             },
             fitness: {
@@ -1217,11 +1233,19 @@ export const userData = {
             },
             mood: 4,
             nutrition: {
-                calories: 1600,
-                fat: 60,
-                carbs: 135,
-                protein: 70,
+                calories: 2200,
+                fat: 95,
+                carbs: 175,
+                protein: 120,
                 meals: [
+                	{
+						name: 'Bai Bolivia Black Cherry',
+						type: 'Energy Drink',
+						calories: 5,
+						fat: 0,
+						carbs: 9,
+						protein: 0
+					}
                 ]
             },
             fitness: {
