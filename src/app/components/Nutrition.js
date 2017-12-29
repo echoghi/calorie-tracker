@@ -170,7 +170,7 @@ class Nutrition extends React.Component {
         obj['validation'][event.target.name]['dirty'] = true;
 
         // Remove non-numbers from macro inputs
-        if(event.target.name !== 'name' && event.target.name !== 'type') {
+        if(event.target.name !== 'name') {
         	event.target.value = event.target.value.replace(/[^0-9]/g, '');
             obj[event.target.name] = event.target.value;
         }
@@ -185,11 +185,23 @@ class Nutrition extends React.Component {
         this.setState(obj);
 	}
 
+	typeOnChange = type => {
+		// create a shallow copy of the state to mutate
+        let obj = Object.assign({}, this.state);
+        // Set value in obj to eventually send to the state
+        obj['type'] = type;
+        // Mark input as dirty (interacted with)
+        obj['validation']['type']['dirty'] = true;
+        obj['validation']['type']['valid'] = true;
+
+        this.setState(obj);
+	}
+
 	onSubmit = () => {
 		if(this.validateInputs()) {
 			console.log('submit!');
 		} else {
-			console.log('error');
+			console.log('form error!');
 			// create a shallow copy of the state to mutate
             let obj = Object.assign({}, this.state);
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -204,7 +216,6 @@ class Nutrition extends React.Component {
 
 	renderMealBox() {
 		let { day, validation } = this.state;
-		//let { data } = this.props;
 
 		return (
         	<div className="nutrition__overview--meals">
@@ -225,7 +236,7 @@ class Nutrition extends React.Component {
 							errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
 							dataSource={this.state.types}
 							filter={AutoComplete.caseInsensitiveFilter}
-							onUpdateInput={this.onChange}
+							onUpdateInput={this.typeOnChange}
 							fullWidth={true}
 							style={{
 								'width': '45%'
@@ -434,12 +445,10 @@ class Nutrition extends React.Component {
 							</div>
 						</div>
 					</Anime>
-					<Anime {...transition}>
-						<div className="nutrition__overview">
-							{this.renderCalorieBox()}
-							{this.renderMealBox()}
-						</div>
-					</Anime>
+					<div className="nutrition__overview">
+						{this.renderCalorieBox()}
+						{this.renderMealBox()}
+					</div>
 					{this.renderMealsTable()}
 				</div>)
 				: 'Loading...'}
