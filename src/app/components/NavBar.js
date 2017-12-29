@@ -10,85 +10,85 @@ import { handleNav, saveUserData } from './actions';
 import { auth, provider } from './firebase.js';
 
 const mapStateToProps = state => ({
-    data: state.adminState.data,
-    home: state.navigationState.home,
-    nutrition: state.navigationState.nutrition,
-    calendar: state.navigationState.calendar,
-    activity: state.navigationState.activity,
-    settings: state.navigationState.settings
+	data: state.adminState.data,
+	home: state.navigationState.home,
+	nutrition: state.navigationState.nutrition,
+	calendar: state.navigationState.calendar,
+	activity: state.navigationState.activity,
+	settings: state.navigationState.settings
 });
 
 const mapDispatchToProps = dispatch => ({
-    handleNav: page => dispatch(handleNav(page)),
-    saveUserData: data => dispatch(saveUserData(data))
+	handleNav: page => dispatch(handleNav(page)),
+	saveUserData: data => dispatch(saveUserData(data))
 });
 
 class NavBar extends React.Component {
 	state = {
-		width   : 0,
-  		menuOpen: false,
-  		mobile  : false,
-  		user: null
+		width: 0,
+		menuOpen: false,
+		mobile: false,
+		user: null
 	};
 
 	handleMenu = () => {
-		this.setState({ menuOpen : !this.state.menuOpen });
-	}
+		this.setState({ menuOpen: !this.state.menuOpen });
+	};
 
 	navigate = page => {
-		if(!this.props[page]) {
-	    	this.props.handleNav(page);
-	    }
-	}
+		if (!this.props[page]) {
+			this.props.handleNav(page);
+		}
+	};
 
 	handleHamburgerClass() {
 		let className;
 
-        if (this.state.menuOpen) {
-            className = 'hamburger active';
-        } else {
-        	className = 'hamburger';
-        }
+		if (this.state.menuOpen) {
+			className = 'hamburger active';
+		} else {
+			className = 'hamburger';
+		}
 
-        return className;
+		return className;
 	}
 
 	handleNavClass(name) {
-        let className;
+		let className;
 
-        if (this.props[name]) {
-            className = 'active';
-        } else {
-        	className = '';
-        }
+		if (this.props[name]) {
+			className = 'active';
+		} else {
+			className = '';
+		}
 
-        return className;
-    }
+		return className;
+	}
 
-    handleMenuClass() {
-    	let className;
+	handleMenuClass() {
+		let className;
 
-    	if(this.state.width < 760) {
-	        if (this.state.menuOpen) {
-	            className = 'navbar__menu active';
-	        } else {
-	        	className = 'navbar__menu collapsed';
-        	}
-        } else {
-        	className = 'navbar__menu lg';
-        }
+		if (this.state.width < 760) {
+			if (this.state.menuOpen) {
+				className = 'navbar__menu active';
+			} else {
+				className = 'navbar__menu collapsed';
+			}
+		} else {
+			className = 'navbar__menu lg';
+		}
 
-        return className;
-    }
+		return className;
+	}
 
 	componentDidMount() {
 		auth.onAuthStateChanged(user => {
-		    if (user) {
-		    	console.log(user);
-		    	this.props.saveUserData(user);
-	      		this.setState({ user });
-		    } 
-	  	});
+			if (user) {
+				console.log(user);
+				this.props.saveUserData(user);
+				this.setState({ user });
+			}
+		});
 
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
@@ -99,30 +99,28 @@ class NavBar extends React.Component {
 	}
 
 	updateWindowDimensions = () => {
-		this.setState({ width: window.innerWidth});
-	}
+		this.setState({ width: window.innerWidth });
+	};
 
 	logIn = () => {
-		auth.signInWithPopup(provider) 
-	    .then((result) => {
+		auth.signInWithPopup(provider).then(result => {
 			const user = result.user;
 			this.props.saveUserData(user);
 
 			this.setState({
 				user
 			});
-	    });
-	}
+		});
+	};
 
 	logOut = () => {
-		auth.signOut()
-		.then(() => {
+		auth.signOut().then(() => {
 			this.props.saveUserData({});
 			this.setState({
 				user: null
 			});
 		});
-	}
+	};
 
 	renderGreeting() {
 		const style = {
@@ -133,35 +131,58 @@ class NavBar extends React.Component {
 			display: 'inline-block'
 		};
 
-		if(this.state.user) {
-			return (<div className="greeting">
-						<Paper style={style} zDepth={1} rounded={false} className="paper">
-							<img className="user__img" src={this.state.user.photoURL} />
-						</Paper>
-						<h3>Welcome back, {this.state.user.displayName}</h3>
-				</div>);
+		if (this.state.user) {
+			return (
+				<div className="greeting">
+					<Paper
+						style={style}
+						zDepth={1}
+						rounded={false}
+						className="paper"
+					>
+						<img
+							className="user__img"
+							src={this.state.user.photoURL}
+						/>
+					</Paper>
+					<h3>
+						Welcome back, {this.state.user.displayName}
+					</h3>
+				</div>
+			);
 		}
 	}
 
 	renderUserMenu() {
-		if(!this.state.user) {
-			return (<RaisedButton
-                    label="Login"
-                    className="login__button"
-                    onClick={this.logIn}
-                    backgroundColor="#ed5454"
-                    labelColor="#fff"
-                />);
+		if (!this.state.user) {
+			return (
+				<RaisedButton
+					label="Login"
+					className="login__button"
+					onClick={this.logIn}
+					backgroundColor="#ed5454"
+					labelColor="#fff"
+				/>
+			);
 		} else {
-			return (<IconMenu
-				      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-				      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-				      className="logout__button"
-				    >
-				      <MenuItem primaryText="Settings" onClick={() => this.navigate('settings')}/>
-				      <MenuItem primaryText="Log Out" onClick={this.logOut}/>
-				    </IconMenu>);
+			return (
+				<IconMenu
+					iconButtonElement={
+						<IconButton>
+							<MoreVertIcon />
+						</IconButton>
+					}
+					anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+					targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+					className="logout__button"
+				>
+					<MenuItem
+						primaryText="Settings"
+						onClick={() => this.navigate('settings')}
+					/>
+					<MenuItem primaryText="Log Out" onClick={this.logOut} />
+				</IconMenu>
+			);
 		}
 	}
 
@@ -171,26 +192,63 @@ class NavBar extends React.Component {
 				<div className="navbar__brand">
 					<i className="icon-fire" />
 				</div>
-				<div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
+				<div
+					className={this.handleHamburgerClass()}
+					onClick={this.handleMenu}
+				>
 					<div />
 					<div />
 					<div />
 				</div>
 				<ul className={this.handleMenuClass()}>
-					<li className={this.handleNavClass('home')} onClick={() => { this.navigate('home'); }}><i className="icon-home" /> Overview</li>
-					<li className={this.handleNavClass('calendar')} onClick={() => { this.navigate('calendar'); }}><i className="icon-calendar" /> Calendar</li>
-					<li className={this.handleNavClass('nutrition')} onClick={() => { this.navigate('nutrition'); }}><i className="icon-plus-circle" /> Nutrition</li>
-					<li className={this.handleNavClass('activity')} onClick={() => { this.navigate('activity'); }}><i className="icon-bar-chart" /> Activity</li> 
-					<li className={this.handleNavClass('settings')} onClick={() => { this.navigate('settings'); }}><i className="icon-settings" /> Settings</li>
+					<li
+						className={this.handleNavClass('home')}
+						onClick={() => {
+							this.navigate('home');
+						}}
+					>
+						<i className="icon-home" /> Overview
+					</li>
+					<li
+						className={this.handleNavClass('calendar')}
+						onClick={() => {
+							this.navigate('calendar');
+						}}
+					>
+						<i className="icon-calendar" /> Calendar
+					</li>
+					<li
+						className={this.handleNavClass('nutrition')}
+						onClick={() => {
+							this.navigate('nutrition');
+						}}
+					>
+						<i className="icon-plus-circle" /> Nutrition
+					</li>
+					<li
+						className={this.handleNavClass('activity')}
+						onClick={() => {
+							this.navigate('activity');
+						}}
+					>
+						<i className="icon-bar-chart" /> Activity
+					</li>
+					<li
+						className={this.handleNavClass('settings')}
+						onClick={() => {
+							this.navigate('settings');
+						}}
+					>
+						<i className="icon-settings" /> Settings
+					</li>
 				</ul>
 				<div className="navbar__top">
-					{this.renderGreeting()} 
+					{this.renderGreeting()}
 					{this.renderUserMenu()}
 				</div>
 			</div>
 		);
 	}
-
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

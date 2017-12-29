@@ -5,23 +5,23 @@ import { activatePage } from './actions';
 import NavBar from './NavBar';
 
 const mapStateToProps = state => ({
-    tracker: state.navigationState.tracker
+	tracker: state.navigationState.tracker
 });
 
 const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page))
+	activatePage: page => dispatch(activatePage(page))
 });
 
 class Settings extends React.Component {
 	state = {
-		width   : 0
+		width: 0
 	};
 
 	componentWillMount() {
 		let { settings, activatePage } = this.props;
 		window.scrollTo(0, 0);
 
-		if(!settings) {
+		if (!settings) {
 			activatePage('settings');
 		}
 	}
@@ -34,6 +34,6 @@ class Settings extends React.Component {
 			</div>
 		);
 	}
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

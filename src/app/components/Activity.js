@@ -5,23 +5,23 @@ import { activatePage } from './actions';
 import NavBar from './NavBar';
 
 const mapStateToProps = state => ({
-    activity: state.navigationState.activity
+	activity: state.navigationState.activity
 });
 
 const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page))
+	activatePage: page => dispatch(activatePage(page))
 });
 
 class Activity extends React.Component {
 	state = {
-		width   : 0
+		width: 0
 	};
 
 	componentWillMount() {
 		let { reports, activatePage } = this.props;
 		window.scrollTo(0, 0);
 
-		if(!reports) {
+		if (!reports) {
 			activatePage('activity');
 		}
 	}
@@ -30,11 +30,10 @@ class Activity extends React.Component {
 		return (
 			<div>
 				<NavBar />
-				<div className="activity">
-				</div>
+				<div className="activity" />
 			</div>
 		);
 	}
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Activity);

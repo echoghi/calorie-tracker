@@ -93,10 +93,10 @@ export function fetchData() {
             userData = snapshot.val();
 
             // Convert days to moment objects
-            for(let user in userData) {
+            for (let user in userData) {
                 user = userData[user];
                 console.log('User Data:', user);
-                for(let i = 0; i < user.calendar.length; i++) {
+                for (let i = 0; i < user.calendar.length; i++) {
                     let { year, date, month } = user.calendar[i].day;
                     user.calendar[i].day = moment([year, month, date]);
                 }
@@ -108,12 +108,12 @@ export function fetchData() {
 
 export function handleNav(page) {
     // Route to...
-    if(page === 'home') {
+    if (page === 'home') {
         hashHistory.push('/');
     } else {
         hashHistory.push(`/${page}`);
     }
-    
+
     return {
         type: 'NAVIGATE',
         data: page
@@ -123,18 +123,15 @@ export function handleNav(page) {
 export function postForm(data) {
     return dispatch => {
         dispatch(loadingData());
-        return fetch(
-            '/api/postForm',
-            {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {'Content-Type': 'application/json; charset=utf-8'}
-            }
-        )
+        return fetch('/api/postForm', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json; charset=utf-8' }
+        })
             .then(response => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     dispatch(formSuccess());
-                    setTimeout(function() { 
+                    setTimeout(function() {
                         dispatch(resetForm());
                     }, 3000);
                 } else {

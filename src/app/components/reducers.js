@@ -11,12 +11,12 @@ export function navigationState(
     switch (action.type) {
         case 'NAVIGATE':
             let temp = Object.assign({}, state, {
-                    home: false,
-                    nutrition: false,
-                    activity: false,
-                    calendar: false,
-                    settings: false
-                });
+                home: false,
+                nutrition: false,
+                activity: false,
+                calendar: false,
+                settings: false
+            });
 
             return Object.assign({}, temp, {
                 [action.data]: true
@@ -24,12 +24,12 @@ export function navigationState(
 
         case 'ACTIVATE_PAGE':
             let temp2 = Object.assign({}, state, {
-                    home: false,
-                    nutrition: false,
-                    activity: false,
-                    calendar: false,
-                    settings: false
-                });
+                home: false,
+                nutrition: false,
+                activity: false,
+                calendar: false,
+                settings: false
+            });
 
             return Object.assign({}, temp2, {
                 [action.data]: true
@@ -52,7 +52,6 @@ export function adminState(
     action
 ) {
     switch (action.type) {
-
         case 'LOAD_NUTRITION_DATA':
             return Object.assign({}, state, {
                 activeDay: action.data
