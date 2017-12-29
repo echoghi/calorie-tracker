@@ -1,6 +1,6 @@
 //import firebase from './firebase.js';
 
-const userData = {
+export const userData = {
 	user: {
 		height : '5\'10"',
 		weight : 180,
@@ -1295,6 +1295,169 @@ const userData = {
             	month: 11,
             	date: 28,
             	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 3020,
+                fat: 145,
+                carbs: 243,
+                protein: 150,
+                meals: [
+                	{
+						name: 'In n\' Out 3x3',
+						type: 'Fast Food',
+						calories: 860,
+						fat: 55,
+						carbs: 39,
+						protein: 52
+					},
+					{
+						name: 'In n\' Out animal fries',
+						type: 'Fast Food',
+						calories: 750,
+						fat: 42,
+						carbs: 54,
+						protein: 19
+					}
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 29,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 30,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 31,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 0,
+            	date: 1,
+            	year: 2018
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 0,
+            	date: 2,
+            	year: 2018
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 0,
+            	date: 3,
+            	year: 2018
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
+            	calories: 0,
+                exercise: 0,
+                stand: 0
+            }
+        },
+        {
+            day: {
+            	month: 0,
+            	date: 4,
+            	year: 2018
             },
             mood: 4,
             nutrition: {
