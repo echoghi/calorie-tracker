@@ -1,0 +1,19 @@
+// Loading Spinner
+@mixin placeholder {
+	background: linear-gradient(
+		43deg,
+		$mystic,
+		$mystic,
+		$mystic,
+		$aqua-haze,
+		$mystic,
+		$mystic,
+		$mystic
+	);
+	background-size: 600% 600%;
+	// Placeholder element background gradient animation
+	-webkit-animation: placeholder-animation 3s ease infinite;
+	-moz-animation: placeholder-animation 3s ease infinite;
+	-ms-animation: placeholder-animation 3s ease infinite;
+	animation: placeholder-animation 3s ease infinite;
+}

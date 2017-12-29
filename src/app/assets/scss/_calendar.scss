@@ -58,7 +58,7 @@
 
         &.loading {
             margin-bottom: -7px;
-            
+
             .number {
                 width: 20px;
                 height: 20px;
@@ -66,14 +66,9 @@
                 position: absolute;
                 top: 15px;
                 left: 15px;
-                background: linear-gradient(43deg, $mystic, $mystic, $mystic, $aqua-haze, $mystic, $mystic, $mystic);
-                background-size: 600% 600%;
-                // Placeholder element background gradient animation
-                -webkit-animation: placeholder-animation 3s ease infinite;
-                -moz-animation: placeholder-animation 3s ease infinite;
-                -ms-animation: placeholder-animation 3s ease infinite;
-                animation: placeholder-animation 3s ease infinite;
                 border-radius: 3px;
+
+                @include placeholder;
             }
 
             .circle {
@@ -82,13 +77,8 @@
                 margin: 0 auto;
                 margin-top: 30px;
                 border-radius: 50%;
-                background: linear-gradient(43deg, $mystic, $mystic, $mystic, $aqua-haze, $mystic, $mystic, $mystic);
-                background-size: 600% 600%;
-                // Placeholder element background gradient animation
-                -webkit-animation: placeholder-animation 3s ease infinite;
-                -moz-animation: placeholder-animation 3s ease infinite;
-                -ms-animation: placeholder-animation 3s ease infinite;
-                animation: placeholder-animation 3s ease infinite;
+
+                @include placeholder;
             }
 
             .info {
@@ -98,13 +88,8 @@
                 height: 20px;
                 width: 20px;
                 border-radius: 50%;
-                background: linear-gradient(43deg, $mystic, $mystic, $mystic, $aqua-haze, $mystic, $mystic, $mystic);
-                background-size: 600% 600%;
-                // Placeholder element background gradient animation
-                -webkit-animation: placeholder-animation 3s ease infinite;
-                -moz-animation: placeholder-animation 3s ease infinite;
-                -ms-animation: placeholder-animation 3s ease infinite;
-                animation: placeholder-animation 3s ease infinite;
+
+                @include placeholder;
             }
         }
 
@@ -114,7 +99,7 @@
 
         &.inactive {
             background: $polar;
-            opacity: .65  
+            opacity: .65;
         }
 
         &.today {
@@ -134,7 +119,7 @@
             &.hidden {
                 display: none;
             }
-            
+
             &:hover {
                 color: $burnt-sienna;
             }
