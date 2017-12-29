@@ -1,6 +1,6 @@
 //import firebase from './firebase.js';
 
-export const userData = {
+const userData = {
 	user: {
 		height : '5\'10"',
 		weight : 180,
@@ -1249,6 +1249,63 @@ export const userData = {
                 ]
             },
             fitness: {
+            	calories: 2360,
+                exercise: 19,
+                stand: 13
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 27,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 2100,
+                fat: 85,
+                carbs: 110,
+                protein: 150,
+                meals: [
+                	{
+						name: 'Creatine Monohydrate',
+						type: 'Supplement',
+						dosage: 5,
+						unit: 'grams',
+						unitShort: 'g'
+					},
+					{
+						name: '2 scoops of Syntha 6 protein powder',
+						type: 'Supplement',
+						calories: 280,
+						fat: 6,
+						carbs: 12,
+						protein: 50
+					}
+                ]
+            },
+            fitness: {
+            	calories: 2941,
+                exercise: 93,
+                stand: 14
+            }
+        },
+        {
+            day: {
+            	month: 11,
+            	date: 28,
+            	year: 2017
+            },
+            mood: 4,
+            nutrition: {
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+                meals: [
+                ]
+            },
+            fitness: {
             	calories: 0,
                 exercise: 0,
                 stand: 0
@@ -1257,6 +1314,6 @@ export const userData = {
 	]
 };
 
-//firebase.database().ref('users/emchoghi@gmail.com').set(user);
+//const usersRef = firebase.database().ref('users');
 
 //usersRef.push(userData);

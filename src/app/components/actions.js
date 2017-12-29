@@ -10,6 +10,8 @@ export const FORM_SUCCESS = 'FORM_SUCCESS';
 export const FORM_ERROR = 'FORM_ERROR';
 export const ACTIVATE_PAGE = 'ACTIVATE_PAGE';
 export const SAVE_USER_DATA = 'SAVE_USER_DATA';
+import firebase from './firebase.js';
+import moment from 'moment';
 
 export function loadNutritionData(data) {
     return {
@@ -81,31 +83,26 @@ export function saveUserData(data) {
     };
 }
 
-export function fetchData(query) {
+export function fetchData() {
     return dispatch => {
-        return fetch(query)
-            .then(dispatch(loadingData()))
-            .then(response => {
-                if (response.status >= 200 && response.status < 304) {
-                    return response.json();
-                } else {
-                    dispatch(dataError());
+        dispatch(loadingData());
+        const usersRef = firebase.database().ref('users');
+        let userData;
+
+        usersRef.once('value', snapshot => {
+            userData = snapshot.val();
+
+            // Convert days to moment objects
+            for(let user in userData) {
+                user = userData[user];
+                console.log('User Data:', user);
+                for(let i = 0; i < user.calendar.length; i++) {
+                    let { year, date, month } = user.calendar[i].day;
+                    user.calendar[i].day = moment([year, month, date]);
                 }
-            })
-            .then(json => {
-                if (json && !json.error) {
-                    dispatch(receiveData(json));
-                    console.log('data: ', json);
-                    // Route to...
-                    browserHistory.push('/home');
-                } else {
-                    dispatch(dataError());
-                }
-            })
-            .catch(error => {
-                dispatch(dataError());
-                console.log('Error: ' + error.message);
-            });
+                dispatch(receiveData(user));
+            }
+        });
     };
 }
 

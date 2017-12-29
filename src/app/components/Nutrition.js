@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, resetNutritionData } from './actions';
+import { activatePage, fetchData, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import NavBar from './NavBar';
@@ -10,24 +10,21 @@ import AutoComplete from 'material-ui/AutoComplete';
 import ReactTable from 'react-table';
 import Anime from 'react-anime';
 import 'react-table/react-table.css';
+import ReactTooltip from 'react-tooltip';
 import ProgressBar from 'react-progressbar.js';
 let { Circle, Line } = ProgressBar;
-import firebase from 'firebase';
 
 const mapStateToProps = state => ({
     nutrition: state.navigationState.nutrition,
     data: state.adminState.data,
-    activeDay: state.adminState.activeDay
+    activeDay: state.adminState.activeDay,
+    loading: state.adminState.loading
 });
 
 const mapDispatchToProps = dispatch => ({
     activatePage: page => dispatch(activatePage(page)),
-    resetNutritionData: () => dispatch(resetNutritionData())
-});
-
-let starCountRef = firebase.database().ref('users');
-starCountRef.on('value', function(snapshot) {
-  console.log(snapshot.val());
+    resetNutritionData: () => dispatch(resetNutritionData()),
+    fetchData: () => dispatch(fetchData())
 });
 
 // Reusable validation constuctor for each input
@@ -40,7 +37,8 @@ class Nutrition extends React.Component {
 	state = {
 		now: moment(),
 		day: {},
-		types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks'],
+		loading: true,
+		types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks', 'Custom Meal'],
 		validation: {
 			name: new inputObj(),
 			type: new inputObj(),
@@ -52,13 +50,21 @@ class Nutrition extends React.Component {
 	};
 
 	componentWillMount() {
-		let { nutrition, activatePage } = this.props;
+		let { nutrition, activatePage, fetchData, loading, data } = this.props;
 		window.scrollTo(0, 0);
 
-		this.mapDayToState();
+		if(_.isEmpty(data) && !loading) {
+			fetchData();
+		}
 
 		if(!nutrition) {
 			activatePage('nutrition');
+		}
+	}
+
+	componentDidUpdate() {
+		if(_.isEmpty(this.state.day) && !_.isEmpty(this.props.data)) {
+			this.mapDayToState();
 		}
 	}
 
@@ -68,7 +74,7 @@ class Nutrition extends React.Component {
 
 	mapDayToState = () => {
 		let { data, activeDay } = this.props;
-		let { now, day } = this.state;
+		let { now, day, loading } = this.state;
 
 		if(!_.isEmpty(activeDay)) {
 			day = activeDay;
@@ -80,14 +86,16 @@ class Nutrition extends React.Component {
 			}
 		}
 
-		this.setState({ day });
+		loading = false;
+
+		this.setState({ day, loading });
 	}
 
 	renderMealsTable() {
 		let { day } = this.state;
 
 		return(<ReactTable
-	          data={day.nutrition.meals}
+	          data={day.nutrition.meals || []}
 	          noDataText="No Meals Found"
 	          columns={[
 	            {
@@ -200,7 +208,7 @@ class Nutrition extends React.Component {
 
 		return (
         	<div className="nutrition__overview--meals">
-        		<h3>{`Logged Meals (${day.nutrition.meals.length})`}</h3>
+        		<h3>{`Logged Meals (${day.nutrition.meals ? day.nutrition.meals.length : 0})`}</h3>
         		<div className="add__meal">
         			<div className="add__meal--input">
 	        			<TextField
@@ -332,7 +340,7 @@ class Nutrition extends React.Component {
 	renderCalorieBox() {
 		let { day } = this.state;
 		let { data } = this.props;
-		let calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
+		let calorieGoal = day.fitness.calories || data.user.goals.nutrition.calories;
 		let progress = day.nutrition.calories / calorieGoal;
 		let text = day.nutrition.calories / calorieGoal;
 		let options = {
@@ -361,6 +369,13 @@ class Nutrition extends React.Component {
         return (
         	<div className="nutrition__overview--calories">
         		<h3>Total Calories</h3>
+        		<i className="icon-help-circle" data-for="calorie-tooltip" data-tip='tooltip' />
+        		<ReactTooltip class='calorie__tooltip' type='info' id='calorie-tooltip'>
+					<span>The progress bar represents your calories consumed vs your calories burned. 
+					If you have not yet entered in your activity data for this day, 
+					the progress bar will default to your calorie goal.
+					</span>
+				</ReactTooltip>
 	            <Circle
 	                progress={progress}
 	                options={options}
@@ -374,7 +389,8 @@ class Nutrition extends React.Component {
 
 	render() {
 		let { day } = this.state;
-		let { protein, carbs, fat } = day.nutrition;
+		let { loading } = this.props;
+		let { protein, carbs, fat } = day.nutrition || 0;
 
 		let transition = {
 			delay: (el, index) => index * 240,
@@ -385,7 +401,9 @@ class Nutrition extends React.Component {
 		return (
 			<div>
 				<NavBar />
-				<div className="nutrition">
+
+				{!loading && !this.state.loading && !_.isEmpty(day) ? 
+				(<div className="nutrition">
 					<h1>Nutrition</h1>
 					<h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
 					<Anime {...transition}>
@@ -423,7 +441,8 @@ class Nutrition extends React.Component {
 						</div>
 					</Anime>
 					{this.renderMealsTable()}
-				</div>
+				</div>)
+				: 'Loading...'}
 			</div>
 		);
 	}

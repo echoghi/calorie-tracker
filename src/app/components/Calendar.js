@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, handleNav, loadNutritionData } from './actions';
+import { activatePage, handleNav, fetchData, loadNutritionData } from './actions';
 import moment from 'moment';
 import Anime from 'react-anime';
 import ProgressBar from 'react-progressbar.js';
@@ -13,12 +13,14 @@ import runnerIcon from '../assets/images/apple-runner.png';
 
 const mapStateToProps = state => ({
     calendar: state.navigationState.calendar,
-    data: state.adminState.data
+    data: state.adminState.data,
+    loading: state.adminState.loading
 });
 
 const mapDispatchToProps = dispatch => ({
     activatePage: page => dispatch(activatePage(page)),
     handleNav: page => dispatch(handleNav(page)),
+    fetchData: () => dispatch(fetchData()),
     loadNutritionData: data => dispatch(loadNutritionData(data))
 });
 
@@ -28,11 +30,15 @@ class Calendar extends React.Component {
 	};
 
 	componentWillMount() {
-		let { calendar, activatePage } = this.props;
+		let { calendar, activatePage, fetchData, data, loading } = this.props;
 		window.scrollTo(0, 0);
 
 		if(!calendar) {
 			activatePage('calendar'); 
+		}
+
+		if(_.isEmpty(data) && !loading) {
+			fetchData();
 		}
 	}
 
@@ -319,9 +325,21 @@ class Calendar extends React.Component {
 		this.setState({ time });
 	}
 
+	renderPlaceholders() {
+		return Array(30).fill(0).map((n, i) => (
+			<div className={`day loading ${n}`} key={i}>
+				<div className="number" />
+				<div className="circle" />
+				<div className="info" />
+			</div>
+		));
+	}
+
 	render() {
-		let month = this.state.time.format('MMMM');
-		let year = this.state.time.format('YYYY');
+		let { time } = this.state;
+		let { loading, data } = this.props;
+		let month = time.format('MMMM');
+		let year = time.format('YYYY');
 
 		return (
 			<div>
@@ -345,8 +363,9 @@ class Calendar extends React.Component {
 							<span>Fri</span>
 							<span>Sat</span>
 						</div>
-						{this.renderDays()}
+						{!_.isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
 					</div>
+				
 				</div>
 			</div>
 		);

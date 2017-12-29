@@ -64,6 +64,32 @@
                 margin-bottom: 0;
             }
 
+            h3 {
+                display: inline-block
+            }
+
+            .calorie__tooltip {
+                width: 250px
+            }
+
+            .icon-help-circle {
+                opacity: .8;
+                position: absolute;
+                cursor: pointer;
+                color: $limed-spruce;
+                font-size: 20px;
+                top: 20px;
+                right: 20px;
+
+                &.hidden {
+                    display: none;
+                }
+                
+                &:hover {
+                    color: $burnt-sienna;
+                }
+            }
+
             span.subhead {
                 top: 270px;
                 position: absolute;

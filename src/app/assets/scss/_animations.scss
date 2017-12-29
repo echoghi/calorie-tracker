@@ -41,3 +41,51 @@
         transform: rotate(360deg)
     }
 }
+
+@-webkit-keyframes placeholder-animation {
+    0% {
+        background-position: 99% 0%
+    }
+    50% {
+        background-position: 2% 100%
+    }
+    100% {
+        background-position: 99% 0%
+    }
+}
+
+@-ms-keyframes placeholder-animation {
+    0% {
+        background-position: 99% 0%
+    }
+    50% {
+        background-position: 2% 100%
+    }
+    100% {
+        background-position: 99% 0%
+    }
+}
+
+@-moz-keyframes placeholder-animation {
+    0% {
+        background-position: 99% 0%
+    }
+    50% {
+        background-position: 2% 100%
+    }
+    100% {
+        background-position: 99% 0%
+    }
+}
+
+@keyframes placeholder-animation {
+    0% {
+        background-position: 99% 0%
+    }
+    50% {
+        background-position: 2% 100%
+    }
+    100% {
+        background-position: 99% 0%
+    }
+}

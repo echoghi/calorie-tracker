@@ -1,20 +1,3 @@
-import { userData } from './nutritionData';
-import moment from 'moment';
-//import firebase from './firebase.js';
-
-//let usersRef = firebase.database().ref('users');
-
-/*usersRef.once('value', snapshot => {
-  let userData = snapshot.val();
-  receiveData(userData['-L-P_rpcgen3VxhnvPMj']);
-}); */
-
-// Convert days to moment objects
-for(let i = 0; i < userData.calendar.length; i++) {
-    let { year, date, month } = userData.calendar[i].day;
-    userData.calendar[i].day = moment([year, month, date]);
-}
-
 export function navigationState(
     state = {
         home: false,
@@ -59,7 +42,7 @@ export function navigationState(
 
 export function adminState(
     state = {
-        data: userData,
+        data: {},
         userData: {},
         activeDay: {},
         loading: false,
