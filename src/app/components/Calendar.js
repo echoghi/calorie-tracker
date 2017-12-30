@@ -462,7 +462,7 @@ class Calendar extends React.Component {
 	}
 
 	renderPlaceholders() {
-		return Array(40).fill(0).map((n, i) =>
+		return Array(42).fill(0).map((n, i) =>
 			<div className={`day loading ${n}`} key={i}>
 				<div className="number" />
 				<div className="circle" />

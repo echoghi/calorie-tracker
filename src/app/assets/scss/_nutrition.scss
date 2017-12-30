@@ -57,7 +57,7 @@
 
             h3,
             h4 {
-                padding: 15px 30px;
+                padding: 5px 30px 15px 30px;
                 color: $limed-spruce;
                 font-size: 25px;
                 text-align: left;
@@ -65,11 +65,11 @@
             }
 
             h3 {
-                display: inline-block
+                display: inline-block;
             }
 
             .calorie__tooltip {
-                width: 250px
+                width: 250px;
             }
 
             .icon-help-circle {
@@ -78,13 +78,13 @@
                 cursor: pointer;
                 color: $limed-spruce;
                 font-size: 20px;
-                top: 20px;
-                right: 20px;
+                top: 30px;
+                right: 30px;
 
                 &.hidden {
                     display: none;
                 }
-                
+
                 &:hover {
                     color: $burnt-sienna;
                 }
@@ -125,7 +125,6 @@
                     float: right;
                     margin: 20px 30px;
                     margin-top: 50px;
-
                 }
             }
         }
@@ -144,7 +143,7 @@
 
         &--table-head {
             display: flex;
-            background: $white; 
+            background: $white;
             padding: 15px;
             text-align: center;
 
