@@ -15,6 +15,7 @@ import ReactTooltip from 'react-tooltip';
 import NavBar from './NavBar';
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
+//import firebase from './firebase.js';
 
 const mapStateToProps = state => ({
 	calendar: state.navigationState.calendar,
@@ -45,6 +46,14 @@ class Calendar extends React.Component {
 		if (_.isEmpty(data) && !loading) {
 			fetchData();
 		}
+
+		/*
+		let update = {};
+
+		update['users/-L1W7yroxzFV-EPpK63D/calendar/0/mood'] = 4;
+
+		firebase.database().ref().update(update);
+		*/
 	}
 
 	navigateToNutrition(day) {

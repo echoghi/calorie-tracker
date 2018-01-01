@@ -28,7 +28,8 @@ class NavBar extends React.Component {
 		width: 0,
 		menuOpen: false,
 		mobile: false,
-		user: null
+		user: null,
+		loading: true
 	};
 
 	handleMenu = () => {
@@ -86,7 +87,7 @@ class NavBar extends React.Component {
 			if (user) {
 				console.log(user);
 				this.props.saveUserData(user);
-				this.setState({ user });
+				this.setState({ user, loading: false });
 			}
 		});
 
@@ -123,6 +124,8 @@ class NavBar extends React.Component {
 	};
 
 	renderGreeting() {
+		let { user, loading } = this.state;
+
 		const style = {
 			height: 50,
 			width: 50,
@@ -131,7 +134,7 @@ class NavBar extends React.Component {
 			display: 'inline-block'
 		};
 
-		if (this.state.user) {
+		if (user && !loading) {
 			return (
 				<div className="greeting">
 					<Paper
@@ -150,11 +153,20 @@ class NavBar extends React.Component {
 					</h3>
 				</div>
 			);
+		} else {
+			return (
+				<div className="greeting loading">
+					<div className="user__img" />
+					<div className="greeting__message" />
+				</div>
+			);
 		}
 	}
 
 	renderUserMenu() {
-		if (!this.state.user) {
+		let { user } = this.state;
+
+		if (!user) {
 			return (
 				<RaisedButton
 					label="Login"
