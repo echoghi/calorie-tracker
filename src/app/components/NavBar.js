@@ -164,9 +164,15 @@ class NavBar extends React.Component {
 	}
 
 	renderUserMenu() {
-		let { user } = this.state;
+		let { user, loading } = this.state;
 
-		if (!user) {
+		if (!user && loading) {
+			return (
+				<div className="login__button loading">
+					<div />
+				</div>
+			);
+		} else if (!user && !loading) {
 			return (
 				<RaisedButton
 					label="Login"
