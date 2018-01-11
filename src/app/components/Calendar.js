@@ -46,11 +46,47 @@ class Calendar extends React.Component {
 		if (_.isEmpty(data) && !loading) {
 			fetchData();
 		}
-
 		/*
 		let update = {};
 
-		update['users/-L1W7yroxzFV-EPpK63D/calendar/0/mood'] = 4;
+		update['users/-L1W7yroxzFV-EPpK63D/calendar/44/nutrition/meals'] = [
+			{
+				name: "In n' Out 3x3",
+				type: 'Fast Food',
+				calories: 860,
+				fat: 55,
+				carbs: 39,
+				protein: 52
+			},
+			{
+				name: "In n' Out animal fries",
+				type: 'Fast Food',
+				calories: 750,
+				fat: 42,
+				carbs: 54,
+				protein: 19
+			}
+		];
+
+		update['users/-L1W7yroxzFV-EPpK63D/calendar/45'] = {
+				day: {
+					month: 0,
+					date: 8,
+					year: 2017
+				},
+				mood: 4,
+				nutrition: {
+					calories: 0,
+					fat: 0,
+					carbs: 0,
+					protein: 0
+				},
+				fitness: {
+					calories: 0,
+					exercise: 0,
+					stand: 0
+				}
+			}
 
 		firebase.database().ref().update(update);
 		*/

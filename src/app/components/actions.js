@@ -13,6 +13,30 @@ export const SAVE_USER_DATA = 'SAVE_USER_DATA';
 import firebase from './firebase.js';
 import moment from 'moment';
 
+const usersRef = firebase.database().ref('users');
+
+export function reloadData() {
+    let userData;
+
+    return dispatch => {
+        usersRef.on('value', snapshot => {
+            userData = snapshot.val();
+
+            for (let user in userData) {
+                user = userData[user];
+
+                for (let i = 0; i < user.calendar.length; i++) {
+                    let { year, date, month } = user.calendar[i].day;
+                    user.calendar[i].day = moment([year, month, date]);
+                }
+
+                console.log('Data update loaded:', user);
+                dispatch(receiveData(user));
+            }
+        });
+    };
+}
+
 export function loadNutritionData(data) {
     return {
         type: LOAD_NUTRITION_DATA,
@@ -95,12 +119,55 @@ export function fetchData() {
             // Convert days to moment objects
             for (let user in userData) {
                 user = userData[user];
-                console.log('User Data:', user);
+                let lastDay;
+
                 for (let i = 0; i < user.calendar.length; i++) {
                     let { year, date, month } = user.calendar[i].day;
                     user.calendar[i].day = moment([year, month, date]);
+                    lastDay = user.calendar[i].day;
                 }
-                dispatch(receiveData(user));
+
+                if (moment().isAfter(lastDay)) {
+                    let update = {};
+                    let dayKey = user.calendar.length;
+                    let daysToAdd = moment().diff(lastDay, 'days');
+
+                    for (let i = 0; i < daysToAdd; i++) {
+                        lastDay.add(1, 'd');
+
+                        update[
+                            `users/-L1W7yroxzFV-EPpK63D/calendar/${dayKey}`
+                        ] = {
+                            day: {
+                                month: lastDay.get('month'),
+                                date: lastDay.date(),
+                                year: lastDay.get('year')
+                            },
+                            mood: 4,
+                            nutrition: {
+                                calories: 0,
+                                fat: 0,
+                                carbs: 0,
+                                protein: 0
+                            },
+                            fitness: {
+                                calories: 0,
+                                exercise: 0,
+                                stand: 0
+                            }
+                        };
+
+                        firebase.database().ref().update(update, () => {
+                            dispatch(reloadData());
+                        });
+
+                        dayKey++;
+                    }
+                } else {
+                    console.log('User Data Pulled:', user);
+
+                    dispatch(receiveData(user));
+                }
             }
         });
     };
