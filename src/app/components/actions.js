@@ -127,7 +127,14 @@ export function fetchData() {
                     lastDay = user.calendar[i].day;
                 }
 
-                if (moment().isAfter(lastDay)) {
+                // If the calendar entries are not caught up to today, create the missing entries
+                if (
+                    moment([
+                        moment().get('year'),
+                        moment().get('month'),
+                        moment().date()
+                    ]).isAfter(lastDay)
+                ) {
                     let update = {};
                     let dayKey = user.calendar.length;
                     let daysToAdd = moment().diff(lastDay, 'days');
@@ -157,6 +164,7 @@ export function fetchData() {
                             }
                         };
 
+                        // Save new entries to firebase and reload them into the app
                         firebase.database().ref().update(update, () => {
                             dispatch(reloadData());
                         });
