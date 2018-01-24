@@ -1,8 +1,13 @@
 .calendar {
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
     &__container {
-        width: 100%;
-        border: 1px solid $mystic;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        //border: 1px solid $athens-gray;
+        //box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         border-radius: 3px;
         background: $white;
     }
@@ -11,22 +16,26 @@
         text-align: center;
         margin: 0;
         margin-bottom: 20px;
+        width: 80%
     }
 
     &__head {
         display: flex;
+        border: 1px solid $athens-gray;
+        border-bottom: none;
 
         span {
             opacity: .8;
             width: 14.3%;
             text-align: center;
             font-weight: bold;
-            padding: 25px 0;
+            padding: 15px 0;
         }
     }
 
     &__toggle--month {
         text-align: center;
+        width: 80%;
 
         i {
             display: inline-block;
@@ -139,5 +148,86 @@
         position: absolute;
         top: 15px;
         right: 15px;
+    }
+}
+
+.legend {
+    display: inline-block;
+    border: 1px solid $athens-gray;
+    height: 300px;
+    margin: 0 0 0 30px;
+    min-width: 200px;
+    background: $white;
+    vertical-align: top;
+
+    &__header {
+        padding: 15px 20px;
+        font-size: 17px;
+        font-weight: bold;
+        border-bottom: 1px solid $athens-gray;
+        background-image: linear-gradient(to top, $catskill-white, $white)
+    }
+
+    &__body {
+        padding: 20px;
+        font-size: 15px;
+
+        &--item {
+            display: block;
+            margin: 5px 0;
+
+            i {
+                display: inline-block;
+                font-size: 20px;
+                padding: 10px 0;
+                color: $limed-spruce
+            }
+
+            img {
+                height: 20px;
+                width: 20px;
+                vertical-align: text-bottom;
+            }
+        }
+
+        &--name {
+            display: inline-block;
+            padding: 0 10px;
+            vertical-align: text-bottom
+        }
+
+        &--subhead {
+            margin: 10px 0;
+            color: $regent-gray;
+            font-size: 15px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        &--calories,
+        &--protein,
+        &--fat,
+        &--carbs {
+            border-radius: 3px;
+            height: 16px;
+            width: 16px;
+            display: inline-block;
+        }
+
+        &--calories {
+            background: $medium-purple;
+        }
+
+        &--protein {
+            background: $froly
+        }
+
+        &--carbs {
+            background: $malibu
+        }
+
+        &--fat {
+            background: $aquamarine
+        }
     }
 }

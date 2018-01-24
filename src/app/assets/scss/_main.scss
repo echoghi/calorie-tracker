@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 html, body {
     position: relative;
     font: $primary-font;
-    font-family: 'Rubik', serif;
+    font-family: 'Source Sans Pro', serif;
     background: $alabaster;
     color: $limed-spruce;
     width: 100%;
@@ -23,7 +24,7 @@ a {
 .reports,
 .calendar,
 .settings {
-    padding: 125px 75px 75px 325px;
+    padding: 125px 30px 30px 295px;
 }
 
 .clearfix:after {

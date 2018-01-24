@@ -13,8 +13,8 @@
             display: inline-block;
             height: 270px;
             width: 31%;
-            border: 1px solid $mystic;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid $athens-gray;
+            //box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
             border-radius: 3px;
             background: $white;
             text-align: center;
@@ -49,8 +49,8 @@
             display: inline-block;
             height: 450px;
             width: 48%;
-            border: 1px solid $mystic;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid $athens-gray;
+            //box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
             border-radius: 3px;
             background: $white;
             text-align: center;
@@ -135,8 +135,8 @@
             margin: 15px;
             margin-top: 30px;
             padding: 15px 0;
-            border: 1px solid $mystic;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid $athens-gray;
+            //box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
             border-radius: 3px;
             background: $white;
         }
@@ -177,8 +177,8 @@
                 padding: 25px;
                 font-size: 17px;
                 font-weight: bold;
-                border-top: 1px solid $mystic;
-                border-bottom: 1px solid $mystic;
+                border-top: 1px solid $athens-gray;
+                border-bottom: 1px solid $athens-gray;
                 box-sizing: border-box;
 
                 &.name {
@@ -204,7 +204,7 @@
         display: inline-block;
         height: 300px;
         width: 100%;
-        border: 1px solid $mystic;
+        border: 1px solid $athens-gray;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         border-radius: 3px;
         background: $white;

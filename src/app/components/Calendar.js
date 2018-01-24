@@ -516,6 +516,21 @@ class Calendar extends React.Component {
 		);
 	}
 
+	renderLegend() {
+		return(<div className="legend">
+				<div className="legend__header">Legend</div>
+				<div className="legend__body">
+					<div className="legend__body--item"><div className="legend__body--calories" /><div className="legend__body--name">Calories</div></div>
+					<div className="legend__body--item"><div className="legend__body--protein" /><div className="legend__body--name">Protein</div></div>
+					<div className="legend__body--item"><div className="legend__body--carbs" /><div className="legend__body--name">Carbs</div></div>
+					<div className="legend__body--item"><div className="legend__body--fat" /><div className="legend__body--name">Fat</div></div>
+					<div className="legend__body--item"><div className="legend__body--subhead">Icons</div></div>
+					<div className="legend__body--item"><img src={runnerIcon} /><div className="legend__body--name">Exercise goal</div></div>
+					<div className="legend__body--item"><i className="icon-info" /><div className="legend__body--name">Nutrition breakdown</div></div>
+				</div>
+			</div>);
+	}
+
 	render() {
 		let { time } = this.state;
 		let { loading, data } = this.props;
@@ -544,19 +559,22 @@ class Calendar extends React.Component {
 					<h4>
 						{year}
 					</h4>
-					<div className="calendar__container">
-						<div className="calendar__head">
-							<span>Sun</span>
-							<span>Mon</span>
-							<span>Tue</span>
-							<span>Wed</span>
-							<span>Thu</span>
-							<span>Fri</span>
-							<span>Sat</span>
+					<div className="calendar__wrapper">
+						<div className="calendar__container">
+							<div className="calendar__head">
+								<span>Sun</span>
+								<span>Mon</span>
+								<span>Tue</span>
+								<span>Wed</span>
+								<span>Thu</span>
+								<span>Fri</span>
+								<span>Sat</span>
+							</div>
+							{!_.isEmpty(data) && !loading
+								? this.renderDays()
+								: this.renderPlaceholders()}
 						</div>
-						{!_.isEmpty(data) && !loading
-							? this.renderDays()
-							: this.renderPlaceholders()}
+						{this.renderLegend()}
 					</div>
 				</div>
 			</div>
