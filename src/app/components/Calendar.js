@@ -146,42 +146,42 @@ class Calendar extends React.Component {
 		carbProgress = carbProgress > 1 ? (carbProgress = 1) : carbProgress;
 		fatProgress = fatProgress > 1 ? (fatProgress = 1) : fatProgress;
 
-		let calorieOptions = {
+		const calorieOptions = {
 			strokeWidth: 6,
 			color: '#8E81E3',
 			trailColor: '#f4f4f4'
 		};
-		let calorieContainerStyle = {
+		const calorieContainerStyle = {
 			width: '90px',
 			height: '90px',
 			margin: '0 auto'
 		};
-		let proteinOptions = {
+		const proteinOptions = {
 			strokeWidth: 7,
 			color: '#F5729C',
 			trailColor: '#f4f4f4'
 		};
-		let proteinContainerStyle = {
+		const proteinContainerStyle = {
 			width: '70px',
 			height: '70px',
 			margin: '-80px auto'
 		};
-		let carbOptions = {
+		const carbOptions = {
 			strokeWidth: 8,
 			color: '#7BD4F8',
 			trailColor: '#f4f4f4'
 		};
-		let carbContainerStyle = {
+		const carbContainerStyle = {
 			width: '50px',
 			height: '50px',
 			margin: '20px auto'
 		};
-		let fatOptions = {
+		const fatOptions = {
 			strokeWidth: 9,
 			color: '#55F3B3',
 			trailColor: '#f4f4f4'
 		};
-		let fatContainerStyle = {
+		const fatContainerStyle = {
 			width: '30px',
 			height: '30px',
 			margin: '-60px auto'
@@ -279,7 +279,9 @@ class Calendar extends React.Component {
 	}
 
 	renderExerciseIcon(data, day) {
-		if (data && data.fitness.exercise >= 30) {
+		const { time } = this.state;
+
+		if (data && data.fitness.exercise >= 30 && day.month() === time.month()) {
 			return (
 				<img
 					className="exercise__icon"
@@ -323,7 +325,7 @@ class Calendar extends React.Component {
 			}
 		}
 
-		if (now.isAfter(day) && dayData) {
+		if (now.isAfter(day) && dayData && day.month() === now.month()) {
 			return 'icon-info';
 		} else {
 			return 'icon-info hidden';
@@ -542,7 +544,6 @@ class Calendar extends React.Component {
 				<NavBar />
 
 				<div className="calendar">
-					<h1>Calendar</h1>
 					<div className="calendar__toggle--month">
 						<i
 							className="icon-chevron-left"

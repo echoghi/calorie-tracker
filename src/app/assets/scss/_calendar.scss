@@ -7,16 +7,14 @@
     &__container {
         display: inline-block;
         //border: 1px solid $athens-gray;
-        //box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
         border-radius: 3px;
         background: $white;
     }
 
     h4 {
         text-align: center;
-        margin: 0;
-        margin-bottom: 20px;
-        width: 80%
+        margin: 0 270px 20px 0;
     }
 
     &__head {
@@ -35,7 +33,7 @@
 
     &__toggle--month {
         text-align: center;
-        width: 80%;
+        margin-right: 270px;
 
         i {
             display: inline-block;
@@ -156,9 +154,10 @@
     border: 1px solid $athens-gray;
     height: 300px;
     margin: 0 0 0 30px;
-    min-width: 200px;
+    min-width: 240px;
     background: $white;
     vertical-align: top;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
 
     &__header {
         padding: 15px 20px;

@@ -32,9 +32,11 @@ import Settings from './app/components/Settings';
 const adminApp = combineReducers({
     adminState,
     navigationState
-}); 
+});
 
-export const store = compose(applyMiddleware(thunk))(createStore)(adminApp);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export const store = composeEnhancers(applyMiddleware(thunk))(createStore)(adminApp);
 
 ReactDOM.render(
     <MuiThemeProvider>
