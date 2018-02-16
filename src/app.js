@@ -1,10 +1,10 @@
 /**
  * Fitness Tracker 1.0.0
  * Copyright (c) Emile Choghi 2017
- * 
+ *
  */
 
- // SCSS
+// SCSS
 /*eslint-disable*/
 import Styles from './app/assets/scss/style.scss';
 import _ from 'lodash';
@@ -36,11 +36,13 @@ const adminApp = combineReducers({
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const store = composeEnhancers(applyMiddleware(thunk))(createStore)(adminApp);
+export const store = composeEnhancers(applyMiddleware(thunk))(createStore)(
+    adminApp
+);
 
 ReactDOM.render(
     <MuiThemeProvider>
-         <Provider store={store}>
+        <Provider store={store}>
             <Router history={hashHistory}>
                 <Route path={'/'} component={Home} />
                 <Route path={'/nutrition'} component={Nutrition} />

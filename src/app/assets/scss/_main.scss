@@ -3,7 +3,8 @@
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
-html, body {
+html,
+body {
     position: relative;
     font: $primary-font;
     font-family: 'Source Sans Pro', serif;
@@ -19,7 +20,7 @@ a {
     text-decoration: none;
 }
 
-.overview,
+.overview__container,
 .nutrition,
 .reports,
 .calendar,
@@ -28,7 +29,7 @@ a {
 }
 
 .clearfix:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
 }
