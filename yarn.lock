@@ -5578,8 +5578,8 @@ nodemailer-wellknown@0.1.10:
   resolved "https://registry.yarnpkg.com/nodemailer-wellknown/-/nodemailer-wellknown-0.1.10.tgz#586db8101db30cb4438eb546737a41aad0cf13d5"
 
 nodemailer@^4.0.1:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-4.4.0.tgz#571989e524a906fb83b1518f3e4c0d3140db24af"
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-4.4.2.tgz#f215fb88e8a1052f9f93083909e116d2b79fc8de"
 
 nodemon@^1.11.0:
   version "1.12.1"
@@ -6588,8 +6588,8 @@ react-addons-test-utils@^15.4.2:
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
 
 react-anime@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-anime/-/react-anime-2.0.1.tgz#9035ffcc17e1d633485f0370f73b2a479e2657e2"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-anime/-/react-anime-2.1.0.tgz#e11f0cbb868f7c13bba7821e9c5947325a1380c1"
   dependencies:
     animejs "^2.2.0"
     lodash.isequal "^4.5.0"
@@ -7842,8 +7842,8 @@ svgo@^0.7.0:
     whet.extend "~0.9.9"
 
 symbol-observable@^1.0.2:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
 
 symbol-observable@^1.0.4:
   version "1.1.0"

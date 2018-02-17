@@ -8,6 +8,7 @@
 /*eslint-disable*/
 import Styles from './app/assets/scss/style.scss';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 /*eslint-enable*/
 
 import React from 'react';

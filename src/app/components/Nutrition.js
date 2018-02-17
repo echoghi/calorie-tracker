@@ -8,7 +8,6 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import ReactTable from 'react-table';
-import Anime from 'react-anime';
 import 'react-table/react-table.css';
 import ReactTooltip from 'react-tooltip';
 import ProgressBar from 'react-progressbar.js';
@@ -38,14 +37,7 @@ class Nutrition extends React.Component {
         now: moment(),
         day: {},
         loading: true,
-        types: [
-            'Supplement',
-            'Mexican/Fast Food',
-            'Breakfast/Starbucks',
-            'Breakfast',
-            'Starbucks',
-            'Custom Meal'
-        ],
+        types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks', 'Custom Meal'],
         validation: {
             name: new inputObj(),
             type: new inputObj(),
@@ -57,7 +49,7 @@ class Nutrition extends React.Component {
     };
 
     componentWillMount() {
-        let { nutrition, activatePage, fetchData, loading, data } = this.props;
+        const { nutrition, activatePage, fetchData, loading, data } = this.props;
         window.scrollTo(0, 0);
 
         if (_.isEmpty(data) && !loading) {
@@ -232,18 +224,12 @@ class Nutrition extends React.Component {
 
         return (
             <div className="nutrition__overview--meals">
-                <h3>{`Logged Meals (${
-                    day.nutrition.meals ? day.nutrition.meals.length : 0
-                })`}</h3>
+                <h3>{`Logged Meals (${day.nutrition.meals ? day.nutrition.meals.length : 0})`}</h3>
                 <div className="add__meal">
                     <div className="add__meal--input">
                         <TextField
                             name="name"
-                            errorText={
-                                !validation.name.valid && validation.name.dirty
-                                    ? 'This field is required'
-                                    : ''
-                            }
+                            errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
                             onChange={this.onChange}
                             floatingLabelText="Name"
                             style={{
@@ -252,11 +238,7 @@ class Nutrition extends React.Component {
                         />
                         <AutoComplete
                             floatingLabelText="Type"
-                            errorText={
-                                !validation.type.valid && validation.type.dirty
-                                    ? 'This field is required'
-                                    : ''
-                            }
+                            errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
                             dataSource={this.state.types}
                             filter={AutoComplete.caseInsensitiveFilter}
                             onUpdateInput={this.typeOnChange}
@@ -270,10 +252,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="calories"
                             errorText={
-                                !validation.calories.valid &&
-                                validation.calories.dirty
-                                    ? 'This field is required'
-                                    : ''
+                                !validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''
                             }
                             onChange={this.onChange}
                             floatingLabelText="Calories"
@@ -284,10 +263,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="protein"
                             errorText={
-                                !validation.protein.valid &&
-                                validation.protein.dirty
-                                    ? 'This field is required'
-                                    : ''
+                                !validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''
                             }
                             onChange={this.onChange}
                             floatingLabelText="Protein"
@@ -300,10 +276,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="carbs"
                             errorText={
-                                !validation.carbs.valid &&
-                                validation.carbs.dirty
-                                    ? 'This field is required'
-                                    : ''
+                                !validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''
                             }
                             onChange={this.onChange}
                             floatingLabelText="Carbohydrates"
@@ -313,11 +286,7 @@ class Nutrition extends React.Component {
                         />
                         <TextField
                             name="fat"
-                            errorText={
-                                !validation.fat.valid && validation.fat.dirty
-                                    ? 'This field is required'
-                                    : ''
-                            }
+                            errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
                             onChange={this.onChange}
                             floatingLabelText="Fat"
                             style={{
@@ -346,8 +315,7 @@ class Nutrition extends React.Component {
 
         if (type === 'protein') {
             color = '#F5729C';
-            progress =
-                day.nutrition.protein / data.user.goals.nutrition.protein;
+            progress = day.nutrition.protein / data.user.goals.nutrition.protein;
             text = day.nutrition.protein / data.user.goals.nutrition.protein;
         } else if (type === 'carbs') {
             color = '#7BD4F8';
@@ -395,8 +363,7 @@ class Nutrition extends React.Component {
     renderCalorieBox() {
         let { day } = this.state;
         let { data } = this.props;
-        let calorieGoal =
-            day.fitness.calories || data.user.goals.nutrition.calories;
+        let calorieGoal = day.fitness.calories || data.user.goals.nutrition.calories;
         let progress = day.nutrition.calories / calorieGoal;
         let text = day.nutrition.calories / calorieGoal;
         let options = {
@@ -425,21 +392,11 @@ class Nutrition extends React.Component {
         return (
             <div className="nutrition__overview--calories">
                 <h3>Total Calories</h3>
-                <i
-                    className="icon-help-circle"
-                    data-for="calorie-tooltip"
-                    data-tip="tooltip"
-                />
-                <ReactTooltip
-                    class="calorie__tooltip"
-                    type="info"
-                    id="calorie-tooltip"
-                >
+                <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
+                <ReactTooltip class="calorie__tooltip" type="info" id="calorie-tooltip">
                     <span>
-                        The progress bar represents your calories consumed vs
-                        your calories burned. If you have not yet entered in
-                        your activity data for this day, the progress bar will
-                        default to your calorie goal.
+                        The progress bar represents your calories consumed vs your calories burned. If you have not yet
+                        entered in your activity data for this day, the progress bar will default to your calorie goal.
                     </span>
                 </ReactTooltip>
                 <Circle
@@ -459,12 +416,6 @@ class Nutrition extends React.Component {
         const { loading } = this.props;
         const { protein, carbs, fat } = day.nutrition || 0;
 
-        const transition = {
-            delay: (el, index) => index * 240,
-            duration: 2000,
-            opacity: [0, 1]
-        };
-
         return (
             <div>
                 <NavBar />
@@ -473,34 +424,32 @@ class Nutrition extends React.Component {
                     <div className="nutrition">
                         <h1>Nutrition</h1>
                         <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
-                        <Anime {...transition}>
-                            <div className="nutrition__overview">
-                                <div className="nutrition__overview--box">
-                                    <div className="nutrition__overview--head">
-                                        <h1>{protein}</h1>
-                                        <span>g</span>
-                                        <h3>Protein</h3>
-                                    </div>
-                                    {this.renderProgressBar('protein')}
+                        <div className="nutrition__overview">
+                            <div className="nutrition__overview--box">
+                                <div className="nutrition__overview--head">
+                                    <h1>{protein}</h1>
+                                    <span>g</span>
+                                    <h3>Protein</h3>
                                 </div>
-                                <div className="nutrition__overview--box">
-                                    <div className="nutrition__overview--head">
-                                        <h1>{carbs}</h1>
-                                        <span>g</span>
-                                        <h3>Carbohydrates</h3>
-                                    </div>
-                                    {this.renderProgressBar('carbs')}
-                                </div>
-                                <div className="nutrition__overview--box">
-                                    <div className="nutrition__overview--head">
-                                        <h1>{fat}</h1>
-                                        <span>g</span>
-                                        <h3>Fat</h3>
-                                    </div>
-                                    {this.renderProgressBar('fat')}
-                                </div>
+                                {this.renderProgressBar('protein')}
                             </div>
-                        </Anime>
+                            <div className="nutrition__overview--box">
+                                <div className="nutrition__overview--head">
+                                    <h1>{carbs}</h1>
+                                    <span>g</span>
+                                    <h3>Carbohydrates</h3>
+                                </div>
+                                {this.renderProgressBar('carbs')}
+                            </div>
+                            <div className="nutrition__overview--box">
+                                <div className="nutrition__overview--head">
+                                    <h1>{fat}</h1>
+                                    <span>g</span>
+                                    <h3>Fat</h3>
+                                </div>
+                                {this.renderProgressBar('fat')}
+                            </div>
+                        </div>
                         <div className="nutrition__overview">
                             {this.renderCalorieBox()}
                             {this.renderMealBox()}
