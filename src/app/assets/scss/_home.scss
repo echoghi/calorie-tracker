@@ -8,19 +8,71 @@
     }
 
     .overview {
-        margin: 40px 0;
+        margin: 40px auto;
         display: flex;
         justify-content: space-between;
 
         &--box {
             display: inline-block;
-            height: 270px;
+            position: relative;
             width: 31%;
             border: 1px solid $athens-gray;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-            border-radius: 3px;
+            border-top: 3px solid $curious-blue;
+            border-radius: 4px;
             background: $white;
             text-align: center;
+
+            .overview--breakdown {
+                display: flex;
+                border: 1px solid $athens-gray;
+                background: $athens-gray-alt;
+                padding: 10px 20px;
+
+                &-exercise {
+                    padding: 10px;
+                    display: inline-block;
+
+                    h4 {
+                        margin: 0;
+                        padding: 5px 0;
+                        text-align: left;
+                        font-size: 30px;
+                        position: relative;
+                    }
+
+                    span {
+                        width: 100%;
+                        padding: 5px 0;
+                        color: $regent-gray;
+                        font-size: 16px;
+                        text-transform: uppercase;
+                        text-align: left;
+                    }
+                }
+            }
+
+            .overview--head {
+                display: flex;
+                justify-content: space-between;
+                padding: 24px;
+
+                h4 {
+                    display: inline-flex;
+                    width: fit-content;
+                    margin: 0;
+                    font-size: 20px;
+
+                    &.percentage {
+                        &.positive {
+                            color: $lima;
+                        }
+
+                        &.negative {
+                            color: $flush-orange;
+                        }
+                    }
+                }
+            }
 
             h1,
             span {
@@ -42,7 +94,7 @@
             h3 {
                 font-size: 2rem;
                 text-transform: uppercase;
-                color: $cold-purple;
+                color: $oxford-blue;
             }
         }
     }

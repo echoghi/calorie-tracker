@@ -1,11 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-    activatePage,
-    handleNav,
-    fetchData,
-    loadNutritionData
-} from './actions';
+import { activatePage, handleNav, fetchData, loadNutritionData } from './actions';
 import moment from 'moment';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
@@ -114,22 +109,14 @@ class Calendar extends React.Component {
         let { time } = this.state;
         let now = moment();
         let animate;
-        let calorieGoal = day.fitness.calories
-            ? day.fitness.calories
-            : data.user.goals.nutrition.calories;
+        let calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
         let calorieProgress = day.nutrition.calories / calorieGoal;
-        let proteinProgress =
-            day.nutrition.protein / data.user.goals.nutrition.protein;
-        let carbProgress =
-            day.nutrition.carbs / data.user.goals.nutrition.carbs;
+        let proteinProgress = day.nutrition.protein / data.user.goals.nutrition.protein;
+        let carbProgress = day.nutrition.carbs / data.user.goals.nutrition.carbs;
         let fatProgress = day.nutrition.fat / data.user.goals.nutrition.fat;
 
         // Only animate today's calendar box
-        if (
-            now.date() === day.day.date() &&
-            now.month() === day.day.month() &&
-            now.year() === day.day.year()
-        ) {
+        if (now.date() === day.day.date() && now.month() === day.day.month() && now.year() === day.day.year()) {
             animate = false;
 
             if (day.day.month() === time.month()) {
@@ -138,10 +125,8 @@ class Calendar extends React.Component {
         }
 
         // Prevent progress bar bug by converting 100%+ to 100%
-        calorieProgress =
-            calorieProgress > 1 ? (calorieProgress = 1) : calorieProgress;
-        proteinProgress =
-            proteinProgress > 1 ? (proteinProgress = 1) : proteinProgress;
+        calorieProgress = calorieProgress > 1 ? (calorieProgress = 1) : calorieProgress;
+        proteinProgress = proteinProgress > 1 ? (proteinProgress = 1) : proteinProgress;
         carbProgress = carbProgress > 1 ? (carbProgress = 1) : carbProgress;
         fatProgress = fatProgress > 1 ? (fatProgress = 1) : fatProgress;
 
@@ -224,11 +209,7 @@ class Calendar extends React.Component {
         let { time } = this.state;
         let now = moment();
 
-        if (
-            now.date() === day.date() &&
-            now.month() === day.month() &&
-            now.year() === day.year()
-        ) {
+        if (now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
             if (day.month() !== time.month()) {
                 return 'day today inactive';
             } else {
@@ -244,11 +225,7 @@ class Calendar extends React.Component {
     renderExerciseIcon(data, day) {
         const { time } = this.state;
 
-        if (
-            data &&
-            data.fitness.exercise >= 30 &&
-            day.month() === time.month()
-        ) {
+        if (data && data.fitness.exercise >= 30 && day.month() === time.month()) {
             return (
                 <img
                     className="exercise__icon"
@@ -263,15 +240,8 @@ class Calendar extends React.Component {
     renderExerciseTooltip(data, day) {
         if (data && data.fitness.exercise >= 30) {
             return (
-                <ReactTooltip
-                    class="exercise_tip"
-                    type="info"
-                    id={`${day.date()}-${day.get('month')}`}
-                >
-                    <span>
-                        You met your exercise goal with {data.fitness.exercise}{' '}
-                        minutes of activity
-                    </span>
+                <ReactTooltip class="exercise_tip" type="info" id={`${day.date()}-${day.get('month')}`}>
+                    <span>You met your exercise goal with {data.fitness.exercise} minutes of activity</span>
                 </ReactTooltip>
             );
         }
@@ -404,12 +374,9 @@ class Calendar extends React.Component {
                 // Map data to calendar day
                 for (let k = 0; k < data.calendar.length; k++) {
                     if (
-                        data.calendar[k].day.date() ===
-                            calendar[i].days[j].date() &&
-                        data.calendar[k].day.month() ===
-                            calendar[i].days[j].month() &&
-                        data.calendar[k].day.year() ===
-                            calendar[i].days[j].year()
+                        data.calendar[k].day.date() === calendar[i].days[j].date() &&
+                        data.calendar[k].day.month() === calendar[i].days[j].month() &&
+                        data.calendar[k].day.year() === calendar[i].days[j].year()
                     ) {
                         calendar[i].data[j] = data.calendar[k];
                     }
@@ -418,33 +385,18 @@ class Calendar extends React.Component {
                 calendarDays.push(
                     <div
                         className={this.handleDayClass(calendar[i].days[j])}
-                        key={`${calendar[i].days[j].date()}-${calendar[i].days[
-                            j
-                        ].get('month')}-${Math.random()}`}
+                        key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}
                     >
-                        <div className="number">
-                            {calendar[i].days[j].date()}
-                        </div>
-                        {this.renderExerciseIcon(
-                            calendar[i].data[j],
-                            calendar[i].days[j]
-                        )}
-                        {calendar[i].data[j] &&
-                        moment().isSameOrAfter(calendar[i].days[j])
+                        <div className="number">{calendar[i].days[j].date()}</div>
+                        {this.renderExerciseIcon(calendar[i].data[j], calendar[i].days[j])}
+                        {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j])
                             ? this.renderDayProgressCircles(calendar[i].data[j])
                             : ''}
                         <span
-                            onClick={() =>
-                                this.navigateToNutrition(calendar[i].days[j])
-                            }
-                            className={this.handleIconClass(
-                                calendar[i].days[j]
-                            )}
+                            onClick={() => this.navigateToNutrition(calendar[i].days[j])}
+                            className={this.handleIconClass(calendar[i].days[j])}
                         />
-                        {this.renderExerciseTooltip(
-                            calendar[i].data[j],
-                            calendar[i].days[j]
-                        )}
+                        {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])}
                     </div>
                 );
             }
@@ -516,9 +468,7 @@ class Calendar extends React.Component {
                     </div>
                     <div className="legend__body--item">
                         <i className="icon-info" />
-                        <div className="legend__body--name">
-                            Nutrition breakdown
-                        </div>
+                        <div className="legend__body--name">Nutrition breakdown</div>
                     </div>
                 </div>
             </div>
@@ -530,22 +480,16 @@ class Calendar extends React.Component {
         let { loading, data } = this.props;
         let month = time.format('MMMM');
         let year = time.format('YYYY');
-
+        console.log(data);
         return (
             <div>
                 <NavBar />
 
                 <div className="calendar">
                     <div className="calendar__toggle--month">
-                        <i
-                            className="icon-chevron-left"
-                            onClick={() => this.changeMonth(false)}
-                        />
+                        <i className="icon-chevron-left" onClick={() => this.changeMonth(false)} />
                         <h2>{month}</h2>
-                        <i
-                            className="icon-chevron-right"
-                            onClick={() => this.changeMonth(true)}
-                        />
+                        <i className="icon-chevron-right" onClick={() => this.changeMonth(true)} />
                     </div>
                     <h4>{year}</h4>
                     <div className="calendar__wrapper">
@@ -559,9 +503,7 @@ class Calendar extends React.Component {
                                 <span>Fri</span>
                                 <span>Sat</span>
                             </div>
-                            {!_.isEmpty(data) && !loading
-                                ? this.renderDays()
-                                : this.renderPlaceholders()}
+                            {!_.isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
                         </div>
                         {this.renderLegend()}
                     </div>
