@@ -4,7 +4,6 @@
  *
  */
 
-// SCSS
 /*eslint-disable*/
 import Styles from './app/assets/scss/style.scss';
 import _ from 'lodash';
@@ -15,6 +14,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, hashHistory } from 'react-router';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import 'whatwg-fetch';
@@ -35,11 +35,34 @@ const adminApp = combineReducers({
     navigationState
 });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// Manually enable/disable Redux dev tools
+const enableReduxDevTools = true;
+let activeComposer;
 
-export const store = composeEnhancers(applyMiddleware(thunk))(createStore)(
-    adminApp
-);
+if (NODE_ENV === 'development' && enableReduxDevTools) {
+    activeComposer = composeWithDevTools({
+        features: {
+            pause: true, // start/pause recording of dispatched actions
+            lock: true, // lock/unlock dispatching actions and side effects
+            persist: true, // persist states on page reloading
+            export: true, // export history of actions in a file
+            jump: true, // jump back and forth (time travelling)
+            skip: true, // skip (cancel) actions
+            reorder: false, // drag and drop actions in the history list
+            dispatch: true, // dispatch custom actions or action creators
+            test: true // generate tests for the selected actions
+        },
+        serialize: {
+            options: undefined
+        },
+        latency: 600,
+        maxAge: 10
+    });
+} else {
+    activeComposer = compose;
+}
+
+export const store = activeComposer(applyMiddleware(thunk))(createStore)(adminApp);
 
 ReactDOM.render(
     <MuiThemeProvider>

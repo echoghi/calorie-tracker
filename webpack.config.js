@@ -25,8 +25,8 @@ module.exports = function(env) {
             minChunks: Infinity,
             filename: '[name].bundle.js'
         }),
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: nodeEnv
+        new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify(nodeEnv)
         }),
         new webpack.NamedModulesPlugin()
     ];
@@ -142,7 +142,7 @@ module.exports = function(env) {
                     }
                 },
 
-               {
+                {
                     test: /\.(scss|css)$/,
                     use: isProd // If Prod
                         ? ExtractTextPlugin.extract({
@@ -183,7 +183,7 @@ module.exports = function(env) {
                 },
                 {
                     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
-                    loader: "file-loader"
+                    loader: 'file-loader'
                 },
                 {
                     test: /\.(png|jpg)$/,
@@ -218,13 +218,7 @@ module.exports = function(env) {
             ]
         },
         resolve: {
-            extensions: [
-                '.webpack-loader.js',
-                '.web-loader.js',
-                '.loader.js',
-                '.js',
-                '.jsx'
-            ],
+            extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
             modules: [path.resolve(__dirname, 'node_modules'), sourcePath]
         },
 
