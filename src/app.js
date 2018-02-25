@@ -24,11 +24,7 @@ import { adminState, navigationState } from './app/components/reducers';
 
 //components
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Home from './app/components/Home';
-import Nutrition from './app/components/Nutrition';
-import Activity from './app/components/Activity';
-import Calendar from './app/components/Calendar';
-import Settings from './app/components/Settings';
+import AppIndex from './app/components/AppIndex';
 
 const adminApp = combineReducers({
     adminState,
@@ -69,11 +65,7 @@ ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
                 <Switch>
-                    <Route exact path={'/'} component={Home} />
-                    <Route exact path={'/nutrition'} component={Nutrition} />
-                    <Route exact path={'/activity'} component={Activity} />
-                    <Route exact path={'/calendar'} component={Calendar} />
-                    <Route exact path={'/settings'} component={Settings} />
+                    <Route path="/" component={AppIndex} />
                 </Switch>
             </BrowserRouter>
         </Provider>

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { activatePage, fetchData } from './actions';
 // Components
-import NavBar from './NavBar';
 import moment from 'moment';
 import PieChart from 'react-minimal-pie-chart';
 import { AreaChart } from 'react-easy-chart';
@@ -190,7 +189,6 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <NavBar />
                 <div className="overview__container">
                     <h1>Overview</h1>
                     <h3>{moment().format('MMMM YYYY')}</h3>

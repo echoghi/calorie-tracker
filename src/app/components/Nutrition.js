@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { activatePage, fetchData, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
-import NavBar from './NavBar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -418,8 +417,6 @@ class Nutrition extends React.Component {
 
         return (
             <div>
-                <NavBar />
-
                 {!loading && !this.state.loading && !_.isEmpty(day) ? (
                     <div className="nutrition">
                         <h1>Nutrition</h1>

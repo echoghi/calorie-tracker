@@ -6,8 +6,6 @@ import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
 import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
-// Components
-import NavBar from './NavBar';
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
 //import firebase from './firebase.js';
@@ -484,8 +482,6 @@ class Calendar extends React.Component {
         console.log(data);
         return (
             <div>
-                <NavBar />
-
                 <div className="calendar">
                     <div className="calendar__toggle--month">
                         <i className="icon-chevron-left" onClick={() => this.changeMonth(false)} />
