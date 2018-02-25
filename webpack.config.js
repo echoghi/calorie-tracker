@@ -25,9 +25,6 @@ module.exports = function(env) {
             minChunks: Infinity,
             filename: '[name].bundle.js'
         }),
-        new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify(nodeEnv)
-        }),
         new webpack.NamedModulesPlugin()
     ];
 
@@ -79,7 +76,10 @@ module.exports = function(env) {
                     `:` +
                     new Date().getMinutes()
             }),
-            new ExtractTextPlugin('styles.css')
+            new ExtractTextPlugin('styles.css'),
+            new webpack.DefinePlugin({
+                PRODUCTION: JSON.stringify(true)
+            })
         );
     } else {
         plugins.push(
@@ -108,6 +108,9 @@ module.exports = function(env) {
             new DuplicatePackageCheckerPlugin(),
             new StyleLintPlugin({
                 files: './app/assets/scss/*.scss'
+            }),
+            new webpack.DefinePlugin({
+                PRODUCTION: JSON.stringify(false)
             })
         );
     }

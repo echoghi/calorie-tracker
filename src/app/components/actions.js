@@ -1,4 +1,3 @@
-import { hashHistory } from 'react-router';
 export const LOAD_NUTRITION_DATA = 'LOAD_NUTRITION_DATA';
 export const RESET_NUTRITION_DATA = 'RESET_NUTRITION_DATA';
 export const LOADING_DATA = 'LOADING_DATA';
@@ -128,13 +127,7 @@ export function fetchData() {
                 }
 
                 // If the calendar entries are not caught up to today, create the missing entries
-                if (
-                    moment([
-                        moment().get('year'),
-                        moment().get('month'),
-                        moment().date()
-                    ]).isAfter(lastDay)
-                ) {
+                if (moment([moment().get('year'), moment().get('month'), moment().date()]).isAfter(lastDay)) {
                     let update = {};
                     let dayKey = user.calendar.length;
                     let daysToAdd = moment().diff(lastDay, 'days');
@@ -142,9 +135,7 @@ export function fetchData() {
                     for (let i = 0; i < daysToAdd; i++) {
                         lastDay.add(1, 'd');
 
-                        update[
-                            `users/-L1W7yroxzFV-EPpK63D/calendar/${dayKey}`
-                        ] = {
+                        update[`users/-L1W7yroxzFV-EPpK63D/calendar/${dayKey}`] = {
                             day: {
                                 month: lastDay.get('month'),
                                 date: lastDay.date(),
@@ -165,9 +156,12 @@ export function fetchData() {
                         };
 
                         // Save new entries to firebase and reload them into the app
-                        firebase.database().ref().update(update, () => {
-                            dispatch(reloadData());
-                        });
+                        firebase
+                            .database()
+                            .ref()
+                            .update(update, () => {
+                                dispatch(reloadData());
+                            });
 
                         dayKey++;
                     }
@@ -178,44 +172,5 @@ export function fetchData() {
                 }
             }
         });
-    };
-}
-
-export function handleNav(page) {
-    // Route to...
-    if (page === 'home') {
-        hashHistory.push('/');
-    } else {
-        hashHistory.push(`/${page}`);
-    }
-
-    return {
-        type: 'NAVIGATE',
-        data: page
-    };
-}
-
-export function postForm(data) {
-    return dispatch => {
-        dispatch(loadingData());
-        return fetch('/api/postForm', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json; charset=utf-8' }
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    dispatch(formSuccess());
-                    setTimeout(function() {
-                        dispatch(resetForm());
-                    }, 3000);
-                } else {
-                    dispatch(formError());
-                }
-            })
-            .catch(error => {
-                dispatch(formError());
-                throw error;
-            });
     };
 }

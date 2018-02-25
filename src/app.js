@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, hashHistory } from 'react-router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
@@ -39,7 +39,7 @@ const adminApp = combineReducers({
 const enableReduxDevTools = true;
 let activeComposer;
 
-if (NODE_ENV === 'development' && enableReduxDevTools) {
+if (enableReduxDevTools) {
     activeComposer = composeWithDevTools({
         features: {
             pause: true, // start/pause recording of dispatched actions
@@ -67,13 +67,15 @@ export const store = activeComposer(applyMiddleware(thunk))(createStore)(adminAp
 ReactDOM.render(
     <MuiThemeProvider>
         <Provider store={store}>
-            <Router history={hashHistory}>
-                <Route path={'/'} component={Home} />
-                <Route path={'/nutrition'} component={Nutrition} />
-                <Route path={'/activity'} component={Activity} />
-                <Route path={'/calendar'} component={Calendar} />
-                <Route path={'/settings'} component={Settings} />
-            </Router>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path={'/'} component={Home} />
+                    <Route exact path={'/nutrition'} component={Nutrition} />
+                    <Route exact path={'/activity'} component={Activity} />
+                    <Route exact path={'/calendar'} component={Calendar} />
+                    <Route exact path={'/settings'} component={Settings} />
+                </Switch>
+            </BrowserRouter>
         </Provider>
     </MuiThemeProvider>,
     document.getElementById('app')

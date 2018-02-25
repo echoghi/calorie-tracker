@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, handleNav, fetchData, loadNutritionData } from './actions';
+import { activatePage, fetchData, loadNutritionData } from './actions';
 import moment from 'moment';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
 import ReactTooltip from 'react-tooltip';
+import { Link } from 'react-router-dom';
 // Components
 import NavBar from './NavBar';
 // Images
@@ -19,7 +20,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     activatePage: page => dispatch(activatePage(page)),
-    handleNav: page => dispatch(handleNav(page)),
     fetchData: () => dispatch(fetchData()),
     loadNutritionData: data => dispatch(loadNutritionData(data))
 });
@@ -87,7 +87,7 @@ class Calendar extends React.Component {
     }
 
     navigateToNutrition(day) {
-        let { data, handleNav, loadNutritionData } = this.props;
+        let { data, loadNutritionData } = this.props;
         let dayData;
 
         for (let i = 0; i < data.calendar.length; i++) {
@@ -101,7 +101,6 @@ class Calendar extends React.Component {
         }
 
         loadNutritionData(dayData);
-        handleNav('nutrition');
     }
 
     renderDayProgressCircles(day) {
@@ -392,10 +391,12 @@ class Calendar extends React.Component {
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j])
                             ? this.renderDayProgressCircles(calendar[i].data[j])
                             : ''}
-                        <span
-                            onClick={() => this.navigateToNutrition(calendar[i].days[j])}
-                            className={this.handleIconClass(calendar[i].days[j])}
-                        />
+                        <Link to="/nutrition">
+                            <span
+                                onClick={() => this.navigateToNutrition(calendar[i].days[j])}
+                                className={this.handleIconClass(calendar[i].days[j])}
+                            />
+                        </Link>
                         {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])}
                     </div>
                 );
