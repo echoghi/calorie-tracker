@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, fetchData, resetNutritionData } from './actions';
+import { activatePage, resetNutritionData } from './actions';
 import moment from 'moment';
 // Components
 import TextField from 'material-ui/TextField';
@@ -21,8 +21,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     activatePage: page => dispatch(activatePage(page)),
-    resetNutritionData: () => dispatch(resetNutritionData()),
-    fetchData: () => dispatch(fetchData())
+    resetNutritionData: () => dispatch(resetNutritionData())
 });
 
 // Reusable validation constuctor for each input
@@ -48,12 +47,8 @@ class Nutrition extends React.Component {
     };
 
     componentWillMount() {
-        const { nutrition, activatePage, fetchData, loading, data } = this.props;
+        const { nutrition, activatePage } = this.props;
         window.scrollTo(0, 0);
-
-        if (_.isEmpty(data) && !loading) {
-            fetchData();
-        }
 
         if (!nutrition) {
             activatePage('nutrition');

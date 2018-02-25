@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchData } from './actions';
 
 // Components
 import NavBar from './NavBar';
@@ -9,7 +11,25 @@ import Nutrition from './Nutrition';
 import Activity from './Activity';
 import Settings from './Settings';
 
+const mapStateToProps = state => ({
+    home: state.navigationState.home,
+    data: state.adminState.data,
+    loading: state.adminState.loading
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchData: () => dispatch(fetchData())
+});
+
 class AppIndex extends React.PureComponent {
+    componentWillMount() {
+        const { fetchData, loading, data } = this.props;
+
+        if (_.isEmpty(data) && !loading) {
+            fetchData();
+        }
+    }
+
     render() {
         return (
             <div>
@@ -26,4 +46,4 @@ class AppIndex extends React.PureComponent {
     }
 }
 
-export default AppIndex;
+export default connect(mapStateToProps, mapDispatchToProps)(AppIndex);

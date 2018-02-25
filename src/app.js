@@ -1,6 +1,6 @@
 /**
- * Fitness Tracker 1.0.0
- * Copyright (c) Emile Choghi 2017
+ * Health Dashboard 1.0.0
+ * Copyright (c) Emile Choghi 2018
  *
  */
 

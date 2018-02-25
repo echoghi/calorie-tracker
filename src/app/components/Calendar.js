@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, fetchData, loadNutritionData } from './actions';
+import { activatePage, loadNutritionData } from './actions';
 import moment from 'moment';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
@@ -18,7 +18,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     activatePage: page => dispatch(activatePage(page)),
-    fetchData: () => dispatch(fetchData()),
     loadNutritionData: data => dispatch(loadNutritionData(data))
 });
 
@@ -28,15 +27,11 @@ class Calendar extends React.Component {
     };
 
     componentWillMount() {
-        const { calendar, activatePage, fetchData, data, loading } = this.props;
+        const { calendar, activatePage } = this.props;
         window.scrollTo(0, 0);
 
         if (!calendar) {
             activatePage('calendar');
-        }
-
-        if (_.isEmpty(data) && !loading) {
-            fetchData();
         }
         /*
 		let update = {};

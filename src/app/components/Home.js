@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, fetchData } from './actions';
+import { activatePage } from './actions';
 // Components
 import moment from 'moment';
 import PieChart from 'react-minimal-pie-chart';
@@ -15,8 +15,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page)),
-    fetchData: () => dispatch(fetchData())
+    activatePage: page => dispatch(activatePage(page))
 });
 
 class Home extends React.Component {
@@ -36,12 +35,8 @@ class Home extends React.Component {
     };
 
     componentWillMount() {
-        const { home, activatePage, fetchData, loading, data } = this.props;
+        const { home, activatePage } = this.props;
         window.scrollTo(0, 0);
-
-        if (_.isEmpty(data) && !loading) {
-            fetchData();
-        }
 
         if (!home) {
             activatePage('home');
