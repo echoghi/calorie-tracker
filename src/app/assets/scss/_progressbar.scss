@@ -1,0 +1,17 @@
+.progressbar {
+    &__text {
+        font-size: 1rem;
+        height: 15px;
+        padding: 0;
+        margin: 5px 0;
+    }
+
+    &__container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    div {
+        position: relative;
+    }
+}
