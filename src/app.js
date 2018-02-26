@@ -20,15 +20,14 @@ import thunk from 'redux-thunk';
 import 'whatwg-fetch';
 
 //Reducers
-import { adminState, navigationState } from './app/components/reducers';
+import { adminState } from './app/components/reducers';
 
 //components
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppIndex from './app/components/AppIndex';
 
 const adminApp = combineReducers({
-    adminState,
-    navigationState
+    adminState
 });
 
 // Manually enable/disable Redux dev tools

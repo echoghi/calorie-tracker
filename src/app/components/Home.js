@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage } from './actions';
 // Components
 import moment from 'moment';
 import PieChart from 'react-minimal-pie-chart';
@@ -9,13 +8,8 @@ import ProgressBar from 'react-progressbar.js';
 const { Line } = ProgressBar;
 
 const mapStateToProps = state => ({
-    home: state.navigationState.home,
     data: state.adminState.data,
     loading: state.adminState.loading
-});
-
-const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page))
 });
 
 class Home extends React.Component {
@@ -35,12 +29,7 @@ class Home extends React.Component {
     };
 
     componentWillMount() {
-        const { home, activatePage } = this.props;
         window.scrollTo(0, 0);
-
-        if (!home) {
-            activatePage('home');
-        }
     }
 
     renderProgressBar(num, color) {
@@ -194,4 +183,4 @@ class Home extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);

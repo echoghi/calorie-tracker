@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { activatePage, resetNutritionData } from './actions';
+import { withRouter } from 'react-router-dom';
+import { database } from './firebase.js';
 import moment from 'moment';
 // Components
 import TextField from 'material-ui/TextField';
@@ -11,18 +11,6 @@ import 'react-table/react-table.css';
 import ReactTooltip from 'react-tooltip';
 import ProgressBar from './ProgressBar.js';
 
-const mapStateToProps = state => ({
-    nutrition: state.navigationState.nutrition,
-    data: state.adminState.data,
-    activeDay: state.adminState.activeDay,
-    loading: state.adminState.loading
-});
-
-const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page)),
-    resetNutritionData: () => dispatch(resetNutritionData())
-});
-
 // Reusable validation constuctor for each input
 let inputObj = () => {
     this.valid = false;
@@ -30,65 +18,101 @@ let inputObj = () => {
 };
 
 class Nutrition extends React.Component {
-    state = {
-        now: moment(),
-        day: {},
-        loading: true,
-        types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks', 'Custom Meal'],
-        validation: {
-            name: new inputObj(),
-            type: new inputObj(),
-            calories: new inputObj(),
-            protein: new inputObj(),
-            carbs: new inputObj(),
-            fat: new inputObj()
-        }
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            now: moment(),
+            day: {},
+            user: {},
+            loading: true,
+            types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks', 'Custom Meal'],
+            validation: {
+                name: new inputObj(),
+                type: new inputObj(),
+                calories: new inputObj(),
+                protein: new inputObj(),
+                carbs: new inputObj(),
+                fat: new inputObj()
+            }
+        };
 
-    componentWillMount() {
-        const { nutrition, activatePage } = this.props;
         window.scrollTo(0, 0);
-
-        if (!nutrition) {
-            activatePage('nutrition');
-        }
     }
 
-    componentDidUpdate() {
-        if (_.isEmpty(this.state.day) && !_.isEmpty(this.props.data)) {
-            this.mapDayToState();
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.resetNutritionData();
+    componentDidMount() {
+        this.mapDayToState();
     }
 
     mapDayToState = () => {
-        let { data, activeDay } = this.props;
-        let { now, day, loading } = this.state;
+        const { location } = this.props;
+        let requestedDate = location.search ? location.search.split('=')[1].split('/') : null;
+        let { day, user } = this.state;
 
-        if (!_.isEmpty(activeDay)) {
-            day = activeDay;
+        requestedDate = requestedDate ? moment([requestedDate[2], requestedDate[0] - 1, requestedDate[1]]) : null;
+
+        const callback = state => {
+            this.setState(state);
+        };
+
+        const userRef = database
+            .ref('users')
+            .child('-L1W7yroxzFV-EPpK63D')
+            .child('user');
+
+        userRef.on('value', snapshot => {
+            user = snapshot.val();
+            callback({ user });
+        });
+
+        console.log('Day Queried', requestedDate);
+        if (requestedDate) {
+            const queryRef = database
+                .ref('users')
+                .child('-L1W7yroxzFV-EPpK63D')
+                .child('calendar')
+                .orderByChild('day');
+
+            queryRef.on('value', snapshot => {
+                snapshot.forEach(childSnapshot => {
+                    day = childSnapshot.val();
+
+                    const { year, date, month } = day.day;
+                    day.day = moment([year, month, date]);
+
+                    if (
+                        day.day.date() === requestedDate.date() &&
+                        day.day.month() === requestedDate.month() &&
+                        day.day.year() === requestedDate.year()
+                    ) {
+                        callback({ day, loading: false, requestedDate });
+                        return;
+                    }
+                });
+            });
         } else {
-            for (let i = 0; i < data.calendar.length; i++) {
-                if (
-                    data.calendar[i].day.date() === now.date() &&
-                    data.calendar[i].day.month() === now.month() &&
-                    data.calendar[i].day.year() === now.year()
-                ) {
-                    day = data.calendar[i];
-                }
-            }
+            const queryRef = database
+                .ref('users')
+                .child('-L1W7yroxzFV-EPpK63D')
+                .child('calendar')
+                .orderByChild('day')
+                .limitToLast(1);
+
+            queryRef.on('value', snapshot => {
+                day = snapshot.val();
+                let index = Object.keys(day)[0];
+
+                day = day[index];
+
+                const { year, date, month } = day.day;
+                day.day = moment([year, month, date]);
+
+                callback({ day, loading: false });
+            });
         }
-
-        loading = false;
-
-        this.setState({ day, loading });
     };
 
     renderMealsTable() {
-        let { day } = this.state;
+        const { day } = this.state;
 
         return (
             <ReactTable
@@ -213,7 +237,7 @@ class Nutrition extends React.Component {
     };
 
     renderMealBox() {
-        let { day, validation } = this.state;
+        const { day, validation } = this.state;
 
         return (
             <div className="nutrition__overview--meals">
@@ -300,29 +324,27 @@ class Nutrition extends React.Component {
     }
 
     renderProgressBar(type) {
-        let { day } = this.state;
-        let { data } = this.props;
+        const { day, user } = this.state;
         let color;
         let progress;
         let text;
-
         if (type === 'protein') {
             color = '#F5729C';
-            progress = day.nutrition.protein / data.user.goals.nutrition.protein;
-            text = day.nutrition.protein / data.user.goals.nutrition.protein;
+            progress = day.nutrition.protein / user.goals.nutrition.protein;
+            text = day.nutrition.protein / user.goals.nutrition.protein;
         } else if (type === 'carbs') {
             color = '#7BD4F8';
-            progress = day.nutrition.carbs / data.user.goals.nutrition.carbs;
-            text = day.nutrition.carbs / data.user.goals.nutrition.carbs;
+            progress = day.nutrition.carbs / user.goals.nutrition.carbs;
+            text = day.nutrition.carbs / user.goals.nutrition.carbs;
         } else {
             color = '#55F3B3';
-            progress = day.nutrition.fat / data.user.goals.nutrition.fat;
-            text = day.nutrition.fat / data.user.goals.nutrition.fat;
+            progress = day.nutrition.fat / user.goals.nutrition.fat;
+            text = day.nutrition.fat / user.goals.nutrition.fat;
         }
 
         text = `${Math.round(text * 100)}% of daily goal`;
 
-        let options = {
+        const options = {
             height: 12.5,
             color: color,
             trailColor: '#f4f4f4',
@@ -340,14 +362,13 @@ class Nutrition extends React.Component {
                 }
             }
         };
-        console.log(progress);
+
         return <ProgressBar progress={progress} options={options} />;
     }
 
     renderCalorieBox() {
-        let { day } = this.state;
-        let { data } = this.props;
-        let calorieGoal = day.fitness.calories || data.user.goals.nutrition.calories;
+        let { day, user } = this.state;
+        let calorieGoal = day.fitness.calories || user.goals.nutrition.calories;
         //let progress = day.nutrition.calories / calorieGoal;
         let text = day.nutrition.calories / calorieGoal;
         /*let options = {
@@ -390,13 +411,12 @@ class Nutrition extends React.Component {
     }
 
     render() {
-        const { day } = this.state;
-        const { loading } = this.props;
+        const { day, user } = this.state;
         const { protein, carbs, fat } = day.nutrition || 0;
 
         return (
             <div>
-                {!loading && !this.state.loading && !_.isEmpty(day) ? (
+                {!this.state.loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
                     <div className="nutrition">
                         <h1>Nutrition</h1>
                         <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
@@ -440,4 +460,4 @@ class Nutrition extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nutrition);
+export default withRouter(Nutrition);

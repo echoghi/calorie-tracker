@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchData } from './actions';
 
@@ -12,7 +12,6 @@ import Activity from './Activity';
 import Settings from './Settings';
 
 const mapStateToProps = state => ({
-    home: state.navigationState.home,
     data: state.adminState.data,
     loading: state.adminState.loading
 });
@@ -33,7 +32,7 @@ class AppIndex extends React.PureComponent {
     render() {
         return (
             <div>
-                <NavBar />
+                <NavBar history={this.props} />
                 <div>
                     <Route exact path="/" component={Home} />
                     <Route path="/settings" component={Settings} name="Settings" />
@@ -46,4 +45,4 @@ class AppIndex extends React.PureComponent {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppIndex);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppIndex));

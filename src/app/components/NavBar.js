@@ -10,15 +10,6 @@ import { connect } from 'react-redux';
 import { saveUserData } from './actions';
 import { auth, provider } from './firebase.js';
 
-const mapStateToProps = state => ({
-    data: state.adminState.data,
-    home: state.navigationState.home,
-    nutrition: state.navigationState.nutrition,
-    calendar: state.navigationState.calendar,
-    activity: state.navigationState.activity,
-    settings: state.navigationState.settings
-});
-
 const mapDispatchToProps = dispatch => ({
     saveUserData: data => dispatch(saveUserData(data))
 });
@@ -49,28 +40,13 @@ class NavBar extends React.Component {
     }
 
     handleNavClass(name) {
+        const { pathname } = this.props.history.location;
         let className;
 
-        if (this.props[name]) {
+        if (pathname === `/${name}`) {
             className = 'active';
         } else {
             className = '';
-        }
-
-        return className;
-    }
-
-    handleMenuClass() {
-        let className;
-
-        if (this.state.width < 760) {
-            if (this.state.menuOpen) {
-                className = 'navbar__menu active';
-            } else {
-                className = 'navbar__menu collapsed';
-            }
-        } else {
-            className = 'navbar__menu lg';
         }
 
         return className;
@@ -118,7 +94,7 @@ class NavBar extends React.Component {
     };
 
     renderGreeting() {
-        let { user, loading } = this.state;
+        const { user, loading } = this.state;
 
         const style = {
             height: 50,
@@ -132,9 +108,9 @@ class NavBar extends React.Component {
             return (
                 <div className="greeting">
                     <Paper style={style} zDepth={1} rounded={false} className="paper">
-                        <img className="user__img" src={this.state.user.photoURL} />
+                        <img className="user__img" src={user.photoURL} />
                     </Paper>
-                    <h3>Welcome back, {this.state.user.displayName}</h3>
+                    <h3>Welcome back, {user.displayName}</h3>
                 </div>
             );
         } else {
@@ -148,7 +124,7 @@ class NavBar extends React.Component {
     }
 
     renderUserMenu() {
-        let { user, loading } = this.state;
+        const { user, loading } = this.state;
 
         if (!user && loading) {
             return (
@@ -198,9 +174,9 @@ class NavBar extends React.Component {
                     <div />
                     <div />
                 </div>
-                <ul className={this.handleMenuClass()}>
+                <ul className="navbar__menu lg">
                     <Link to="/">
-                        <li className={this.handleNavClass('home')}>
+                        <li className={this.handleNavClass('')}>
                             <i className="icon-home" /> Overview
                         </li>
                     </Link>
@@ -234,4 +210,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(null, mapDispatchToProps)(NavBar);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activatePage, loadNutritionData } from './actions';
+import { loadNutritionData } from './actions';
 import moment from 'moment';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
@@ -8,31 +8,27 @@ import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
-//import firebase from './firebase.js';
 
 const mapStateToProps = state => ({
-    calendar: state.navigationState.calendar,
     data: state.adminState.data,
     loading: state.adminState.loading
 });
 
 const mapDispatchToProps = dispatch => ({
-    activatePage: page => dispatch(activatePage(page)),
     loadNutritionData: data => dispatch(loadNutritionData(data))
 });
 
 class Calendar extends React.Component {
-    state = {
-        time: moment()
-    };
-
-    componentWillMount() {
-        const { calendar, activatePage } = this.props;
+    constructor(props) {
+        super(props);
         window.scrollTo(0, 0);
 
-        if (!calendar) {
-            activatePage('calendar');
-        }
+        this.state = {
+            time: moment()
+        };
+    }
+
+    componentWillMount() {
         /*
 		let update = {};
 
@@ -384,7 +380,7 @@ class Calendar extends React.Component {
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j])
                             ? this.renderDayProgressCircles(calendar[i].data[j])
                             : ''}
-                        <Link to="/nutrition">
+                        <Link to={`/nutrition?day=${calendar[i].days[j].format('L')}`}>
                             <span
                                 onClick={() => this.navigateToNutrition(calendar[i].days[j])}
                                 className={this.handleIconClass(calendar[i].days[j])}
@@ -474,7 +470,7 @@ class Calendar extends React.Component {
         let { loading, data } = this.props;
         let month = time.format('MMMM');
         let year = time.format('YYYY');
-        console.log(data);
+        console.log('CALENDAR DATA', data);
         return (
             <div>
                 <div className="calendar">

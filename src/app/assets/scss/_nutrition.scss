@@ -14,7 +14,7 @@
             height: 270px;
             width: 31%;
             border: 1px solid $athens-gray;
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
+            //box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
             border-radius: 3px;
             background: $white;
             text-align: center;
@@ -50,7 +50,7 @@
             height: 450px;
             width: 48%;
             border: 1px solid $athens-gray;
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
+            //box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
             border-radius: 3px;
             background: $white;
             text-align: center;
@@ -73,7 +73,7 @@
             }
 
             .icon-help-circle {
-                opacity: .8;
+                opacity: 0.8;
                 position: absolute;
                 cursor: pointer;
                 color: $limed-spruce;
@@ -153,7 +153,7 @@
                 font-size: 20px;
                 font-weight: bold;
                 padding: 10px;
-                opacity: .8;
+                opacity: 0.8;
 
                 &.thead__name {
                     width: 40%;
