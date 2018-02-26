@@ -1,4 +1,3 @@
-export const LOAD_NUTRITION_DATA = 'LOAD_NUTRITION_DATA';
 export const LOADING_DATA = 'LOADING_DATA';
 export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const DATA_ERROR = 'DATA_ERROR';
@@ -22,13 +21,6 @@ export function reloadData() {
             console.log('Data update loaded:', user);
             dispatch(receiveData(user));
         });
-    };
-}
-
-export function loadNutritionData(data) {
-    return {
-        type: LOAD_NUTRITION_DATA,
-        data
     };
 }
 

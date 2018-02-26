@@ -9,11 +9,6 @@ export function adminState(
     action
 ) {
     switch (action.type) {
-        case 'LOAD_NUTRITION_DATA':
-            return Object.assign({}, state, {
-                activeDay: action.data
-            });
-
         case 'LOADING_DATA':
             return Object.assign({}, state, {
                 loading: true

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadNutritionData } from './actions';
 import moment from 'moment';
 import ProgressBar from 'react-progressbar.js';
 let { Circle } = ProgressBar;
@@ -12,10 +11,6 @@ import runnerIcon from '../assets/images/apple-runner.png';
 const mapStateToProps = state => ({
     data: state.adminState.data,
     loading: state.adminState.loading
-});
-
-const mapDispatchToProps = dispatch => ({
-    loadNutritionData: data => dispatch(loadNutritionData(data))
 });
 
 class Calendar extends React.Component {
@@ -73,23 +68,6 @@ class Calendar extends React.Component {
 
 		firebase.database().ref().update(update);
 		*/
-    }
-
-    navigateToNutrition(day) {
-        let { data, loadNutritionData } = this.props;
-        let dayData;
-
-        for (let i = 0; i < data.calendar.length; i++) {
-            if (
-                data.calendar[i].day.date() === day.date() &&
-                data.calendar[i].day.month() === day.month() &&
-                data.calendar[i].day.year() === day.year()
-            ) {
-                dayData = data.calendar[i];
-            }
-        }
-
-        loadNutritionData(dayData);
     }
 
     renderDayProgressCircles(day) {
@@ -381,10 +359,7 @@ class Calendar extends React.Component {
                             ? this.renderDayProgressCircles(calendar[i].data[j])
                             : ''}
                         <Link to={`/nutrition?day=${calendar[i].days[j].format('L')}`}>
-                            <span
-                                onClick={() => this.navigateToNutrition(calendar[i].days[j])}
-                                className={this.handleIconClass(calendar[i].days[j])}
-                            />
+                            <span className={this.handleIconClass(calendar[i].days[j])} />
                         </Link>
                         {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])}
                     </div>
@@ -501,4 +476,4 @@ class Calendar extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
+export default connect(mapStateToProps)(Calendar);
