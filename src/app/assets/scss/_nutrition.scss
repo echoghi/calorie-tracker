@@ -19,6 +19,11 @@
             background: $white;
             text-align: center;
 
+            &.large {
+                width: 100%;
+                display: block
+            }
+
             h1,
             span {
                 display: inline-block;

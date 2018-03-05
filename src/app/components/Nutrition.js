@@ -59,7 +59,7 @@ class Nutrition extends React.Component {
             .child('-L1W7yroxzFV-EPpK63D')
             .child('user');
 
-        userRef.on('value', snapshot => {
+        userRef.once('value', snapshot => {
             user = snapshot.val();
             callback({ user });
         });

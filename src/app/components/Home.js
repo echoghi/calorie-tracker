@@ -3,9 +3,15 @@ import { connect } from 'react-redux';
 // Components
 import moment from 'moment';
 import PieChart from 'react-minimal-pie-chart';
-import { AreaChart } from 'react-easy-chart';
 import ProgressBar from 'react-progressbar.js';
 const { Line } = ProgressBar;
+import { Group } from '@vx/group';
+import { curveMonotoneX } from '@vx/curve';
+import { scaleTime, scaleLinear } from '@vx/scale';
+import { AreaClosed } from '@vx/shape';
+import { AxisLeft, AxisBottom } from '@vx/axis';
+import { LinearGradient } from '@vx/gradient';
+import { extent, max } from 'd3-array';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -13,23 +19,31 @@ const mapStateToProps = state => ({
 });
 
 class Home extends React.Component {
-    state = {
-        loading: true,
-        error: null,
-        exerciseDays: {
-            on: 0,
-            off: 0
-        },
-        calorieBalance: {
-            netPositive: false,
-            value: 0
-        },
-        graphData: [[], []],
-        percentage: 0
-    };
+    constructor(props) {
+        super(props);
 
-    componentWillMount() {
+        this.state = {
+            width: window.innerWidth,
+            loading: true,
+            error: null,
+            exerciseDays: {
+                on: 0,
+                off: 0
+            },
+            calorieBalance: {
+                netPositive: false,
+                value: 0
+            },
+            graphData: [[], []],
+            percentage: 0
+        };
+
+        window.addEventListener('resize', this.updateWindowDimensions);
         window.scrollTo(0, 0);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
     renderProgressBar(num, color) {
@@ -58,6 +72,77 @@ class Home extends React.Component {
         );
     }
 
+    updateWindowDimensions = () => {
+        this.setState({ width: window.innerWidth });
+    };
+
+    renderCalorieGraph(graphData) {
+        const width = this.state.width - 350;
+        const height = 600;
+        const margin = {
+            top: 30,
+            bottom: 40,
+            left: 70,
+            right: 30
+        };
+        const xMax = width - margin.left - margin.right;
+        const yMax = height - margin.top - margin.bottom;
+        const x = d => new Date(d.day); // d.date is unix timestamps
+        const y = d => d.calories;
+
+        const xScale = scaleTime({
+            range: [0, xMax],
+            domain: extent(graphData[0], x)
+        });
+
+        const yScale = scaleLinear({
+            range: [yMax, 0],
+            domain: [-1500, max(graphData[0], y)]
+        });
+        console.log(graphData[0]);
+        return (
+            <svg width={width} height={height}>
+                <LinearGradient from="#8e81e3" to="#a6c1ee" id="gradient" />
+                <linearGradient id="gradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#FFFFFF" stopOpacity={1} />
+                </linearGradient>
+                <Group top={margin.top} left={margin.left}>
+                    <AxisLeft
+                        scale={yScale}
+                        top={0}
+                        left={0}
+                        label={'Net Calories'}
+                        stroke={'#1b1a1e'}
+                        tickTextFill={'#1b1a1e'}
+                    />
+                    <AxisBottom scale={xScale} top={yMax} label={'Years'} stroke={'#1b1a1e'} tickTextFill={'#1b1a1e'} />
+                    <AreaClosed
+                        data={graphData[0]}
+                        xScale={xScale}
+                        yScale={yScale}
+                        x={x}
+                        y={y}
+                        stroke=""
+                        fill={'url(#gradient)'}
+                        curve={curveMonotoneX}
+                    />
+                    <AreaClosed
+                        data={graphData[1]}
+                        xScale={xScale}
+                        yScale={yScale}
+                        x={x}
+                        y={y}
+                        stroke={'red'}
+                        strokeOpacity={0.7}
+                        strokeDasharray={'5, 5'}
+                        fill={'url(#gradient2)'}
+                    />
+                </Group>
+            </svg>
+        );
+    }
+
     renderStatBoxes() {
         const { data } = this.props;
         let { calorieBalance, exerciseDays, percentage, graphData, userData } = this.state;
@@ -73,12 +158,15 @@ class Home extends React.Component {
             for (let i = 0, intake = 0, output = 0; i < calendar.length; i++) {
                 // Calorie Balance Stats
                 intake += calendar[i].nutrition.calories;
-                output += calendar[i].fitness.calories;
+                output += calendar[i].fitness.calories > 0 ? calendar[i].fitness.calories : 2000;
 
                 // Graph Data
-                const calDay = calendar[i].day.format('D-MMM-YY');
-                graphData[0].push({ x: calDay, y: calendar[i].nutrition.calories - calendar[i].fitness.calories });
-                graphData[1].push({ x: calDay, y: 0 });
+                const calDay = calendar[i].day.toDate();
+                graphData[0].push({
+                    day: calDay,
+                    calories: calendar[i].nutrition.calories - calendar[i].fitness.calories
+                });
+                graphData[1].push({ day: calDay, calories: 0 });
 
                 // Exercise Days Stat
                 calendar[i].fitness.exercise >= 30 ? exerciseDays.on++ : exerciseDays.off++;
@@ -99,71 +187,60 @@ class Home extends React.Component {
         }
 
         return (
-            <div className="overview">
-                <div className="overview--box">
-                    <div className="overview--head">
-                        <h4 className="title">Exercise Days</h4>
-                        <h4 className="percentage positive">{`${percentage}%`}</h4>
-                    </div>
-                    <div className="overview--body">
-                        {exerciseDays.on || exerciseDays.off ? (
-                            <PieChart
-                                lineWidth={50}
-                                style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}
-                                data={[
-                                    { value: exerciseDays.on, key: 1, color: '#E38627' },
-                                    { value: exerciseDays.off, key: 2, color: '#C13C37' }
-                                ]}
-                            />
-                        ) : (
-                            ''
-                        )}
-                    </div>
-                    <div className="overview--breakdown">
-                        <div className="overview--breakdown-exercise">
-                            <h4>{exerciseDays.on}</h4>
-                            <span>Exercise Days</span>
-                            {this.renderProgressBar(exerciseDays.on, '#E38627')}
+            <div>
+                <div className="overview">
+                    <div className="overview--box">
+                        <div className="overview--head">
+                            <h4 className="title">Exercise Days</h4>
+                            <h4 className="percentage positive">{`${percentage}%`}</h4>
                         </div>
-                        <div className="overview--breakdown-exercise">
-                            <h4>{exerciseDays.off}</h4>
-                            <span>Rest Days</span>
-                            {this.renderProgressBar(exerciseDays.off, '#C13C37')}
+                        <div className="overview--body">
+                            {exerciseDays.on || exerciseDays.off ? (
+                                <PieChart
+                                    lineWidth={50}
+                                    style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}
+                                    data={[
+                                        { value: exerciseDays.on, key: 1, color: '#E38627' },
+                                        { value: exerciseDays.off, key: 2, color: '#C13C37' }
+                                    ]}
+                                />
+                            ) : (
+                                ''
+                            )}
+                        </div>
+                        <div className="overview--breakdown">
+                            <div className="overview--breakdown-exercise">
+                                <h4>{exerciseDays.on}</h4>
+                                <span>Exercise Days</span>
+                                {this.renderProgressBar(exerciseDays.on, '#E38627')}
+                            </div>
+                            <div className="overview--breakdown-exercise">
+                                <h4>{exerciseDays.off}</h4>
+                                <span>Rest Days</span>
+                                {this.renderProgressBar(exerciseDays.off, '#C13C37')}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="overview--box">
+                        <div className="overview--head">
+                            <h4 className="title">Caloric {calorieBalance.netPositive ? 'Surplus' : 'Deficit'}</h4>
+                            <h4 className="percentage">{calorieBalance.value}cal</h4>
+                        </div>
+                    </div>
+                    <div className="overview--box">
+                        <div className="overview--head">
+                            <h1>0</h1>
+                            <h3>Consecutive Exercise Days</h3>
                         </div>
                     </div>
                 </div>
-                <div className="overview--box">
-                    <div className="overview--head">
-                        <h4 className="title">Caloric {calorieBalance.netPositive ? 'Surplus' : 'Deficit'}</h4>
-                        <h4 className="percentage">{calorieBalance.value}cal</h4>
-                    </div>
-                    <div className="overview--body">
-                        {graphData[0].length ? (
-                            <AreaChart
-                                axes
-                                grid
-                                verticalGrid
-                                interpolate={'cardinal'}
-                                xType={'time'}
-                                xTicks={4}
-                                yTicks={10}
-                                yDomainRange={[-1000, 300]}
-                                areaColors={['blue', 'black']}
-                                margin={{ top: 25, right: 0, bottom: 25, left: 0 }}
-                                axisLabels={{ x: 'Day', y: 'Net Calories' }}
-                                width={450}
-                                height={275}
-                                data={graphData}
-                            />
-                        ) : (
-                            ''
-                        )}
-                    </div>
-                </div>
-                <div className="overview--box">
-                    <div className="overview--head">
-                        <h1>0</h1>
-                        <h3>Consecutive Exercise Days</h3>
+                <div className="overview">
+                    <div className="overview--box" style={{ width: '100%', display: 'block' }}>
+                        <div className="overview--head">
+                            <h4 className="title">Caloric {calorieBalance.netPositive ? 'Surplus' : 'Deficit'}</h4>
+                            <h4 className="percentage">{calorieBalance.value}cal</h4>
+                        </div>
+                        <div className="overview--body">{this.renderCalorieGraph(graphData)}</div>
                     </div>
                 </div>
             </div>

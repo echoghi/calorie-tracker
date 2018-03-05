@@ -67,16 +67,16 @@ export function fetchData() {
 
             // Convert days to moment objects
             for (let i = 0; i < user.calendar.length; i++) {
-                let { year, date, month } = user.calendar[i].day;
+                const { year, date, month } = user.calendar[i].day;
                 user.calendar[i].day = moment([year, month, date]);
                 lastDay = user.calendar[i].day;
             }
 
             // If the calendar entries are not caught up to today, create the missing entries
             if (moment([moment().get('year'), moment().get('month'), moment().date()]).isAfter(lastDay)) {
-                let update = {};
+                const daysToAdd = moment().diff(lastDay, 'days');
                 let dayKey = user.calendar.length;
-                let daysToAdd = moment().diff(lastDay, 'days');
+                let update = {};
 
                 for (let i = 0; i < daysToAdd; i++) {
                     lastDay.add(1, 'd');
@@ -87,7 +87,6 @@ export function fetchData() {
                             date: lastDay.date(),
                             year: lastDay.get('year')
                         },
-                        mood: 4,
                         nutrition: {
                             calories: 0,
                             fat: 0,
