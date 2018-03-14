@@ -84,7 +84,7 @@ class Nutrition extends React.Component {
                         day.day.month() === requestedDate.month() &&
                         day.day.year() === requestedDate.year()
                     ) {
-                        callback({ day, loading: false, requestedDate });
+                        callback({ day, loading: false, requestedDate, dayIndex: Object.keys(day)[0] });
                         return;
                     }
                 });
@@ -99,14 +99,14 @@ class Nutrition extends React.Component {
 
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
-                let index = Object.keys(day)[0];
+                const index = Object.keys(day)[0];
 
                 day = day[index];
 
                 const { year, date, month } = day.day;
                 day.day = moment([year, month, date]);
 
-                callback({ day, loading: false });
+                callback({ day, loading: false, dayIndex: index });
             });
         }
     };
@@ -172,10 +172,11 @@ class Nutrition extends React.Component {
      * @return valid - validation status
      */
     validateInputs() {
+        let { validation } = this.state;
         let valid = true;
         // Check for incompleted fields
-        for (let key in this.state.validation) {
-            if (!this.state.validation[key]['valid']) {
+        for (let key in validation) {
+            if (!validation[key]['valid']) {
                 return false;
             }
         }
@@ -184,55 +185,76 @@ class Nutrition extends React.Component {
     }
 
     onChange = event => {
-        // create a shallow copy of the state to mutate
-        let obj = Object.assign({}, this.state);
-        // Set value in obj to eventually send to the state
-        obj[event.target.name] = event.target.value;
+        const obj = _.cloneDeep(this.state);
         // Mark input as dirty (interacted with)
-        obj['validation'][event.target.name]['dirty'] = true;
-
-        // Remove non-numbers from macro inputs
-        if (event.target.name !== 'name') {
-            event.target.value = event.target.value.replace(/[^0-9]/g, '');
-            obj[event.target.name] = event.target.value;
-        }
+        obj.validation[event.target.name].dirty = true;
+        obj[event.target.name] = event.target.value;
 
         // If there is any value, mark it valid
         if (event.target.value !== '') {
-            obj['validation'][event.target.name]['valid'] = true;
+            obj.validation[event.target.name].valid = true;
         } else {
-            obj['validation'][event.target.name]['valid'] = false;
+            obj.validation[event.target.name].valid = false;
         }
 
         this.setState(obj);
     };
 
     typeOnChange = type => {
-        // create a shallow copy of the state to mutate
-        let obj = Object.assign({}, this.state);
-        // Set value in obj to eventually send to the state
-        obj['type'] = type;
+        const obj = _.cloneDeep(this.state);
         // Mark input as dirty (interacted with)
-        obj['validation']['type']['dirty'] = true;
-        obj['validation']['type']['valid'] = true;
+        obj.validation.type.dirty = true;
+        obj.type = type;
+
+        // If there is any value, mark it valid
+        if (type !== '') {
+            obj.validation.type.valid = true;
+        } else {
+            obj.validation.type.valid = false;
+        }
 
         this.setState(obj);
     };
 
     onSubmit = () => {
+        const { dayIndex, calories, fat, carbs, protein, validation } = this.state;
+
         if (this.validateInputs()) {
-            console.log('submit!');
+            let day;
+
+            const queryRef = database
+                .ref('users')
+                .child('-L1W7yroxzFV-EPpK63D')
+                .child(`calendar/${dayIndex}`);
+
+            queryRef.on('value', snapshot => {
+                day = snapshot.val();
+            });
+
+            day.nutrition.calories += parseInt(calories);
+            day.nutrition.fat += parseInt(fat);
+            day.nutrition.protein += parseInt(protein);
+            day.nutrition.carbs += parseInt(carbs);
+
+            document.getElementById('name').value = '';
+            document.getElementById('type').value = '';
+            document.getElementById('calories').value = '';
+            document.getElementById('carbs').value = '';
+            document.getElementById('fat').value = '';
+            document.getElementById('protein').value = '';
+
+            this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
+                queryRef.update(day);
+            });
         } else {
-            console.log('form error!');
-            // create a shallow copy of the state to mutate
-            let obj = Object.assign({}, this.state);
             // If there is an invalid input, mark all as dirty on submit to alert the user
-            for (let attr in this.state.validation) {
-                if (obj['validation'][attr]) {
-                    obj['validation'][attr]['dirty'] = true;
+            for (let attr in validation) {
+                if (validation[attr]) {
+                    validation[attr].dirty = true;
                 }
             }
-            this.setState(obj);
+
+            this.setState({ validation });
         }
     };
 
@@ -242,10 +264,11 @@ class Nutrition extends React.Component {
         return (
             <div className="nutrition__overview--meals">
                 <h3>{`Logged Meals (${day.nutrition.meals ? day.nutrition.meals.length : 0})`}</h3>
-                <div className="add__meal">
+                <form className="add__meal">
                     <div className="add__meal--input">
                         <TextField
                             name="name"
+                            id="name"
                             errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
                             onChange={this.onChange}
                             floatingLabelText="Name"
@@ -255,6 +278,7 @@ class Nutrition extends React.Component {
                         />
                         <AutoComplete
                             floatingLabelText="Type"
+                            id="type"
                             errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
                             dataSource={this.state.types}
                             filter={AutoComplete.caseInsensitiveFilter}
@@ -268,6 +292,7 @@ class Nutrition extends React.Component {
                     <div className="add__meal--input">
                         <TextField
                             name="calories"
+                            id="calories"
                             errorText={
                                 !validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''
                             }
@@ -279,6 +304,7 @@ class Nutrition extends React.Component {
                         />
                         <TextField
                             name="protein"
+                            id="protein"
                             errorText={
                                 !validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''
                             }
@@ -292,6 +318,7 @@ class Nutrition extends React.Component {
                     <div className="add__meal--input">
                         <TextField
                             name="carbs"
+                            id="carbs"
                             errorText={
                                 !validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''
                             }
@@ -303,6 +330,7 @@ class Nutrition extends React.Component {
                         />
                         <TextField
                             name="fat"
+                            id="fat"
                             errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
                             onChange={this.onChange}
                             floatingLabelText="Fat"
@@ -318,7 +346,7 @@ class Nutrition extends React.Component {
                         backgroundColor="#ed5454"
                         labelColor="#fff"
                     />
-                </div>
+                </form>
             </div>
         );
     }

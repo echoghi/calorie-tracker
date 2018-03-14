@@ -16,11 +16,12 @@ const mapStateToProps = state => ({
 class Calendar extends React.Component {
     constructor(props) {
         super(props);
-        window.scrollTo(0, 0);
 
         this.state = {
             time: moment()
         };
+
+        window.scrollTo(0, 0);
     }
 
     componentWillMount() {
@@ -72,14 +73,17 @@ class Calendar extends React.Component {
 
     renderDayProgressCircles(day) {
         const { data } = this.props;
+        const { calories, protein, carbs, fat } = day.nutrition;
         let { time } = this.state;
         let now = moment();
         let animate;
-        let calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
-        let calorieProgress = day.nutrition.calories / calorieGoal;
-        let proteinProgress = day.nutrition.protein / data.user.goals.nutrition.protein;
-        let carbProgress = day.nutrition.carbs / data.user.goals.nutrition.carbs;
-        let fatProgress = day.nutrition.fat / data.user.goals.nutrition.fat;
+        const calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
+        let calorieProgress = calories / calorieGoal;
+        let proteinProgress = protein / data.user.goals.nutrition.protein;
+        let carbProgress = carbs / data.user.goals.nutrition.carbs;
+        let fatProgress = fat / data.user.goals.nutrition.fat;
+
+        const trailColor = '#f4f4f4';
 
         // Only animate today's calendar box
         if (now.date() === day.day.date() && now.month() === day.day.month() && now.year() === day.day.year()) {
@@ -99,7 +103,7 @@ class Calendar extends React.Component {
         const calorieOptions = {
             strokeWidth: 6,
             color: '#8E81E3',
-            trailColor: '#f4f4f4'
+            trailColor
         };
         const calorieContainerStyle = {
             width: '90px',
@@ -109,7 +113,7 @@ class Calendar extends React.Component {
         const proteinOptions = {
             strokeWidth: 7,
             color: '#F5729C',
-            trailColor: '#f4f4f4'
+            trailColor
         };
         const proteinContainerStyle = {
             width: '70px',
@@ -119,7 +123,7 @@ class Calendar extends React.Component {
         const carbOptions = {
             strokeWidth: 8,
             color: '#7BD4F8',
-            trailColor: '#f4f4f4'
+            trailColor
         };
         const carbContainerStyle = {
             width: '50px',
@@ -129,7 +133,7 @@ class Calendar extends React.Component {
         const fatOptions = {
             strokeWidth: 9,
             color: '#55F3B3',
-            trailColor: '#f4f4f4'
+            trailColor
         };
         const fatContainerStyle = {
             width: '30px',
