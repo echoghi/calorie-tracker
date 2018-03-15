@@ -157,15 +157,18 @@ class Home extends React.Component {
 
             for (let i = 0, intake = 0, output = 0; i < calendar.length; i++) {
                 // Calorie Balance Stats
-                intake += calendar[i].nutrition.calories;
+                intake += calendar[i].nutrition.calories > 0 ? calendar[i].nutrition.calories : 2000;
                 output += calendar[i].fitness.calories > 0 ? calendar[i].fitness.calories : 2000;
 
                 // Graph Data
                 const calDay = calendar[i].day.toDate();
                 graphData[0].push({
                     day: calDay,
-                    calories: calendar[i].nutrition.calories - calendar[i].fitness.calories
+                    calories:
+                        (calendar[i].nutrition.calories > 0 ? calendar[i].nutrition.calories : 2000) -
+                        (calendar[i].fitness.calories > 0 ? calendar[i].fitness.calories : 2000)
                 });
+
                 graphData[1].push({ day: calDay, calories: 0 });
 
                 // Exercise Days Stat

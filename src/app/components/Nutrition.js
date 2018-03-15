@@ -5,6 +5,7 @@ import moment from 'moment';
 // Components
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
 import AutoComplete from 'material-ui/AutoComplete';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -20,12 +21,14 @@ let inputObj = () => {
 class Nutrition extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             now: moment(),
             day: {},
             user: {},
             loading: true,
-            types: ['Supplement', 'Mexican/Fast Food', 'Breakfast/Starbucks', 'Breakfast', 'Starbucks', 'Custom Meal'],
+            saveMeal: false,
+            mealTypes: [],
             validation: {
                 name: new inputObj(),
                 type: new inputObj(),
@@ -46,7 +49,9 @@ class Nutrition extends React.Component {
     mapDayToState = () => {
         const { location } = this.props;
         let requestedDate = location.search ? location.search.split('=')[1].split('/') : null;
-        let { day, user } = this.state;
+        let { day, user, meals, mealTypes } = this.state;
+
+        let dayIndex;
 
         requestedDate = requestedDate ? moment([requestedDate[2], requestedDate[0] - 1, requestedDate[1]]) : null;
 
@@ -64,6 +69,20 @@ class Nutrition extends React.Component {
             callback({ user });
         });
 
+        const mealTypeRef = database
+            .ref('users')
+            .child('-L1W7yroxzFV-EPpK63D')
+            .child('mealTypes');
+
+        mealTypeRef.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                let mealType = childSnapshot.val();
+                mealTypes.push(mealType.type);
+            });
+
+            callback({ mealTypes });
+        });
+
         console.log('Day Queried', requestedDate);
         if (requestedDate) {
             const queryRef = database
@@ -76,6 +95,8 @@ class Nutrition extends React.Component {
                 snapshot.forEach(childSnapshot => {
                     day = childSnapshot.val();
 
+                    dayIndex = Object.keys(day)[0];
+
                     const { year, date, month } = day.day;
                     day.day = moment([year, month, date]);
 
@@ -84,8 +105,16 @@ class Nutrition extends React.Component {
                         day.day.month() === requestedDate.month() &&
                         day.day.year() === requestedDate.year()
                     ) {
-                        callback({ day, loading: false, requestedDate, dayIndex: Object.keys(day)[0] });
-                        return;
+                        const mealsRef = database
+                            .ref('users')
+                            .child('-L1W7yroxzFV-EPpK63D')
+                            .child(`calendar/${dayIndex}/nutrition/meals`);
+
+                        mealsRef.on('value', snapshot => {
+                            meals = snapshot.val();
+
+                            callback({ meals, day, loading: false, requestedDate, dayIndex });
+                        });
                     }
                 });
             });
@@ -99,24 +128,33 @@ class Nutrition extends React.Component {
 
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
-                const index = Object.keys(day)[0];
+                dayIndex = Object.keys(day)[0];
 
-                day = day[index];
+                day = day[dayIndex];
 
                 const { year, date, month } = day.day;
                 day.day = moment([year, month, date]);
 
-                callback({ day, loading: false, dayIndex: index });
+                const mealsRef = database
+                    .ref('users')
+                    .child('-L1W7yroxzFV-EPpK63D')
+                    .child(`calendar/${dayIndex}/nutrition/meals`);
+
+                mealsRef.on('value', snapshot => {
+                    meals = snapshot.val();
+
+                    callback({ meals, day, loading: false, dayIndex });
+                });
             });
         }
     };
 
     renderMealsTable() {
-        const { day } = this.state;
+        const { meals } = this.state;
 
         return (
             <ReactTable
-                data={day.nutrition.meals || []}
+                data={meals || []}
                 noDataText="No Meals Found"
                 columns={[
                     {
@@ -217,15 +255,38 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        const { dayIndex, calories, fat, carbs, protein, validation } = this.state;
+        let {
+            dayIndex,
+            name,
+            type,
+            calories,
+            fat,
+            carbs,
+            protein,
+            validation,
+            saveMeal,
+            meals,
+            mealTypes
+        } = this.state;
 
         if (this.validateInputs()) {
             let day;
+            let saveMealType = true;
 
             const queryRef = database
                 .ref('users')
                 .child('-L1W7yroxzFV-EPpK63D')
                 .child(`calendar/${dayIndex}`);
+
+            const mealsRef = database
+                .ref('users')
+                .child('-L1W7yroxzFV-EPpK63D')
+                .child(`calendar/${dayIndex}/nutrition/meals`);
+
+            const mealTypeRef = database
+                .ref('users')
+                .child('-L1W7yroxzFV-EPpK63D')
+                .child('mealTypes');
 
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
@@ -245,6 +306,45 @@ class Nutrition extends React.Component {
 
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
                 queryRef.update(day);
+
+                if (saveMeal) {
+                    if (!meals) {
+                        meals = [];
+                    }
+
+                    if (!mealTypes) {
+                        mealTypes = [];
+                    }
+
+                    mealTypeRef.on('value', snapshot => {
+                        snapshot.forEach(childSnapshot => {
+                            let snapshot = childSnapshot.val();
+
+                            if (type.toLowerCase() === snapshot.toLowerCase()) {
+                                saveMealType = false;
+                                type = snapshot;
+                            }
+                        });
+                    });
+
+                    meals.push({
+                        name,
+                        type,
+                        calories: parseFloat(calories),
+                        fat: parseFloat(fat),
+                        protein: parseFloat(protein),
+                        carbs: parseFloat(carbs)
+                    });
+
+                    mealsRef.update(meals);
+
+                    // Save the meal type if it doesn't exist
+                    if (saveMealType) {
+                        mealTypes.push({ type });
+
+                        mealTypeRef.update(mealTypes);
+                    }
+                }
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -280,7 +380,7 @@ class Nutrition extends React.Component {
                             floatingLabelText="Type"
                             id="type"
                             errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
-                            dataSource={this.state.types}
+                            dataSource={this.state.mealTypes}
                             filter={AutoComplete.caseInsensitiveFilter}
                             onUpdateInput={this.typeOnChange}
                             fullWidth={true}
@@ -339,6 +439,14 @@ class Nutrition extends React.Component {
                             }}
                         />
                     </div>
+                    <Checkbox
+                        label="Save Meal"
+                        style={{ padding: '10px 30px', textAlign: 'left' }}
+                        labelStyle={{
+                            color: '#3d575d'
+                        }}
+                        onCheck={() => this.setState({ saveMeal: !this.state.saveMeal })}
+                    />
                     <RaisedButton
                         label="Add Meal"
                         className="add__meal--save"
