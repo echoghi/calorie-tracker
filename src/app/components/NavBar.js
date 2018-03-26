@@ -3,8 +3,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { saveUserData } from './actions';
@@ -93,38 +91,15 @@ class NavBar extends React.Component {
         });
     };
 
-    renderGreeting() {
+    renderUserMenu() {
         const { user, loading } = this.state;
+        const menuConfig = { horizontal: 'right', vertical: 'top' };
 
         const style = {
             height: 50,
             width: 50,
-            margin: 15,
-            textAlign: 'center',
             display: 'inline-block'
         };
-
-        if (user && !loading) {
-            return (
-                <div className="greeting">
-                    <Paper style={style} zDepth={1} rounded={false} className="paper">
-                        <img className="user__img" src={user.photoURL} />
-                    </Paper>
-                    <h3>Welcome back, {user.displayName}</h3>
-                </div>
-            );
-        } else {
-            return (
-                <div className="greeting loading">
-                    <div className="user__img" />
-                    <div className="greeting__message" />
-                </div>
-            );
-        }
-    }
-
-    renderUserMenu() {
-        const { user, loading } = this.state;
 
         if (!user && loading) {
             return (
@@ -146,12 +121,15 @@ class NavBar extends React.Component {
             return (
                 <IconMenu
                     iconButtonElement={
-                        <IconButton>
-                            <MoreVertIcon />
-                        </IconButton>
+                        <div className="greeting">
+                            <Paper style={style} zDepth={1} circle rounded className="paper">
+                                <img className="user__img" src={user.photoURL} />
+                            </Paper>
+                            <i className="icon-chevron-down" />
+                        </div>
                     }
-                    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={menuConfig}
+                    targetOrigin={menuConfig}
                     className="logout__button"
                 >
                     <Link to="settings">
@@ -169,42 +147,24 @@ class NavBar extends React.Component {
                 <div className="navbar__brand">
                     <i className="icon-fire" />
                 </div>
-                <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
-                    <div />
-                    <div />
-                    <div />
-                </div>
                 <ul className="navbar__menu lg">
                     <Link to="/">
-                        <li className={this.handleNavClass('')}>
-                            <i className="icon-home" /> Overview
-                        </li>
+                        <li className={this.handleNavClass('')}>Overview</li>
                     </Link>
                     <Link to="/calendar">
-                        <li className={this.handleNavClass('calendar')}>
-                            <i className="icon-calendar" /> Calendar
-                        </li>
+                        <li className={this.handleNavClass('calendar')}>Calendar</li>
                     </Link>
                     <Link to="/nutrition">
-                        <li className={this.handleNavClass('nutrition')}>
-                            <i className="icon-plus-circle" /> Nutrition
-                        </li>
+                        <li className={this.handleNavClass('nutrition')}>Nutrition</li>
                     </Link>
                     <Link to="/activity">
-                        <li className={this.handleNavClass('activity')}>
-                            <i className="icon-bar-chart" /> Activity
-                        </li>
+                        <li className={this.handleNavClass('activity')}>Activity</li>
                     </Link>
                     <Link to="/settings">
-                        <li className={this.handleNavClass('settings')}>
-                            <i className="icon-settings" /> Settings
-                        </li>
+                        <li className={this.handleNavClass('settings')}>Settings</li>
                     </Link>
                 </ul>
-                <div className="navbar__top">
-                    {this.renderGreeting()}
-                    {this.renderUserMenu()}
-                </div>
+                {this.renderUserMenu()}
             </div>
         );
     }

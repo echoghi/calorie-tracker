@@ -1,13 +1,11 @@
 .navbar {
     font-family: 'Source Sans Pro', serif;
-    background: $white;
-    display: block;
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 250px;
+    width: 100%;
+    height: 80px;
+    background: $white;
+    color: $mirage;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     z-index: 99;
 
@@ -16,7 +14,6 @@
         font-size: 50px;
         background: $burnt-sienna;
         color: $white;
-        width: 100%;
         box-sizing: border-box;
         text-align: center;
         display: inline-block;
@@ -29,77 +26,14 @@
         }
     }
 
-    &__top {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        height: 80px;
-        background: $white;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-        z-index: -1;
-    }
-
-    .hamburger {
-        position: absolute;
-        display: none;
-        top: 2px;
-        right: 0;
-        width: 30px;
-        padding: 20px 25px;
-
-        @include less-than-ipad {
-            display: block;
-            z-index: 2;
-        }
-
-        div {
-            position: relative;
-            margin: 7px 0;
-            height: 3px;
-            background: $curious-blue;
-            border-radius: 5px;
-            transition: all 200ms ease-out;
-
-            &:nth-child(2) {
-                width: 65%;
-            }
-        }
-
-        &.active div {
-            transition: all 200ms ease-out;
-
-            &:first-child {
-                top: 10.5px;
-                transform: rotate(315deg);
-            }
-
-            &:nth-child(2) {
-                display: none;
-            }
-
-            &:last-child {
-                top: 10.5px;
-                transform: rotate(-315deg) translateY(-14px);
-                right: 10px;
-            }
-        }
-    }
-
     &__menu {
-        display: block;
+        margin: 0;
+        vertical-align: text-bottom;
+        display: inline-block;
         list-style: none;
-        font-size: 18px;
-        padding: 0;
-        text-align: center;
+        font-size: 16px;
+        padding: 15px 0;
         font-weight: bold;
-
-        &.collapsed {
-            text-align: center;
-            transform: scaleY(0);
-            transition: transform .3s cubic-bezier(0.71, 0.02, 0.9, 0.23),
-                opacity .1s;
-            transform-origin: top;
-        }
 
         &.active {
             text-align: center;
@@ -110,61 +44,20 @@
             transform-origin: top;
         }
 
-        @include less-than-ipad {
-            height: 100vh;
-            float: none;
-            background: $white;
-
-            li {
-                &:first-child {
-                    margin-top: 50px;
-                    padding: 30px 10px;
-                    border-bottom: 1px solid $catskill-white;
-                }
-
-                &:nth-child(2) {
-                    padding-top: 30px;
-                }
-
-                &:last-child {
-                    border-bottom: 1px solid $catskill-white;
-                    padding-bottom: 30px;
-                }
-            }
-        }
-
         li {
-            display: block;
+            display: inline-block;
             box-sizing: border-box;
-            width: 100%;
-            padding: 20px 40px;
+            padding: 0 30px;
             text-align: left;
             cursor: pointer;
             transition: opacity .2s;
 
-            i {
-                padding-right: 20px;
-            }
-
             &.active {
                 color: $burnt-sienna;
-                border-right: 2px solid $burnt-sienna;
             }
 
             &:hover {
                 opacity: .8;
-            }
-
-            @include less-than-ipad {
-                display: block;
-                padding: 20px 10px;
-                text-align: left;
-
-                i {
-                    display: block;
-                    float: right;
-                    font-size: 25px;
-                }
             }
         }
     }
@@ -199,22 +92,17 @@
     .greeting {
         display: inline-block;
         height: 100%;
-        margin-left: 275px !important;
-
-        .paper,
-        h3 {
-            display: inline-block;
-        }
-
-        h3 {
-            margin: 0 15px;
-            transform: translateY(-100%);
-            -webkit-transform: translateY(-100%);
-            -ms-transform: translateY(-100%);
-        }
+        cursor: pointer;
 
         .user__img {
             height: 100%;
+            border-radius: 50%;
+        }
+
+        i { 
+            display: inline-block;
+            vertical-align: top;
+            padding: 20px 5px;
         }
 
         &.loading {
@@ -226,7 +114,7 @@
                 display: inline-block;
                 height: 50px;
                 width: 50px;
-                border-radius: 3px;
+                border-radius: 50%;
 
                 @include placeholder;
             }
