@@ -65,7 +65,7 @@ class Home extends React.Component {
             <Line
                 progress={progress}
                 options={options}
-                initialAnimate={true}
+                initialAnimate
                 containerStyle={containerStyle}
                 containerClassName={'.progressbar'}
             />

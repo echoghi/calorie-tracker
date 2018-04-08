@@ -10,7 +10,9 @@ import AutoComplete from 'material-ui/AutoComplete';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import ReactTooltip from 'react-tooltip';
-import ProgressBar from './ProgressBar.js';
+import ProgressBar from 'react-progress-bar.js';
+const { Line } = ProgressBar;
+const { Circle } = ProgressBar;
 
 // Reusable validation constuctor for each input
 let inputObj = () => {
@@ -481,7 +483,7 @@ class Nutrition extends React.Component {
         text = `${Math.round(text * 100)}% of daily goal`;
 
         const options = {
-            height: 12.5,
+            strokeWidth: 5,
             color: color,
             trailColor: '#f4f4f4',
             containerStyle: {
@@ -494,20 +496,20 @@ class Nutrition extends React.Component {
                 style: {
                     fontSize: '1rem',
                     color: '#a2a7d9',
-                    margin: '15px 0 0 0'
+                    margin: '10px 0 0 0'
                 }
             }
         };
 
-        return <ProgressBar progress={progress} options={options} />;
+        return <Line progress={progress} initialAnimate options={options} containerStyle={options.containerStyle} />;
     }
 
     renderCalorieBox() {
         let { day, user } = this.state;
-        let calorieGoal = day.fitness.calories || user.goals.nutrition.calories;
-        //let progress = day.nutrition.calories / calorieGoal;
+        const calorieGoal = day.fitness.calories || user.goals.nutrition.calories;
+        let progress = day.nutrition.calories / calorieGoal;
         let text = day.nutrition.calories / calorieGoal;
-        /*let options = {
+        const options = {
             strokeWidth: 4,
             color: '#8E81E3',
             trailColor: '#f4f4f4',
@@ -528,7 +530,7 @@ class Nutrition extends React.Component {
 
         // Prevent progress bar bug by converting 100%+ to 100%
         progress = progress > 1 ? (progress = 1) : progress;
-        text = `${Math.round(text * 100)}% of daily goal`; */
+        text = `${Math.round(text * 100)}% of daily goal`;
 
         return (
             <div className="nutrition__overview--calories">
@@ -540,6 +542,8 @@ class Nutrition extends React.Component {
                         entered in your activity data for this day, the progress bar will default to your calorie goal.
                     </span>
                 </ReactTooltip>
+
+                <Circle progress={progress} options={options} initialAnimate containerStyle={containerStyle} />
 
                 <span className="subhead">{text}</span>
             </div>
