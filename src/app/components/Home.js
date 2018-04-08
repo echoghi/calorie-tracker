@@ -46,7 +46,7 @@ class Home extends React.Component {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
-    renderProgressBar(num, color) {
+    renderProgressBar(num, total, color) {
         const options = {
             strokeWidth: 5,
             color: color,
@@ -59,7 +59,7 @@ class Home extends React.Component {
             marginLeft: 0
         };
 
-        const progress = num / 30;
+        const progress = num / total;
 
         return (
             <Line
@@ -146,6 +146,10 @@ class Home extends React.Component {
     renderStatBoxes() {
         const { data } = this.props;
         let { calorieBalance, exerciseDays, percentage, graphData, userData } = this.state;
+        let totalProtein = 0;
+        let totalFat = 0;
+        let totalCarbs = 0;
+        let totalGrams = 0;
         console.log('graphData', graphData);
         console.log('percentage', percentage);
         console.log('exercise', exerciseDays);
@@ -159,6 +163,12 @@ class Home extends React.Component {
                 // Calorie Balance Stats
                 intake += calendar[i].nutrition.calories > 0 ? calendar[i].nutrition.calories : 2000;
                 output += calendar[i].fitness.calories > 0 ? calendar[i].fitness.calories : 2000;
+
+                // Macronutrient Stats
+                totalProtein += calendar[i].nutrition.protein;
+                totalFat += calendar[i].nutrition.fat;
+                totalCarbs += calendar[i].nutrition.carbs;
+                totalGrams += calendar[i].nutrition.protein + calendar[i].nutrition.fat + calendar[i].nutrition.carbs;
 
                 // Graph Data
                 const calDay = calendar[i].day.toDate();
@@ -188,7 +198,7 @@ class Home extends React.Component {
                 }
             }
         }
-
+        console.log(totalProtein / totalGrams, totalGrams);
         return (
             <div>
                 <div className="overview">
@@ -215,12 +225,12 @@ class Home extends React.Component {
                             <div className="overview--breakdown-exercise">
                                 <h4>{exerciseDays.on}</h4>
                                 <span>Exercise Days</span>
-                                {this.renderProgressBar(exerciseDays.on, '#E38627')}
+                                {this.renderProgressBar(exerciseDays.on, 30, '#E38627')}
                             </div>
                             <div className="overview--breakdown-exercise">
                                 <h4>{exerciseDays.off}</h4>
                                 <span>Rest Days</span>
-                                {this.renderProgressBar(exerciseDays.off, '#C13C37')}
+                                {this.renderProgressBar(exerciseDays.off, 30, '#C13C37')}
                             </div>
                         </div>
                     </div>
@@ -232,8 +242,39 @@ class Home extends React.Component {
                     </div>
                     <div className="overview--box">
                         <div className="overview--head">
-                            <h1>0</h1>
-                            <h3>Consecutive Exercise Days</h3>
+                            <h4 className="title">Macronutrients</h4>
+                        </div>
+                        <div className="overview--body">
+                            {totalProtein && totalCarbs && totalFat ? (
+                                <PieChart
+                                    lineWidth={50}
+                                    style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}
+                                    data={[
+                                        { value: totalProtein, key: 1, color: '#F5729C' },
+                                        { value: totalCarbs, key: 2, color: '#7BD4F8' },
+                                        { value: totalFat, key: 3, color: '#55F3B3' }
+                                    ]}
+                                />
+                            ) : (
+                                <div className="overview__chart--loading" />
+                            )}
+                        </div>
+                        <div className="overview--breakdown">
+                            <div className="overview--breakdown-exercise">
+                                <h4>{totalProtein ? `${Math.round(totalProtein / totalGrams * 100)}%` : 0}</h4>
+                                <span>Protein</span>
+                                {this.renderProgressBar(totalProtein, totalGrams, '#F5729C')}
+                            </div>
+                            <div className="overview--breakdown-exercise">
+                                <h4>{totalCarbs ? `${Math.round(totalCarbs / totalGrams * 100)}%` : 0}</h4>
+                                <span>Carbs</span>
+                                {this.renderProgressBar(totalCarbs, totalGrams, '#7BD4F8')}
+                            </div>
+                            <div className="overview--breakdown-exercise">
+                                <h4>{totalFat ? `${Math.round(totalFat / totalGrams * 100)}%` : 0}</h4>
+                                <span>Fat</span>
+                                {this.renderProgressBar(totalFat, totalGrams, '#55F3B3')}
+                            </div>
                         </div>
                     </div>
                 </div>

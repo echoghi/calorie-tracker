@@ -15,8 +15,8 @@ const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
 
 // Reusable validation constuctor for each input
-let inputObj = () => {
-    this.valid = false;
+let inputObj = required => {
+    this.valid = required ? false : true;
     this.dirty = false;
 };
 
@@ -32,12 +32,12 @@ class Nutrition extends React.Component {
             saveMeal: false,
             mealTypes: [],
             validation: {
-                name: new inputObj(),
+                name: new inputObj(true),
                 type: new inputObj(),
-                calories: new inputObj(),
-                protein: new inputObj(),
-                carbs: new inputObj(),
-                fat: new inputObj()
+                calories: new inputObj(true),
+                protein: new inputObj(true),
+                carbs: new inputObj(true),
+                fat: new inputObj(true)
             }
         };
 
@@ -362,6 +362,13 @@ class Nutrition extends React.Component {
 
     renderMealBox() {
         const { day, validation } = this.state;
+        const errorStyle = { textAlign: 'left' };
+        const checkboxStyle = {
+            checkbox: { marginTop: 20, padding: '10px 30px', textAlign: 'left' },
+            label: {
+                color: '#3d575d'
+            }
+        };
 
         return (
             <div className="nutrition__overview--meals">
@@ -372,6 +379,7 @@ class Nutrition extends React.Component {
                             name="name"
                             id="name"
                             errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
+                            errorStyle={errorStyle}
                             onChange={this.onChange}
                             floatingLabelText="Name"
                             style={{
@@ -381,11 +389,10 @@ class Nutrition extends React.Component {
                         <AutoComplete
                             floatingLabelText="Type"
                             id="type"
-                            errorText={!validation.type.valid && validation.type.dirty ? 'This field is required' : ''}
                             dataSource={this.state.mealTypes}
                             filter={AutoComplete.caseInsensitiveFilter}
                             onUpdateInput={this.typeOnChange}
-                            fullWidth={true}
+                            fullWidth
                             style={{
                                 width: '45%'
                             }}
@@ -398,6 +405,7 @@ class Nutrition extends React.Component {
                             errorText={
                                 !validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''
                             }
+                            errorStyle={errorStyle}
                             onChange={this.onChange}
                             floatingLabelText="Calories"
                             style={{
@@ -410,6 +418,7 @@ class Nutrition extends React.Component {
                             errorText={
                                 !validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''
                             }
+                            errorStyle={errorStyle}
                             onChange={this.onChange}
                             floatingLabelText="Protein"
                             style={{
@@ -424,6 +433,7 @@ class Nutrition extends React.Component {
                             errorText={
                                 !validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''
                             }
+                            errorStyle={errorStyle}
                             onChange={this.onChange}
                             floatingLabelText="Carbohydrates"
                             style={{
@@ -434,6 +444,7 @@ class Nutrition extends React.Component {
                             name="fat"
                             id="fat"
                             errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
+                            errorStyle={errorStyle}
                             onChange={this.onChange}
                             floatingLabelText="Fat"
                             style={{
@@ -443,10 +454,8 @@ class Nutrition extends React.Component {
                     </div>
                     <Checkbox
                         label="Save Meal"
-                        style={{ padding: '10px 30px', textAlign: 'left' }}
-                        labelStyle={{
-                            color: '#3d575d'
-                        }}
+                        style={checkboxStyle.checkbox}
+                        labelStyle={checkboxStyle.label}
                         onCheck={() => this.setState({ saveMeal: !this.state.saveMeal })}
                     />
                     <RaisedButton
