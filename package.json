@@ -4,9 +4,8 @@
     "description": "Health Dashboard",
     "scripts": {
         "dev": "yarn install && nodemon --watch webpack.config.js --exec \"webpack-dev-server --env development\"",
-        "prod": "cross-env NODE_ENV=production webpack-dev-server --env.prod=true",
-        "build": "cross-env NODE_ENV=production webpack --env.prod=true",
-        "server": "node app"
+        "prod": "NODE_ENV=production webpack-dev-server --env.prod=true",
+        "build": "NODE_ENV=production webpack --env.prod=true"
     },
     "repository": {
         "type": "git"
@@ -25,10 +24,7 @@
         "babel-plugin-transform-class-properties": "^6.24.1",
         "babel-preset-env": "^1.6.0",
         "body-parser": "^1.16.0",
-        "d3-array": "^1.2.1",
         "es6-promise": "^4.0.5",
-        "express": "^4.14.0",
-        "express-static-gzip": "^0.3.0",
         "firebase": "^4.6.2",
         "image-webpack-loader": "^3.4.2",
         "isomorphic-fetch": "^2.2.1",
@@ -47,9 +43,7 @@
         "react-tooltip": "^3.3.0",
         "redux": "3.7.2",
         "redux-devtools-extension": "^2.13.2",
-        "redux-thunk": "2.2.0",
-        "typeface-roboto": "^0.0.35",
-        "xoauth2": "^1.2.0"
+        "redux-thunk": "2.2.0"
     },
     "devDependencies": {
         "babel": "^6.23.0",
