@@ -24,7 +24,10 @@ module.exports = function(env) {
             minChunks: Infinity,
             filename: '[name].bundle.js'
         }),
-        new webpack.NamedModulesPlugin()
+        new webpack.NamedModulesPlugin(),
+        new webpack.DefinePlugin({
+            NODE_ENV: JSON.stringify(nodeEnv)
+        })
     ];
 
     if (isProd) {
@@ -69,7 +72,7 @@ module.exports = function(env) {
             }),
             new ExtractTextPlugin('styles.css'),
             new webpack.DefinePlugin({
-                PRODUCTION: JSON.stringify(true)
+                'process.env.NODE_ENV': JSON.stringify('production')
             })
         );
     } else {
@@ -101,7 +104,7 @@ module.exports = function(env) {
                 files: './app/assets/scss/*.scss'
             }),
             new webpack.DefinePlugin({
-                PRODUCTION: JSON.stringify(false)
+                NODE_ENV: JSON.stringify(nodeEnv)
             })
         );
     }
