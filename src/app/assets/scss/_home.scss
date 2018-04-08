@@ -30,12 +30,14 @@
             border-radius: 4px;
             background: $white;
             text-align: center;
+            overflow: hidden;
 
             .overview--breakdown {
                 display: flex;
                 border-top: 1px solid $athens-gray;
                 background: $athens-gray-alt;
                 padding: 10px 20px;
+                min-height: 30%;
 
                 &-exercise {
                     padding: 10px;

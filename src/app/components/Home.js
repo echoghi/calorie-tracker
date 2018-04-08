@@ -99,7 +99,7 @@ class Home extends React.Component {
             range: [yMax, 0],
             domain: [-1500, max(graphData[0], y)]
         });
-        console.log(graphData[0]);
+
         return (
             <svg width={width} height={height}>
                 <LinearGradient from="#8e81e3" to="#a6c1ee" id="gradient" />
@@ -150,9 +150,8 @@ class Home extends React.Component {
         let totalFat = 0;
         let totalCarbs = 0;
         let totalGrams = 0;
-        console.log('graphData', graphData);
-        console.log('percentage', percentage);
-        console.log('exercise', exerciseDays);
+        let loading = true;
+
         if (!_.isEmpty(data) && !graphData[0].length) {
             // deep copy data prop to avoid modifying it directly
             userData = _.cloneDeep(data);
@@ -197,8 +196,10 @@ class Home extends React.Component {
                     percentage = Math.round(exerciseDays.on / 30 * 100);
                 }
             }
+
+            loading = false;
         }
-        console.log(totalProtein / totalGrams, totalGrams);
+
         return (
             <div>
                 <div className="overview">
@@ -245,7 +246,7 @@ class Home extends React.Component {
                             <h4 className="title">Macronutrients</h4>
                         </div>
                         <div className="overview--body">
-                            {totalProtein && totalCarbs && totalFat ? (
+                            {!loading ? (
                                 <PieChart
                                     lineWidth={50}
                                     style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}

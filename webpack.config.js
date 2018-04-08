@@ -76,7 +76,7 @@ module.exports = function(env) {
                     `:` +
                     new Date().getMinutes()
             }),
-            new ExtractTextPlugin('styles.css'),
+            new ExtractTextPlugin(isProd ? 'styles.[hash:6].css' : 'styles.[chunkhash:6].css'),
             new webpack.DefinePlugin({
                 PRODUCTION: JSON.stringify(true)
             })
@@ -98,7 +98,7 @@ module.exports = function(env) {
                 },
                 // plugin options
                 {
-                    reload: true
+                    reload: false
                 }
             ),
             new CaseSensitivePathsPlugin(),
@@ -153,7 +153,6 @@ module.exports = function(env) {
                               use: ['css-loader', 'sass-loader']
                           })
                         : // Else
-
                           [
                               {
                                   loader: 'style-loader',
@@ -245,7 +244,7 @@ module.exports = function(env) {
             port: 8080,
             compress: isProd,
             inline: !isProd,
-            hot: false,
+            hot: true,
             quiet: true,
             overlay: {
                 errors: true,
