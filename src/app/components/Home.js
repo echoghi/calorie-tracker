@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // Components
 import moment from 'moment';
 import PieChart from 'react-minimal-pie-chart';
-import ProgressBar from 'react-progressbar.js';
+import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 import { Group } from '@vx/group';
 import { curveMonotoneX } from '@vx/curve';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import ProgressBar from 'react-progressbar.js';
+import ProgressBar from 'react-progress-bar.js';
 let { Circle } = ProgressBar;
 import ReactTooltip from 'react-tooltip';
 import { Link } from 'react-router-dom';
