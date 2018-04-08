@@ -208,7 +208,7 @@ class Home extends React.Component {
                                     ]}
                                 />
                             ) : (
-                                ''
+                                <div className="overview__chart--loading" />
                             )}
                         </div>
                         <div className="overview--breakdown">

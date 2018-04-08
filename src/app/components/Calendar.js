@@ -185,7 +185,7 @@ class Calendar extends React.Component {
             }
         }
 
-        if (now.isAfter(day) && dayData && day.month() === now.month()) {
+        if (now.isAfter(day) && dayData) {
             return 'icon-info';
         } else {
             return 'icon-info hidden';
