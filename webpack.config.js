@@ -67,7 +67,7 @@ module.exports = function(env) {
                     `:` +
                     new Date().getMinutes()
             }),
-            new ExtractTextPlugin(isProd ? 'styles.[hash:6].css' : 'styles.[chunkhash:6].css'),
+            new ExtractTextPlugin('styles.css'),
             new webpack.DefinePlugin({
                 PRODUCTION: JSON.stringify(true)
             })
