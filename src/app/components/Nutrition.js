@@ -489,6 +489,8 @@ class Nutrition extends React.Component {
             text = day.nutrition.fat / user.goals.nutrition.fat;
         }
 
+        // Prevent progress bar bug by converting 100%+ to 100%
+        progress = progress > 1 ? (progress = 1) : progress;
         text = `${Math.round(text * 100)}% of daily goal`;
 
         const options = {
