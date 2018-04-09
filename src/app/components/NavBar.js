@@ -17,25 +17,12 @@ class NavBar extends React.Component {
         width: 0,
         menuOpen: false,
         mobile: false,
-        user: null,
-        loading: true
+        user: null
     };
 
     handleMenu = () => {
         this.setState({ menuOpen: !this.state.menuOpen });
     };
-
-    handleHamburgerClass() {
-        let className;
-
-        if (this.state.menuOpen) {
-            className = 'hamburger active';
-        } else {
-            className = 'hamburger';
-        }
-
-        return className;
-    }
 
     handleNavClass(name) {
         const { pathname } = this.props.history.location;
@@ -53,9 +40,8 @@ class NavBar extends React.Component {
     componentDidMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
-                console.log(user);
                 this.props.saveUserData(user);
-                this.setState({ user, loading: false });
+                this.setState({ user });
             }
         });
 
@@ -92,7 +78,8 @@ class NavBar extends React.Component {
     };
 
     renderUserMenu() {
-        const { user, loading } = this.state;
+        const { user } = this.state;
+        const { loading } = this.props;
         const menuConfig = { horizontal: 'right', vertical: 'top' };
 
         const style = {
