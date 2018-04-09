@@ -109,7 +109,6 @@ export function fetchData() {
                 }
             } else {
                 console.log('User Data Pulled:', user);
-
                 dispatch(receiveData(user));
             }
         });

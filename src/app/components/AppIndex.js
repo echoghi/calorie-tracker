@@ -10,6 +10,7 @@ import Calendar from './Calendar';
 import Nutrition from './Nutrition';
 import Activity from './Activity';
 import Settings from './Settings';
+import ErrorBoundary from './ErrorBoundary';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -32,7 +33,9 @@ class AppIndex extends React.PureComponent {
     render() {
         return (
             <div>
-                <NavBar history={this.props} />
+                <ErrorBoundary>
+                    <NavBar history={this.props} />
+                </ErrorBoundary>
                 <div>
                     <Route exact path="/" component={Home} />
                     <Route path="/settings" component={Settings} name="Settings" />

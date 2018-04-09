@@ -4,8 +4,8 @@
     "description": "Health Dashboard",
     "scripts": {
         "dev": "yarn install && nodemon --watch webpack.config.js --exec \"webpack-dev-server --env development\"",
-        "prod": "NODE_ENV=production webpack-dev-server --env.prod=true",
-        "build": "NODE_ENV=production webpack --env.prod=true"
+        "build": "NODE_ENV=production webpack --env.prod=true",
+        "build-windows": "cross-env NODE_ENV=production webpack --env.prod=true"
     },
     "repository": {
         "type": "git"
@@ -25,7 +25,8 @@
         "babel-preset-env": "^1.6.0",
         "body-parser": "^1.16.0",
         "es6-promise": "^4.0.5",
-        "firebase": "^4.6.2",
+        "express": "^4.16.3",
+        "firebase": "4.12.1",
         "image-webpack-loader": "^3.4.2",
         "isomorphic-fetch": "^2.2.1",
         "material-ui": "^0.19.4",

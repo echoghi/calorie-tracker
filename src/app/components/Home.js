@@ -144,13 +144,12 @@ class Home extends React.Component {
     }
 
     renderStatBoxes() {
-        const { data } = this.props;
+        const { data, loading } = this.props;
         let { calorieBalance, exerciseDays, percentage, graphData, userData } = this.state;
         let totalProtein = 0;
         let totalFat = 0;
         let totalCarbs = 0;
         let totalGrams = 0;
-        let loading = true;
 
         if (!_.isEmpty(data) && !graphData[0].length) {
             // deep copy data prop to avoid modifying it directly
@@ -196,8 +195,6 @@ class Home extends React.Component {
                     percentage = Math.round(exerciseDays.on / 30 * 100);
                 }
             }
-
-            loading = false;
         }
 
         return (
@@ -209,7 +206,7 @@ class Home extends React.Component {
                             <h4 className="percentage positive">{`${percentage}%`}</h4>
                         </div>
                         <div className="overview--body">
-                            {exerciseDays.on || exerciseDays.off ? (
+                            {!loading ? (
                                 <PieChart
                                     lineWidth={50}
                                     style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}
