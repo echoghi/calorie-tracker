@@ -27,6 +27,10 @@ a {
 .calendar,
 .settings {
     padding: 125px 125px 30px 125px;
+
+    @include less-than-ipad {
+        padding: 125px 15px 30px 15px;
+    }
 }
 
 .clearfix:after {

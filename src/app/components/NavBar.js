@@ -37,6 +37,34 @@ class NavBar extends React.Component {
         return className;
     }
 
+    handleMenuClass() {
+        let className;
+
+        if (this.state.width < 760) {
+            if (this.state.menuOpen) {
+                className = 'navbar__menu active';
+            } else {
+                className = 'navbar__menu collapsed';
+            }
+        } else {
+            className = 'navbar__menu lg';
+        }
+
+        return className;
+    }
+
+    handleHamburgerClass() {
+        let className;
+
+        if (this.state.menuOpen) {
+            className = 'hamburger active';
+        } else {
+            className = 'hamburger';
+        }
+
+        return className;
+    }
+
     componentDidMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
@@ -134,7 +162,12 @@ class NavBar extends React.Component {
                 <div className="navbar__brand">
                     <i className="icon-fire" />
                 </div>
-                <ul className="navbar__menu lg">
+                <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
+                    <div />
+                    <div />
+                    <div />
+                </div>
+                <ul className={this.handleMenuClass()}>
                     <Link to="/">
                         <li className={this.handleNavClass('')}>Overview</li>
                     </Link>
