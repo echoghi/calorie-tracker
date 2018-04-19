@@ -25,6 +25,7 @@ import { adminState } from './app/components/reducers';
 //components
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppIndex from './app/components/AppIndex';
+import Login from './app/components/Login';
 
 const adminApp = combineReducers({
     adminState
@@ -64,6 +65,7 @@ ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
                 <Switch>
+                    <Route path="/login" component={Login} name="Login" />
                     <Route path="/" component={AppIndex} />
                 </Switch>
             </BrowserRouter>

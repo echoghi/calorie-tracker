@@ -14,19 +14,32 @@ import ErrorBoundary from './ErrorBoundary';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
-    loading: state.adminState.loading
+    loading: state.adminState.loading,
+    userData: state.adminState.userData
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchData: () => dispatch(fetchData())
+    fetchData: id => dispatch(fetchData(id))
 });
 
 class AppIndex extends React.PureComponent {
-    componentWillMount() {
-        const { fetchData, loading, data } = this.props;
+    constructor(props) {
+        super(props);
 
-        if (_.isEmpty(data) && !loading) {
-            fetchData();
+        if (!this.props.userData) {
+            this.props.history.push('/login');
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { fetchData, userData, history } = this.props;
+
+        if (userData !== nextProps.userData) {
+            if (!_.isEmpty(nextProps.userData)) {
+                fetchData(nextProps.userData.uid);
+            } else {
+                history.push('/login');
+            }
         }
     }
 
@@ -34,15 +47,23 @@ class AppIndex extends React.PureComponent {
         return (
             <div>
                 <ErrorBoundary>
-                    <NavBar history={this.props} />
+                    <NavBar path={this.props.location.pathname} />
                 </ErrorBoundary>
-                <div>
+                <ErrorBoundary>
                     <Route exact path="/" component={Home} />
+                </ErrorBoundary>
+                <ErrorBoundary>
                     <Route path="/settings" component={Settings} name="Settings" />
+                </ErrorBoundary>
+                <ErrorBoundary>
                     <Route path="/calendar" component={Calendar} name="Calendar" />
+                </ErrorBoundary>
+                <ErrorBoundary>
                     <Route path="/nutrition" component={Nutrition} name="Nutrition" />
+                </ErrorBoundary>
+                <ErrorBoundary>
                     <Route path="/activity" component={Activity} name="Activity" />
-                </div>
+                </ErrorBoundary>
             </div>
         );
     }

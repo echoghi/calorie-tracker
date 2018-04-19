@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
@@ -14,6 +15,10 @@ let inputObj = required => {
     this.valid = required ? false : true;
     this.dirty = false;
 };
+
+const mapStateToProps = state => ({
+    userData: state.adminState.userData
+});
 
 class Activity extends React.Component {
     constructor(props) {
@@ -36,10 +41,22 @@ class Activity extends React.Component {
     }
 
     componentDidMount() {
-        this.mapDayToState();
+        const { userData } = this.props;
+
+        if (!_.isEmpty(userData)) {
+            this.mapDayToState(userData);
+        }
     }
 
-    mapDayToState = () => {
+    componentWillReceiveProps(nextProps) {
+        const { userData } = this.props;
+
+        if (userData !== nextProps.userData && !_.isEmpty(nextProps.userData)) {
+            this.mapDayToState(nextProps.userData);
+        }
+    }
+
+    mapDayToState = userData => {
         const { location } = this.props;
         let requestedDate = location.search ? location.search.split('=')[1].split('/') : null;
         let { day, user, activity } = this.state;
@@ -54,7 +71,7 @@ class Activity extends React.Component {
 
         const userRef = database
             .ref('users')
-            .child('-L1W7yroxzFV-EPpK63D')
+            .child(userData.uid)
             .child('user');
 
         userRef.once('value', snapshot => {
@@ -66,7 +83,7 @@ class Activity extends React.Component {
         if (requestedDate) {
             const queryRef = database
                 .ref('users')
-                .child('-L1W7yroxzFV-EPpK63D')
+                .child(userData.uid)
                 .child('calendar')
                 .orderByChild('day');
 
@@ -86,7 +103,7 @@ class Activity extends React.Component {
                     ) {
                         const fitnessRef = database
                             .ref('users')
-                            .child('-L1W7yroxzFV-EPpK63D')
+                            .child(userData.uid)
                             .child(`calendar/${dayIndex}/fitness`);
 
                         fitnessRef.on('value', snapshot => {
@@ -100,7 +117,7 @@ class Activity extends React.Component {
         } else {
             const queryRef = database
                 .ref('users')
-                .child('-L1W7yroxzFV-EPpK63D')
+                .child(userData.uid)
                 .child('calendar')
                 .orderByChild('day')
                 .limitToLast(1);
@@ -116,7 +133,7 @@ class Activity extends React.Component {
 
                 const fitnessRef = database
                     .ref('users')
-                    .child('-L1W7yroxzFV-EPpK63D')
+                    .child(userData.uid)
                     .child(`calendar/${dayIndex}/fitness`);
 
                 fitnessRef.on('value', snapshot => {
@@ -186,7 +203,7 @@ class Activity extends React.Component {
 
             const queryRef = database
                 .ref('users')
-                .child('-L1W7yroxzFV-EPpK63D')
+                .child(userData.uid)
                 .child(`calendar/${dayIndex}`);
 
             queryRef.on('value', snapshot => {
@@ -410,4 +427,4 @@ class Activity extends React.Component {
     }
 }
 
-export default withRouter(Activity);
+export default withRouter(connect(mapStateToProps)(Activity));

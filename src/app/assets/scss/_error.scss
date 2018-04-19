@@ -53,4 +53,14 @@
     &__title h2 {
         line-height: 1.5;
     }
+
+    &__container {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+
+        img {
+            margin: 0 auto
+        }
+    }
 }

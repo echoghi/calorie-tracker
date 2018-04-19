@@ -1,0 +1,29 @@
+.login {
+    &__container {
+        background: $aqua-haze;
+        display: flex;
+        height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__header {
+        height: 200px;
+        width: 450px;
+        border-radius: 4px 4px 0 0;
+        background: $white;
+        border: 1px solid $athens-gray;
+        align-self: center;
+
+        h1 {
+            background: $catskill-white;
+            border-bottom: 1px solid $athens-gray;
+            font-size: 24px;
+            font-weight: normal;
+            text-align: center;
+            margin: 0 auto;
+            padding: 50px 0
+        }
+    }
+}

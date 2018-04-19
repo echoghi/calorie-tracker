@@ -38,6 +38,12 @@ export function adminState(
                 userData: action.data
             });
 
+        case 'LOGOUT':
+            return Object.assign({}, state, {
+                userData: {},
+                data: {}
+            });
+
         default:
             return state || '';
     }
