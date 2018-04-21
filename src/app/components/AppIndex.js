@@ -26,7 +26,7 @@ class AppIndex extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        if (!this.props.userData) {
+        if (_.isEmpty(this.props.userData)) {
             this.props.history.push('/login');
         }
     }
