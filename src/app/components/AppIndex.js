@@ -31,7 +31,6 @@ class AppIndex extends React.PureComponent {
         const { fetchData, userData, history, userLoading } = this.props;
 
         if (userData !== nextProps.userData || userLoading !== nextProps.userLoading) {
-            console.log(nextProps);
             if (!_.isEmpty(nextProps.userData) && !nextProps.userLoading) {
                 fetchData(nextProps.userData.uid);
             } else {

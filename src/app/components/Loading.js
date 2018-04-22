@@ -14,7 +14,21 @@ class Loading extends React.Component {
             }
         };
 
-        return <Lottie options={options} height={300} width={300} />;
+        return (
+            <div
+                style={{
+                    position: 'fixed',
+                    right: 0,
+                    left: 0,
+                    marginRight: 'auto',
+                    marginLeft: 'auto',
+                    minHeight: '10em',
+                    width: '90%'
+                }}
+            >
+                <Lottie options={options} height={300} width={300} />
+            </div>
+        );
     }
 }
 

@@ -16,7 +16,8 @@ import { extent, max } from 'd3-array';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
-    loading: state.adminState.loading
+    loading: state.adminState.loading,
+    userLoading: state.adminState.userLoading
 });
 
 class Home extends React.Component {
@@ -145,7 +146,7 @@ class Home extends React.Component {
     }
 
     renderStatBoxes() {
-        const { data, loading } = this.props;
+        const { data, loading, userLoading } = this.props;
         let { calorieBalance, exerciseDays, percentage, graphData, userData } = this.state;
         let totalProtein = 0;
         let totalFat = 0;
@@ -207,7 +208,7 @@ class Home extends React.Component {
                             <h4 className="percentage positive">{`${percentage}%`}</h4>
                         </div>
                         <div className="overview--body">
-                            {!loading ? (
+                            {!loading || !userLoading ? (
                                 <PieChart
                                     lineWidth={50}
                                     style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}

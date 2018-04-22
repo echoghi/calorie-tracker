@@ -1,5 +1,6 @@
 import React from 'react';
-import IconMenu from 'material-ui/IconMenu';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import { Link } from 'react-router-dom';
@@ -89,9 +90,19 @@ class NavBar extends React.Component {
         });
     };
 
+    handleClick = event => {
+        // This prevents ghost click.
+        event.preventDefault();
+
+        this.setState({
+            open: true,
+            anchorEl: event.currentTarget
+        });
+    };
+
     renderUserMenu() {
+        const { open, anchorEl } = this.state;
         const { userLoading, loading, userData } = this.props;
-        const menuConfig = { horizontal: 'right', vertical: 'top' };
 
         const style = {
             height: 50,
@@ -103,24 +114,27 @@ class NavBar extends React.Component {
             return <Placeholder circle style={{ height: 50, width: 50 }} />;
         } else {
             return (
-                <IconMenu
-                    iconButtonElement={
-                        <div className="greeting">
-                            <Paper style={style} zDepth={1} circle rounded className="paper">
-                                <img className="user__img" src={userData.photoURL} />
-                            </Paper>
-                            <i className="icon-chevron-down" />
-                        </div>
-                    }
-                    anchorOrigin={menuConfig}
-                    targetOrigin={menuConfig}
-                    className="logout__button"
-                >
-                    <Link to="settings">
-                        <MenuItem primaryText="Settings" />
-                    </Link>
-                    <MenuItem primaryText="Log Out" onClick={this.logOut} />
-                </IconMenu>
+                <div className="greeting">
+                    <div onClick={this.handleClick}>
+                        <Paper style={style} zDepth={1} circle rounded className="paper">
+                            <img className="user__img" src={userData.photoURL} />
+                        </Paper>
+                        <i className="icon-chevron-down" />
+                    </div>
+                    <Popover
+                        className="logout__button"
+                        open={open}
+                        anchorEl={anchorEl}
+                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                        onRequestClose={() => this.setState({ open: false })}
+                    >
+                        <Menu>
+                            <MenuItem containerElement={<Link to="settings" />} primaryText="Settings" />
+                            <MenuItem primaryText="Log Out" onClick={this.logOut} />
+                        </Menu>
+                    </Popover>
+                </div>
             );
         }
     }

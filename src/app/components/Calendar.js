@@ -402,7 +402,7 @@ class Calendar extends React.Component {
         let { loading, data } = this.props;
         let month = time.format('MMMM');
         let year = time.format('YYYY');
-        console.log('CALENDAR DATA', data);
+
         return (
             <div>
                 <div className="calendar">
