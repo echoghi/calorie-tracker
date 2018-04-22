@@ -120,8 +120,8 @@ class NavBar extends React.Component {
                     className="logout__button"
                     open={open}
                     anchorEl={anchorEl}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                     onRequestClose={() => this.setState({ open: false })}
                 >
                     <Menu>

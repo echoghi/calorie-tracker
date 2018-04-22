@@ -248,7 +248,7 @@ class Home extends React.Component {
                             <h4 className="title">Macronutrients</h4>
                         </div>
                         <div className="overview--body">
-                            {!loading ? (
+                            {!loading && !_.isEmpty(userData) ? (
                                 <PieChart
                                     lineWidth={50}
                                     style={{ height: 150, padding: 0, margin: '0 auto 20px', width: 150 }}
