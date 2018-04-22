@@ -2,6 +2,7 @@ export function adminState(
     state = {
         data: {},
         userData: {},
+        userLoading: true,
         loading: false,
         success: null,
         error: null
@@ -35,7 +36,8 @@ export function adminState(
 
         case 'SAVE_USER_DATA':
             return Object.assign({}, state, {
-                userData: action.data
+                userData: action.data,
+                userLoading: false
             });
 
         case 'LOGOUT':

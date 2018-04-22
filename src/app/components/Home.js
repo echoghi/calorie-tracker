@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 // Components
 import moment from 'moment';
+import Placeholder from './Placeholder';
 import PieChart from 'react-minimal-pie-chart';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
@@ -216,7 +217,10 @@ class Home extends React.Component {
                                     ]}
                                 />
                             ) : (
-                                <div className="overview__chart--loading" />
+                                <Placeholder
+                                    circle
+                                    style={{ height: 150, width: 150, padding: 0, margin: '0 auto 20px' }}
+                                />
                             )}
                         </div>
                         <div className="overview--breakdown">

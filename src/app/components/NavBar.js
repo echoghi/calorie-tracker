@@ -4,11 +4,17 @@ import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveUserData, logOut } from './actions';
+import { logOut } from './actions';
 import { auth } from './firebase.js';
+import Placeholder from './Placeholder';
+
+const mapStateToProps = state => ({
+    userData: state.adminState.userData,
+    loading: state.adminState.loading,
+    userLoading: state.adminState.userLoading
+});
 
 const mapDispatchToProps = dispatch => ({
-    saveUserData: data => dispatch(saveUserData(data)),
     logOut: () => dispatch(logOut())
 });
 
@@ -16,8 +22,7 @@ class NavBar extends React.Component {
     state = {
         width: 0,
         menuOpen: false,
-        mobile: false,
-        user: null
+        mobile: false
     };
 
     handleMenu = () => {
@@ -66,13 +71,6 @@ class NavBar extends React.Component {
     }
 
     componentDidMount() {
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                this.props.saveUserData(user);
-                this.setState({ user });
-            }
-        });
-
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     }
@@ -92,8 +90,7 @@ class NavBar extends React.Component {
     };
 
     renderUserMenu() {
-        const { user } = this.state;
-        const { loading } = this.props;
+        const { userLoading, loading, userData } = this.props;
         const menuConfig = { horizontal: 'right', vertical: 'top' };
 
         const style = {
@@ -102,19 +99,15 @@ class NavBar extends React.Component {
             display: 'inline-block'
         };
 
-        if (!user || loading) {
-            return (
-                <div className="login__button loading">
-                    <div />
-                </div>
-            );
+        if (userLoading || loading) {
+            return <Placeholder circle style={{ height: 50, width: 50 }} />;
         } else {
             return (
                 <IconMenu
                     iconButtonElement={
                         <div className="greeting">
                             <Paper style={style} zDepth={1} circle rounded className="paper">
-                                <img className="user__img" src={user.photoURL} />
+                                <img className="user__img" src={userData.photoURL} />
                             </Paper>
                             <i className="icon-chevron-down" />
                         </div>
@@ -176,4 +169,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

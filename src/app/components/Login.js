@@ -15,10 +15,15 @@ const mapDispatchToProps = dispatch => ({
 
 class Login extends React.Component {
     logIn = () => {
+        const { saveUserData, history } = this.props;
+
         auth.signInWithPopup(provider).then(result => {
             const user = result.user;
-            this.props.saveUserData(user);
-            this.props.history.push('/');
+
+            if (user) {
+                saveUserData(user);
+                history.push('/');
+            }
         });
     };
 
