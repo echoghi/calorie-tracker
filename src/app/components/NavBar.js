@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
 import { auth } from './firebase.js';
-import Placeholder from './Placeholder';
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData,
@@ -91,7 +90,6 @@ class NavBar extends React.Component {
     };
 
     handleClick = event => {
-        // This prevents ghost click.
         event.preventDefault();
 
         this.setState({
@@ -102,7 +100,7 @@ class NavBar extends React.Component {
 
     renderUserMenu() {
         const { open, anchorEl } = this.state;
-        const { userLoading, loading, userData } = this.props;
+        const { userData } = this.props;
 
         const style = {
             height: 50,
@@ -110,33 +108,29 @@ class NavBar extends React.Component {
             display: 'inline-block'
         };
 
-        if (userLoading || loading) {
-            return <Placeholder circle style={{ height: 50, width: 50 }} />;
-        } else {
-            return (
-                <div className="greeting">
-                    <div onClick={this.handleClick}>
-                        <Paper style={style} zDepth={1} circle rounded className="paper">
-                            <img className="user__img" src={userData.photoURL} />
-                        </Paper>
-                        <i className="icon-chevron-down" />
-                    </div>
-                    <Popover
-                        className="logout__button"
-                        open={open}
-                        anchorEl={anchorEl}
-                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                        onRequestClose={() => this.setState({ open: false })}
-                    >
-                        <Menu>
-                            <MenuItem containerElement={<Link to="settings" />} primaryText="Settings" />
-                            <MenuItem primaryText="Log Out" onClick={this.logOut} />
-                        </Menu>
-                    </Popover>
+        return (
+            <div className="greeting">
+                <div onClick={this.handleClick}>
+                    <Paper style={style} zDepth={1} circle rounded className="paper">
+                        <img className="user__img" src={userData.photoURL} />
+                    </Paper>
+                    <i className="icon-chevron-down" />
                 </div>
-            );
-        }
+                <Popover
+                    className="logout__button"
+                    open={open}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    onRequestClose={() => this.setState({ open: false })}
+                >
+                    <Menu>
+                        <MenuItem containerElement={<Link to="settings" />} primaryText="Settings" />
+                        <MenuItem primaryText="Log Out" onClick={this.logOut} />
+                    </Menu>
+                </Popover>
+            </div>
+        );
     }
 
     renderNav() {
