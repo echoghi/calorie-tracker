@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import ProgressBar from 'react-progress-bar.js';
 let { Circle } = ProgressBar;
-import ReactTooltip from 'react-tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
@@ -150,25 +150,31 @@ class Calendar extends React.Component {
 
         if (data && data.fitness.exercise >= 30 && day.month() === time.month()) {
             return (
-                <img
-                    className="exercise__icon"
-                    src={runnerIcon}
-                    data-for={`${day.date()}-${day.get('month')}`}
-                    data-tip="tooltip"
-                />
+                <Tooltip
+                    id="tooltip-top"
+                    title={`You met your exercise goal with ${data.fitness.exercise} minutes of activity`}
+                    placement="top"
+                >
+                    <img
+                        className="exercise__icon"
+                        src={runnerIcon}
+                        data-for={`${day.date()}-${day.get('month')}`}
+                        data-tip="tooltip"
+                    />
+                </Tooltip>
             );
         }
     }
 
-    renderExerciseTooltip(data, day) {
-        if (data && data.fitness.exercise >= 30) {
-            return (
-                <ReactTooltip class="exercise_tip" type="info" id={`${day.date()}-${day.get('month')}`}>
-                    <span>You met your exercise goal with {data.fitness.exercise} minutes of activity</span>
-                </ReactTooltip>
-            );
-        }
-    }
+    // renderExerciseTooltip(data, day) {
+    //     if (data && data.fitness.exercise >= 30) {
+    //         return (
+    //             <ReactTooltip class="exercise_tip" type="info" id={`${day.date()}-${day.get('month')}`}>
+    //                 <span>You met your exercise goal with {data.fitness.exercise} minutes of activity</span>
+    //             </ReactTooltip>
+    //         );
+    //     }
+    // }
 
     handleIconClass(day) {
         let now = moment();
@@ -318,7 +324,7 @@ class Calendar extends React.Component {
                         <Link to={`/nutrition?day=${calendar[i].days[j].format('L')}`}>
                             <span className={this.handleIconClass(calendar[i].days[j])} />
                         </Link>
-                        {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])}
+                        {/* {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])} */}
                     </div>
                 );
             }

@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
@@ -282,13 +282,9 @@ class Activity extends React.Component {
                             }}
                         />
                     </div>
-                    <RaisedButton
-                        label="Save Data"
-                        className="add__meal--save"
-                        onClick={this.onSubmit}
-                        backgroundColor="#ed5454"
-                        labelColor="#fff"
-                    />
+                    <Button color="primary" variant="raised" className="add__meal--save" onClick={this.onSubmit}>
+                        Save Data
+                    </Button>
                 </form>
             </div>
         );

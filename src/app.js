@@ -23,7 +23,6 @@ import 'whatwg-fetch';
 import { adminState } from './app/components/reducers';
 
 //components
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
 
@@ -61,15 +60,13 @@ if (enableReduxDevTools) {
 export const store = activeComposer(applyMiddleware(thunk))(createStore)(adminApp);
 
 ReactDOM.render(
-    <MuiThemeProvider>
-        <Provider store={store}>
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/login" component={Login} name="Login" />
-                    <Route path="/" component={AppIndex} />
-                </Switch>
-            </BrowserRouter>
-        </Provider>
-    </MuiThemeProvider>,
+    <Provider store={store}>
+        <BrowserRouter>
+            <Switch>
+                <Route path="/login" component={Login} name="Login" />
+                <Route path="/" component={AppIndex} />
+            </Switch>
+        </BrowserRouter>
+    </Provider>,
     document.getElementById('app')
 );

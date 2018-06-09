@@ -1,8 +1,7 @@
 import React from 'react';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import Paper from 'material-ui/Paper';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
@@ -102,33 +101,29 @@ class NavBar extends React.Component {
         const { open, anchorEl } = this.state;
         const { userData } = this.props;
 
-        const style = {
-            height: 50,
-            width: 50,
-            display: 'inline-block'
-        };
-
         return (
             <div className="greeting">
-                <div onClick={this.handleClick}>
-                    <Paper style={style} zDepth={1} circle rounded className="paper">
-                        <img className="user__img" src={userData.photoURL} />
-                    </Paper>
+                <IconButton component="div" aria-label="Menu" onClick={this.handleClick}>
+                    <img className="user__img" src={userData.photoURL} />
                     <i className="icon-chevron-down" />
-                </div>
-                <Popover
+                </IconButton>
+                <Menu
                     className="logout__button"
                     open={open}
                     anchorEl={anchorEl}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    onRequestClose={() => this.setState({ open: false })}
+                    onClose={() => this.setState({ open: false })}
                 >
-                    <Menu>
-                        <MenuItem containerElement={<Link to="settings" />} primaryText="Settings" />
-                        <MenuItem primaryText="Log Out" onClick={this.logOut} />
-                    </Menu>
-                </Popover>
+                    <MenuItem
+                        component={() => (
+                            <Link to="settings">
+                                <MenuItem>Settings</MenuItem>
+                            </Link>
+                        )}
+                    >
+                        Settings
+                    </MenuItem>
+                    <MenuItem onClick={this.logOut}>Log Out</MenuItem>
+                </Menu>
             </div>
         );
     }

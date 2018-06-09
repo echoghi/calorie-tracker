@@ -1,5 +1,5 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { saveUserData, fetchData } from './actions';
 import { auth, provider } from './firebase.js';
@@ -39,15 +39,16 @@ class Login extends React.Component {
                 <div className="login__header">
                     <h1>Welcome Back! Please Login</h1>
                     <div style={{ width: '85%', margin: '0 auto' }}>
-                        <RaisedButton
-                            label="Login via Google"
+                        <Button
                             style={{ marginTop: 20 }}
                             fullWidth
                             className="login__button"
                             onClick={this.logIn}
-                            primary
-                            labelColor="#fff"
-                        />
+                            color="primary"
+                            variant="raised"
+                        >
+                            Login via Google
+                        </Button>
                     </div>
                 </div>
             </div>

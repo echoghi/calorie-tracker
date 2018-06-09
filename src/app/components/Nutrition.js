@@ -4,13 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Checkbox from 'material-ui/Checkbox';
-import AutoComplete from 'material-ui/AutoComplete';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import ReactTooltip from 'react-tooltip';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
@@ -379,8 +378,8 @@ class Nutrition extends React.Component {
     };
 
     renderMealBox() {
-        const { day, validation } = this.state;
-        const errorStyle = { textAlign: 'left' };
+        const { day } = this.state;
+
         const checkboxStyle = {
             checkbox: { marginTop: 20, padding: '10px 30px', textAlign: 'left' },
             label: {
@@ -391,26 +390,20 @@ class Nutrition extends React.Component {
         return (
             <div className="nutrition__overview--meals">
                 <h3>{`Logged Meals (${day.nutrition.meals ? day.nutrition.meals.length : 0})`}</h3>
-                <form className="add__meal">
+                <form className="add__meal" noValidate autoComplete="off">
                     <div className="add__meal--input">
                         <TextField
                             name="name"
                             id="name"
-                            errorText={!validation.name.valid && validation.name.dirty ? 'This field is required' : ''}
-                            errorStyle={errorStyle}
                             onChange={this.onChange}
-                            floatingLabelText="Name"
                             style={{
                                 width: '45%'
                             }}
                         />
-                        <AutoComplete
-                            floatingLabelText="Type"
+                        <TextField
+                            name="type"
                             id="type"
-                            dataSource={this.state.mealTypes}
-                            filter={AutoComplete.caseInsensitiveFilter}
-                            onUpdateInput={this.typeOnChange}
-                            fullWidth
+                            onChange={this.onChange}
                             style={{
                                 width: '45%'
                             }}
@@ -420,12 +413,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="calories"
                             id="calories"
-                            errorText={
-                                !validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''
-                            }
-                            errorStyle={errorStyle}
                             onChange={this.onChange}
-                            floatingLabelText="Calories"
                             style={{
                                 width: '45%'
                             }}
@@ -433,12 +421,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="protein"
                             id="protein"
-                            errorText={
-                                !validation.protein.valid && validation.protein.dirty ? 'This field is required' : ''
-                            }
-                            errorStyle={errorStyle}
                             onChange={this.onChange}
-                            floatingLabelText="Protein"
                             style={{
                                 width: '45%'
                             }}
@@ -448,12 +431,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="carbs"
                             id="carbs"
-                            errorText={
-                                !validation.carbs.valid && validation.carbs.dirty ? 'This field is required' : ''
-                            }
-                            errorStyle={errorStyle}
                             onChange={this.onChange}
-                            floatingLabelText="Carbohydrates"
                             style={{
                                 width: '45%'
                             }}
@@ -461,10 +439,7 @@ class Nutrition extends React.Component {
                         <TextField
                             name="fat"
                             id="fat"
-                            errorText={!validation.fat.valid && validation.fat.dirty ? 'This field is required' : ''}
-                            errorStyle={errorStyle}
                             onChange={this.onChange}
-                            floatingLabelText="Fat"
                             style={{
                                 width: '45%'
                             }}
@@ -476,13 +451,9 @@ class Nutrition extends React.Component {
                         labelStyle={checkboxStyle.label}
                         onCheck={() => this.setState({ saveMeal: !this.state.saveMeal })}
                     />
-                    <RaisedButton
-                        label="Add Meal"
-                        className="add__meal--save"
-                        onClick={this.onSubmit}
-                        backgroundColor="#ed5454"
-                        labelColor="#fff"
-                    />
+                    <Button className="add__meal--save" onClick={this.onSubmit} color="primary">
+                        Add Meal
+                    </Button>
                 </form>
             </div>
         );
@@ -564,13 +535,14 @@ class Nutrition extends React.Component {
         return (
             <div className="nutrition__overview--calories">
                 <h3>Total Calories</h3>
-                <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
-                <ReactTooltip class="calorie__tooltip" type="info" id="calorie-tooltip">
-                    <span>
-                        The progress bar represents your calories consumed vs your calories burned. If you have not yet
-                        entered in your activity data for this day, the progress bar will default to your calorie goal.
-                    </span>
-                </ReactTooltip>
+                <Tooltip
+                    id="tooltip-top"
+                    title={`The progress bar represents your calories consumed vs your calories burned. If you have not yet
+                    entered in your activity data for this day, the progress bar will default to your calorie goal.`}
+                    placement="top"
+                >
+                    <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
+                </Tooltip>
 
                 <Circle progress={progress} options={options} initialAnimate containerStyle={containerStyle} />
 
