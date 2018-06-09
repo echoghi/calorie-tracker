@@ -4,10 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
-import TextField from '@material-ui/core/TextField';
+import Input from './Input';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import ProgressBar from 'react-progress-bar.js';
@@ -392,17 +394,19 @@ class Nutrition extends React.Component {
                 <h3>{`Logged Meals (${day.nutrition.meals ? day.nutrition.meals.length : 0})`}</h3>
                 <form className="add__meal" noValidate autoComplete="off">
                     <div className="add__meal--input">
-                        <TextField
+                        <Input
                             name="name"
                             id="name"
+                            label="Name"
                             onChange={this.onChange}
                             style={{
                                 width: '45%'
                             }}
                         />
-                        <TextField
+                        <Input
                             name="type"
                             id="type"
+                            label="Type"
                             onChange={this.onChange}
                             style={{
                                 width: '45%'
@@ -410,17 +414,19 @@ class Nutrition extends React.Component {
                         />
                     </div>
                     <div className="add__meal--input">
-                        <TextField
+                        <Input
                             name="calories"
                             id="calories"
+                            label="Calories"
                             onChange={this.onChange}
                             style={{
                                 width: '45%'
                             }}
                         />
-                        <TextField
+                        <Input
                             name="protein"
                             id="protein"
+                            label="Protein"
                             onChange={this.onChange}
                             style={{
                                 width: '45%'
@@ -428,29 +434,37 @@ class Nutrition extends React.Component {
                         />
                     </div>
                     <div className="add__meal--input">
-                        <TextField
+                        <Input
                             name="carbs"
                             id="carbs"
+                            label="Carbs"
                             onChange={this.onChange}
                             style={{
                                 width: '45%'
                             }}
                         />
-                        <TextField
+                        <Input
                             name="fat"
                             id="fat"
+                            label="Fat"
                             onChange={this.onChange}
                             style={{
                                 width: '45%'
                             }}
                         />
                     </div>
-                    <Checkbox
-                        label="Save Meal"
-                        style={checkboxStyle.checkbox}
-                        labelStyle={checkboxStyle.label}
-                        onCheck={() => this.setState({ saveMeal: !this.state.saveMeal })}
-                    />
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    style={checkboxStyle.checkbox}
+                                    onChange={() => this.setState({ saveMeal: !this.state.saveMeal })}
+                                />
+                            }
+                            label="Save Meal"
+                        />
+                    </FormGroup>
+
                     <Button className="add__meal--save" onClick={this.onSubmit} color="primary">
                         Add Meal
                     </Button>

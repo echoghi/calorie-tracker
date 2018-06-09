@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Input from './Input';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
@@ -234,49 +234,37 @@ class Activity extends React.Component {
     };
 
     renderDataBox() {
-        const { validation } = this.state;
-        const errorStyle = { textAlign: 'left' };
+        // const { validation } = this.state;
+        // const errorStyle = { textAlign: 'left' };
 
         return (
             <div className="nutrition__overview--meals">
                 <h3>Input Exercise Data</h3>
                 <form className="add__meal">
                     <div className="add__meal--input">
-                        <TextField
+                        <Input
                             name="calories"
                             id="calories"
-                            errorText={
-                                !validation.calories.valid && validation.calories.dirty ? 'This field is required' : ''
-                            }
-                            errorStyle={errorStyle}
+                            label="Calories"
                             onChange={this.onChange}
-                            floatingLabelText="Calories"
                             style={{
                                 width: '30%'
                             }}
                         />
-                        <TextField
+                        <Input
                             name="exercise"
                             id="exercise"
-                            errorText={
-                                !validation.exercise.valid && validation.exercise.dirty ? 'This field is required' : ''
-                            }
-                            errorStyle={errorStyle}
+                            label="Exercise Minutes"
                             onChange={this.onChange}
-                            floatingLabelText="Exercise Minutes"
                             style={{
                                 width: '30%'
                             }}
                         />
-                        <TextField
+                        <Input
                             name="stand"
                             id="stand"
-                            errorText={
-                                !validation.stand.valid && validation.stand.dirty ? 'This field is required' : ''
-                            }
-                            errorStyle={errorStyle}
+                            label="Stand Hours"
                             onChange={this.onChange}
-                            floatingLabelText="Stand Hours"
                             style={{
                                 width: '30%'
                             }}

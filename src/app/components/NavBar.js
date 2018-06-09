@@ -1,7 +1,6 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
@@ -21,7 +20,8 @@ class NavBar extends React.Component {
     state = {
         width: 0,
         menuOpen: false,
-        mobile: false
+        mobile: false,
+        open: false
     };
 
     handleMenu = () => {
@@ -103,10 +103,10 @@ class NavBar extends React.Component {
 
         return (
             <div className="greeting">
-                <IconButton component="div" aria-label="Menu" onClick={this.handleClick}>
+                <div onClick={this.handleClick}>
                     <img className="user__img" src={userData.photoURL} />
                     <i className="icon-chevron-down" />
-                </IconButton>
+                </div>
                 <Menu
                     className="logout__button"
                     open={open}
