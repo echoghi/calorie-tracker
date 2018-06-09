@@ -2,17 +2,40 @@ import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { auth } from './firebase.js';
 import { connect } from 'react-redux';
+import Loadable from 'react-loadable';
 import { fetchData, saveUserData } from './actions';
-
-// Components
-import NavBar from './NavBar';
-import Home from './Home';
-import Calendar from './Calendar';
-import Nutrition from './Nutrition';
-import Activity from './Activity';
-import Settings from './Settings';
-import ErrorBoundary from './ErrorBoundary';
 import Loading from './Loading';
+import ErrorBoundary from './ErrorBoundary';
+
+const NavBar = Loadable({
+    loader: () => import('./NavBar'),
+    loading: Loading
+});
+
+const Home = Loadable({
+    loader: () => import('./Home'),
+    loading: Loading
+});
+
+const Calendar = Loadable({
+    loader: () => import('./Calendar'),
+    loading: Loading
+});
+
+const Nutrition = Loadable({
+    loader: () => import('./Nutrition'),
+    loading: Loading
+});
+
+const Activity = Loadable({
+    loader: () => import('./Activity'),
+    loading: Loading
+});
+
+const Settings = Loadable({
+    loader: () => import('./Settings'),
+    loading: Loading
+});
 
 const mapStateToProps = state => ({
     data: state.adminState.data,

@@ -29,6 +29,10 @@ module.exports = function(env) {
 
     if (isProd) {
         plugins.push(
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: 'index.html'
+            }),
             new webpack.LoaderOptionsPlugin({
                 minimize: true,
                 debug: false
