@@ -1,6 +1,5 @@
 import React from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import UserMenu from './UserMenu';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
@@ -98,34 +97,9 @@ class NavBar extends React.Component {
     };
 
     renderUserMenu() {
-        const { open, anchorEl } = this.state;
         const { userData } = this.props;
 
-        return (
-            <div className="greeting">
-                <div onClick={this.handleClick}>
-                    <img className="user__img" src={userData.photoURL} />
-                    <i className="icon-chevron-down" />
-                </div>
-                <Menu
-                    className="logout__button"
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={() => this.setState({ open: false })}
-                >
-                    <MenuItem
-                        component={() => (
-                            <Link to="settings">
-                                <MenuItem>Settings</MenuItem>
-                            </Link>
-                        )}
-                    >
-                        Settings
-                    </MenuItem>
-                    <MenuItem onClick={this.logOut}>Log Out</MenuItem>
-                </Menu>
-            </div>
-        );
+        return <UserMenu userData={userData} />;
     }
 
     renderNav() {
@@ -172,4 +146,7 @@ class NavBar extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(NavBar);

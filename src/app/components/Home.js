@@ -96,10 +96,10 @@ class Home extends React.Component {
             range: [0, xMax],
             domain: extent(graphData[0], x)
         });
-
+        console.log(max(graphData[0], y));
         const yScale = scaleLinear({
             range: [yMax, 0],
-            domain: [-1500, max(graphData[0], y)]
+            domain: [-500, 500]
         });
 
         return (
@@ -194,7 +194,7 @@ class Home extends React.Component {
                     }
 
                     // Percentage of Days exercised
-                    percentage = Math.round(exerciseDays.on / 30 * 100);
+                    percentage = Math.round((exerciseDays.on / 30) * 100);
                 }
             }
         }
@@ -264,17 +264,17 @@ class Home extends React.Component {
                         </div>
                         <div className="overview--breakdown">
                             <div className="overview--breakdown-exercise">
-                                <h4>{totalProtein ? `${Math.round(totalProtein / totalGrams * 100)}%` : 0}</h4>
+                                <h4>{totalProtein ? `${Math.round((totalProtein / totalGrams) * 100)}%` : 0}</h4>
                                 <span>Protein</span>
                                 {this.renderProgressBar(totalProtein, totalGrams, '#F5729C')}
                             </div>
                             <div className="overview--breakdown-exercise">
-                                <h4>{totalCarbs ? `${Math.round(totalCarbs / totalGrams * 100)}%` : 0}</h4>
+                                <h4>{totalCarbs ? `${Math.round((totalCarbs / totalGrams) * 100)}%` : 0}</h4>
                                 <span>Carbs</span>
                                 {this.renderProgressBar(totalCarbs, totalGrams, '#7BD4F8')}
                             </div>
                             <div className="overview--breakdown-exercise">
-                                <h4>{totalFat ? `${Math.round(totalFat / totalGrams * 100)}%` : 0}</h4>
+                                <h4>{totalFat ? `${Math.round((totalFat / totalGrams) * 100)}%` : 0}</h4>
                                 <span>Fat</span>
                                 {this.renderProgressBar(totalFat, totalGrams, '#55F3B3')}
                             </div>

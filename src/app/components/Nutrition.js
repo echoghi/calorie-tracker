@@ -242,33 +242,17 @@ class Nutrition extends React.Component {
         return valid;
     }
 
-    onChange = event => {
+    onChange = name => event => {
         const obj = _.cloneDeep(this.state);
         // Mark input as dirty (interacted with)
-        obj.validation[event.target.name].dirty = true;
-        obj[event.target.name] = event.target.value;
+        obj.validation[name].dirty = true;
+        obj[name] = event.target.value;
 
         // If there is any value, mark it valid
         if (event.target.value !== '') {
-            obj.validation[event.target.name].valid = true;
+            obj.validation[name].valid = true;
         } else {
-            obj.validation[event.target.name].valid = false;
-        }
-
-        this.setState(obj);
-    };
-
-    typeOnChange = type => {
-        const obj = _.cloneDeep(this.state);
-        // Mark input as dirty (interacted with)
-        obj.validation.type.dirty = true;
-        obj.type = type;
-
-        // If there is any value, mark it valid
-        if (type !== '') {
-            obj.validation.type.valid = true;
-        } else {
-            obj.validation.type.valid = false;
+            obj.validation[name].valid = false;
         }
 
         this.setState(obj);
@@ -380,10 +364,12 @@ class Nutrition extends React.Component {
     };
 
     renderMealBox() {
-        const { day } = this.state;
+        const { validation } = this.state;
+
+        const validate = name => (validation[name].dirty && !validation[name].valid ? true : false);
 
         const checkboxStyle = {
-            checkbox: { marginTop: 20, padding: '10px 30px', textAlign: 'left' },
+            checkbox: { paddingLeft: 30 },
             label: {
                 color: '#3d575d'
             }
@@ -391,14 +377,15 @@ class Nutrition extends React.Component {
 
         return (
             <div className="nutrition__overview--meals">
-                <h3>{`Logged Meals (${day.nutrition.meals ? day.nutrition.meals.length : 0})`}</h3>
+                <h3>Log Meals</h3>
                 <form className="add__meal" noValidate autoComplete="off">
                     <div className="add__meal--input">
                         <Input
                             name="name"
                             id="name"
                             label="Name"
-                            onChange={this.onChange}
+                            onChange={this.onChange('name')}
+                            error={validate('name')}
                             style={{
                                 width: '45%'
                             }}
@@ -407,7 +394,8 @@ class Nutrition extends React.Component {
                             name="type"
                             id="type"
                             label="Type"
-                            onChange={this.onChange}
+                            onChange={this.onChange('type')}
+                            error={validate('type')}
                             style={{
                                 width: '45%'
                             }}
@@ -418,7 +406,9 @@ class Nutrition extends React.Component {
                             name="calories"
                             id="calories"
                             label="Calories"
-                            onChange={this.onChange}
+                            type="number"
+                            onChange={this.onChange('calories')}
+                            error={validate('calories')}
                             style={{
                                 width: '45%'
                             }}
@@ -427,7 +417,9 @@ class Nutrition extends React.Component {
                             name="protein"
                             id="protein"
                             label="Protein"
-                            onChange={this.onChange}
+                            type="number"
+                            onChange={this.onChange('protein')}
+                            error={validate('protein')}
                             style={{
                                 width: '45%'
                             }}
@@ -438,7 +430,9 @@ class Nutrition extends React.Component {
                             name="carbs"
                             id="carbs"
                             label="Carbs"
-                            onChange={this.onChange}
+                            type="number"
+                            onChange={this.onChange('carbs')}
+                            error={validate('carbs')}
                             style={{
                                 width: '45%'
                             }}
@@ -447,7 +441,9 @@ class Nutrition extends React.Component {
                             name="fat"
                             id="fat"
                             label="Fat"
-                            onChange={this.onChange}
+                            type="number"
+                            onChange={this.onChange('fat')}
+                            error={validate('fat')}
                             style={{
                                 width: '45%'
                             }}
@@ -465,7 +461,7 @@ class Nutrition extends React.Component {
                         />
                     </FormGroup>
 
-                    <Button className="add__meal--save" onClick={this.onSubmit} color="primary">
+                    <Button className="add__meal--save" onClick={this.onSubmit} color="primary" variant="raised">
                         Add Meal
                     </Button>
                 </form>
@@ -475,9 +471,11 @@ class Nutrition extends React.Component {
 
     renderProgressBar(type) {
         const { day, user } = this.state;
+
         let color;
         let progress;
         let text;
+
         if (type === 'protein') {
             color = '#F5729C';
             progress = day.nutrition.protein / user.goals.nutrition.protein;
