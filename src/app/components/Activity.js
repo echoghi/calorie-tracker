@@ -283,6 +283,7 @@ class Activity extends React.Component {
         let color;
         let progress;
         let text;
+        console.log(day);
         if (type === 'protein') {
             color = '#F5729C';
             progress = day.nutrition.protein / user.goals.nutrition.protein;

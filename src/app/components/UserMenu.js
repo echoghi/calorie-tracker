@@ -57,7 +57,6 @@ class UserMenu extends React.Component {
             <div className="greeting">
                 <div onClick={this.handleMenu}>
                     <img className="user__img" src={userData.photoURL} />
-                    <i className="icon-chevron-down" />
                 </div>
 
                 {this.renderMenu()}
