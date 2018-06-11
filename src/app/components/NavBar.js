@@ -56,6 +56,30 @@ class NavBar extends React.Component {
         return className;
     }
 
+    renderMenu() {
+        if (this.state.width < 760) {
+            return (
+                <ul className={this.handleMenuClass()}>
+                    <Link to="/">
+                        <li className={this.handleNavClass('')}>Overview</li>
+                    </Link>
+                    <Link to="/calendar">
+                        <li className={this.handleNavClass('calendar')}>Calendar</li>
+                    </Link>
+                    <Link to="/nutrition">
+                        <li className={this.handleNavClass('nutrition')}>Nutrition</li>
+                    </Link>
+                    <Link to="/activity">
+                        <li className={this.handleNavClass('activity')}>Activity</li>
+                    </Link>
+                    <Link to="/settings">
+                        <li className={this.handleNavClass('settings')}>Settings</li>
+                    </Link>
+                </ul>
+            );
+        }
+    }
+
     handleHamburgerClass() {
         let className;
 
@@ -116,23 +140,7 @@ class NavBar extends React.Component {
                         <div />
                         <div />
                     </div>
-                    <ul className={this.handleMenuClass()}>
-                        <Link to="/">
-                            <li className={this.handleNavClass('')}>Overview</li>
-                        </Link>
-                        <Link to="/calendar">
-                            <li className={this.handleNavClass('calendar')}>Calendar</li>
-                        </Link>
-                        <Link to="/nutrition">
-                            <li className={this.handleNavClass('nutrition')}>Nutrition</li>
-                        </Link>
-                        <Link to="/activity">
-                            <li className={this.handleNavClass('activity')}>Activity</li>
-                        </Link>
-                        <Link to="/settings">
-                            <li className={this.handleNavClass('settings')}>Settings</li>
-                        </Link>
-                    </ul>
+                    {this.renderMenu()}
                     {this.renderUserMenu()}
                 </div>
             );

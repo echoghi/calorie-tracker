@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Fade from '@material-ui/core/Fade';
 
 const Menu = styled.ul`
     position: absolute;
@@ -35,28 +36,33 @@ class UserMenu extends React.Component {
     };
 
     renderMenu() {
-        if (this.state.open) {
+        const { open } = this.state;
+
+        if (open) {
             return (
-                <Menu className="logout__button" onClose={() => this.setState({ open: false })}>
-                    <li>
-                        <Link to="settings">Account Settings</Link>
-                    </li>
-                    <li>
-                        <Link to="settings">Edit Profile</Link>
-                    </li>
-                    <li onClick={this.logOut}>Log Out</li>
-                </Menu>
+                <Fade in={open}>
+                    <Menu className="logout__button" onClose={() => this.setState({ open: false })}>
+                        <li>
+                            <Link to="settings">Account Settings</Link>
+                        </li>
+                        <li>
+                            <Link to="settings">Edit Profile</Link>
+                        </li>
+                        <li onClick={this.logOut}>Log Out</li>
+                    </Menu>
+                </Fade>
             );
         }
     }
 
     render() {
         const { userData } = this.props;
-
+        console.log(userData);
         return (
             <div className="greeting">
                 <div onClick={this.handleMenu}>
                     <img className="user__img" src={userData.photoURL} />
+                    <i className="icon-chevron-down" />
                 </div>
 
                 {this.renderMenu()}

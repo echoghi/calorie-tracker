@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Input from './Input';
 import ProgressBar from 'react-progress-bar.js';
@@ -15,6 +16,10 @@ let inputObj = required => {
     this.valid = required ? false : true;
     this.dirty = false;
 };
+
+const InputWrapper = styled.div`
+    padding: 5px 30px;
+`;
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData
@@ -235,41 +240,39 @@ class Activity extends React.Component {
 
     renderDataBox() {
         // const { validation } = this.state;
-        // const errorStyle = { textAlign: 'left' };
+        const inputStyle = {
+            padding: '10px 0',
+            display: 'block',
+            width: '40%'
+        };
 
         return (
             <div className="nutrition__overview--meals">
                 <h3>Input Exercise Data</h3>
                 <form className="add__meal">
-                    <div className="add__meal--input">
+                    <InputWrapper>
                         <Input
                             name="calories"
                             id="calories"
                             label="Calories"
                             onChange={this.onChange}
-                            style={{
-                                width: '30%'
-                            }}
+                            style={inputStyle}
                         />
                         <Input
                             name="exercise"
                             id="exercise"
                             label="Exercise Minutes"
                             onChange={this.onChange}
-                            style={{
-                                width: '30%'
-                            }}
+                            style={inputStyle}
                         />
                         <Input
                             name="stand"
                             id="stand"
                             label="Stand Hours"
                             onChange={this.onChange}
-                            style={{
-                                width: '30%'
-                            }}
+                            style={inputStyle}
                         />
-                    </div>
+                    </InputWrapper>
                     <Button color="primary" variant="raised" className="add__meal--save" onClick={this.onSubmit}>
                         Save Data
                     </Button>

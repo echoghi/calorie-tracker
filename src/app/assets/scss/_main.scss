@@ -21,10 +21,10 @@ a {
 .reports,
 .calendar,
 .settings {
-    padding: 125px 125px 30px 125px;
+    padding: 200px 125px 30px 125px;
 
     @include less-than-ipad {
-        padding: 125px 15px 30px 15px;
+        padding: 185px 15px 30px 15px;
     }
 }
 

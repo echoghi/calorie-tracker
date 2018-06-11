@@ -12,6 +12,11 @@ const NavBar = Loadable({
     loading: Loading
 });
 
+const SubNav = Loadable({
+    loader: () => import('./SubNav'),
+    loading: Loading
+});
+
 const Home = Loadable({
     loader: () => import('./Home'),
     loading: Loading
@@ -84,6 +89,9 @@ class AppIndex extends React.PureComponent {
                         <NavBar path={this.props.location.pathname} />
                     </ErrorBoundary>
                     <ErrorBoundary>
+                        <SubNav path={this.props.location.pathname} />
+                    </ErrorBoundary>
+                    <ErrorBoundary>
                         <Route exact path="/" component={Home} />
                     </ErrorBoundary>
                     <ErrorBoundary>
@@ -106,4 +114,9 @@ class AppIndex extends React.PureComponent {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppIndex));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(AppIndex)
+);
