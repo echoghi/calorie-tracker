@@ -19,13 +19,16 @@ a {
 .overview__container,
 .nutrition,
 .reports,
-.calendar,
-.settings {
+.calendar {
     padding: 200px 125px 30px 125px;
 
     @include less-than-ipad {
         padding: 185px 15px 30px 15px;
     }
+}
+
+.settings {
+    padding: 215px 125px 30px 125px;
 }
 
 .clearfix:after {

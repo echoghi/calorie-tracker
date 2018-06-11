@@ -76,6 +76,45 @@ class Settings extends React.Component {
                             />
                         </form>
                     </SettingsSection>
+
+                    <SettingsSection>
+                        <SettingsHeader>Goals</SettingsHeader>
+                        <SettingsSubHeader>
+                            Are you trying to cut, bulk, or maintain? Pick a strategy and we'll calculate your macros
+                            based on your estimated daily expenditure.
+                        </SettingsSubHeader>
+                        <form>
+                            <Input
+                                name="calories"
+                                id="calories"
+                                label="Calories (kcal)"
+                                onChange={this.onChange}
+                                style={{ paddingRight: 20 }}
+                            />
+                            <Input
+                                name="carbs"
+                                id="carbs"
+                                label="Carbs (g)"
+                                onChange={this.onChange}
+                                style={{ paddingRight: 20 }}
+                            />
+                            <Input
+                                name="fat"
+                                id="fat"
+                                label="Fat (g)"
+                                onChange={this.onChange}
+                                style={{ paddingRight: 20 }}
+                            />
+                            <Input
+                                name="protein"
+                                id="protein"
+                                label="Protein (g)"
+                                onChange={this.onChange}
+                                style={{ paddingRight: 20 }}
+                            />
+                        </form>
+                    </SettingsSection>
+
                     <DeleteAccount>
                         <SettingsHeader>Delete Account</SettingsHeader>
                         <SettingsSubHeader>
