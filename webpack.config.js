@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
@@ -33,6 +34,7 @@ module.exports = function(env) {
                 filename: 'index.html',
                 template: 'index.html'
             }),
+            new CopyWebpackPlugin([{ from: 'netlify' }]),
             new webpack.LoaderOptionsPlugin({
                 minimize: true,
                 debug: false
