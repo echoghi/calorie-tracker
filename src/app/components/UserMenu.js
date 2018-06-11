@@ -48,7 +48,7 @@ class UserMenu extends React.Component {
                         <li>
                             <Link to="settings">Edit Profile</Link>
                         </li>
-                        <li onClick={this.logOut}>Log Out</li>
+                        <li onClick={this.props.logOut}>Log Out</li>
                     </Menu>
                 </Fade>
             );
@@ -57,7 +57,7 @@ class UserMenu extends React.Component {
 
     render() {
         const { userData } = this.props;
-        console.log(userData);
+
         return (
             <div className="greeting">
                 <div onClick={this.handleMenu}>

@@ -19,8 +19,8 @@ const mapDispatchToProps = dispatch => ({
 const Brand = styled.div`
     position: relative;
     font-size: 50px;
-    background: #ed5454;
-    color: #ffffff;
+    background: #fff;
+    color: #269bda;
     box-sizing: border-box;
     text-align: center;
     display: inline-block;
@@ -133,9 +133,9 @@ class NavBar extends React.Component {
     };
 
     renderUserMenu() {
-        const { userData } = this.props;
+        const { userData, logOut } = this.props;
 
-        return <UserMenu userData={userData} />;
+        return <UserMenu userData={userData} logOut={logOut} />;
     }
 
     renderNav() {
