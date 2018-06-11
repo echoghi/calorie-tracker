@@ -1,5 +1,6 @@
 import React from 'react';
 import UserMenu from './UserMenu';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
@@ -14,6 +15,17 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     logOut: () => dispatch(logOut())
 });
+
+const Brand = styled.div`
+    position: relative;
+    font-size: 50px;
+    background: #ed5454;
+    color: #ffffff;
+    box-sizing: border-box;
+    text-align: center;
+    display: inline-block;
+    padding: 15px 30px;
+`;
 
 class NavBar extends React.Component {
     state = {
@@ -132,9 +144,9 @@ class NavBar extends React.Component {
         if (path !== '/login') {
             return (
                 <div className="navbar">
-                    <div className="navbar__brand">
+                    <Brand>
                         <i className="icon-fire" />
-                    </div>
+                    </Brand>
                     <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
                         <div />
                         <div />

@@ -12,6 +12,7 @@ const Menu = styled.div`
     display: flex;
     justify-content: space-around;
     border-bottom: 1px solid #dbdbdb;
+    z-index: 99;
 
     li {
         font-size: 16px;

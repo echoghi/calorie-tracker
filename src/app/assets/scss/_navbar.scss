@@ -7,24 +7,7 @@
     background: $white;
     color: $mirage;
     border-bottom: 1px solid rgb(219, 219, 219);
-    z-index: 99;
-
-    &__brand {
-        position: relative;
-        font-size: 50px;
-        background: $burnt-sienna;
-        color: $white;
-        box-sizing: border-box;
-        text-align: center;
-        display: inline-block;
-        padding: 15px 30px;
-
-        @include less-than-ipad {
-            float: left;
-            padding: 15px 25px;
-            z-index: 2;
-        }
-    }
+    z-index: 999;
 
     .hamburger {
         position: absolute;
