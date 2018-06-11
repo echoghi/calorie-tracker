@@ -145,7 +145,7 @@ class NavBar extends React.Component {
             return (
                 <div className="navbar">
                     <Brand>
-                        <i className="icon-aperature" />
+                        <i className="icon-aperture" />
                     </Brand>
                     <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
                         <div />
