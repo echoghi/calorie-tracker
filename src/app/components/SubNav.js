@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Fade from '@material-ui/core/Fade';
 
 const Menu = styled.div`
-    padding: 20px 0;
+    padding: 30px 0;
     width: 100%;
     position: fixed;
     top: 80px;
@@ -20,12 +21,13 @@ const Menu = styled.div`
     }
 
     a {
+        position: relative;
         display: flex;
         align-items: center;
 
         &.active li,
         &.active i {
-            color: #ed5454;
+            color: #269bda;
         }
     }
 `;
@@ -34,6 +36,14 @@ const Icon = styled.i`
     padding: 5px 10px;
     font-size: 25px;
     display: inline-flex;
+`;
+
+const PageIndicator = styled.span`
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    font-size: 50px;
+    color: #269bda;
 `;
 
 class SubNav extends React.Component {
@@ -52,28 +62,50 @@ class SubNav extends React.Component {
         return className;
     }
 
+    renderIndicator(name) {
+        const { path } = this.props;
+        let indicator;
+
+        if (path === `/${name}`) {
+            indicator = (
+                <Fade in={true}>
+                    <PageIndicator>.</PageIndicator>
+                </Fade>
+            );
+        } else {
+            indicator = '';
+        }
+
+        return indicator;
+    }
+
     render() {
         return (
             <Menu>
                 <Link to="/" className={this.handleNavClass('')}>
                     <Icon className="icon-user" />
                     <li>Overview</li>
+                    {this.renderIndicator('')}
                 </Link>
                 <Link to="/calendar" className={this.handleNavClass('calendar')}>
                     <Icon className="icon-calendar" />
                     <li>Calendar</li>
+                    {this.renderIndicator('calendar')}
                 </Link>
                 <Link to="/nutrition" className={this.handleNavClass('nutrition')}>
                     <Icon className="icon-bar-chart-2" />
                     <li>Nutrition</li>
+                    {this.renderIndicator('nutrition')}
                 </Link>
                 <Link to="/activity" className={this.handleNavClass('activity')}>
                     <Icon className="icon-activity" />
                     <li>Activity</li>
+                    {this.renderIndicator('activity')}
                 </Link>
                 <Link to="/settings" className={this.handleNavClass('settings')}>
                     <Icon className="icon-settings" />
                     <li>Settings</li>
+                    {this.renderIndicator('settings')}
                 </Link>
             </Menu>
         );
