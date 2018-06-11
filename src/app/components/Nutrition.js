@@ -541,7 +541,7 @@ class Nutrition extends React.Component {
                 }
             }
         };
-        let containerStyle = {
+        const containerStyle = {
             width: '300px',
             height: '30px',
             margin: '30px auto 10px auto'
