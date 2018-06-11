@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import Input from './Input';
 
 const SettingsWrapper = styled.div`
@@ -31,10 +36,11 @@ const DeleteAccount = styled.div`
 
 class Settings extends React.Component {
     state = {
-        width: 0
+        fitnessGoal: 'maintain'
     };
 
     render() {
+        console.log(this.state.fitnessGoal);
         return (
             <div className="settings">
                 <SettingsWrapper>
@@ -113,6 +119,38 @@ class Settings extends React.Component {
                                 style={{ paddingRight: 20 }}
                             />
                         </form>
+                        <FormControl
+                            style={{ marginTop: 15 }}
+                            value={this.state.fitnessGoal}
+                            onChange={event => this.setState({ fitnessGoal: event.target.value })}
+                            component="fieldset"
+                            required
+                        >
+                            <FormLabel component="legend">Fitness Goal</FormLabel>
+                            <RadioGroup row aria-label="fitness" name="fitness">
+                                <FormControlLabel
+                                    checked={this.state.fitnessGoal === 'maintain'}
+                                    value="maintain"
+                                    control={<Radio />}
+                                    label="Maintain"
+                                    style={{ padding: '0 10px' }}
+                                />
+                                <FormControlLabel
+                                    checked={this.state.fitnessGoal === 'cut'}
+                                    value="cut"
+                                    control={<Radio />}
+                                    label="Cut"
+                                    style={{ padding: '0 10px' }}
+                                />
+                                <FormControlLabel
+                                    checked={this.state.fitnessGoal === 'bulk'}
+                                    value="bulk"
+                                    control={<Radio />}
+                                    label="Bulk"
+                                    style={{ padding: '0 10px' }}
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     </SettingsSection>
 
                     <DeleteAccount>
