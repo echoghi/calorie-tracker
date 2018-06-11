@@ -145,7 +145,7 @@ class NavBar extends React.Component {
             return (
                 <div className="navbar">
                     <Brand>
-                        <i className="icon-fire" />
+                        <i className="icon-aperature" />
                     </Brand>
                     <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
                         <div />
