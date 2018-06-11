@@ -12,6 +12,7 @@ const Menu = styled.div`
     display: flex;
     justify-content: space-around;
     border-bottom: 1px solid #dbdbdb;
+    box-shadow: 0 1px 32px 0 rgba(0, 0, 0, 0.1);
     z-index: 99;
 
     li {
