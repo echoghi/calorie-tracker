@@ -156,8 +156,6 @@ class NavBar extends React.Component {
                     {this.renderUserMenu()}
                 </div>
             );
-        } else {
-            return <div />;
         }
     }
 

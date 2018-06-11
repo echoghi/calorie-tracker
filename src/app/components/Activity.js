@@ -273,7 +273,14 @@ class Activity extends React.Component {
                             style={inputStyle}
                         />
                     </InputWrapper>
-                    <Button color="primary" variant="raised" className="add__meal--save" onClick={this.onSubmit}>
+                    <Button
+                        className="add__meal--save"
+                        fullWidth
+                        style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
+                        onClick={this.onSubmit}
+                        color="primary"
+                        variant="raised"
+                    >
                         Save Data
                     </Button>
                 </form>

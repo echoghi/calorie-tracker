@@ -460,11 +460,18 @@ class Nutrition extends React.Component {
                             label="Save Meal"
                         />
                     </FormGroup>
-
-                    <Button className="add__meal--save" onClick={this.onSubmit} color="primary" variant="raised">
-                        Add Meal
-                    </Button>
                 </form>
+
+                <Button
+                    className="add__meal--save"
+                    fullWidth
+                    style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
+                    onClick={this.onSubmit}
+                    color="primary"
+                    variant="raised"
+                >
+                    Add Meal
+                </Button>
             </div>
         );
     }
