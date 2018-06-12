@@ -38,10 +38,13 @@ const DeleteAccount = styled.div`
 `;
 
 // Reusable validation constuctor for each input
-let inputObj = required => {
-    this.valid = required ? false : true;
-    this.dirty = false;
-};
+
+class inputObj {
+    constructor() {
+        this.valid = false;
+        this.dirty = false;
+    }
+}
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData
@@ -54,28 +57,66 @@ class Settings extends React.Component {
         accountSnackbar: false,
         goalsSnackbar: false,
         validation: {
-            firstName: new inputObj(true),
-            lastName: new inputObj(true),
-            height: new inputObj(),
-            weight: new inputObj(),
-            calories: new inputObj(),
-            carbs: new inputObj(),
-            fat: new inputObj(),
-            protein: new inputObj()
+            general: {
+                firstName: new inputObj(),
+                lastName: new inputObj()
+            },
+            account: {
+                height: new inputObj(),
+                weight: new inputObj()
+            },
+            goals: {
+                calories: new inputObj(),
+                carbs: new inputObj(),
+                fat: new inputObj(),
+                protein: new inputObj()
+            }
         }
     };
 
-    onChange = name => event => {
+    onGeneralChange = name => event => {
         const obj = _.cloneDeep(this.state);
         // Mark input as dirty (interacted with)
-        obj.validation[name].dirty = true;
+        obj.validation.general[name].dirty = true;
         obj[name] = event.target.value;
 
         // If there is any value, mark it valid
         if (event.target.value !== '') {
-            obj.validation[name].valid = true;
+            obj.validation.general[name].valid = true;
         } else {
-            obj.validation[name].valid = false;
+            obj.validation.general[name].valid = false;
+        }
+
+        this.setState(obj);
+    };
+
+    onAccountChange = name => event => {
+        const obj = _.cloneDeep(this.state);
+        // Mark input as dirty (interacted with)
+        obj.validation.account[name].dirty = true;
+        obj[name] = event.target.value;
+
+        // If there is any value, mark it valid
+        if (event.target.value !== '') {
+            obj.validation.account[name].valid = true;
+        } else {
+            obj.validation.account[name].valid = false;
+        }
+
+        this.setState(obj);
+    };
+
+    onGoalsChange = name => event => {
+        const obj = _.cloneDeep(this.state);
+        // Mark input as dirty (interacted with)
+        obj.validation.goals[name].dirty = true;
+        obj[name] = event.target.value;
+
+        // If there is any value, mark it valid
+        if (event.target.value !== '') {
+            obj.validation.goals[name].valid = true;
+        } else {
+            obj.validation.goals[name].valid = false;
         }
 
         this.setState(obj);
@@ -90,9 +131,11 @@ class Settings extends React.Component {
         const { validation } = this.state;
         let valid = false;
         // Check for incompleted fields
-        for (let key in validation) {
-            if (validation[key]['valid']) {
-                return true;
+        for (let type in validation) {
+            for (let input in validation[type]) {
+                if (validation[type][input]['valid']) {
+                    return true;
+                }
             }
         }
 
@@ -102,21 +145,26 @@ class Settings extends React.Component {
     resetInputs = () => {
         let { validation } = this.state;
 
-        for (let key in validation) {
-            validation[key] = new inputObj(true);
+        for (let type in validation) {
+            for (let input in validation[type]) {
+                validation[type][input] = new inputObj();
+            }
         }
 
         this.setState({ validation });
     };
 
-    validate(name) {
+    validate(name, input) {
         const { validation } = this.state;
+        let error = true;
 
-        if (validation[name].dirty && !validation[name].valid) {
-            return true;
-        } else {
-            return false;
+        for (let i in validation[name]) {
+            if (validation[name][i].valid) {
+                error = false;
+            }
         }
+
+        return error && validation[name][input].dirty;
     }
 
     onSubmitGeneral = () => {
@@ -124,28 +172,36 @@ class Settings extends React.Component {
         const { userData } = this.props;
 
         if (this.validateInputs()) {
-            const data = {
-                firstName: firstName,
-                lastName: lastName
-            };
+            let user;
 
             const queryRef = database
                 .ref('users')
                 .child(userData.uid)
                 .child('user');
 
-            document.getElementById('firstName').value = '';
-            document.getElementById('lastName').value = '';
+            queryRef.once('value', snapshot => {
+                user = snapshot.val();
+            });
+
+            if (validation.general.firstName.valid) {
+                user.firstName = firstName;
+                document.getElementById('firstName').value = '';
+            }
+
+            if (validation.general.lastName.valid) {
+                user.lastName = lastName;
+                document.getElementById('lastName').value = '';
+            }
 
             this.setState({ firstName: '', lastName: '', generalSnackbar: true }, () => {
-                queryRef.update(data);
+                queryRef.update(user);
                 this.resetInputs();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
-            for (let attr in validation) {
-                if (validation[attr] && (attr === 'firstName' || attr === 'lastName')) {
-                    validation[attr].dirty = true;
+            for (let attr in validation.general) {
+                if (validation.general[attr]) {
+                    validation.general[attr].dirty = true;
                 }
             }
 
@@ -158,28 +214,36 @@ class Settings extends React.Component {
         const { userData } = this.props;
 
         if (this.validateInputs()) {
-            const data = {
-                height: parseInt(height),
-                weight: parseInt(weight)
-            };
+            let user;
 
             const queryRef = database
                 .ref('users')
                 .child(userData.uid)
                 .child('user');
 
-            document.getElementById('height').value = '';
-            document.getElementById('weight').value = '';
+            queryRef.once('value', snapshot => {
+                user = snapshot.val();
+            });
+
+            if (validation.account.height.valid) {
+                user.height = parseInt(height);
+                document.getElementById('height').value = '';
+            }
+
+            if (validation.account.weight.valid) {
+                user.weight = parseInt(weight);
+                document.getElementById('weight').value = '';
+            }
 
             this.setState({ height: '', weight: '', accountSnackbar: true }, () => {
-                queryRef.update(data);
+                queryRef.update(user);
                 this.resetInputs();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
-            for (let attr in validation) {
-                if (validation[attr] && (attr === 'height' || attr === 'weight')) {
-                    validation[attr].dirty = true;
+            for (let attr in validation.account) {
+                if (validation.account[attr]) {
+                    validation.account[attr].dirty = true;
                 }
             }
 
@@ -192,37 +256,46 @@ class Settings extends React.Component {
         const { userData } = this.props;
 
         if (this.validateInputs()) {
-            const data = {
-                goals: {
-                    calories: parseInt(calories),
-                    carbs: parseInt(carbs),
-                    fat: parseInt(fat),
-                    protein: parseInt(protein)
-                }
-            };
+            let goals;
 
             const queryRef = database
                 .ref('users')
                 .child(userData.uid)
-                .child('user');
+                .child('user/goals');
 
-            document.getElementById('calories').value = '';
-            document.getElementById('carbs').value = '';
-            document.getElementById('fat').value = '';
-            document.getElementById('protein').value = '';
+            queryRef.once('value', snapshot => {
+                goals = snapshot.val();
+            });
+
+            if (validation.goals.calories.valid) {
+                goals.calories = parseInt(calories);
+                document.getElementById('calories').value = '';
+            }
+
+            if (validation.goals.carbs.valid) {
+                goals.carbs = parseInt(carbs);
+                document.getElementById('carbs').value = '';
+            }
+
+            if (validation.goals.fat.valid) {
+                goals.fat = parseInt(fat);
+                document.getElementById('fat').value = '';
+            }
+
+            if (validation.goals.protein.valid) {
+                goals.protein = parseInt(protein);
+                document.getElementById('protein').value = '';
+            }
 
             this.setState({ calories: '', carbs: '', fat: '', protein: '', goalsSnackbar: true }, () => {
-                queryRef.update(data);
+                queryRef.update(goals);
                 this.resetInputs();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
-            for (let attr in validation) {
-                if (
-                    validation[attr] &&
-                    (attr === 'calories' || attr === 'carbs' || attr === 'fat' || attr === 'protein')
-                ) {
-                    validation[attr].dirty = true;
+            for (let attr in validation.goals) {
+                if (validation.goals[attr]) {
+                    validation.goals[attr].dirty = true;
                 }
             }
 
@@ -266,16 +339,16 @@ class Settings extends React.Component {
                                 name="firstName"
                                 id="firstName"
                                 label="First Name"
-                                error={this.validate('firstName')}
-                                onChange={this.onChange('firstName')}
+                                error={this.validate('general', 'firstName')}
+                                onChange={this.onGeneralChange('firstName')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
                                 name="lastName"
                                 id="lastName"
                                 label="Last Name"
-                                error={this.validate('lastName')}
-                                onChange={this.onChange('lastName')}
+                                error={this.validate('general', 'lastName')}
+                                onChange={this.onGeneralChange('lastName')}
                             />
                             <Button
                                 style={{
@@ -307,8 +380,8 @@ class Settings extends React.Component {
                                 id="height"
                                 label="Height (in)"
                                 type="number"
-                                error={this.validate('height')}
-                                onChange={this.onChange('height')}
+                                error={this.validate('account', 'height')}
+                                onChange={this.onAccountChange('height')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
@@ -316,8 +389,8 @@ class Settings extends React.Component {
                                 id="weight"
                                 label="Weight (lb)"
                                 type="number"
-                                error={this.validate('weight')}
-                                onChange={this.onChange('weight')}
+                                error={this.validate('account', 'weight')}
+                                onChange={this.onAccountChange('weight')}
                             />
                             <Button
                                 style={{
@@ -349,8 +422,8 @@ class Settings extends React.Component {
                                 id="calories"
                                 label="Calories (kcal)"
                                 type="number"
-                                error={this.validate('calories')}
-                                onChange={this.onChange('calories')}
+                                error={this.validate('goals', 'calories')}
+                                onChange={this.onGoalsChange('calories')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
@@ -358,8 +431,8 @@ class Settings extends React.Component {
                                 id="carbs"
                                 label="Carbs (g)"
                                 type="number"
-                                error={this.validate('carbs')}
-                                onChange={this.onChange('carbs')}
+                                error={this.validate('goals', 'carbs')}
+                                onChange={this.onGoalsChange('carbs')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
@@ -367,8 +440,8 @@ class Settings extends React.Component {
                                 id="fat"
                                 label="Fat (g)"
                                 type="number"
-                                error={this.validate('fat')}
-                                onChange={this.onChange('fat')}
+                                error={this.validate('goals', 'fat')}
+                                onChange={this.onGoalsChange('fat')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
@@ -376,8 +449,8 @@ class Settings extends React.Component {
                                 id="protein"
                                 label="Protein (g)"
                                 type="number"
-                                error={this.validate('protein')}
-                                onChange={this.onChange('protein')}
+                                error={this.validate('goals', 'protein')}
+                                onChange={this.onGoalsChange('protein')}
                             />
                             <Button
                                 style={{
