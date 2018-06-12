@@ -51,6 +51,7 @@ class Settings extends React.Component {
     state = {
         fitnessGoal: 'maintain',
         generalSnackbar: false,
+        accountSnackbar: false,
         validation: {
             firstName: new inputObj(true),
             lastName: new inputObj(true),
@@ -140,12 +141,53 @@ class Settings extends React.Component {
         }
     };
 
+    onSubmitAccount = () => {
+        const { height, weight, validation } = this.state;
+        const { userData } = this.props;
+
+        if (this.validateInputs()) {
+            const data = {
+                height: height,
+                weight: weight
+            };
+
+            const queryRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child('user');
+
+            document.getElementById('height').value = '';
+            document.getElementById('weight').value = '';
+
+            this.setState({ height: '', weight: '', accountSnackbar: true }, () => {
+                queryRef.update(data);
+            });
+        } else {
+            // If there is an invalid input, mark all as dirty on submit to alert the user
+            for (let attr in validation) {
+                if (validation[attr] && (attr === 'height' || attr === 'weight')) {
+                    validation[attr].dirty = true;
+                }
+            }
+
+            this.setState({ validation });
+        }
+    };
+
     handleGeneralClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
 
         this.setState({ generalSnackbar: false });
+    };
+
+    handleAccountClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ accountSnackbar: false });
     };
 
     render() {
@@ -200,6 +242,8 @@ class Settings extends React.Component {
                                 name="height"
                                 id="height"
                                 label="Height (in)"
+                                type="number"
+                                error={this.validate('height')}
                                 onChange={this.onChange('height')}
                                 style={{ paddingRight: 20 }}
                             />
@@ -207,9 +251,25 @@ class Settings extends React.Component {
                                 name="weight"
                                 id="weight"
                                 label="Weight (lb)"
+                                type="number"
+                                error={this.validate('weight')}
                                 onChange={this.onChange('weight')}
-                                style={{ paddingRight: 20 }}
                             />
+                            <Button
+                                style={{
+                                    background: '#269bda',
+                                    fontSize: 16,
+                                    height: 43,
+                                    display: 'inline-block',
+                                    verticalAlign: 'bottom',
+                                    margin: '0 10px'
+                                }}
+                                color="primary"
+                                variant="raised"
+                                onClick={this.onSubmitAccount}
+                            >
+                                Update Info
+                            </Button>
                         </form>
                     </SettingsSection>
 
@@ -308,6 +368,17 @@ class Settings extends React.Component {
                     autoHideDuration={6000}
                     onClose={this.handleGeneralClose}
                     message={<span id="message-id">Display Name Saved</span>}
+                />
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left'
+                    }}
+                    open={this.state.accountSnackbar}
+                    autoHideDuration={6000}
+                    onClose={this.handleAccountClose}
+                    message={<span id="message-id">Account Info Updated</span>}
                 />
             </div>
         );
