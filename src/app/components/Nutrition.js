@@ -346,6 +346,7 @@ class Nutrition extends React.Component {
                             name="name"
                             id="name"
                             label="Name"
+                            required
                             onChange={this.onChange('name')}
                             error={validate('name')}
                             style={{
@@ -356,6 +357,7 @@ class Nutrition extends React.Component {
                             name="type"
                             id="type"
                             label="Type"
+                            required
                             onChange={this.onChange('type')}
                             error={validate('type')}
                             style={{
@@ -369,6 +371,7 @@ class Nutrition extends React.Component {
                             id="calories"
                             label="Calories"
                             type="number"
+                            required
                             onChange={this.onChange('calories')}
                             error={validate('calories')}
                             style={{
@@ -380,6 +383,7 @@ class Nutrition extends React.Component {
                             id="protein"
                             label="Protein"
                             type="number"
+                            required
                             onChange={this.onChange('protein')}
                             error={validate('protein')}
                             style={{
@@ -393,6 +397,7 @@ class Nutrition extends React.Component {
                             id="carbs"
                             label="Carbs"
                             type="number"
+                            required
                             onChange={this.onChange('carbs')}
                             error={validate('carbs')}
                             style={{
@@ -404,6 +409,7 @@ class Nutrition extends React.Component {
                             id="fat"
                             label="Fat"
                             type="number"
+                            required
                             onChange={this.onChange('fat')}
                             error={validate('fat')}
                             style={{
