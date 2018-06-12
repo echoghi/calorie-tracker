@@ -49,8 +49,6 @@ const PageIndicator = styled.span`
 `;
 
 class SubNav extends React.Component {
-    state = {};
-
     handleNavClass(name) {
         const { path } = this.props;
         let className;

@@ -31,6 +31,20 @@ class UserMenu extends React.Component {
         this.state = {};
     }
 
+    componentDidMount() {
+        window.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside = event => {
+        if (this.menuRef && !this.menuRef.contains(event.target)) {
+            this.setState({ open: false });
+        }
+    };
+
     handleMenu = () => {
         this.setState({ open: !this.state.open });
     };
@@ -40,17 +54,23 @@ class UserMenu extends React.Component {
 
         if (open) {
             return (
-                <Fade in={open}>
-                    <Menu className="logout__button" onClose={() => this.setState({ open: false })}>
-                        <li>
-                            <Link to="settings">Account Settings</Link>
-                        </li>
-                        <li>
-                            <Link to="settings">Edit Profile</Link>
-                        </li>
-                        <li onClick={this.props.logOut}>Log Out</li>
-                    </Menu>
-                </Fade>
+                <div
+                    ref={node => {
+                        this.menuRef = node;
+                    }}
+                >
+                    <Fade in={open}>
+                        <Menu className="logout__button" onClose={() => this.setState({ open: false })}>
+                            <li>
+                                <Link to="settings">Account Settings</Link>
+                            </li>
+                            <li>
+                                <Link to="settings">Edit Profile</Link>
+                            </li>
+                            <li onClick={this.props.logOut}>Log Out</li>
+                        </Menu>
+                    </Fade>
+                </div>
             );
         }
     }
