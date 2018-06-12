@@ -1,5 +1,8 @@
 import React from 'react';
+import { database } from './firebase.js';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -34,13 +37,118 @@ const DeleteAccount = styled.div`
     padding: 15px 0;
 `;
 
+// Reusable validation constuctor for each input
+let inputObj = required => {
+    this.valid = required ? false : true;
+    this.dirty = false;
+};
+
+const mapStateToProps = state => ({
+    userData: state.adminState.userData
+});
+
 class Settings extends React.Component {
     state = {
-        fitnessGoal: 'maintain'
+        fitnessGoal: 'maintain',
+        generalSnackbar: false,
+        validation: {
+            firstName: new inputObj(true),
+            lastName: new inputObj(true),
+            height: new inputObj(),
+            weight: new inputObj(),
+            calories: new inputObj(),
+            carbs: new inputObj(),
+            fat: new inputObj(),
+            protein: new inputObj()
+        }
+    };
+
+    onChange = name => event => {
+        const obj = _.cloneDeep(this.state);
+        // Mark input as dirty (interacted with)
+        obj.validation[name].dirty = true;
+        obj[name] = event.target.value;
+
+        // If there is any value, mark it valid
+        if (event.target.value !== '') {
+            obj.validation[name].valid = true;
+        } else {
+            obj.validation[name].valid = false;
+        }
+
+        this.setState(obj);
+    };
+
+    /**
+     * Validate Inputs
+     *
+     * @return valid - validation status
+     */
+    validateInputs() {
+        const { validation } = this.state;
+        let valid = false;
+        // Check for incompleted fields
+        for (let key in validation) {
+            if (validation[key]['valid']) {
+                return true;
+            }
+        }
+
+        return valid;
+    }
+
+    validate(name) {
+        const { validation } = this.state;
+
+        if (validation[name].dirty && !validation[name].valid) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    onSubmitGeneral = () => {
+        const { firstName, lastName, validation } = this.state;
+        const { userData } = this.props;
+
+        if (this.validateInputs()) {
+            const data = {
+                firstName: firstName,
+                lastName: lastName
+            };
+
+            const queryRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child('user');
+
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+
+            this.setState({ firstName: '', lastName: '', generalSnackbar: true }, () => {
+                queryRef.update(data);
+            });
+        } else {
+            // If there is an invalid input, mark all as dirty on submit to alert the user
+            for (let attr in validation) {
+                if (validation[attr] && (attr === 'firstName' || attr === 'lastName')) {
+                    validation[attr].dirty = true;
+                }
+            }
+
+            this.setState({ validation });
+        }
+    };
+
+    handleGeneralClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ generalSnackbar: false });
     };
 
     render() {
-        console.log(this.state.fitnessGoal);
         return (
             <div className="settings">
                 <SettingsWrapper>
@@ -52,10 +160,32 @@ class Settings extends React.Component {
                                 name="firstName"
                                 id="firstName"
                                 label="First Name"
-                                onChange={this.onChange}
+                                error={this.validate('firstName')}
+                                onChange={this.onChange('firstName')}
                                 style={{ paddingRight: 20 }}
                             />
-                            <Input name="lastName" id="lastName" label="Last Name" onChange={this.onChange} />
+                            <Input
+                                name="lastName"
+                                id="lastName"
+                                label="Last Name"
+                                error={this.validate('lastName')}
+                                onChange={this.onChange('lastName')}
+                            />
+                            <Button
+                                style={{
+                                    background: '#269bda',
+                                    fontSize: 16,
+                                    height: 43,
+                                    display: 'inline-block',
+                                    verticalAlign: 'bottom',
+                                    margin: '0 10px'
+                                }}
+                                color="primary"
+                                variant="raised"
+                                onClick={this.onSubmitGeneral}
+                            >
+                                Change Display Name
+                            </Button>
                         </form>
                     </SettingsSection>
 
@@ -70,14 +200,14 @@ class Settings extends React.Component {
                                 name="height"
                                 id="height"
                                 label="Height (in)"
-                                onChange={this.onChange}
+                                onChange={this.onChange('height')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
                                 name="weight"
                                 id="weight"
                                 label="Weight (lb)"
-                                onChange={this.onChange}
+                                onChange={this.onChange('weight')}
                                 style={{ paddingRight: 20 }}
                             />
                         </form>
@@ -94,28 +224,28 @@ class Settings extends React.Component {
                                 name="calories"
                                 id="calories"
                                 label="Calories (kcal)"
-                                onChange={this.onChange}
+                                onChange={this.onChange('calories')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
                                 name="carbs"
                                 id="carbs"
                                 label="Carbs (g)"
-                                onChange={this.onChange}
+                                onChange={this.onChange('carbs')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
                                 name="fat"
                                 id="fat"
                                 label="Fat (g)"
-                                onChange={this.onChange}
+                                onChange={this.onChange('fat')}
                                 style={{ paddingRight: 20 }}
                             />
                             <Input
                                 name="protein"
                                 id="protein"
                                 label="Protein (g)"
-                                onChange={this.onChange}
+                                onChange={this.onChange('protein')}
                                 style={{ paddingRight: 20 }}
                             />
                         </form>
@@ -168,9 +298,20 @@ class Settings extends React.Component {
                         </Button>
                     </DeleteAccount>
                 </SettingsWrapper>
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left'
+                    }}
+                    open={this.state.generalSnackbar}
+                    autoHideDuration={6000}
+                    onClose={this.handleGeneralClose}
+                    message={<span id="message-id">Display Name Saved</span>}
+                />
             </div>
         );
     }
 }
 
-export default Settings;
+export default connect(mapStateToProps)(Settings);
