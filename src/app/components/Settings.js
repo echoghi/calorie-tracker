@@ -99,6 +99,16 @@ class Settings extends React.Component {
         return valid;
     }
 
+    resetInputs = () => {
+        let { validation } = this.state;
+
+        for (let key in validation) {
+            validation[key] = new inputObj(true);
+        }
+
+        this.setState({ validation });
+    };
+
     validate(name) {
         const { validation } = this.state;
 
@@ -129,6 +139,7 @@ class Settings extends React.Component {
 
             this.setState({ firstName: '', lastName: '', generalSnackbar: true }, () => {
                 queryRef.update(data);
+                this.resetInputs();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -162,6 +173,7 @@ class Settings extends React.Component {
 
             this.setState({ height: '', weight: '', accountSnackbar: true }, () => {
                 queryRef.update(data);
+                this.resetInputs();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -201,6 +213,7 @@ class Settings extends React.Component {
 
             this.setState({ calories: '', carbs: '', fat: '', protein: '', goalsSnackbar: true }, () => {
                 queryRef.update(data);
+                this.resetInputs();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
