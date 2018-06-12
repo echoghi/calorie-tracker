@@ -2,6 +2,7 @@ import React from 'react';
 import UserMenu from './UserMenu';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
 import { auth } from './firebase.js';
@@ -25,6 +26,7 @@ const Brand = styled.div`
     text-align: center;
     display: inline-block;
     padding: 15px 30px;
+    cursor: pointer;
 `;
 
 class NavBar extends React.Component {
@@ -117,6 +119,14 @@ class NavBar extends React.Component {
         this.setState({ width: window.innerWidth });
     };
 
+    goHome = () => {
+        const { pathname } = this.props.history.location;
+
+        if (pathname !== '/') {
+            this.props.history.push('/');
+        }
+    };
+
     logOut = () => {
         auth.signOut().then(() => {
             this.props.logOut();
@@ -144,7 +154,7 @@ class NavBar extends React.Component {
         if (path !== '/login') {
             return (
                 <div className="navbar">
-                    <Brand>
+                    <Brand onClick={this.goHome}>
                         <i className="icon-aperture" />
                     </Brand>
                     <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
@@ -164,7 +174,9 @@ class NavBar extends React.Component {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(NavBar);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(NavBar)
+);
