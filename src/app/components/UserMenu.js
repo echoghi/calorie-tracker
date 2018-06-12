@@ -19,8 +19,12 @@ const Menu = styled.ul`
         padding: 10px;
         border-top: 1px solid rgb(242, 242, 242);
 
+        &:first-child {
+            border-top: 0
+        }
+
         &:hover {
-            border-top: 1px solid #dbdbdb;
+            opacity: .8;
         }
     }
 `;
