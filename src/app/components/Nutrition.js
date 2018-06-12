@@ -259,24 +259,11 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let {
-            dayIndex,
-            name,
-            type,
-            calories,
-            fat,
-            carbs,
-            protein,
-            validation,
-            saveMeal,
-            meals,
-            mealTypes
-        } = this.state;
+        let { dayIndex, name, type, calories, fat, carbs, protein, validation, saveMeal, meals } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
             let day;
-            let saveMealType = true;
 
             const queryRef = database
                 .ref('users')
@@ -287,11 +274,6 @@ class Nutrition extends React.Component {
                 .ref('users')
                 .child(userData.uid)
                 .child(`calendar/${dayIndex}/nutrition/meals`);
-
-            const mealTypeRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child('mealTypes');
 
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
@@ -317,21 +299,6 @@ class Nutrition extends React.Component {
                         meals = [];
                     }
 
-                    if (!mealTypes) {
-                        mealTypes = [];
-                    }
-
-                    mealTypeRef.on('value', snapshot => {
-                        snapshot.forEach(childSnapshot => {
-                            let snapshot = childSnapshot.val();
-
-                            if (type.toLowerCase() === snapshot.toLowerCase()) {
-                                saveMealType = false;
-                                type = snapshot;
-                            }
-                        });
-                    });
-
                     meals.push({
                         name,
                         type,
@@ -343,12 +310,7 @@ class Nutrition extends React.Component {
 
                     mealsRef.update(meals);
 
-                    // Save the meal type if it doesn't exist
-                    if (saveMealType) {
-                        mealTypes.push({ type });
-
-                        mealTypeRef.update(mealTypes);
-                    }
+                    this.setState({ saveMeal: false });
                 }
             });
         } else {
@@ -454,6 +416,7 @@ class Nutrition extends React.Component {
                             control={
                                 <Checkbox
                                     style={checkboxStyle.checkbox}
+                                    checked={this.state.saveMeal}
                                     onChange={() => this.setState({ saveMeal: !this.state.saveMeal })}
                                 />
                             }
