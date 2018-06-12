@@ -145,14 +145,12 @@ export function fetchData(id) {
                     ],
                     user: {
                         goals: {
-                            nutrition: {
-                                calories: 2000,
-                                protein: 100,
-                                carbs: 100,
-                                fat: 100
-                            }
+                            calories: 2000,
+                            protein: 100,
+                            carbs: 100,
+                            fat: 100
                         },
-                        height: 177.8,
+                        height: 70,
                         weight: 150
                     }
                 };

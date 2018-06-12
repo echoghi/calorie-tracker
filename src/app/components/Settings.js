@@ -353,7 +353,7 @@ class Settings extends React.Component {
                             <Button
                                 style={{
                                     background: '#269bda',
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     height: 43,
                                     display: 'inline-block',
                                     verticalAlign: 'bottom',
@@ -395,7 +395,7 @@ class Settings extends React.Component {
                             <Button
                                 style={{
                                     background: '#269bda',
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     height: 43,
                                     display: 'inline-block',
                                     verticalAlign: 'bottom',
@@ -455,7 +455,7 @@ class Settings extends React.Component {
                             <Button
                                 style={{
                                     background: '#269bda',
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     height: 43,
                                     display: 'inline-block',
                                     verticalAlign: 'bottom',
@@ -509,7 +509,7 @@ class Settings extends React.Component {
                         </SettingsSubHeader>
 
                         <Button
-                            style={{ background: '#cb2431', fontSize: 16, display: 'block' }}
+                            style={{ background: '#cb2431', fontSize: 14, display: 'block' }}
                             color="primary"
                             variant="raised"
                         >

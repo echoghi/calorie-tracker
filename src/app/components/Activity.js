@@ -293,19 +293,19 @@ class Activity extends React.Component {
         let color;
         let progress;
         let text;
-        console.log(day);
+
         if (type === 'protein') {
             color = '#F5729C';
-            progress = day.nutrition.protein / user.goals.nutrition.protein;
-            text = day.nutrition.protein / user.goals.nutrition.protein;
+            progress = day.nutrition.protein / user.goals.protein;
+            text = day.nutrition.protein / user.goals.protein;
         } else if (type === 'carbs') {
             color = '#7BD4F8';
-            progress = day.nutrition.carbs / user.goals.nutrition.carbs;
-            text = day.nutrition.carbs / user.goals.nutrition.carbs;
+            progress = day.nutrition.carbs / user.goals.carbs;
+            text = day.nutrition.carbs / user.goals.carbs;
         } else {
             color = '#55F3B3';
-            progress = day.nutrition.fat / user.goals.nutrition.fat;
-            text = day.nutrition.fat / user.goals.nutrition.fat;
+            progress = day.nutrition.fat / user.goals.fat;
+            text = day.nutrition.fat / user.goals.fat;
         }
 
         // Prevent progress bar bug by converting 100%+ to 100%
@@ -336,7 +336,7 @@ class Activity extends React.Component {
 
     renderCalorieBox() {
         let { day, user } = this.state;
-        const calorieGoal = day.fitness.calories || user.goals.nutrition.calories;
+        const calorieGoal = day.fitness.calories || user.goals.calories;
         let progress = day.nutrition.calories / calorieGoal;
         let text = day.nutrition.calories / calorieGoal;
         const options = {
