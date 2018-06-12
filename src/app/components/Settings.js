@@ -52,6 +52,7 @@ class Settings extends React.Component {
         fitnessGoal: 'maintain',
         generalSnackbar: false,
         accountSnackbar: false,
+        goalsSnackbar: false,
         validation: {
             firstName: new inputObj(true),
             lastName: new inputObj(true),
@@ -147,8 +148,8 @@ class Settings extends React.Component {
 
         if (this.validateInputs()) {
             const data = {
-                height: height,
-                weight: weight
+                height: parseInt(height),
+                weight: parseInt(weight)
             };
 
             const queryRef = database
@@ -174,6 +175,48 @@ class Settings extends React.Component {
         }
     };
 
+    onSubmitGoals = () => {
+        const { calories, carbs, fat, protein, validation } = this.state;
+        const { userData } = this.props;
+
+        if (this.validateInputs()) {
+            const data = {
+                goals: {
+                    calories: parseInt(calories),
+                    carbs: parseInt(carbs),
+                    fat: parseInt(fat),
+                    protein: parseInt(protein)
+                }
+            };
+
+            const queryRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child('user');
+
+            document.getElementById('calories').value = '';
+            document.getElementById('carbs').value = '';
+            document.getElementById('fat').value = '';
+            document.getElementById('protein').value = '';
+
+            this.setState({ calories: '', carbs: '', fat: '', protein: '', goalsSnackbar: true }, () => {
+                queryRef.update(data);
+            });
+        } else {
+            // If there is an invalid input, mark all as dirty on submit to alert the user
+            for (let attr in validation) {
+                if (
+                    validation[attr] &&
+                    (attr === 'calories' || attr === 'carbs' || attr === 'fat' || attr === 'protein')
+                ) {
+                    validation[attr].dirty = true;
+                }
+            }
+
+            this.setState({ validation });
+        }
+    };
+
     handleGeneralClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -188,6 +231,14 @@ class Settings extends React.Component {
         }
 
         this.setState({ accountSnackbar: false });
+    };
+
+    handleGoalsClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ goalsSnackbar: false });
     };
 
     render() {
@@ -284,6 +335,8 @@ class Settings extends React.Component {
                                 name="calories"
                                 id="calories"
                                 label="Calories (kcal)"
+                                type="number"
+                                error={this.validate('calories')}
                                 onChange={this.onChange('calories')}
                                 style={{ paddingRight: 20 }}
                             />
@@ -291,6 +344,8 @@ class Settings extends React.Component {
                                 name="carbs"
                                 id="carbs"
                                 label="Carbs (g)"
+                                type="number"
+                                error={this.validate('carbs')}
                                 onChange={this.onChange('carbs')}
                                 style={{ paddingRight: 20 }}
                             />
@@ -298,6 +353,8 @@ class Settings extends React.Component {
                                 name="fat"
                                 id="fat"
                                 label="Fat (g)"
+                                type="number"
+                                error={this.validate('fat')}
                                 onChange={this.onChange('fat')}
                                 style={{ paddingRight: 20 }}
                             />
@@ -305,9 +362,25 @@ class Settings extends React.Component {
                                 name="protein"
                                 id="protein"
                                 label="Protein (g)"
+                                type="number"
+                                error={this.validate('protein')}
                                 onChange={this.onChange('protein')}
-                                style={{ paddingRight: 20 }}
                             />
+                            <Button
+                                style={{
+                                    background: '#269bda',
+                                    fontSize: 16,
+                                    height: 43,
+                                    display: 'inline-block',
+                                    verticalAlign: 'bottom',
+                                    margin: '0 10px'
+                                }}
+                                color="primary"
+                                variant="raised"
+                                onClick={this.onSubmitGoals}
+                            >
+                                Update Goals
+                            </Button>
                         </form>
                         <FormControl
                             style={{ marginTop: 15 }}
@@ -379,6 +452,17 @@ class Settings extends React.Component {
                     autoHideDuration={6000}
                     onClose={this.handleAccountClose}
                     message={<span id="message-id">Account Info Updated</span>}
+                />
+
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left'
+                    }}
+                    open={this.state.goalsSnackbar}
+                    autoHideDuration={6000}
+                    onClose={this.handleGoalsClose}
+                    message={<span id="message-id">Goals Updated</span>}
                 />
             </div>
         );
