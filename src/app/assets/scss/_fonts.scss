@@ -10,7 +10,7 @@ $icon-aperture: '\e94f';
 $icon-arrow-down: '\e951';
 $icon-arrow-down-circle: '\e952';
 $icon-arrow-down-left: '\e953';
-$icon-arrow-down-right: '\e954';
+$icon-arrow-down-right2: '\e954';
 $icon-arrow-left: '\e955';
 $icon-arrow-left-circle: '\e956';
 $icon-arrow-right: '\e957';
@@ -63,7 +63,7 @@ $icon-credit-card: '\e993';
 $icon-crop: '\e994';
 $icon-crosshair: '\e995';
 $icon-database: '\e996';
-$icon-delete2: '\e997';
+$icon-delete: '\e997';
 $icon-disc: '\e998';
 $icon-dollar-sign: '\e999';
 $icon-download: '\e99a';
@@ -104,7 +104,7 @@ $icon-help-circle: '\e9bd';
 $icon-home: '\e9be';
 $icon-image: '\e9bf';
 $icon-inbox: '\e9c0';
-$icon-info: '\e9c1';
+$icon-info2: '\e9c1';
 $icon-instagram: '\e9c2';
 $icon-italic: '\e9c3';
 $icon-layers: '\e9c4';
@@ -141,7 +141,7 @@ $icon-paperclip: '\e9e3';
 $icon-pause: '\e9e4';
 $icon-pause-circle: '\e9e5';
 $icon-percent: '\e9e6';
-$icon-pie-chart: '\e9ee';
+$icon-pie-chart2: '\e9ee';
 $icon-play: '\e9ef';
 $icon-play-circle: '\e9f0';
 $icon-plus: '\e9f1';
@@ -157,7 +157,7 @@ $icon-repeat: '\e9fa';
 $icon-rewind: '\e9fb';
 $icon-rotate-ccw: '\e9fc';
 $icon-rotate-cw: '\e9fd';
-$icon-search: '\ea01';
+$icon-search2: '\ea01';
 $icon-send: '\ea02';
 $icon-server: '\ea03';
 $icon-settings: '\ea04';
@@ -205,20 +205,21 @@ $icon-users: '\ea32';
 $icon-watch: '\ea33';
 $icon-wifi: '\ea34';
 $icon-wind: '\ea36';
-$icon-x: '\ea37';
+$icon-x2: '\ea37';
 $icon-x-circle: '\ea38';
 $icon-x-square: '\ea39';
 $icon-youtube: '\ea3a';
 $icon-zoom-in: '\ea3d';
 $icon-zoom-out: '\ea3e';
+$icon-bar-chart: '\e90d';
 
 @font-face {
     font-family: 'fitness';
-    src: url('#{$icomoon-font-path}/fitness.eot?mczggh');
-    src: url('#{$icomoon-font-path}/fitness.eot?mczggh#iefix') format('embedded-opentype'),
-        url('#{$icomoon-font-path}/fitness.ttf?mczggh') format('truetype'),
-        url('#{$icomoon-font-path}/fitness.woff?mczggh') format('woff'),
-        url('#{$icomoon-font-path}/fitness.svg?mczggh#fitness') format('svg');
+    src: url('#{$icomoon-font-path}/fitness.eot?wxlkpf');
+    src: url('#{$icomoon-font-path}/fitness.eot?wxlkpf#iefix') format('embedded-opentype'),
+        url('#{$icomoon-font-path}/fitness.ttf?wxlkpf') format('truetype'),
+        url('#{$icomoon-font-path}/fitness.woff?wxlkpf') format('woff'),
+        url('#{$icomoon-font-path}/fitness.svg?wxlkpf#fitness') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -249,7 +250,7 @@ $icon-zoom-out: '\ea3e';
         content: $icon-airplay;
     }
 }
-.icon-alert-circle2 {
+.icon-alert-circle {
     &:before {
         content: $icon-alert-circle;
     }
@@ -284,9 +285,9 @@ $icon-zoom-out: '\ea3e';
         content: $icon-arrow-down-left;
     }
 }
-.icon-arrow-down-right {
+.icon-arrow-down-right2 {
     &:before {
-        content: $icon-arrow-down-right;
+        content: $icon-arrow-down-right2;
     }
 }
 .icon-arrow-left {
@@ -549,9 +550,9 @@ $icon-zoom-out: '\ea3e';
         content: $icon-database;
     }
 }
-.icon-delete2 {
+.icon-delete {
     &:before {
-        content: $icon-delete2;
+        content: $icon-delete;
     }
 }
 .icon-disc {
@@ -754,9 +755,9 @@ $icon-zoom-out: '\ea3e';
         content: $icon-inbox;
     }
 }
-.icon-info {
+.icon-info2 {
     &:before {
-        content: $icon-info;
+        content: $icon-info2;
     }
 }
 .icon-instagram {
@@ -939,9 +940,9 @@ $icon-zoom-out: '\ea3e';
         content: $icon-percent;
     }
 }
-.icon-pie-chart {
+.icon-pie-chart2 {
     &:before {
-        content: $icon-pie-chart;
+        content: $icon-pie-chart2;
     }
 }
 .icon-play {
@@ -1019,9 +1020,9 @@ $icon-zoom-out: '\ea3e';
         content: $icon-rotate-cw;
     }
 }
-.icon-search {
+.icon-search2 {
     &:before {
-        content: $icon-search;
+        content: $icon-search2;
     }
 }
 .icon-send {
@@ -1259,9 +1260,9 @@ $icon-zoom-out: '\ea3e';
         content: $icon-wind;
     }
 }
-.icon-x {
+.icon-x2 {
     &:before {
-        content: $icon-x;
+        content: $icon-x2;
     }
 }
 .icon-x-circle {
@@ -1287,5 +1288,10 @@ $icon-zoom-out: '\ea3e';
 .icon-zoom-out {
     &:before {
         content: $icon-zoom-out;
+    }
+}
+.icon-bar-chart {
+    &:before {
+        content: $icon-bar-chart;
     }
 }

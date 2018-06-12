@@ -93,7 +93,7 @@ class SubNav extends React.Component {
                     {this.renderIndicator('calendar')}
                 </Link>
                 <Link to="/nutrition" className={this.handleNavClass('nutrition')}>
-                    <Icon className="icon-bar-chart-2" />
+                    <Icon className="icon-bar-chart" />
                     <li>Nutrition</li>
                     {this.renderIndicator('nutrition')}
                 </Link>
