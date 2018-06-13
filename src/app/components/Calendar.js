@@ -30,11 +30,11 @@ class Calendar extends React.Component {
         let { time } = this.state;
         let now = moment();
         let animate;
-        const calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.nutrition.calories;
+        const calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.calories;
         let calorieProgress = calories / calorieGoal;
-        let proteinProgress = protein / data.user.goals.nutrition.protein;
-        let carbProgress = carbs / data.user.goals.nutrition.carbs;
-        let fatProgress = fat / data.user.goals.nutrition.fat;
+        let proteinProgress = protein / data.user.goals.protein;
+        let carbProgress = carbs / data.user.goals.carbs;
+        let fatProgress = fat / data.user.goals.fat;
 
         const trailColor = '#f4f4f4';
 
