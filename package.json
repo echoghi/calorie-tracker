@@ -4,7 +4,7 @@
     "description": "Health Dashboard",
     "scripts": {
         "dev": "yarn install && nodemon --watch webpack.config.js --exec \"webpack-dev-server --env development\"",
-        "build": "rm -rf build && rm -rf node_modules && NODE_ENV=production webpack --env.prod=true",
+        "build": "NODE_ENV=production webpack --env.prod=true",
         "build-windows": "cross-env NODE_ENV=production webpack --env.prod=true"
     },
     "repository": {
