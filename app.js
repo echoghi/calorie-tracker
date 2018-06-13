@@ -7,9 +7,7 @@ var express = require('express'),
     app = express(),
     server = require('http').createServer(app);
 
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
-var port = 3000;
+var port = 3030;
 
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/build'));
