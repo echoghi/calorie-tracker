@@ -44,7 +44,7 @@ class UserMenu extends React.Component {
     }
 
     handleClickOutside = event => {
-        if (this.menuRef && !this.menuRef.contains(event.target)) {
+        if (this.menuRef && !this.menuRef.contains(event.target) && !this.imageRef.contains(event.target)) {
             this.setState({ open: false });
         }
     };
@@ -83,7 +83,12 @@ class UserMenu extends React.Component {
         const { userData } = this.props;
 
         return (
-            <div className="greeting">
+            <div
+                className="greeting"
+                ref={node => {
+                    this.imageRef = node;
+                }}
+            >
                 <div onClick={this.handleMenu}>
                     <img className="user__img" src={userData.photoURL} />
                     <i className="icon-chevron-down" />
