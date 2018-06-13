@@ -1,13 +1,13 @@
 /**
- * Portfolio Server
- * v2.0.0
+ * Doughboy Test Server
+ * v1.5.0
  * 6/3/17
  */
-var express = require('express'),
-    app = express(),
-    server = require('http').createServer(app);
+const express = require('express');
+const app = express();
+const server = require('http').createServer(app);
 
-var port = 3030;
+const port = 3030;
 
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/build'));
@@ -18,5 +18,5 @@ app.get('*', function(req, res) {
 
 // Start the server
 server.listen(port, function() {
-    console.log('listening on port 3000');
+    console.log(`listening on port ${port}`);
 });

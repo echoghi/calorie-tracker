@@ -58,8 +58,6 @@
         "browser-sync": "^2.18.8",
         "browser-sync-webpack-plugin": "^1.1.4",
         "case-sensitive-paths-webpack-plugin": "^2.0.0",
-        "classnames": "^2.2.5",
-        "compression-webpack-plugin": "^1.0.1",
         "css-loader": "0.28.8",
         "duplicate-package-checker-webpack-plugin": "^1.2.4",
         "eslint": "^4.0.0",
