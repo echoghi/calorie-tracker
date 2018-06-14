@@ -104,7 +104,7 @@ $icon-help-circle: '\e9bd';
 $icon-home: '\e9be';
 $icon-image: '\e9bf';
 $icon-inbox: '\e9c0';
-$icon-info2: '\e9c1';
+$icon-info: '\e9c1';
 $icon-instagram: '\e9c2';
 $icon-italic: '\e9c3';
 $icon-layers: '\e9c4';
@@ -755,9 +755,9 @@ $icon-bar-chart: '\e90d';
         content: $icon-inbox;
     }
 }
-.icon-info2 {
+.icon-info {
     &:before {
-        content: $icon-info2;
+        content: $icon-info;
     }
 }
 .icon-instagram {
