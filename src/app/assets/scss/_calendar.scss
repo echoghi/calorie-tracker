@@ -7,7 +7,7 @@
     &__container {
         display: inline-block;
         //border: 1px solid $athens-gray;
-        box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
         border-radius: 3px;
         background: $white;
     }
@@ -23,7 +23,7 @@
         border-bottom: none;
 
         span {
-            opacity: .8;
+            opacity: 0.8;
             width: 14.3%;
             text-align: center;
             font-weight: bold;
@@ -40,16 +40,12 @@
             cursor: pointer;
             vertical-align: sub;
             font-size: 25px;
-            opacity: .8;
-            transition: .2s;
-
-            &:hover {
-                opacity: .5;
-            }
+            opacity: 0.8;
         }
 
         h2 {
             display: inline-block;
+            vertical-align: middle;
             padding: 10px;
             margin: 0;
         }
@@ -106,7 +102,7 @@
 
         &.inactive {
             background: $polar;
-            opacity: .65;
+            opacity: 0.65;
         }
 
         &.today {
@@ -114,7 +110,7 @@
         }
 
         .icon-info {
-            opacity: .8;
+            opacity: 0.8;
             cursor: pointer;
             position: absolute;
             color: $limed-spruce;
@@ -135,7 +131,7 @@
 
     .number {
         padding: 15px;
-        opacity: .8;
+        opacity: 0.8;
         font-weight: bold;
         box-sizing: border-box;
     }
@@ -157,14 +153,14 @@
     min-width: 240px;
     background: $white;
     vertical-align: top;
-    box-shadow: 0 8px 32px 0 rgba(0,0,0,.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 
     &__header {
         padding: 15px 20px;
         font-size: 17px;
         font-weight: bold;
         border-bottom: 1px solid $athens-gray;
-        background-image: linear-gradient(to top, $catskill-white, $white)
+        background-image: linear-gradient(to top, $catskill-white, $white);
     }
 
     &__body {
@@ -179,7 +175,7 @@
                 display: inline-block;
                 font-size: 20px;
                 padding: 10px 0;
-                color: $limed-spruce
+                color: $limed-spruce;
             }
 
             img {
@@ -192,7 +188,7 @@
         &--name {
             display: inline-block;
             padding: 0 10px;
-            vertical-align: text-bottom
+            vertical-align: text-bottom;
         }
 
         &--subhead {
@@ -218,15 +214,15 @@
         }
 
         &--protein {
-            background: $froly
+            background: $froly;
         }
 
         &--carbs {
-            background: $malibu
+            background: $malibu;
         }
 
         &--fat {
-            background: $aquamarine
+            background: $aquamarine;
         }
     }
 }

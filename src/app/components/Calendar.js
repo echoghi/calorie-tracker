@@ -4,6 +4,7 @@ import moment from 'moment';
 import ProgressBar from 'react-progress-bar.js';
 let { Circle } = ProgressBar;
 import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
@@ -413,9 +414,14 @@ class Calendar extends React.Component {
             <div>
                 <div className="calendar">
                     <div className="calendar__toggle--month">
-                        <i className="icon-chevron-left" onClick={() => this.changeMonth(false)} />
+                        <IconButton aria-label="Last Month" component="div" onClick={() => this.changeMonth(false)}>
+                            <i className="icon-chevron-left" />
+                        </IconButton>
+
                         <h2>{month}</h2>
-                        <i className="icon-chevron-right" onClick={() => this.changeMonth(true)} />
+                        <IconButton aria-label="Next Month" component="div" onClick={() => this.changeMonth(true)}>
+                            <i className="icon-chevron-right" />
+                        </IconButton>
                     </div>
                     <h4>{year}</h4>
                     <div className="calendar__wrapper">
