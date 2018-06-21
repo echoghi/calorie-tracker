@@ -93,19 +93,17 @@ class Home extends React.Component {
 
     renderGraphHeader(net, value) {
         if (net) {
-            return (
-                <span>
-                    {`Caloric Surplus of ${value}cal`}
-                    <i className="icon-trending-up" />
-                </span>
-            );
+            return <span>{`Caloric Surplus of ${value}cal`}</span>;
         } else {
-            return (
-                <span>
-                    {`Caloric Defecit of ${value}cal`}
-                    <i className="icon-trending-down" />
-                </span>
-            );
+            return <span>{`Caloric Defecit of ${value}cal`}</span>;
+        }
+    }
+
+    renderGraphHeaderIcon(net) {
+        if (net) {
+            return <i className="icon-trending-up" />;
+        } else {
+            return <i className="icon-trending-down" />;
         }
     }
 
@@ -182,6 +180,7 @@ class Home extends React.Component {
                                 <h4 className="title">
                                     {this.renderGraphHeader(calorieBalance.netPositive, calorieBalance.value)}
                                 </h4>
+                                <h4 className="title">{this.renderGraphHeaderIcon(calorieBalance.netPositive)}</h4>
                             </div>
                             <div className="overview--body">{this.renderCalorieGraph(userData)}</div>
                         </div>
