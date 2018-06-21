@@ -16,15 +16,28 @@
             display: block;
         }
 
+        &--body {
+            padding: 20px;
+
+            &.sm {
+                height: 200px;
+            }
+        }
+
         &--box {
             display: inline-block;
             position: relative;
             width: 31%;
             border: 1px solid $athens-gray;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
             border-radius: 4px;
             background: $white;
             text-align: center;
             overflow: hidden;
+
+            &.xl {
+                width: 100%;
+            }
 
             @include less-than-ipad {
                 width: 100%;
@@ -32,40 +45,18 @@
                 margin: 30px 0;
             }
 
-            .overview--breakdown {
-                display: flex;
-                border-top: 1px solid $athens-gray;
-                background: $athens-gray-alt;
-                padding: 10px 20px;
-                min-height: 30%;
-
-                &-exercise {
-                    padding: 10px;
-                    display: inline-block;
-
-                    h4 {
-                        margin: 0;
-                        padding: 5px 0;
-                        text-align: left;
-                        font-size: 30px;
-                        position: relative;
-                    }
-
-                    span {
-                        width: 100%;
-                        padding: 5px 0;
-                        color: $regent-gray;
-                        font-size: 16px;
-                        text-transform: uppercase;
-                        text-align: left;
-                    }
-                }
-            }
-
             .overview--head {
                 display: flex;
+                background: $header-gray;
+                border-bottom: 1px solid $athens-gray;
                 justify-content: space-between;
-                padding: 24px;
+                padding: 15px;
+                /* stylelint-disable */
+                &.defecit {
+                    background-color: #f2dede;
+                    border-color: #ebccd1;
+                    color: #a94442;
+                }
 
                 h4 {
                     font-weight: normal;
