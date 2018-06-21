@@ -115,7 +115,7 @@ class Nutrition extends React.Component {
                 snapshot.forEach(childSnapshot => {
                     day = childSnapshot.val();
 
-                    dayIndex = Object.keys(day)[0];
+                    dayIndex = childSnapshot.key;
 
                     const { year, date, month } = day.day;
                     day.day = moment([year, month, date]);
@@ -148,7 +148,7 @@ class Nutrition extends React.Component {
 
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
-                dayIndex = Object.keys(day)[0];
+                dayIndex = snapshot.key;
 
                 day = day[dayIndex];
 
