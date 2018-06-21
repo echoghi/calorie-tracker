@@ -18,10 +18,6 @@
 
         &--body {
             padding: 20px;
-
-            &.sm {
-                height: 200px;
-            }
         }
 
         &--box {
@@ -56,6 +52,16 @@
                     background-color: #f2dede;
                     border-color: #ebccd1;
                     color: #a94442;
+
+                    i {
+                        color: $flush-orange;
+                    }
+                }
+
+                &.surplus {
+                    i {
+                        color: $lima;
+                    }
                 }
 
                 h4 {
@@ -64,28 +70,12 @@
                     width: fit-content;
                     margin: 0;
                     font-size: 20px;
-
-                    &.percentage {
-                        &.positive {
-                            color: $lima;
-                        }
-
-                        &.negative {
-                            color: $flush-orange;
-                        }
-                    }
                 }
             }
 
             h1,
             span {
                 display: inline-block;
-            }
-
-            span {
-                font-size: 4rem;
-                padding-left: 5px;
-                color: $cold-purple;
             }
 
             h1 {
