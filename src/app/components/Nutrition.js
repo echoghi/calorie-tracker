@@ -148,7 +148,7 @@ class Nutrition extends React.Component {
 
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
-                dayIndex = snapshot.key;
+                dayIndex = Object.keys(day)[0];
 
                 day = day[dayIndex];
 
