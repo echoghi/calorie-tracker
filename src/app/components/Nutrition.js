@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
+import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
@@ -43,7 +44,8 @@ class Nutrition extends React.Component {
                 protein: new inputObj(true),
                 carbs: new inputObj(true),
                 fat: new inputObj(true)
-            }
+            },
+            sorted: []
         };
 
         window.scrollTo(0, 0);
@@ -169,54 +171,120 @@ class Nutrition extends React.Component {
     };
 
     renderMealsTable() {
-        const { meals } = this.state;
+        const { meals, sorted } = this.state;
 
         return (
             <ReactTable
+                style={tableStyle.table}
+                ref={instance => (this.tableInstance = instance)}
                 data={meals || []}
                 noDataText="No Meals Found"
                 columns={[
                     {
-                        Header: 'Meals',
-                        columns: [
-                            {
-                                Header: 'Name',
-                                id: 'name',
-                                accessor: d => d.name
-                            },
-                            {
-                                Header: 'Type',
-                                id: 'type',
-                                accessor: d => d.type
-                            }
-                        ]
+                        headerText: 'Meal',
+                        accessor: 'name',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
                     },
                     {
-                        Header: 'Nutritional Information (g)',
-                        columns: [
-                            {
-                                Header: 'Calories',
-                                id: 'calories',
-                                accessor: d => d.calories
-                            },
-                            {
-                                Header: 'Protein',
-                                id: 'protein',
-                                accessor: d => d.protein
-                            },
-                            {
-                                Header: 'Carbohydrates',
-                                id: 'carbs',
-                                accessor: d => d.carbs
-                            },
-                            {
-                                Header: 'Fat',
-                                id: 'fat',
-                                accessor: d => d.fat
-                            }
-                        ]
+                        headerText: 'Type',
+                        accessor: 'type',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Calories',
+                        accessor: 'calories',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Protein',
+                        accessor: 'protein',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Carbs',
+                        accessor: 'carbs',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Fat',
+                        accessor: 'fat',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
                     }
                 ]}
+                getTheadProps={() => {
+                    return {
+                        style: tableStyle.header
+                    };
+                }}
+                getTheadThProps={() => {
+                    return {
+                        style: tableStyle.th
+                    };
+                }}
+                getTrGroupProps={() => {
+                    return {
+                        style: tableStyle.tbodyTr
+                    };
+                }}
+                onSortedChange={sorted =>
+                    this.setState({
+                        sorted
+                    })
+                }
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
