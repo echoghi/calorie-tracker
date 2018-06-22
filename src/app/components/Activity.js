@@ -13,9 +13,12 @@ const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
 
 // Reusable validation constuctor for each input
-let inputObj = required => {
-    this.valid = required ? false : true;
-    this.dirty = false;
+const inputObj = class {
+    constructor(required) {
+        this.required = required;
+        this.valid = !required;
+        this.dirty = false;
+    }
 };
 
 const InputWrapper = styled.div`
@@ -37,10 +40,12 @@ class Activity extends React.Component {
             activity: {},
             loading: true,
             validation: {
-                calories: new inputObj(true),
+                calories: new inputObj(false),
                 exerciseName: new inputObj(true),
                 exerciseType: new inputObj(true),
-                minutes: new inputObj(true)
+                minutes: new inputObj(false),
+                weight: new inputObj(false),
+                repetitions: new inputObj(false)
             }
         };
 
@@ -176,7 +181,7 @@ class Activity extends React.Component {
                         ]
                     },
                     {
-                        Header: 'Fitness Info',
+                        Header: 'Stats',
                         columns: [
                             {
                                 Header: 'Calories',
@@ -187,6 +192,16 @@ class Activity extends React.Component {
                                 Header: 'Minutes',
                                 id: 'minutes',
                                 accessor: d => d.protein
+                            },
+                            {
+                                Header: 'Weight',
+                                id: 'weight',
+                                accessor: d => d.weight
+                            },
+                            {
+                                Header: 'Repetitions',
+                                id: 'repetitions',
+                                accessor: d => d.repetitions
                             }
                         ]
                     }
@@ -200,7 +215,8 @@ class Activity extends React.Component {
     renderActivityBox() {
         const { validation } = this.state;
 
-        const validate = name => (validation[name].dirty && !validation[name].valid ? true : false);
+        const validate = name =>
+            validation[name].dirty && !validation[name].valid && validation[name].required ? true : false;
 
         return (
             <div className="nutrition__overview--meals">
@@ -236,7 +252,6 @@ class Activity extends React.Component {
                             id="calories"
                             label="Calories"
                             type="number"
-                            required
                             onChange={this.onChange('calories')}
                             error={validate('calories')}
                             style={{
@@ -248,9 +263,32 @@ class Activity extends React.Component {
                             id="minutes"
                             label="Minutes"
                             type="number"
-                            required
                             onChange={this.onChange('minutes')}
                             error={validate('minutes')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                    </div>
+                    <div className="add__meal--input">
+                        <Input
+                            name="weight"
+                            id="weight"
+                            label="Weight"
+                            type="number"
+                            onChange={this.onChange('weight')}
+                            error={validate('weight')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                        <Input
+                            name="repetitions"
+                            id="repetitions"
+                            label="Repetitions"
+                            type="number"
+                            onChange={this.onChange('repetitions')}
+                            error={validate('repetitions')}
                             style={{
                                 width: '45%'
                             }}
@@ -280,9 +318,11 @@ class Activity extends React.Component {
     validateInputs() {
         let { validation } = this.state;
         let valid = true;
+        console.log(validation);
         // Check for incompleted fields
         for (let key in validation) {
-            if (!validation[key]['valid']) {
+            if (!validation[key]['valid'] && validation[key].required) {
+                console.log(validation[key]);
                 return false;
             }
         }
