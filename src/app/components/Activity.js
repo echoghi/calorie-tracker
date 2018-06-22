@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Input from './Input';
 import ReactTable from 'react-table';
 import { Radar } from 'react-chartjs-2';
+import { tableStyle, getSortedComponentClass } from './TableUtils';
 
 // Reusable validation constuctor for each input
 const inputObj = class {
@@ -39,7 +40,8 @@ class Activity extends React.Component {
                 minutes: new inputObj(false),
                 weight: new inputObj(false),
                 repetitions: new inputObj(false)
-            }
+            },
+            sorted: []
         };
 
         window.scrollTo(0, 0);
@@ -151,54 +153,93 @@ class Activity extends React.Component {
     };
 
     renderActivityTable() {
-        const { activity } = this.state;
+        const { activity, sorted } = this.state;
 
         return (
             <ReactTable
+                style={tableStyle.table}
+                ref={instance => (this.tableInstance = instance)}
                 data={activity.activites || []}
                 noDataText="No Exercises Found"
                 columns={[
                     {
-                        Header: 'Exercise Info',
-                        columns: [
-                            {
-                                Header: 'Name',
-                                id: 'name',
-                                accessor: d => d.name
-                            },
-                            {
-                                Header: 'Type',
-                                id: 'type',
-                                accessor: d => d.type
-                            }
-                        ]
+                        headerText: 'Exercise',
+                        accessor: 'name',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
                     },
                     {
-                        Header: 'Stats',
-                        columns: [
-                            {
-                                Header: 'Calories',
-                                id: 'calories',
-                                accessor: d => d.calories
-                            },
-                            {
-                                Header: 'Minutes',
-                                id: 'minutes',
-                                accessor: d => d.protein
-                            },
-                            {
-                                Header: 'Weight',
-                                id: 'weight',
-                                accessor: d => d.weight
-                            },
-                            {
-                                Header: 'Repetitions',
-                                id: 'repetitions',
-                                accessor: d => d.repetitions
-                            }
-                        ]
+                        headerText: 'Exercise Type',
+                        accessor: 'type',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Weight (lb)',
+                        accessor: 'weight',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Repetitions',
+                        accessor: 'repetitions',
+                        headerStyle: tableStyle.theadTh,
+
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
                     }
                 ]}
+                getTheadProps={() => {
+                    return {
+                        style: tableStyle.header
+                    };
+                }}
+                getTheadThProps={() => {
+                    return {
+                        style: tableStyle.th
+                    };
+                }}
+                getTrGroupProps={() => {
+                    return {
+                        style: tableStyle.tbodyTr
+                    };
+                }}
+                onSortedChange={sorted =>
+                    this.setState({
+                        sorted
+                    })
+                }
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
