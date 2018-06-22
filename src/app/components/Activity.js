@@ -7,6 +7,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Input from './Input';
+import ReactTable from 'react-table';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
@@ -37,8 +38,9 @@ class Activity extends React.Component {
             loading: true,
             validation: {
                 calories: new inputObj(true),
-                exercise: new inputObj(true),
-                stand: new inputObj(true)
+                exerciseName: new inputObj(true),
+                exerciseType: new inputObj(true),
+                minutes: new inputObj(true)
             }
         };
 
@@ -96,7 +98,7 @@ class Activity extends React.Component {
                 snapshot.forEach(childSnapshot => {
                     day = childSnapshot.val();
 
-                    dayIndex = Object.keys(day)[0];
+                    dayIndex = childSnapshot.key;
 
                     const { year, date, month } = day.day;
                     day.day = moment([year, month, date]);
@@ -150,6 +152,126 @@ class Activity extends React.Component {
         }
     };
 
+    renderActivityTable() {
+        const { activity } = this.state;
+
+        return (
+            <ReactTable
+                data={activity.activites || []}
+                noDataText="No Exercises Found"
+                columns={[
+                    {
+                        Header: 'Exercise Info',
+                        columns: [
+                            {
+                                Header: 'Name',
+                                id: 'name',
+                                accessor: d => d.name
+                            },
+                            {
+                                Header: 'Type',
+                                id: 'type',
+                                accessor: d => d.type
+                            }
+                        ]
+                    },
+                    {
+                        Header: 'Fitness Info',
+                        columns: [
+                            {
+                                Header: 'Calories',
+                                id: 'calories',
+                                accessor: d => d.calories
+                            },
+                            {
+                                Header: 'Minutes',
+                                id: 'minutes',
+                                accessor: d => d.protein
+                            }
+                        ]
+                    }
+                ]}
+                defaultPageSize={10}
+                className="-striped -highlight"
+            />
+        );
+    }
+
+    renderActivityBox() {
+        const { validation } = this.state;
+
+        const validate = name => (validation[name].dirty && !validation[name].valid ? true : false);
+
+        return (
+            <div className="nutrition__overview--meals">
+                <h3>Log Activity</h3>
+                <form className="add__meal" noValidate autoComplete="off">
+                    <div className="add__meal--input">
+                        <Input
+                            name="exerciseName"
+                            id="exerciseName"
+                            label="Exercise Name"
+                            required
+                            onChange={this.onChange('exerciseName')}
+                            error={validate('exerciseName')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                        <Input
+                            name="exerciseType"
+                            id="exerciseType"
+                            label="Exercise Type"
+                            required
+                            onChange={this.onChange('exerciseType')}
+                            error={validate('exerciseType')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                    </div>
+                    <div className="add__meal--input">
+                        <Input
+                            name="calories"
+                            id="calories"
+                            label="Calories"
+                            type="number"
+                            required
+                            onChange={this.onChange('calories')}
+                            error={validate('calories')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                        <Input
+                            name="minutes"
+                            id="minutes"
+                            label="Minutes"
+                            type="number"
+                            required
+                            onChange={this.onChange('minutes')}
+                            error={validate('minutes')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                    </div>
+                </form>
+
+                <Button
+                    className="add__meal--save"
+                    fullWidth
+                    style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
+                    onClick={this.onSubmit}
+                    color="primary"
+                    variant="raised"
+                >
+                    Add Exercise
+                </Button>
+            </div>
+        );
+    }
+
     /**
      * Validate Inputs
      *
@@ -168,17 +290,17 @@ class Activity extends React.Component {
         return valid;
     }
 
-    onChange = event => {
+    onChange = name => event => {
         const obj = _.cloneDeep(this.state);
         // Mark input as dirty (interacted with)
-        obj.validation[event.target.name].dirty = true;
-        obj[event.target.name] = event.target.value;
+        obj.validation[name].dirty = true;
+        obj[name] = event.target.value;
 
         // If there is any value, mark it valid
         if (event.target.value !== '') {
-            obj.validation[event.target.name].valid = true;
+            obj.validation[name].valid = true;
         } else {
-            obj.validation[event.target.name].valid = false;
+            obj.validation[name].valid = false;
         }
 
         this.setState(obj);
@@ -201,7 +323,8 @@ class Activity extends React.Component {
     };
 
     onSubmit = () => {
-        let { dayIndex, exercise, calories, stand, validation } = this.state;
+        const { userData } = this.props;
+        let { dayIndex, exerciseName, exerciseType, calories, minutes, validation } = this.state;
 
         if (this.validateInputs()) {
             let day;
@@ -215,15 +338,23 @@ class Activity extends React.Component {
                 day = snapshot.val();
             });
 
-            day.fitness.calories += parseInt(calories);
-            day.fitness.exercise += parseInt(exercise);
-            day.fitness.stand += parseInt(stand);
+            if (!day.fitness.activites) {
+                day.fitness.activites = [];
+            }
+
+            day.fitness.activites.push({
+                name: exerciseName,
+                type: exerciseType,
+                calories: parseInt(calories),
+                minutes: parseInt(minutes)
+            });
 
             document.getElementById('calories').value = '';
-            document.getElementById('exercise').value = '';
-            document.getElementById('stand').value = '';
+            document.getElementById('exerciseName').value = '';
+            document.getElementById('exerciseType').value = '';
+            document.getElementById('minutes').value = '';
 
-            this.setState({ calories: '', exercise: '', stand: '' }, () => {
+            this.setState({ calories: '', minutes: '', exerciseName: '', exerciseType: '' }, () => {
                 queryRef.update(day);
             });
         } else {
@@ -411,8 +542,9 @@ class Activity extends React.Component {
                         </div>
                         <div className="nutrition__overview">
                             {this.renderCalorieBox()}
-                            {this.renderDataBox()}
+                            {this.renderActivityBox()}
                         </div>
+                        {this.renderActivityTable()}
                     </div>
                 ) : (
                     'Loading...'

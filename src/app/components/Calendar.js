@@ -443,7 +443,7 @@ class Calendar extends React.Component {
                         <Button
                             style={buttonStyle}
                             component={Link}
-                            to={`/nutrition?day=${breakdownDay.format('L')}`}
+                            to={`/activity?day=${breakdownDay.format('L')}`}
                             color="primary"
                             autoFocus
                         >

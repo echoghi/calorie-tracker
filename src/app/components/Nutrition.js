@@ -11,7 +11,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import ProgressBar from 'react-progress-bar.js';
 const { Line } = ProgressBar;
 const { Circle } = ProgressBar;
