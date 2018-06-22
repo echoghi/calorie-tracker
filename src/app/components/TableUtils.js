@@ -75,7 +75,7 @@ export const tableStyle = {
         textAlign: 'left'
     },
     tbodyTr: {
-        minHeight: 60,
+        minHeight: 40,
         borderTop: '1px solid #e6eef0',
         borderBottom: 0
     },
