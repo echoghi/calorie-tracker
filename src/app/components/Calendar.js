@@ -4,8 +4,15 @@ import moment from 'moment';
 import ProgressBar from 'react-progress-bar.js';
 let { Circle } = ProgressBar;
 import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Dialog from '@material-ui/core/Dialog';
 import { Link } from 'react-router-dom';
+
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
 
@@ -322,9 +329,9 @@ class Calendar extends React.Component {
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j])
                             ? this.renderDayProgressCircles(calendar[i].data[j])
                             : ''}
-                        <Link to={`/nutrition?day=${calendar[i].days[j].format('L')}`}>
+                        <a onClick={() => this.setState({ breakdown: true, breakdownDay: calendar[i].days[j] })}>
                             <span className={this.handleIconClass(calendar[i].days[j])} />
-                        </Link>
+                        </a>
                         {/* {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])} */}
                     </div>
                 );
@@ -404,6 +411,50 @@ class Calendar extends React.Component {
         );
     }
 
+    renderBreakdown = () => {
+        const { breakdown, breakdownDay } = this.state;
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (breakdown) {
+            return (
+                <Dialog open={breakdown} onClose={() => this.setState({ breakdown: false })}>
+                    <DialogTitle>{breakdownDay.format('MMMM Do, YYYY')}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            If you've got a smart watch or fitness tracker, you can add your fitness stats in the
+                            activity tab. This will override your calculated total daily energy expenditure (TDEE) and
+                            keep your data more accurate. If you've taken notes for the day, they'll show up here.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            style={buttonStyle}
+                            component={Link}
+                            to={`/nutrition?day=${breakdownDay.format('L')}`}
+                            color="primary"
+                        >
+                            Edit Nutrition
+                        </Button>
+                        <Button
+                            style={buttonStyle}
+                            component={Link}
+                            to={`/nutrition?day=${breakdownDay.format('L')}`}
+                            color="primary"
+                            autoFocus
+                        >
+                            Edit Activity
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
     render() {
         let { time } = this.state;
         let { loading, data } = this.props;
@@ -440,6 +491,8 @@ class Calendar extends React.Component {
                         {this.renderLegend()}
                     </div>
                 </div>
+
+                {this.renderBreakdown()}
             </div>
         );
     }
