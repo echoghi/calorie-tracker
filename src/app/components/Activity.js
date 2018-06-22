@@ -4,13 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
-import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Input from './Input';
 import ReactTable from 'react-table';
-import ProgressBar from 'react-progress-bar.js';
-const { Line } = ProgressBar;
-const { Circle } = ProgressBar;
+import { Radar } from 'react-chartjs-2';
 
 // Reusable validation constuctor for each input
 const inputObj = class {
@@ -20,10 +17,6 @@ const inputObj = class {
         this.dirty = false;
     }
 };
-
-const InputWrapper = styled.div`
-    padding: 5px 30px;
-`;
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData
@@ -318,7 +311,7 @@ class Activity extends React.Component {
     validateInputs() {
         let { validation } = this.state;
         let valid = true;
-        console.log(validation);
+
         // Check for incompleted fields
         for (let key in validation) {
             if (!validation[key]['valid'] && validation[key].required) {
@@ -364,7 +357,7 @@ class Activity extends React.Component {
 
     onSubmit = () => {
         const { userData } = this.props;
-        let { dayIndex, exerciseName, exerciseType, calories, minutes, validation } = this.state;
+        let { dayIndex, exerciseName, exerciseType, calories, minutes, validation, weight, repetitions } = this.state;
 
         if (this.validateInputs()) {
             let day;
@@ -385,18 +378,25 @@ class Activity extends React.Component {
             day.fitness.activites.push({
                 name: exerciseName,
                 type: exerciseType,
-                calories: parseInt(calories),
-                minutes: parseInt(minutes)
+                calories: calories ? parseInt(calories) : '',
+                minutes: calories ? parseInt(minutes) : '',
+                weight: weight ? parseInt(weight) : '',
+                repetitions: repetitions ? parseInt(repetitions) : ''
             });
 
             document.getElementById('calories').value = '';
             document.getElementById('exerciseName').value = '';
             document.getElementById('exerciseType').value = '';
             document.getElementById('minutes').value = '';
+            document.getElementById('weight').value = '';
+            document.getElementById('repetitions').value = '';
 
-            this.setState({ calories: '', minutes: '', exerciseName: '', exerciseType: '' }, () => {
-                queryRef.update(day);
-            });
+            this.setState(
+                { calories: '', minutes: '', exerciseName: '', exerciseType: '', repetitions: '', weight: '' },
+                () => {
+                    queryRef.update(day);
+                }
+            );
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
             for (let attr in validation) {
@@ -409,144 +409,43 @@ class Activity extends React.Component {
         }
     };
 
-    renderDataBox() {
-        // const { validation } = this.state;
-        const inputStyle = {
-            padding: '10px 0',
-            display: 'block',
-            width: '40%'
-        };
+    renderCalorieBox() {
+        let { day } = this.state;
+        let labels = [];
+        let dataPoints = [];
 
-        return (
-            <div className="nutrition__overview--meals">
-                <h3>Input Exercise Data</h3>
-                <form className="add__meal">
-                    <InputWrapper>
-                        <Input
-                            name="calories"
-                            id="calories"
-                            label="Calories"
-                            onChange={this.onChange}
-                            style={inputStyle}
-                        />
-                        <Input
-                            name="exercise"
-                            id="exercise"
-                            label="Exercise Minutes"
-                            onChange={this.onChange}
-                            style={inputStyle}
-                        />
-                        <Input
-                            name="stand"
-                            id="stand"
-                            label="Stand Hours"
-                            onChange={this.onChange}
-                            style={inputStyle}
-                        />
-                    </InputWrapper>
-                    <Button
-                        className="add__meal--save"
-                        fullWidth
-                        style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
-                        onClick={this.onSubmit}
-                        color="primary"
-                        variant="raised"
-                    >
-                        Save Data
-                    </Button>
-                </form>
-            </div>
-        );
-    }
+        for (let i in day.fitness.activites) {
+            const activity = day.fitness.activites[i];
 
-    renderProgressBar(type) {
-        const { day, user } = this.state;
-        let color;
-        let progress;
-        let text;
-
-        if (type === 'protein') {
-            color = '#F5729C';
-            progress = day.nutrition.protein / user.goals.protein;
-            text = day.nutrition.protein / user.goals.protein;
-        } else if (type === 'carbs') {
-            color = '#7BD4F8';
-            progress = day.nutrition.carbs / user.goals.carbs;
-            text = day.nutrition.carbs / user.goals.carbs;
-        } else {
-            color = '#55F3B3';
-            progress = day.nutrition.fat / user.goals.fat;
-            text = day.nutrition.fat / user.goals.fat;
+            labels.push(activity.name);
+            dataPoints.push(activity.minutes);
         }
 
-        // Prevent progress bar bug by converting 100%+ to 100%
-        progress = progress > 1 ? (progress = 1) : progress;
-        text = `${Math.round(text * 100)}% of daily goal`;
-
-        const options = {
-            strokeWidth: 5,
-            color: color,
-            trailColor: '#f4f4f4',
-            containerStyle: {
-                width: '80%',
-                margin: '30px auto'
-            },
-            className: '',
-            text: {
-                value: text,
-                style: {
-                    fontSize: '1rem',
-                    color: '#a2a7d9',
-                    margin: '10px 0 0 0'
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Exercise Minutes',
+                    backgroundColor: 'rgba(255,99,132,0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    pointBackgroundColor: 'rgba(255,99,132,1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(255,99,132,1)',
+                    data: dataPoints
                 }
-            }
+            ]
         };
-
-        return <Line progress={progress} initialAnimate options={options} containerStyle={options.containerStyle} />;
-    }
-
-    renderCalorieBox() {
-        let { day, user } = this.state;
-        const calorieGoal = day.fitness.calories || user.goals.calories;
-        let progress = day.nutrition.calories / calorieGoal;
-        let text = day.nutrition.calories / calorieGoal;
-        const options = {
-            strokeWidth: 4,
-            color: '#8E81E3',
-            trailColor: '#f4f4f4',
-            text: {
-                value: `${day.nutrition.calories} cal`,
-                style: {
-                    color: '#a2a7d9',
-                    margin: '-175px 0 0 0',
-                    fontSize: '40px'
-                }
-            }
-        };
-        let containerStyle = {
-            width: '300px',
-            height: '30px',
-            margin: '30px auto 10px auto'
-        };
-
-        // Prevent progress bar bug by converting 100%+ to 100%
-        progress = progress > 1 ? (progress = 1) : progress;
-        text = `${Math.round(text * 100)}% of daily goal`;
 
         return (
             <div className="nutrition__overview--calories">
-                <h3>TBD</h3>
-
-                <Circle progress={progress} options={options} initialAnimate containerStyle={containerStyle} />
-
-                <span className="subhead">{text}</span>
+                <Radar data={data} />
             </div>
         );
     }
 
     render() {
         const { day, user } = this.state;
-        const { calories, exercise, stand } = day.fitness || 0;
 
         return (
             <div>
@@ -554,32 +453,7 @@ class Activity extends React.Component {
                     <div className="nutrition">
                         <h1>Activity</h1>
                         <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
-                        <div className="nutrition__overview">
-                            <div className="nutrition__overview--box">
-                                <div className="nutrition__overview--head">
-                                    <h1>{calories}</h1>
-                                    <span>g</span>
-                                    <h3>Calories Burned</h3>
-                                </div>
-                                {this.renderProgressBar('protein')}
-                            </div>
-                            <div className="nutrition__overview--box">
-                                <div className="nutrition__overview--head">
-                                    <h1>{exercise}</h1>
-                                    <span>g</span>
-                                    <h3>Exercise Minutes</h3>
-                                </div>
-                                {this.renderProgressBar('carbs')}
-                            </div>
-                            <div className="nutrition__overview--box">
-                                <div className="nutrition__overview--head">
-                                    <h1>{stand}</h1>
-                                    <span>g</span>
-                                    <h3>Stand Hours</h3>
-                                </div>
-                                {this.renderProgressBar('fat')}
-                            </div>
-                        </div>
+
                         <div className="nutrition__overview">
                             {this.renderCalorieBox()}
                             {this.renderActivityBox()}

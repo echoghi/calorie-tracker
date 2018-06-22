@@ -175,7 +175,7 @@ class Home extends React.Component {
                                 />
                             </div>
                         </div>
-                        <div className="overview--box lg">
+                        <div className="overview--box">
                             <div className={this.renderHeaderClass(calorieBalance.netPositive)}>
                                 <h4 className="title">
                                     {this.renderGraphHeader(calorieBalance.netPositive, calorieBalance.value)}
