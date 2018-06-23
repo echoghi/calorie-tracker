@@ -5,6 +5,7 @@ import { database } from './firebase.js';
 import moment from 'moment';
 // Components
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Input from './Input';
 import ReactTable from 'react-table';
 import { Radar } from 'react-chartjs-2';
@@ -159,7 +160,7 @@ class Activity extends React.Component {
             <ReactTable
                 style={tableStyle.table}
                 ref={instance => (this.tableInstance = instance)}
-                data={activity.activites || []}
+                data={activity.activities || []}
                 noDataText="No Exercises Found"
                 columns={[
                     {
@@ -218,6 +219,13 @@ class Activity extends React.Component {
                             );
                         },
                         style: tableStyle.cell
+                    },
+                    {
+                        Cell: row => this.renderActions(row.index),
+                        accessor: 'repetitions',
+                        headerStyle: tableStyle.theadTh,
+                        Header: 'Modify',
+                        style: tableStyle.cellCentered
                     }
                 ]}
                 getTheadProps={() => {
@@ -245,6 +253,34 @@ class Activity extends React.Component {
             />
         );
     }
+
+    renderActions(index) {
+        return (
+            <IconButton onClick={() => this.deleteExercise(index)}>
+                <i className="icon-trash-2" />
+            </IconButton>
+        );
+    }
+
+    deleteExercise = index => {
+        const { userData } = this.props;
+        const { dayIndex, day } = this.state;
+
+        const exerciseRef = database
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${dayIndex}/fitness/activities`);
+
+        exerciseRef.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                const activity = childSnapshot.val();
+
+                if (_.isEqual(activity, day.fitness.activities[index])) {
+                    childSnapshot.ref.remove();
+                }
+            });
+        });
+    };
 
     renderActivityBox() {
         const { validation } = this.state;
@@ -412,11 +448,11 @@ class Activity extends React.Component {
                 day = snapshot.val();
             });
 
-            if (!day.fitness.activites) {
-                day.fitness.activites = [];
+            if (!day.fitness.activities) {
+                day.fitness.activities = [];
             }
 
-            day.fitness.activites.push({
+            day.fitness.activities.push({
                 name: exerciseName,
                 type: exerciseType,
                 calories: calories ? parseInt(calories) : '',
@@ -454,12 +490,14 @@ class Activity extends React.Component {
         let { day } = this.state;
         let labels = [];
         let dataPoints = [];
+        console.log(day.fitness.activities);
+        for (let i in day.fitness.activities) {
+            const activity = day.fitness.activities[i];
 
-        for (let i in day.fitness.activites) {
-            const activity = day.fitness.activites[i];
-
-            labels.push(activity.name);
-            dataPoints.push(activity.minutes);
+            if (activity) {
+                labels.push(activity.name);
+                dataPoints.push(activity.minutes);
+            }
         }
 
         const data = {
