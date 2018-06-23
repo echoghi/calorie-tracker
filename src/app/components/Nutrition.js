@@ -329,7 +329,7 @@ class Nutrition extends React.Component {
         day.nutrition.fat -= meal.fat;
         day.nutrition.carbs -= meal.carbs;
 
-        day.nutrition.meals[index] = null;
+        day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
         queryRef.update(day);
     };

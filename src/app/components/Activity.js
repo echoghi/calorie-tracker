@@ -264,22 +264,22 @@ class Activity extends React.Component {
 
     deleteExercise = index => {
         const { userData } = this.props;
-        const { dayIndex, day } = this.state;
+        const { dayIndex } = this.state;
 
-        const exerciseRef = database
+        let day;
+
+        const queryRef = database
             .ref('users')
             .child(userData.uid)
-            .child(`calendar/${dayIndex}/fitness/activities`);
+            .child(`calendar/${dayIndex}`);
 
-        exerciseRef.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                const activity = childSnapshot.val();
-
-                if (_.isEqual(activity, day.fitness.activities[index])) {
-                    childSnapshot.ref.remove();
-                }
-            });
+        queryRef.on('value', snapshot => {
+            day = snapshot.val();
         });
+
+        day.fitness.activities = day.fitness.activities.filter(exercise => exercise !== day.fitness.activities[index]);
+
+        queryRef.update(day);
     };
 
     renderActivityBox() {
