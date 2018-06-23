@@ -8,6 +8,7 @@ import Input from './Input';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
@@ -263,6 +264,13 @@ class Nutrition extends React.Component {
                             );
                         },
                         style: tableStyle.cell
+                    },
+                    {
+                        Cell: row => this.renderActions(row.index),
+                        accessor: 'fat',
+                        headerStyle: tableStyle.theadTh,
+                        Header: 'Modify',
+                        style: tableStyle.cellCentered
                     }
                 ]}
                 getTheadProps={() => {
@@ -290,6 +298,41 @@ class Nutrition extends React.Component {
             />
         );
     }
+
+    renderActions(index) {
+        return (
+            <IconButton onClick={() => this.deleteMeal(index)}>
+                <i className="icon-trash-2" />
+            </IconButton>
+        );
+    }
+
+    deleteMeal = index => {
+        const { userData } = this.props;
+        const { dayIndex } = this.state;
+
+        let day;
+
+        const queryRef = database
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${dayIndex}`);
+
+        queryRef.on('value', snapshot => {
+            day = snapshot.val();
+        });
+
+        const meal = day.nutrition.meals[index];
+
+        day.nutrition.calories -= meal.calories;
+        day.nutrition.protein -= meal.protein;
+        day.nutrition.fat -= meal.fat;
+        day.nutrition.carbs -= meal.carbs;
+
+        day.nutrition.meals[index] = null;
+
+        queryRef.update(day);
+    };
 
     /**
      * Validate Inputs
