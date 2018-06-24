@@ -1,0 +1,226 @@
+.activity {
+    h3 {
+        font-size: 20px;
+        color: $curious-blue;
+    }
+
+    &__overview {
+        margin: 40px 0;
+        display: flex;
+        justify-content: space-between;
+
+        @include less-than-ipad {
+            display: block;
+        }
+
+        &--box {
+            display: inline-block;
+            height: 270px;
+            width: 31%;
+            padding-bottom: 20px;
+            border: 1px solid $athens-gray;
+            border-radius: 3px;
+            background: $white;
+            text-align: center;
+
+            @include less-than-ipad {
+                width: 100%;
+                display: block;
+                margin: 30px 0;
+            }
+
+            &.large {
+                width: 100%;
+                display: block;
+            }
+
+            h1,
+            span {
+                display: inline-block;
+            }
+
+            span {
+                font-size: 50px;
+                padding-left: 5px;
+                color: $cold-purple;
+            }
+
+            h1 {
+                font-size: 100px;
+                color: $waikawa-gray;
+                margin-bottom: 0;
+            }
+
+            h3 {
+                font-size: 25px;
+                text-transform: uppercase;
+                color: $cold-purple;
+            }
+        }
+
+        &--exercises,
+        &--chart {
+            position: relative;
+            display: inline-block;
+            min-height: 350px;
+            width: 48%;
+            border: 1px solid $athens-gray;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            background: $white;
+            text-align: center;
+
+            @include less-than-ipad {
+                width: 100%;
+                display: block;
+                margin: 30px 0;
+            }
+
+            h3,
+            h4 {
+                padding: 5px 30px 15px 30px;
+                color: $limed-spruce;
+                font-size: 25px;
+                text-align: left;
+                margin-bottom: 0;
+                font-weight: normal;
+            }
+
+            .icon-help-circle {
+                opacity: 0.8;
+                position: absolute;
+                cursor: pointer;
+                color: $limed-spruce;
+                font-size: 20px;
+                top: 30px;
+                right: 30px;
+
+                &.hidden {
+                    display: none;
+                }
+
+                &:hover {
+                    color: $burnt-sienna;
+                }
+            }
+
+            span.subhead {
+                top: 270px;
+                position: absolute;
+                font-size: 20px;
+                color: $cold-purple;
+                left: 0;
+                right: 0;
+            }
+        }
+
+        &--head {
+            width: 70%;
+            margin: 20px auto;
+        }
+
+        &--exercises {
+            h4 {
+                color: $cold-purple;
+                padding: 0 30px;
+                font-size: 25px;
+                text-align: left;
+                margin: 0;
+            }
+
+            .add__exercise {
+                &--input {
+                    display: flex;
+                    padding: 5px 30px;
+                    justify-content: space-between;
+                }
+
+                &--save {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                }
+            }
+        }
+
+        &--table {
+            height: 275px;
+            overflow-y: auto;
+            margin: 15px;
+            margin-top: 30px;
+            padding: 15px 0;
+            border: 1px solid $athens-gray;
+            //box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            background: $white;
+        }
+
+        &--table-head {
+            display: flex;
+            background: $white;
+            padding: 15px;
+            text-align: center;
+
+            div {
+                display: inline-flex;
+                box-sizing: border-box;
+                font-size: 20px;
+                font-weight: bold;
+                padding: 10px;
+                opacity: 0.8;
+
+                &.thead__name {
+                    width: 40%;
+                }
+
+                &.thead__calories,
+                &.thead__protein,
+                &.thead__fat,
+                &.thead__carbs {
+                    width: 15%;
+                }
+            }
+        }
+
+        &--exercise {
+            display: flex;
+
+            div {
+                display: inline-flex;
+                justify-content: space-between;
+                padding: 25px;
+                font-size: 17px;
+                font-weight: bold;
+                border-top: 1px solid $athens-gray;
+                border-bottom: 1px solid $athens-gray;
+                box-sizing: border-box;
+
+                &.name {
+                    width: 40%;
+                    text-align: left;
+                }
+
+                &.calories,
+                &.protein,
+                &.fat,
+                &.carbs {
+                    width: 15%;
+                }
+            }
+
+            &:nth-child(even) {
+                background: $mystic;
+            }
+        }
+    }
+
+    &__add {
+        display: inline-block;
+        height: 300px;
+        width: 100%;
+        border: 1px solid $athens-gray;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        background: $white;
+    }
+}

@@ -539,6 +539,7 @@ class Nutrition extends React.Component {
                                     style={checkboxStyle.checkbox}
                                     checked={this.state.saveMeal}
                                     onChange={() => this.setState({ saveMeal: !this.state.saveMeal })}
+                                    disableRipple
                                 />
                             }
                             label="Save Meal"

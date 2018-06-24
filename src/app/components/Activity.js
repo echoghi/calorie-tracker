@@ -4,14 +4,16 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 // Components
+import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Input from './Input';
 import ReactTable from 'react-table';
-import { Radar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
 
 // Reusable validation constuctor for each input
@@ -24,7 +26,8 @@ const inputObj = class {
 };
 
 const mapStateToProps = state => ({
-    userData: state.adminState.userData
+    userData: state.adminState.userData,
+    data: state.adminState.data
 });
 
 class Activity extends React.Component {
@@ -288,17 +291,89 @@ class Activity extends React.Component {
         this.setState({ confirmationDialog: false, deleteExercise: null });
     };
 
+    renderWeightInputs() {
+        const { validation, formSwitch } = this.state;
+
+        const validate = name =>
+            validation[name].dirty && !validation[name].valid && validation[name].required ? true : false;
+
+        if (formSwitch) {
+            return (
+                <div className="add__exercise--input">
+                    <Input
+                        name="weight"
+                        id="weight"
+                        label="Weight"
+                        type="number"
+                        onChange={this.onChange('weight')}
+                        error={validate('weight')}
+                        style={{
+                            width: '45%'
+                        }}
+                    />
+                    <Input
+                        name="repetitions"
+                        id="repetitions"
+                        label="Repetitions"
+                        type="number"
+                        onChange={this.onChange('repetitions')}
+                        error={validate('repetitions')}
+                        style={{
+                            width: '45%'
+                        }}
+                    />
+                </div>
+            );
+        }
+    }
+
+    renderCardioInputs() {
+        const { validation, formSwitch } = this.state;
+
+        const validate = name =>
+            validation[name].dirty && !validation[name].valid && validation[name].required ? true : false;
+
+        if (!formSwitch) {
+            return (
+                <div className="add__exercise--input">
+                    <Input
+                        name="calories"
+                        id="calories"
+                        label="Calories"
+                        type="number"
+                        onChange={this.onChange('calories')}
+                        error={validate('calories')}
+                        style={{
+                            width: '45%'
+                        }}
+                    />
+                    <Input
+                        name="minutes"
+                        id="minutes"
+                        label="Minutes"
+                        type="number"
+                        onChange={this.onChange('minutes')}
+                        error={validate('minutes')}
+                        style={{
+                            width: '45%'
+                        }}
+                    />
+                </div>
+            );
+        }
+    }
+
     renderActivityBox() {
-        const { validation } = this.state;
+        const { validation, formSwitch } = this.state;
 
         const validate = name =>
             validation[name].dirty && !validation[name].valid && validation[name].required ? true : false;
 
         return (
-            <div className="nutrition__overview--meals">
+            <div className="activity__overview--exercises">
                 <h3>Log Activity</h3>
-                <form className="add__meal" noValidate autoComplete="off">
-                    <div className="add__meal--input">
+                <form className="add__exercise" noValidate autoComplete="off">
+                    <div className="add__exercise--input">
                         <Input
                             name="exerciseName"
                             id="exerciseName"
@@ -322,58 +397,25 @@ class Activity extends React.Component {
                             }}
                         />
                     </div>
-                    <div className="add__meal--input">
-                        <Input
-                            name="calories"
-                            id="calories"
-                            label="Calories"
-                            type="number"
-                            onChange={this.onChange('calories')}
-                            error={validate('calories')}
-                            style={{
-                                width: '45%'
-                            }}
-                        />
-                        <Input
-                            name="minutes"
-                            id="minutes"
-                            label="Minutes"
-                            type="number"
-                            onChange={this.onChange('minutes')}
-                            error={validate('minutes')}
-                            style={{
-                                width: '45%'
-                            }}
-                        />
-                    </div>
-                    <div className="add__meal--input">
-                        <Input
-                            name="weight"
-                            id="weight"
-                            label="Weight"
-                            type="number"
-                            onChange={this.onChange('weight')}
-                            error={validate('weight')}
-                            style={{
-                                width: '45%'
-                            }}
-                        />
-                        <Input
-                            name="repetitions"
-                            id="repetitions"
-                            label="Repetitions"
-                            type="number"
-                            onChange={this.onChange('repetitions')}
-                            error={validate('repetitions')}
-                            style={{
-                                width: '45%'
-                            }}
+                    {this.renderCardioInputs()}
+                    {this.renderWeightInputs()}
+                    <div className="add__exercise--input">
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={formSwitch}
+                                    onChange={this.handleSwitch('formSwitch')}
+                                    value="checkedB"
+                                    color="primary"
+                                />
+                            }
+                            label="Weight Training"
                         />
                     </div>
                 </form>
 
                 <Button
-                    className="add__meal--save"
+                    className="add__exercise--save"
                     fullWidth
                     style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
                     onClick={this.onSubmit}
@@ -419,6 +461,16 @@ class Activity extends React.Component {
         }
 
         this.setState(obj);
+    };
+
+    handleSwitch = name => event => {
+        if (event.target.checked) {
+            document.getElementById('exerciseType').value = 'Weight Training';
+            this.setState({ [name]: event.target.checked, ['exerciseType']: 'Weight Training' });
+        } else {
+            this.setState({ [name]: event.target.checked, ['exerciseType']: '' });
+            document.getElementById('exerciseType').value = '';
+        }
     };
 
     typeOnChange = type => {
@@ -492,38 +544,54 @@ class Activity extends React.Component {
     };
 
     renderCalorieBox() {
-        let { day } = this.state;
+        const { data } = this.props;
+
         let labels = [];
-        let dataPoints = [];
+        let counts = {};
 
-        for (let i in day.fitness.activities) {
-            const activity = day.fitness.activities[i];
+        for (let j in data.calendar) {
+            const day = data.calendar[j];
 
-            if (activity) {
-                labels.push(activity.name);
-                dataPoints.push(activity.minutes);
+            for (let i in day.fitness.activities) {
+                const activity = day.fitness.activities[i];
+
+                if (activity) {
+                    labels.push(activity.type);
+                }
             }
         }
 
-        const data = {
-            labels: labels,
+        if (labels.length) {
+            for (let i in labels) {
+                if (!counts.hasOwnProperty(labels[i])) {
+                    counts[labels[i]] = 1;
+                } else {
+                    counts[labels[i]]++;
+                }
+            }
+        }
+
+        const chartData = {
+            labels: _.keys(counts),
             datasets: [
                 {
-                    label: 'Exercise Minutes',
+                    label: 'Exercise Frequency',
                     backgroundColor: 'rgba(255,99,132,0.2)',
                     borderColor: 'rgba(255,99,132,1)',
                     pointBackgroundColor: 'rgba(255,99,132,1)',
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
                     pointHoverBorderColor: 'rgba(255,99,132,1)',
-                    data: dataPoints
+                    data: _.values(counts)
                 }
             ]
         };
 
         return (
-            <div className="nutrition__overview--calories">
-                <Radar data={data} />
+            <div className="activity__overview--chart">
+                <div style={{ margin: 20, textAlign: 'center' }}>
+                    <Bar data={chartData} />
+                </div>
             </div>
         );
     }
@@ -561,16 +629,16 @@ class Activity extends React.Component {
     };
 
     render() {
-        const { day, user } = this.state;
+        const { day, user, loading } = this.state;
 
         return (
             <div>
-                {!this.state.loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
-                    <div className="nutrition">
+                {!loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
+                    <div className="activity">
                         <h1>Activity</h1>
                         <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
 
-                        <div className="nutrition__overview">
+                        <div className="activity__overview">
                             {this.renderCalorieBox()}
                             {this.renderActivityBox()}
                         </div>
