@@ -228,6 +228,34 @@ class Activity extends React.Component {
                         style: tableStyle.cell
                     },
                     {
+                        headerText: 'Calories',
+                        accessor: 'calories',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Minutes',
+                        accessor: 'minutes',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
                         Cell: row => this.renderActions(row.index),
                         accessor: 'repetitions',
                         headerStyle: tableStyle.theadTh,
@@ -464,34 +492,42 @@ class Activity extends React.Component {
     };
 
     handleSwitch = name => event => {
+        const obj = _.cloneDeep(this.state);
+
         if (event.target.checked) {
             document.getElementById('exerciseType').value = 'Weight Training';
-            this.setState({ [name]: event.target.checked, ['exerciseType']: 'Weight Training' });
+
+            // Mark input as dirty (interacted with)
+            obj.validation['exerciseType'].dirty = true;
+            obj.validation['exerciseType'].valid = true;
+            obj['exerciseType'] = 'Weight Training';
         } else {
-            this.setState({ [name]: event.target.checked, ['exerciseType']: '' });
             document.getElementById('exerciseType').value = '';
-        }
-    };
 
-    typeOnChange = type => {
-        const obj = _.cloneDeep(this.state);
-        // Mark input as dirty (interacted with)
-        obj.validation.type.dirty = true;
-        obj.type = type;
-
-        // If there is any value, mark it valid
-        if (type !== '') {
-            obj.validation.type.valid = true;
-        } else {
-            obj.validation.type.valid = false;
+            // Mark input as dirty (interacted with)
+            obj.validation['exerciseType'].dirty = false;
+            obj.validation['exerciseType'].valid = false;
+            obj['exerciseType'] = '';
         }
+
+        obj[name] = event.target.checked;
 
         this.setState(obj);
     };
 
     onSubmit = () => {
         const { userData } = this.props;
-        let { dayIndex, exerciseName, exerciseType, calories, minutes, validation, weight, repetitions } = this.state;
+        let {
+            dayIndex,
+            exerciseName,
+            exerciseType,
+            calories,
+            minutes,
+            validation,
+            weight,
+            repetitions,
+            formSwitch
+        } = this.state;
 
         if (this.validateInputs()) {
             let day;
@@ -518,17 +554,39 @@ class Activity extends React.Component {
                 repetitions: repetitions ? parseInt(repetitions) : ''
             });
 
-            document.getElementById('calories').value = '';
+            if (formSwitch) {
+                document.getElementById('weight').value = '';
+                document.getElementById('repetitions').value = '';
+            } else {
+                document.getElementById('calories').value = '';
+                document.getElementById('minutes').value = '';
+            }
+
             document.getElementById('exerciseName').value = '';
             document.getElementById('exerciseType').value = '';
-            document.getElementById('minutes').value = '';
-            document.getElementById('weight').value = '';
-            document.getElementById('repetitions').value = '';
 
             this.setState(
-                { calories: '', minutes: '', exerciseName: '', exerciseType: '', repetitions: '', weight: '' },
+                {
+                    calories: '',
+                    minutes: '',
+                    exerciseName: '',
+                    exerciseType: '',
+                    repetitions: '',
+                    weight: '',
+                    formSwitch: false
+                },
                 () => {
                     queryRef.update(day);
+                    // Reset Validation
+                    for (let attr in validation) {
+                        if (validation[attr]) {
+                            if (attr === 'exerciseName' || attr === 'exerciseType') {
+                                validation[attr] = new inputObj(true);
+                            } else {
+                                validation[attr] = new inputObj(false);
+                            }
+                        }
+                    }
                 }
             );
         } else {
