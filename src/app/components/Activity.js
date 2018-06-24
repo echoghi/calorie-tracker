@@ -6,6 +6,9 @@ import moment from 'moment';
 // Components
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Input from './Input';
 import ReactTable from 'react-table';
 import { Radar } from 'react-chartjs-2';
@@ -42,7 +45,8 @@ class Activity extends React.Component {
                 weight: new inputObj(false),
                 repetitions: new inputObj(false)
             },
-            sorted: []
+            sorted: [],
+            confirmationDialog: false
         };
 
         window.scrollTo(0, 0);
@@ -256,7 +260,7 @@ class Activity extends React.Component {
 
     renderActions(index) {
         return (
-            <IconButton onClick={() => this.deleteExercise(index)}>
+            <IconButton onClick={() => this.setState({ confirmationDialog: true, deleteExercise: index })}>
                 <i className="icon-trash-2" />
             </IconButton>
         );
@@ -280,6 +284,8 @@ class Activity extends React.Component {
         day.fitness.activities = day.fitness.activities.filter(exercise => exercise !== day.fitness.activities[index]);
 
         queryRef.update(day);
+
+        this.setState({ confirmationDialog: false, deleteExercise: null });
     };
 
     renderActivityBox() {
@@ -392,7 +398,6 @@ class Activity extends React.Component {
         // Check for incompleted fields
         for (let key in validation) {
             if (!validation[key]['valid'] && validation[key].required) {
-                console.log(validation[key]);
                 return false;
             }
         }
@@ -490,7 +495,7 @@ class Activity extends React.Component {
         let { day } = this.state;
         let labels = [];
         let dataPoints = [];
-        console.log(day.fitness.activities);
+
         for (let i in day.fitness.activities) {
             const activity = day.fitness.activities[i];
 
@@ -523,6 +528,38 @@ class Activity extends React.Component {
         );
     }
 
+    renderConfirmationDialog = () => {
+        const { confirmationDialog, deleteExercise } = this.state;
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (confirmationDialog) {
+            return (
+                <Dialog open={confirmationDialog} onClose={() => this.setState({ confirmationDialog: false })}>
+                    <DialogTitle>Are you sure you want to delete this exercise?</DialogTitle>
+
+                    <DialogActions>
+                        <Button style={buttonStyle} onClick={() => this.deleteExercise(deleteExercise)} color="primary">
+                            Delete
+                        </Button>
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.setState({ confirmationDialog: false })}
+                            color="primary"
+                            autoFocus
+                        >
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
     render() {
         const { day, user } = this.state;
 
@@ -542,6 +579,7 @@ class Activity extends React.Component {
                 ) : (
                     'Loading...'
                 )}
+                {this.renderConfirmationDialog()}
             </div>
         );
     }

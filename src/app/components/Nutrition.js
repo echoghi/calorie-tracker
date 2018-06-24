@@ -5,6 +5,9 @@ import { database } from './firebase.js';
 import moment from 'moment';
 // Components
 import Input from './Input';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -301,7 +304,7 @@ class Nutrition extends React.Component {
 
     renderActions(index) {
         return (
-            <IconButton onClick={() => this.deleteMeal(index)}>
+            <IconButton onClick={() => this.setState({ confirmationDialog: true, deleteMeal: index })}>
                 <i className="icon-trash-2" />
             </IconButton>
         );
@@ -332,6 +335,8 @@ class Nutrition extends React.Component {
         day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
         queryRef.update(day);
+
+        this.setState({ confirmationDialog: false, deleteMeal: null });
     };
 
     /**
@@ -555,6 +560,38 @@ class Nutrition extends React.Component {
         );
     }
 
+    renderConfirmationDialog = () => {
+        const { confirmationDialog, deleteMeal } = this.state;
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (confirmationDialog) {
+            return (
+                <Dialog open={confirmationDialog} onClose={() => this.setState({ confirmationDialog: false })}>
+                    <DialogTitle>Are you sure you want to delete this entry?</DialogTitle>
+
+                    <DialogActions>
+                        <Button style={buttonStyle} onClick={() => this.deleteMeal(deleteMeal)} color="primary">
+                            Delete
+                        </Button>
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.setState({ confirmationDialog: false })}
+                            color="primary"
+                            autoFocus
+                        >
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
     renderProgressBar(type) {
         const { day, user } = this.state;
 
@@ -694,6 +731,7 @@ class Nutrition extends React.Component {
                 ) : (
                     'Loading...'
                 )}
+                {this.renderConfirmationDialog()}
             </div>
         );
     }
