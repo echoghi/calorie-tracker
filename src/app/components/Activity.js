@@ -49,7 +49,8 @@ class Activity extends React.Component {
                 repetitions: new inputObj(false)
             },
             sorted: [],
-            confirmationDialog: false
+            confirmationDialog: false,
+            formSwitch: false
         };
 
         window.scrollTo(0, 0);
@@ -94,7 +95,6 @@ class Activity extends React.Component {
             callback({ user });
         });
 
-        console.log('Day Queried', requestedDate);
         if (requestedDate) {
             const queryRef = database
                 .ref('users')
@@ -501,14 +501,14 @@ class Activity extends React.Component {
         if (event.target.checked) {
             document.getElementById('exerciseType').value = 'Weight Training';
 
-            // Mark input as dirty (interacted with)
+            // Mark exerciseType dirty
             obj.validation['exerciseType'].dirty = true;
             obj.validation['exerciseType'].valid = true;
             obj['exerciseType'] = 'Weight Training';
         } else {
             document.getElementById('exerciseType').value = '';
 
-            // Mark input as dirty (interacted with)
+            // Mark exerciseType pristine
             obj.validation['exerciseType'].dirty = false;
             obj.validation['exerciseType'].valid = false;
             obj['exerciseType'] = '';
