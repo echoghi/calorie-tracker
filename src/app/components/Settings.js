@@ -60,28 +60,34 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Settings extends React.Component {
-    state = {
-        fitnessGoal: 'maintain',
-        generalSnackbar: false,
-        accountSnackbar: false,
-        goalsSnackbar: false,
-        validation: {
-            general: {
-                firstName: new inputObj(),
-                lastName: new inputObj()
-            },
-            account: {
-                height: new inputObj(),
-                weight: new inputObj()
-            },
-            goals: {
-                calories: new inputObj(),
-                carbs: new inputObj(),
-                fat: new inputObj(),
-                protein: new inputObj()
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            fitnessGoal: 'maintain',
+            generalSnackbar: false,
+            accountSnackbar: false,
+            goalsSnackbar: false,
+            validation: {
+                general: {
+                    firstName: new inputObj(),
+                    lastName: new inputObj()
+                },
+                account: {
+                    height: new inputObj(),
+                    weight: new inputObj()
+                },
+                goals: {
+                    calories: new inputObj(),
+                    carbs: new inputObj(),
+                    fat: new inputObj(),
+                    protein: new inputObj()
+                }
             }
-        }
-    };
+        };
+
+        window.scrollTo(0, 0);
+    }
 
     onGeneralChange = name => event => {
         const obj = _.cloneDeep(this.state);
