@@ -3,6 +3,7 @@ export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const DATA_ERROR = 'DATA_ERROR';
 export const RESET_ERROR = 'RESET_ERROR';
 export const SAVE_USER_DATA = 'SAVE_USER_DATA';
+
 export const LOGOUT = 'LOGOUT';
 import { database } from './firebase.js';
 import moment from 'moment';
@@ -63,6 +64,53 @@ export function logOut() {
     };
 }
 
+export function createUser(id) {
+    return dispatch => {
+        console.log('creating new user');
+        let newUser = {};
+        const now = moment();
+
+        newUser[`users/${id}`] = {
+            calendar: [
+                {
+                    day: {
+                        month: now.get('month'),
+                        date: now.date(),
+                        year: now.get('year')
+                    },
+                    nutrition: {
+                        calories: 0,
+                        fat: 0,
+                        carbs: 0,
+                        protein: 0
+                    },
+                    fitness: {
+                        calories: 0,
+                        exercise: 0,
+                        stand: 0
+                    }
+                }
+            ],
+            user: {
+                newAccount: true,
+                goals: {
+                    calories: 2000,
+                    protein: 100,
+                    carbs: 100,
+                    fat: 100
+                },
+                height: 70,
+                weight: 150
+            }
+        };
+
+        // Save new entries to firebase and reload them into the app
+        database.ref().update(newUser, () => {
+            dispatch(reloadData(id));
+        });
+    };
+}
+
 export function fetchData(id) {
     return dispatch => {
         dispatch(loadingData());
@@ -70,6 +118,7 @@ export function fetchData(id) {
         usersRef.child(id).on('value', snapshot => {
             let user = snapshot.val();
             let lastDay;
+
             if (user) {
                 // Convert days to moment objects
                 for (let i = 0; i < user.calendar.length; i++) {
@@ -118,47 +167,7 @@ export function fetchData(id) {
                     dispatch(receiveData(user));
                 }
             } else {
-                console.log('creating new user');
-                let newUser = {};
-                const now = moment();
-
-                newUser[`users/${id}`] = {
-                    calendar: [
-                        {
-                            day: {
-                                month: now.get('month'),
-                                date: now.date(),
-                                year: now.get('year')
-                            },
-                            nutrition: {
-                                calories: 0,
-                                fat: 0,
-                                carbs: 0,
-                                protein: 0
-                            },
-                            fitness: {
-                                calories: 0,
-                                exercise: 0,
-                                stand: 0
-                            }
-                        }
-                    ],
-                    user: {
-                        goals: {
-                            calories: 2000,
-                            protein: 100,
-                            carbs: 100,
-                            fat: 100
-                        },
-                        height: 70,
-                        weight: 150
-                    }
-                };
-
-                // Save new entries to firebase and reload them into the app
-                database.ref().update(newUser, () => {
-                    dispatch(reloadData(id));
-                });
+                dispatch(createUser(id));
             }
         });
     };

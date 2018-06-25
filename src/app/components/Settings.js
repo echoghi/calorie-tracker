@@ -1,7 +1,12 @@
 import React from 'react';
-import { database } from './firebase.js';
+import { database, auth } from './firebase.js';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
@@ -48,6 +53,10 @@ class inputObj {
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData
+});
+
+const mapDispatchToProps = dispatch => ({
+    deleteAccount: () => dispatch(deleteAccount())
 });
 
 class Settings extends React.Component {
@@ -327,6 +336,64 @@ class Settings extends React.Component {
         this.setState({ goalsSnackbar: false });
     };
 
+    deleteAccount() {
+        const { userData } = this.props;
+        const user = auth.currentUser;
+
+        user.delete()
+            .then(() => {
+                const userRef = database.ref('users').child(userData.uid);
+
+                userRef.on('value', snapshot => {
+                    snapshot.ref.remove();
+                    window.location.reload(true);
+                });
+
+                console.log('User Account Deleted');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    renderAccountDialog = () => {
+        const { deleteAccountDialog } = this.state;
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (deleteAccountDialog) {
+            return (
+                <Dialog open={deleteAccountDialog} onClose={() => this.setState({ deleteAccountDialog: false })}>
+                    <DialogTitle>Delete Account?</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Are you sure you want to delete this account? All of your data will be permanently deleted
+                            from our database.
+                        </DialogContentText>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button style={buttonStyle} onClick={() => this.deleteAccount()} color="primary">
+                            Delete
+                        </Button>
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.setState({ deleteAccountDialog: false })}
+                            color="primary"
+                            autoFocus
+                        >
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
     render() {
         return (
             <div className="settings">
@@ -512,11 +579,14 @@ class Settings extends React.Component {
                             style={{ background: '#cb2431', fontSize: 14, display: 'block' }}
                             color="primary"
                             variant="raised"
+                            onClick={() => this.setState({ deleteAccountDialog: true })}
                         >
                             Delete Account
                         </Button>
                     </DeleteAccount>
                 </SettingsWrapper>
+
+                {this.renderAccountDialog()}
 
                 <Snackbar
                     anchorOrigin={{
@@ -555,4 +625,7 @@ class Settings extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(Settings);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Settings);
