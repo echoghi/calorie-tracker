@@ -8,16 +8,38 @@ import Input from './Input';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
-import { Doughnut } from 'react-chartjs-2';
+import styled from 'styled-components';
+
+const NotesHeader = styled.div`
+    padding: 10px 20px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6eaee;
+`;
+
+const Note = styled.div`
+    padding: 15px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #e6eaee;
+
+    &:first-child {
+        border-top: 0;
+    }
+`;
 
 // Reusable validation constuctor for each input
 let inputObj = required => {
@@ -46,7 +68,11 @@ class Nutrition extends React.Component {
                 calories: new inputObj(true),
                 protein: new inputObj(true),
                 carbs: new inputObj(true),
-                fat: new inputObj(true)
+                fat: new inputObj(true),
+                note: {
+                    noteTitle: new inputObj(true),
+                    noteBody: new inputObj(true)
+                }
             },
             sorted: []
         };
@@ -356,6 +382,19 @@ class Nutrition extends React.Component {
         return valid;
     }
 
+    validateNotes() {
+        let { validation } = this.state;
+        let valid = true;
+        // Check for incompleted fields
+        for (let key in validation['note']) {
+            if (!validation['note'][key]['valid']) {
+                return false;
+            }
+        }
+
+        return valid;
+    }
+
     onChange = name => event => {
         const obj = _.cloneDeep(this.state);
         // Mark input as dirty (interacted with)
@@ -367,6 +406,22 @@ class Nutrition extends React.Component {
             obj.validation[name].valid = true;
         } else {
             obj.validation[name].valid = false;
+        }
+
+        this.setState(obj);
+    };
+
+    onNoteChange = name => event => {
+        const obj = _.cloneDeep(this.state);
+        // Mark input as dirty (interacted with)
+        obj.validation['note'][name].dirty = true;
+        obj[name] = event.target.value;
+
+        // If there is any value, mark it valid
+        if (event.target.value !== '') {
+            obj.validation['note'][name].valid = true;
+        } else {
+            obj.validation['note'][name].valid = false;
         }
 
         this.setState(obj);
@@ -435,6 +490,46 @@ class Nutrition extends React.Component {
                 }
             }
 
+            this.setState({ validation });
+        }
+    };
+
+    addNote = () => {
+        let { dayIndex, noteBody, noteTitle, validation } = this.state;
+        const { userData } = this.props;
+
+        if (this.validateNotes()) {
+            let day;
+
+            const queryRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${dayIndex}`);
+
+            queryRef.on('value', snapshot => {
+                day = snapshot.val();
+            });
+
+            if (!day.notes) {
+                day.notes = [];
+            }
+
+            day.notes.push({
+                title: noteTitle,
+                body: noteBody
+            });
+
+            this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
+                queryRef.update(day);
+            });
+        } else {
+            // If there is an invalid input, mark all as dirty on submit to alert the user
+            for (let attr in validation.note) {
+                if (validation['note'][attr]) {
+                    validation['note'][attr].dirty = true;
+                }
+            }
+            console.log(validation);
             this.setState({ validation });
         }
     };
@@ -638,42 +733,91 @@ class Nutrition extends React.Component {
 
     renderCalorieBox() {
         let { day } = this.state;
-        const { fat, protein, carbs } = day.nutrition;
+        let notes = [];
+
+        for (let i in day.notes) {
+            const note = day.notes[i];
+
+            notes.push(<Note key={i}>{note.title}</Note>);
+        }
 
         return (
             <div className="nutrition__overview--calories">
-                <h3>Macro Breakdown</h3>
-                <Tooltip
-                    id="tooltip-top"
-                    title={`The progress bar represents your calories consumed vs your calories burned. If you have not yet
-                    entered in your activity data for this day, the progress bar will default to your calorie goal.`}
-                    placement="top"
-                >
-                    <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
-                </Tooltip>
+                <NotesHeader>
+                    Daily Notes{' '}
+                    <Button
+                        variant="fab"
+                        aria-label="add note"
+                        style={{ background: '#269bda' }}
+                        onClick={() => this.setState({ addNote: true })}
+                    >
+                        <i className="icon-edit-2" />
+                    </Button>
+                </NotesHeader>
 
-                <div style={{ padding: 20 }}>
-                    <Doughnut
-                        width={600}
-                        height={300}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                        data={{
-                            datasets: [
-                                {
-                                    data: [protein, carbs, fat],
-                                    backgroundColor: ['#F5729C', '#7BD4F8', '#55F3B3'],
-                                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                                }
-                            ],
-                            labels: ['Protein (g)', 'Carbs (g)', 'Fat (g)']
-                        }}
-                    />
-                </div>
+                <div style={{ padding: 20 }}>{notes}</div>
             </div>
         );
     }
+
+    renderAddNote = () => {
+        const { addNote, validation } = this.state;
+
+        const validate = name => (validation['note'][name].dirty && !validation['note'][name].valid ? true : false);
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (addNote) {
+            return (
+                <Dialog
+                    fullWidth={true}
+                    maxWidth={'sm'}
+                    open={addNote}
+                    onClose={() => this.setState({ addNote: false })}
+                >
+                    <DialogTitle>New Note</DialogTitle>
+                    <DialogContent>
+                        <div style={{ margin: '10px 0' }}>
+                            <Input
+                                name="noteTitle"
+                                id="noteTitle"
+                                label="Title"
+                                required
+                                fullWidth
+                                onChange={this.onNoteChange('noteTitle')}
+                                error={validate('noteTitle')}
+                            />
+                        </div>
+                        <div style={{ margin: '20px 0' }}>
+                            <Input
+                                name="noteBody"
+                                id="noteBody"
+                                label="Note"
+                                multiline
+                                fullWidth
+                                required
+                                rows="6"
+                                onChange={this.onNoteChange('noteBody')}
+                                error={validate('noteBody')}
+                            />
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button style={buttonStyle} onClick={this.addNote} color="primary">
+                            Save
+                        </Button>
+                        <Button style={buttonStyle} onClick={() => this.setState({ addNote: false })} color="primary">
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
 
     render() {
         const { day, user } = this.state;
@@ -721,6 +865,7 @@ class Nutrition extends React.Component {
                     'Loading...'
                 )}
                 {this.renderConfirmationDialog()}
+                {this.renderAddNote()}
             </div>
         );
     }

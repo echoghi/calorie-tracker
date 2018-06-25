@@ -50,7 +50,20 @@ const styles = theme => ({
 });
 
 function Input(props) {
-    const { classes, required, defaultValue, label, id, style, type, error, onChange } = props;
+    const {
+        classes,
+        required,
+        defaultValue,
+        label,
+        id,
+        style,
+        type,
+        error,
+        onChange,
+        multiline,
+        rows,
+        fullWidth
+    } = props;
 
     return (
         <TextField
@@ -61,6 +74,9 @@ function Input(props) {
             error={error}
             required={required}
             onChange={onChange}
+            multiline={multiline}
+            fullWidth={fullWidth}
+            rows={rows}
             InputProps={{
                 disableUnderline: true,
                 classes: {
