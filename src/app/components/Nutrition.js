@@ -17,6 +17,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
+import { Doughnut } from 'react-chartjs-2';
 
 // Reusable validation constuctor for each input
 let inputObj = required => {
@@ -636,34 +637,12 @@ class Nutrition extends React.Component {
     }
 
     renderCalorieBox() {
-        let { day, user } = this.state;
-        const calorieGoal = day.fitness.calories || user.goals.calories;
-        // const progress = day.nutrition.calories / calorieGoal;
-        let text = day.nutrition.calories / calorieGoal;
-        // const options = {
-        //     strokeWidth: 3,
-        //     color: '#8E81E3',
-        //     trailColor: '#f4f4f4',
-        //     containerStyle: {
-        //         width: '300px',
-        //         height: '300px',
-        //         margin: '30px auto 10px auto'
-        //     },
-        //     text: {
-        //         value: `${day.nutrition.calories} cal`,
-        //         style: {
-        //             color: '#a2a7d9',
-        //             margin: '-175px 0 0 0',
-        //             fontSize: '40px'
-        //         }
-        //     }
-        // };
-
-        text = `${Math.round(text * 100)}% of daily goal`;
+        let { day } = this.state;
+        const { fat, protein, carbs } = day.nutrition;
 
         return (
             <div className="nutrition__overview--calories">
-                <h3>Total Calories</h3>
+                <h3>Macro Breakdown</h3>
                 <Tooltip
                     id="tooltip-top"
                     title={`The progress bar represents your calories consumed vs your calories burned. If you have not yet
@@ -673,7 +652,18 @@ class Nutrition extends React.Component {
                     <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
                 </Tooltip>
 
-                <span className="subhead">{text}</span>
+                <Doughnut
+                    data={{
+                        datasets: [
+                            {
+                                data: [protein, carbs, fat],
+                                backgroundColor: ['#F5729C', '#7BD4F8', '#55F3B3'],
+                                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                            }
+                        ],
+                        labels: [`${protein} Protein (g)`, `${carbs} Carbs (g)`, `${fat} Fat (g)`]
+                    }}
+                />
             </div>
         );
     }

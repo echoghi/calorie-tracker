@@ -62,7 +62,7 @@
         &--meals {
             position: relative;
             display: inline-block;
-            height: 450px;
+            min-height: 400px;
             width: 48%;
             border: 1px solid $athens-gray;
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
