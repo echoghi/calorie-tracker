@@ -652,18 +652,20 @@ class Nutrition extends React.Component {
                     <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
                 </Tooltip>
 
-                <Doughnut
-                    data={{
-                        datasets: [
-                            {
-                                data: [protein, carbs, fat],
-                                backgroundColor: ['#F5729C', '#7BD4F8', '#55F3B3'],
-                                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                            }
-                        ],
-                        labels: [`${protein} Protein (g)`, `${carbs} Carbs (g)`, `${fat} Fat (g)`]
-                    }}
-                />
+                <div style={{ padding: 20 }}>
+                    <Doughnut
+                        data={{
+                            datasets: [
+                                {
+                                    data: [protein, carbs, fat],
+                                    backgroundColor: ['#F5729C', '#7BD4F8', '#55F3B3'],
+                                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                                }
+                            ],
+                            labels: ['Protein (g)', 'Carbs (g)', 'Fat (g)']
+                        }}
+                    />
+                </div>
             </div>
         );
     }
