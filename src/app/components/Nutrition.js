@@ -16,9 +16,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
-import ProgressBar from 'react-progress-bar.js';
-const { Line } = ProgressBar;
-const { Circle } = ProgressBar;
+import ProgressBar from './ProgressBar';
 
 // Reusable validation constuctor for each input
 let inputObj = required => {
@@ -613,13 +611,10 @@ class Nutrition extends React.Component {
             progress = day.nutrition.fat / user.goals.fat;
             text = day.nutrition.fat / user.goals.fat;
         }
-
-        // Prevent progress bar bug by converting 100%+ to 100%
-        progress = progress > 1 ? (progress = 1) : progress;
         text = `${Math.round(text * 100)}% of daily goal`;
 
         const options = {
-            strokeWidth: 5,
+            height: 25,
             color: color,
             trailColor: '#f4f4f4',
             containerStyle: {
@@ -637,35 +632,33 @@ class Nutrition extends React.Component {
             }
         };
 
-        return <Line progress={progress} initialAnimate options={options} containerStyle={options.containerStyle} />;
+        return <ProgressBar progress={progress} options={options} />;
     }
 
     renderCalorieBox() {
         let { day, user } = this.state;
         const calorieGoal = day.fitness.calories || user.goals.calories;
-        let progress = day.nutrition.calories / calorieGoal;
+        // const progress = day.nutrition.calories / calorieGoal;
         let text = day.nutrition.calories / calorieGoal;
-        const options = {
-            strokeWidth: 4,
-            color: '#8E81E3',
-            trailColor: '#f4f4f4',
-            text: {
-                value: `${day.nutrition.calories} cal`,
-                style: {
-                    color: '#a2a7d9',
-                    margin: '-175px 0 0 0',
-                    fontSize: '40px'
-                }
-            }
-        };
-        const containerStyle = {
-            width: '300px',
-            height: '30px',
-            margin: '30px auto 10px auto'
-        };
+        // const options = {
+        //     strokeWidth: 3,
+        //     color: '#8E81E3',
+        //     trailColor: '#f4f4f4',
+        //     containerStyle: {
+        //         width: '300px',
+        //         height: '300px',
+        //         margin: '30px auto 10px auto'
+        //     },
+        //     text: {
+        //         value: `${day.nutrition.calories} cal`,
+        //         style: {
+        //             color: '#a2a7d9',
+        //             margin: '-175px 0 0 0',
+        //             fontSize: '40px'
+        //         }
+        //     }
+        // };
 
-        // Prevent progress bar bug by converting 100%+ to 100%
-        progress = progress > 1 ? (progress = 1) : progress;
         text = `${Math.round(text * 100)}% of daily goal`;
 
         return (
@@ -679,8 +672,6 @@ class Nutrition extends React.Component {
                 >
                     <i className="icon-help-circle" data-for="calorie-tooltip" data-tip="tooltip" />
                 </Tooltip>
-
-                <Circle progress={progress} options={options} initialAnimate containerStyle={containerStyle} />
 
                 <span className="subhead">{text}</span>
             </div>
