@@ -637,7 +637,7 @@ class Activity extends React.Component {
             labels: _.keys(counts),
             datasets: [
                 {
-                    label: 'Exercise Frequency',
+                    label: 'Exercise History',
                     backgroundColor: 'rgba(255,99,132,0.2)',
                     borderColor: 'rgba(255,99,132,1)',
                     pointBackgroundColor: 'rgba(255,99,132,1)',

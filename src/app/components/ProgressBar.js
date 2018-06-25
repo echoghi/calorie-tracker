@@ -15,6 +15,11 @@ const Container = styled.div`
 
 const Bar = styled.div`
     position: relative;
+
+    &:first-child {
+        transition: 0.4s linear;
+        transition-property: width, background-color;
+    }
 `;
 
 class ProgressBar extends React.Component {
