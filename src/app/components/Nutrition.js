@@ -41,6 +41,23 @@ const Note = styled.div`
     }
 `;
 
+const NoteContainer = styled.div`
+    overflow: auto;
+    height: 348px;
+`;
+
+const NoteBody = styled.div`
+    width: 200px;
+    text-align: left;
+
+    span {
+        display: block;
+    }
+    span:nth-child(2) {
+        color: rgb(38, 155, 218);
+    }
+`;
+
 // Reusable validation constuctor for each input
 let inputObj = required => {
     this.valid = required ? false : true;
@@ -364,6 +381,28 @@ class Nutrition extends React.Component {
         this.setState({ confirmationDialog: false, deleteMeal: null });
     };
 
+    deleteNote = index => {
+        const { userData } = this.props;
+        const { dayIndex } = this.state;
+
+        let day;
+
+        const queryRef = database
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${dayIndex}`);
+
+        queryRef.on('value', snapshot => {
+            day = snapshot.val();
+        });
+
+        day.notes = day.notes.filter(note => note !== day.notes[index]);
+
+        queryRef.update(day);
+
+        this.setState({ noteConfirmationDialog: false });
+    };
+
     /**
      * Validate Inputs
      *
@@ -516,7 +555,8 @@ class Nutrition extends React.Component {
 
             day.notes.push({
                 title: noteTitle,
-                body: noteBody
+                body: noteBody,
+                time: moment().format('h:mm:ss a')
             });
 
             this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
@@ -687,6 +727,38 @@ class Nutrition extends React.Component {
         }
     };
 
+    renderNoteConfirmationDialog = () => {
+        const { noteConfirmationDialog, deleteNote } = this.state;
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (noteConfirmationDialog) {
+            return (
+                <Dialog open={noteConfirmationDialog} onClose={() => this.setState({ noteConfirmationDialog: false })}>
+                    <DialogTitle>Are you sure you want to delete this entry?</DialogTitle>
+
+                    <DialogActions>
+                        <Button style={buttonStyle} onClick={() => this.deleteNote(deleteNote)} color="primary">
+                            Delete
+                        </Button>
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.setState({ noteConfirmationDialog: false })}
+                            color="primary"
+                            autoFocus
+                        >
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
     renderProgressBar(type) {
         const { day, user } = this.state;
 
@@ -731,14 +803,27 @@ class Nutrition extends React.Component {
         return <ProgressBar progress={progress} options={options} />;
     }
 
-    renderCalorieBox() {
+    renderNoteBox() {
         let { day } = this.state;
         let notes = [];
 
         for (let i in day.notes) {
             const note = day.notes[i];
 
-            notes.push(<Note key={i}>{note.title}</Note>);
+            notes.push(
+                <Note key={i}>
+                    <span>{note.title}</span>
+                    <NoteBody>
+                        <span>{note.body}</span>
+                        <span>{note.time.substring(0, 15)}</span>
+                    </NoteBody>
+                    <div>
+                        <IconButton onClick={() => this.setState({ noteConfirmationDialog: true, deleteNote: i })}>
+                            <i className="icon-trash-2" />
+                        </IconButton>
+                    </div>
+                </Note>
+            );
         }
 
         return (
@@ -755,7 +840,7 @@ class Nutrition extends React.Component {
                     </Button>
                 </NotesHeader>
 
-                <div style={{ padding: 20 }}>{notes}</div>
+                <NoteContainer>{notes}</NoteContainer>
             </div>
         );
     }
@@ -856,7 +941,7 @@ class Nutrition extends React.Component {
                             </div>
                         </div>
                         <div className="nutrition__overview">
-                            {this.renderCalorieBox()}
+                            {this.renderNoteBox()}
                             {this.renderMealBox()}
                         </div>
                         {this.renderMealsTable()}
@@ -865,6 +950,7 @@ class Nutrition extends React.Component {
                     'Loading...'
                 )}
                 {this.renderConfirmationDialog()}
+                {this.renderNoteConfirmationDialog()}
                 {this.renderAddNote()}
             </div>
         );
