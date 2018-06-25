@@ -199,6 +199,7 @@ class Activity extends React.Component {
                         style: tableStyle.cell
                     },
                     {
+                        Cell: row => row.original.weight || '---',
                         headerText: 'Weight (lb)',
                         accessor: 'weight',
                         headerStyle: tableStyle.theadTh,
@@ -213,6 +214,7 @@ class Activity extends React.Component {
                         style: tableStyle.cell
                     },
                     {
+                        Cell: row => row.original.repetitions || '---',
                         headerText: 'Repetitions',
                         accessor: 'repetitions',
                         headerStyle: tableStyle.theadTh,
@@ -228,6 +230,7 @@ class Activity extends React.Component {
                         style: tableStyle.cell
                     },
                     {
+                        Cell: row => row.original.calories || '---',
                         headerText: 'Calories',
                         accessor: 'calories',
                         headerStyle: tableStyle.theadTh,
@@ -242,6 +245,7 @@ class Activity extends React.Component {
                         style: tableStyle.cell
                     },
                     {
+                        Cell: row => row.original.minutes || '---',
                         headerText: 'Minutes',
                         accessor: 'minutes',
                         headerStyle: tableStyle.theadTh,
