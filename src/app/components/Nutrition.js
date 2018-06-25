@@ -654,6 +654,11 @@ class Nutrition extends React.Component {
 
                 <div style={{ padding: 20 }}>
                     <Doughnut
+                        width={600}
+                        height={300}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
                         data={{
                             datasets: [
                                 {
