@@ -48,8 +48,13 @@ const NoteContainer = styled.div`
     height: 348px;
 `;
 
+const NoteTitle = styled.div`
+    width: 40.3%;
+    text-align: left;
+`;
+
 const NoteBody = styled.div`
-    width: 200px;
+    width: 33.3%;
     text-align: left;
 
     span {
@@ -58,6 +63,11 @@ const NoteBody = styled.div`
     span:nth-child(2) {
         color: rgb(38, 155, 218);
     }
+`;
+
+const NoteActions = styled.div`
+    width: 26.3%;
+    text-align: right;
 `;
 
 // Reusable validation constuctor for each input
@@ -814,12 +824,12 @@ class Nutrition extends React.Component {
 
             notes.push(
                 <Note key={i} onClick={() => this.setState({ activeNote: note })}>
-                    <span>{note.title}</span>
+                    <NoteTitle>{note.title}</NoteTitle>
                     <NoteBody>
-                        <span>{`${note.body.substring(0, 20)}...`}</span>
+                        <span>{`${note.body.substring(0, 30)}...`}</span>
                         <span>{note.time}</span>
                     </NoteBody>
-                    <div>
+                    <NoteActions>
                         <IconButton
                             onClick={e => {
                                 this.setState({ noteConfirmationDialog: true, deleteNote: i });
@@ -828,7 +838,7 @@ class Nutrition extends React.Component {
                         >
                             <i className="icon-trash-2" />
                         </IconButton>
-                    </div>
+                    </NoteActions>
                 </Note>
             );
         }
