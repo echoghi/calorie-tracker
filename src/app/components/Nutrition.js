@@ -20,6 +20,20 @@ import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
 import styled from 'styled-components';
 
+const MealsHeader = styled.div`
+    padding: 10px 20px;
+    font-size: 25px;
+    display: flex;
+    height: 77px;
+    box-sizing: border-box;
+    align-items: center;
+    border-bottom: 1px solid #e6eaee;
+`;
+
+const MealForm = styled.form`
+    margin: 10px 0;
+`;
+
 const NotesHeader = styled.div`
     padding: 10px 20px;
     font-size: 25px;
@@ -600,8 +614,8 @@ class Nutrition extends React.Component {
 
         return (
             <div className="nutrition__overview--meals">
-                <h3>Log Meals</h3>
-                <form className="add__meal" noValidate autoComplete="off">
+                <MealsHeader>Log Meals</MealsHeader>
+                <MealForm className="add__meal" noValidate autoComplete="off">
                     <div className="add__meal--input">
                         <Input
                             name="name"
@@ -691,7 +705,7 @@ class Nutrition extends React.Component {
                             label="Save Meal"
                         />
                     </FormGroup>
-                </form>
+                </MealForm>
 
                 <Button
                     className="add__meal--save"
