@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Input from './Input';
@@ -449,7 +451,7 @@ class Activity extends React.Component {
                 <Button
                     className="add__exercise--save"
                     fullWidth
-                    style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
+                    style={{ borderRadius: 0, height: 65, fontSize: 16 }}
                     onClick={this.onSubmit}
                     color="primary"
                     variant="raised"
@@ -659,7 +661,7 @@ class Activity extends React.Component {
     }
 
     renderConfirmationDialog = () => {
-        const { confirmationDialog, deleteExercise } = this.state;
+        const { confirmationDialog, deleteExercise, day } = this.state;
 
         const buttonStyle = {
             color: '#269bda',
@@ -668,12 +670,27 @@ class Activity extends React.Component {
         };
 
         if (confirmationDialog) {
+            const exercise = day.fitness.activities[deleteExercise];
+
             return (
-                <Dialog open={confirmationDialog} onClose={() => this.setState({ confirmationDialog: false })}>
-                    <DialogTitle>Are you sure you want to delete this exercise?</DialogTitle>
+                <Dialog
+                    fullWidth
+                    maxWidth={'sm'}
+                    open={confirmationDialog}
+                    onClose={() => this.setState({ confirmationDialog: false })}
+                >
+                    <DialogTitle>{`Remove "${exercise.name}"`}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>Are you sure you want to remove this exercise?</DialogContentText>
+                    </DialogContent>
 
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={() => this.deleteExercise(deleteExercise)} color="primary">
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.deleteExercise(deleteExercise)}
+                            color="primary"
+                            variant="raised"
+                        >
                             Delete
                         </Button>
                         <Button

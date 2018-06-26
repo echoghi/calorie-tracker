@@ -17,8 +17,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { theme } from './app/components/MaterialTheme';
 import thunk from 'redux-thunk';
-import 'whatwg-fetch';
 
 //Reducers
 import { adminState } from './app/components/reducers';
@@ -62,12 +63,14 @@ export const store = activeComposer(applyMiddleware(thunk))(createStore)(adminAp
 
 ReactDOM.render(
     <Provider store={store}>
-        <BrowserRouter>
-            <Switch>
-                <Route path="/login" component={Login} name="Login" />
-                <Route path="/" component={AppIndex} />
-            </Switch>
-        </BrowserRouter>
+        <MuiThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/login" component={Login} name="Login" />
+                    <Route path="/" component={AppIndex} />
+                </Switch>
+            </BrowserRouter>
+        </MuiThemeProvider>
     </Provider>,
     document.getElementById('app')
 );

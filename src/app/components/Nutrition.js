@@ -173,7 +173,6 @@ class Nutrition extends React.Component {
             callback({ mealTypes });
         });
 
-        console.log('Day Queried', requestedDate);
         if (requestedDate) {
             const queryRef = database
                 .ref('users')
@@ -683,7 +682,7 @@ class Nutrition extends React.Component {
                 <Button
                     className="add__meal--save"
                     fullWidth
-                    style={{ borderRadius: 0, height: 65, background: '#269bda', fontSize: 16 }}
+                    style={{ borderRadius: 0, height: 65, fontSize: 16 }}
                     onClick={this.onSubmit}
                     color="primary"
                     variant="raised"
@@ -695,21 +694,34 @@ class Nutrition extends React.Component {
     }
 
     renderConfirmationDialog = () => {
-        const { confirmationDialog, deleteMeal } = this.state;
+        const { confirmationDialog, deleteMeal, day } = this.state;
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
 
         if (confirmationDialog) {
-            return (
-                <Dialog open={confirmationDialog} onClose={() => this.setState({ confirmationDialog: false })}>
-                    <DialogTitle>Are you sure you want to delete this entry?</DialogTitle>
+            const meal = day.nutrition.meals[deleteMeal];
 
+            return (
+                <Dialog
+                    fullWidth
+                    maxWidth={'sm'}
+                    open={confirmationDialog}
+                    onClose={() => this.setState({ confirmationDialog: false })}
+                >
+                    <DialogTitle>{`Remove "${meal.name}"`}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>Are you sure you want to remove this entry?</DialogContentText>
+                    </DialogContent>
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={() => this.deleteMeal(deleteMeal)} color="primary">
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.deleteMeal(deleteMeal)}
+                            color="primary"
+                            variant="raised"
+                        >
                             Delete
                         </Button>
                         <Button
@@ -727,21 +739,34 @@ class Nutrition extends React.Component {
     };
 
     renderNoteConfirmationDialog = () => {
-        const { noteConfirmationDialog, deleteNote } = this.state;
+        const { noteConfirmationDialog, deleteNote, day } = this.state;
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
 
         if (noteConfirmationDialog) {
-            return (
-                <Dialog open={noteConfirmationDialog} onClose={() => this.setState({ noteConfirmationDialog: false })}>
-                    <DialogTitle>Are you sure you want to delete this entry?</DialogTitle>
+            const note = day.notes[deleteNote];
 
+            return (
+                <Dialog
+                    fullWidth
+                    maxWidth={'sm'}
+                    open={noteConfirmationDialog}
+                    onClose={() => this.setState({ noteConfirmationDialog: false })}
+                >
+                    <DialogTitle>{`Remove "${note.title}"`}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>Are you sure you want to remove this note?</DialogContentText>
+                    </DialogContent>
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={() => this.deleteNote(deleteNote)} color="primary">
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => this.deleteNote(deleteNote)}
+                            color="primary"
+                            variant="raised"
+                        >
                             Delete
                         </Button>
                         <Button
@@ -836,8 +861,8 @@ class Nutrition extends React.Component {
                     Daily Notes{' '}
                     <Button
                         variant="fab"
+                        color="primary"
                         aria-label="add note"
-                        style={{ background: '#269bda' }}
                         onClick={() => this.setState({ addNote: true })}
                     >
                         <i className="icon-edit-2" />
@@ -853,7 +878,6 @@ class Nutrition extends React.Component {
         const { activeNote } = this.state;
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
@@ -886,7 +910,6 @@ class Nutrition extends React.Component {
         const validate = name => (validation['note'][name].dirty && !validation['note'][name].valid ? true : false);
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
@@ -922,7 +945,7 @@ class Nutrition extends React.Component {
                         </div>
                     </DialogContent>
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={this.addNote} color="primary">
+                        <Button style={buttonStyle} onClick={this.addNote} color="primary" variant="raised">
                             Save
                         </Button>
                         <Button style={buttonStyle} onClick={() => this.setState({ addNote: false })} color="primary">

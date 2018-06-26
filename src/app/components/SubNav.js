@@ -29,7 +29,7 @@ const Menu = styled.div`
 
         &.active li,
         &.active i {
-            color: #269bda;
+            color: #ff5a5f;
         }
     }
 `;
@@ -45,7 +45,7 @@ const PageIndicator = styled.span`
     left: 50%;
     top: 20px;
     font-size: 50px;
-    color: #269bda;
+    color: #ff5a5f;
 `;
 
 class SubNav extends React.Component {

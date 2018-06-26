@@ -366,7 +366,6 @@ class Settings extends React.Component {
         const { deleteAccountDialog } = this.state;
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
@@ -425,7 +424,6 @@ class Settings extends React.Component {
                             />
                             <Button
                                 style={{
-                                    background: '#269bda',
                                     fontSize: 14,
                                     height: 43,
                                     display: 'inline-block',
@@ -467,7 +465,6 @@ class Settings extends React.Component {
                             />
                             <Button
                                 style={{
-                                    background: '#269bda',
                                     fontSize: 14,
                                     height: 43,
                                     display: 'inline-block',
@@ -527,7 +524,6 @@ class Settings extends React.Component {
                             />
                             <Button
                                 style={{
-                                    background: '#269bda',
                                     fontSize: 14,
                                     height: 43,
                                     display: 'inline-block',

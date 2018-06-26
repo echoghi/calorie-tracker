@@ -21,7 +21,7 @@ const Brand = styled.div`
     position: relative;
     font-size: 50px;
     background: #fff;
-    color: #269bda;
+    color: rgb(0, 132, 137);
     box-sizing: border-box;
     text-align: center;
     display: inline-block;
