@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
+import queryString from 'query-string';
 // Components
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
@@ -76,12 +77,17 @@ class Activity extends React.Component {
 
     mapDayToState = userData => {
         const { location } = this.props;
-        let requestedDate = location.search ? location.search.split('=')[1].split('/') : null;
         let { day, user, activity } = this.state;
+        let requestedDate = null;
+
+        if (location.search) {
+            const parsed = queryString.parse(location.search);
+            requestedDate = parseInt(parsed.d);
+        }
 
         let dayIndex;
 
-        requestedDate = requestedDate ? moment([requestedDate[2], requestedDate[0] - 1, requestedDate[1]]) : null;
+        requestedDate = requestedDate ? moment(requestedDate) : null;
 
         const callback = state => {
             this.setState(state);

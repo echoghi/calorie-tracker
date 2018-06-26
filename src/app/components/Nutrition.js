@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
+import queryString from 'query-string';
 // Components
 import Input from './Input';
 import Dialog from '@material-ui/core/Dialog';
@@ -138,12 +139,17 @@ class Nutrition extends React.Component {
 
     mapDayToState = userData => {
         const { location } = this.props;
-        let requestedDate = location.search ? location.search.split('=')[1].split('/') : null;
         let { day, user, meals, mealTypes } = this.state;
+        let requestedDate = null;
+
+        if (location.search) {
+            const parsed = queryString.parse(location.search);
+            requestedDate = parseInt(parsed.d);
+        }
 
         let dayIndex;
 
-        requestedDate = requestedDate ? moment([requestedDate[2], requestedDate[0] - 1, requestedDate[1]]) : null;
+        requestedDate = requestedDate ? moment(requestedDate) : null;
 
         const callback = state => {
             this.setState(state);
@@ -443,6 +449,32 @@ class Nutrition extends React.Component {
         return valid;
     }
 
+    resetNoteValidation() {
+        let { validation } = this.state;
+
+        // Reset Validation
+        for (let attr in validation.note) {
+            if (validation['note'][attr]) {
+                validation['note'][attr] = new inputObj(true);
+            }
+        }
+
+        this.setState({ validation });
+    }
+
+    resetMealValidation() {
+        let { validation } = this.state;
+
+        // Reset Validation
+        for (let attr in validation) {
+            if (validation[attr] && attr !== 'note') {
+                validation[attr] = new inputObj(true);
+            }
+        }
+
+        this.setState({ validation });
+    }
+
     validateNotes() {
         let { validation } = this.state;
         let valid = true;
@@ -524,6 +556,8 @@ class Nutrition extends React.Component {
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
                 queryRef.update(day);
 
+                this.resetMealValidation();
+
                 if (!meals) {
                     meals = [];
                 }
@@ -579,6 +613,8 @@ class Nutrition extends React.Component {
 
             this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
                 queryRef.update(day);
+
+                this.resetNoteValidation();
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -587,7 +623,7 @@ class Nutrition extends React.Component {
                     validation['note'][attr].dirty = true;
                 }
             }
-            console.log(validation);
+
             this.setState({ validation });
         }
     };
@@ -916,7 +952,15 @@ class Nutrition extends React.Component {
 
         if (addNote) {
             return (
-                <Dialog fullWidth maxWidth={'sm'} open={addNote} onClose={() => this.setState({ addNote: false })}>
+                <Dialog
+                    fullWidth
+                    maxWidth={'sm'}
+                    open={addNote}
+                    onClose={() => {
+                        this.resetNoteValidation();
+                        this.setState({ addNote: false, noteTitle: '', noteBody: '' });
+                    }}
+                >
                     <DialogTitle>New Note</DialogTitle>
                     <DialogContent>
                         <div style={{ margin: '10px 0' }}>
@@ -948,7 +992,14 @@ class Nutrition extends React.Component {
                         <Button style={buttonStyle} onClick={this.addNote} color="primary" variant="raised">
                             Save
                         </Button>
-                        <Button style={buttonStyle} onClick={() => this.setState({ addNote: false })} color="primary">
+                        <Button
+                            style={buttonStyle}
+                            onClick={() => {
+                                this.resetNoteValidation();
+                                this.setState({ addNote: false, noteTitle: '', noteBody: '' });
+                            }}
+                            color="primary"
+                        >
                             Cancel
                         </Button>
                     </DialogActions>

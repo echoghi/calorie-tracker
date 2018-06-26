@@ -425,7 +425,7 @@ class Calendar extends React.Component {
                         <Button
                             style={buttonStyle}
                             component={Link}
-                            to={`/nutrition?day=${breakdownDay.format('L')}`}
+                            to={`/nutrition?d=${breakdownDay.format('x')}`}
                             color="primary"
                         >
                             Edit Nutrition
@@ -433,7 +433,7 @@ class Calendar extends React.Component {
                         <Button
                             style={buttonStyle}
                             component={Link}
-                            to={`/activity?day=${breakdownDay.format('L')}`}
+                            to={`/activity?d=${breakdownDay.format('x')}`}
                             color="primary"
                             autoFocus
                         >

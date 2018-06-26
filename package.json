@@ -27,6 +27,7 @@
         "image-webpack-loader": "^3.4.2",
         "moment": "^2.19.2",
         "prop-types": "^15.6.1",
+        "query-string": "5",
         "react": "16.4",
         "react-chartjs-2": "^2.7.2",
         "react-dom": "^16.4.0",
