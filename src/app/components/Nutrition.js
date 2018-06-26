@@ -575,7 +575,7 @@ class Nutrition extends React.Component {
             day.notes.push({
                 title: noteTitle,
                 body: noteBody,
-                time: moment().format('h:mm:ss a')
+                time: moment().format('h:mm a')
             });
 
             this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
