@@ -405,7 +405,6 @@ class Calendar extends React.Component {
         const { breakdown, breakdownDay } = this.state;
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
@@ -428,7 +427,7 @@ class Calendar extends React.Component {
                             to={`/nutrition?d=${breakdownDay.format('x')}`}
                             color="primary"
                         >
-                            Edit Nutrition
+                            View Nutrition
                         </Button>
                         <Button
                             style={buttonStyle}
@@ -437,7 +436,7 @@ class Calendar extends React.Component {
                             color="primary"
                             autoFocus
                         >
-                            Edit Activity
+                            View Activity
                         </Button>
                     </DialogActions>
                 </Dialog>
