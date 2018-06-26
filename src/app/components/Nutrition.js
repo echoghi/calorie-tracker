@@ -60,6 +60,18 @@ const NoteContainer = styled.div`
     height: 348px;
 `;
 
+const NoNotes = styled.div`
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    h4 {
+        padding: 0;
+        margin: 0 auto;
+        text-align: center;
+    }
+`;
+
 const NoteTitle = styled.div`
     width: 40.3%;
     text-align: left;
@@ -888,6 +900,14 @@ class Nutrition extends React.Component {
                         </IconButton>
                     </NoteActions>
                 </Note>
+            );
+        }
+
+        if (!notes.length) {
+            notes = (
+                <NoNotes>
+                    <h4>No Notes Found</h4>
+                </NoNotes>
             );
         }
 
