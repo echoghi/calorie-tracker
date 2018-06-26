@@ -11,10 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ReactTable from 'react-table';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
@@ -103,7 +100,7 @@ class Nutrition extends React.Component {
             day: {},
             user: {},
             loading: true,
-            saveMeal: false,
+
             mealTypes: [],
             validation: {
                 name: new inputObj(true),
@@ -493,7 +490,7 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let { dayIndex, name, type, calories, fat, carbs, protein, validation, saveMeal, meals } = this.state;
+        let { dayIndex, name, type, calories, fat, carbs, protein, validation, meals } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
@@ -528,24 +525,20 @@ class Nutrition extends React.Component {
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
                 queryRef.update(day);
 
-                if (saveMeal) {
-                    if (!meals) {
-                        meals = [];
-                    }
-
-                    meals.push({
-                        name,
-                        type,
-                        calories: parseFloat(calories),
-                        fat: parseFloat(fat),
-                        protein: parseFloat(protein),
-                        carbs: parseFloat(carbs)
-                    });
-
-                    mealsRef.update(meals);
-
-                    this.setState({ saveMeal: false });
+                if (!meals) {
+                    meals = [];
                 }
+
+                meals.push({
+                    name,
+                    type,
+                    calories: parseFloat(calories),
+                    fat: parseFloat(fat),
+                    protein: parseFloat(protein),
+                    carbs: parseFloat(carbs)
+                });
+
+                mealsRef.update(meals);
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -604,13 +597,6 @@ class Nutrition extends React.Component {
         const { validation } = this.state;
 
         const validate = name => (validation[name].dirty && !validation[name].valid ? true : false);
-
-        const checkboxStyle = {
-            checkbox: { paddingLeft: 30 },
-            label: {
-                color: '#3d575d'
-            }
-        };
 
         return (
             <div className="nutrition__overview--meals">
@@ -692,19 +678,6 @@ class Nutrition extends React.Component {
                             }}
                         />
                     </div>
-                    <FormGroup row>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    style={checkboxStyle.checkbox}
-                                    checked={this.state.saveMeal}
-                                    onChange={() => this.setState({ saveMeal: !this.state.saveMeal })}
-                                    disableRipple
-                                />
-                            }
-                            label="Save Meal"
-                        />
-                    </FormGroup>
                 </MealForm>
 
                 <Button
