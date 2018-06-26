@@ -156,11 +156,11 @@ class Calendar extends React.Component {
     renderExerciseIcon(data, day) {
         const { time } = this.state;
 
-        if (data && data.fitness.exercise >= 30 && day.month() === time.month()) {
+        if (data && data.fitness.activities && day.month() === time.month()) {
             return (
                 <Tooltip
                     id="tooltip-top"
-                    title={`You met your exercise goal with ${data.fitness.exercise} minutes of activity`}
+                    title={`You recorded ${data.fitness.activities.length} exercise(s)`}
                     placement="top"
                 >
                     <img
@@ -173,16 +173,6 @@ class Calendar extends React.Component {
             );
         }
     }
-
-    // renderExerciseTooltip(data, day) {
-    //     if (data && data.fitness.exercise >= 30) {
-    //         return (
-    //             <ReactTooltip class="exercise_tip" type="info" id={`${day.date()}-${day.get('month')}`}>
-    //                 <span>You met your exercise goal with {data.fitness.exercise} minutes of activity</span>
-    //             </ReactTooltip>
-    //         );
-    //     }
-    // }
 
     handleIconClass(day) {
         let now = moment();
@@ -400,11 +390,11 @@ class Calendar extends React.Component {
                     </div>
                     <div className="legend__body--item">
                         <img src={runnerIcon} />
-                        <div className="legend__body--name">Exercise goal</div>
+                        <div className="legend__body--name">Exercise Recorded</div>
                     </div>
                     <div className="legend__body--item">
                         <i className="icon-info" />
-                        <div className="legend__body--name">Nutrition breakdown</div>
+                        <div className="legend__body--name">Day Breakdown</div>
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
@@ -35,6 +36,7 @@ const Note = styled.div`
     align-items: center;
     justify-content: space-between;
     border-top: 1px solid #e6eaee;
+    cursor: pointer;
 
     &:first-child {
         border-top: 0;
@@ -413,7 +415,7 @@ class Nutrition extends React.Component {
         let valid = true;
         // Check for incompleted fields
         for (let key in validation) {
-            if (!validation[key]['valid']) {
+            if (key !== 'note' && !validation[key]['valid']) {
                 return false;
             }
         }
@@ -524,7 +526,7 @@ class Nutrition extends React.Component {
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
             for (let attr in validation) {
-                if (validation[attr]) {
+                if (validation[attr] && attr !== 'note') {
                     validation[attr].dirty = true;
                 }
             }
@@ -811,14 +813,19 @@ class Nutrition extends React.Component {
             const note = day.notes[i];
 
             notes.push(
-                <Note key={i}>
+                <Note key={i} onClick={() => this.setState({ activeNote: note })}>
                     <span>{note.title}</span>
                     <NoteBody>
-                        <span>{note.body}</span>
-                        <span>{note.time.substring(0, 15)}</span>
+                        <span>{`${note.body.substring(0, 20)}...`}</span>
+                        <span>{note.time}</span>
                     </NoteBody>
                     <div>
-                        <IconButton onClick={() => this.setState({ noteConfirmationDialog: true, deleteNote: i })}>
+                        <IconButton
+                            onClick={e => {
+                                this.setState({ noteConfirmationDialog: true, deleteNote: i });
+                                e.stopPropagation();
+                            }}
+                        >
                             <i className="icon-trash-2" />
                         </IconButton>
                     </div>
@@ -845,6 +852,37 @@ class Nutrition extends React.Component {
         );
     }
 
+    renderNote = () => {
+        const { activeNote } = this.state;
+
+        const buttonStyle = {
+            color: '#269bda',
+            fontSize: 14,
+            height: 43
+        };
+
+        if (activeNote) {
+            return (
+                <Dialog
+                    fullWidth
+                    maxWidth={'sm'}
+                    open={!!activeNote}
+                    onClose={() => this.setState({ activeNote: null })}
+                >
+                    <DialogTitle>{`${activeNote.title} - ${activeNote.time}`}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>{activeNote.body}</DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button style={buttonStyle} onClick={() => this.setState({ activeNote: null })} color="primary">
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
     renderAddNote = () => {
         const { addNote, validation } = this.state;
 
@@ -858,12 +896,7 @@ class Nutrition extends React.Component {
 
         if (addNote) {
             return (
-                <Dialog
-                    fullWidth={true}
-                    maxWidth={'sm'}
-                    open={addNote}
-                    onClose={() => this.setState({ addNote: false })}
-                >
+                <Dialog fullWidth maxWidth={'sm'} open={addNote} onClose={() => this.setState({ addNote: false })}>
                     <DialogTitle>New Note</DialogTitle>
                     <DialogContent>
                         <div style={{ margin: '10px 0' }}>
@@ -952,6 +985,7 @@ class Nutrition extends React.Component {
                 {this.renderConfirmationDialog()}
                 {this.renderNoteConfirmationDialog()}
                 {this.renderAddNote()}
+                {this.renderNote()}
             </div>
         );
     }
