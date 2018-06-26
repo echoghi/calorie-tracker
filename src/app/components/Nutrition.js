@@ -78,7 +78,7 @@ const NoteTitle = styled.div`
 `;
 
 const NoteBody = styled.div`
-    width: 33.3%;
+    width: 39.3%;
     text-align: left;
 
     span {
@@ -90,7 +90,7 @@ const NoteBody = styled.div`
 `;
 
 const NoteActions = styled.div`
-    width: 26.3%;
+    width: 20.3%;
     text-align: right;
 `;
 
