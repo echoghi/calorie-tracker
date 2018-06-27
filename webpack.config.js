@@ -76,7 +76,8 @@ module.exports = function(env) {
             new ExtractTextPlugin('styles.css'),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production')
-            })
+            }),
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
         );
     } else {
         plugins.push(
