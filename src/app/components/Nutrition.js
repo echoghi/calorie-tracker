@@ -223,7 +223,7 @@ class Nutrition extends React.Component {
                 mealsRef.on('value', snapshot => {
                     meals = snapshot.val();
 
-                    callback({ meals, day, loading: false, dayIndex, todayButton: true });
+                    callback({ meals, day, loading: false, dayIndex, todayButton: true, requestedDate: null });
                 });
             });
         };

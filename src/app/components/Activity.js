@@ -135,7 +135,7 @@ class Activity extends React.Component {
                 fitnessRef.on('value', snapshot => {
                     activity = snapshot.val();
 
-                    callback({ activity, day, loading: false, dayIndex, todayButton: true });
+                    callback({ activity, day, loading: false, dayIndex, todayButton: true, requestedDate: null });
                 });
             });
         };
