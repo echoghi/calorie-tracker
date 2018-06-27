@@ -18,6 +18,12 @@ import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
 import styled from 'styled-components';
 
+const HeaderWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 const MealsHeader = styled.div`
     padding: 10px 20px;
     font-size: 25px;
@@ -149,8 +155,8 @@ class Nutrition extends React.Component {
         }
     }
 
-    mapDayToState = userData => {
-        const { location } = this.props;
+    mapDayToState = (userData, today) => {
+        const { location, history } = this.props;
         let { day, user, meals, mealTypes } = this.state;
         let requestedDate = null;
 
@@ -166,7 +172,7 @@ class Nutrition extends React.Component {
         const callback = state => {
             this.setState(state);
         };
-        console.log(userData);
+
         const userRef = database
             .ref('users')
             .child(userData.uid)
@@ -191,41 +197,7 @@ class Nutrition extends React.Component {
             callback({ mealTypes });
         });
 
-        if (requestedDate) {
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child('calendar')
-                .orderByChild('day');
-
-            queryRef.on('value', snapshot => {
-                snapshot.forEach(childSnapshot => {
-                    day = childSnapshot.val();
-
-                    dayIndex = childSnapshot.key;
-
-                    const { year, date, month } = day.day;
-                    day.day = moment([year, month, date]);
-
-                    if (
-                        day.day.date() === requestedDate.date() &&
-                        day.day.month() === requestedDate.month() &&
-                        day.day.year() === requestedDate.year()
-                    ) {
-                        const mealsRef = database
-                            .ref('users')
-                            .child(userData.uid)
-                            .child(`calendar/${dayIndex}/nutrition/meals`);
-
-                        mealsRef.on('value', snapshot => {
-                            meals = snapshot.val();
-
-                            callback({ meals, day, loading: false, requestedDate, dayIndex });
-                        });
-                    }
-                });
-            });
-        } else {
+        const loadToday = () => {
             const queryRef = database
                 .ref('users')
                 .child(userData.uid)
@@ -250,9 +222,53 @@ class Nutrition extends React.Component {
                 mealsRef.on('value', snapshot => {
                     meals = snapshot.val();
 
-                    callback({ meals, day, loading: false, dayIndex });
+                    callback({ meals, day, loading: false, dayIndex, todayButton: true });
                 });
             });
+        };
+
+        if (!today) {
+            if (requestedDate) {
+                const queryRef = database
+                    .ref('users')
+                    .child(userData.uid)
+                    .child('calendar')
+                    .orderByChild('day');
+
+                queryRef.on('value', snapshot => {
+                    snapshot.forEach(childSnapshot => {
+                        day = childSnapshot.val();
+
+                        dayIndex = childSnapshot.key;
+
+                        const { year, date, month } = day.day;
+                        day.day = moment([year, month, date]);
+
+                        if (
+                            day.day.date() === requestedDate.date() &&
+                            day.day.month() === requestedDate.month() &&
+                            day.day.year() === requestedDate.year()
+                        ) {
+                            const mealsRef = database
+                                .ref('users')
+                                .child(userData.uid)
+                                .child(`calendar/${dayIndex}/nutrition/meals`);
+
+                            mealsRef.on('value', snapshot => {
+                                meals = snapshot.val();
+
+                                callback({ meals, day, loading: false, requestedDate, dayIndex, todayButton: false });
+                            });
+                        }
+                    });
+                });
+            } else {
+                loadToday();
+            }
+        } else {
+            history.push('/nutrition');
+
+            loadToday();
         }
     };
 
@@ -1029,15 +1045,33 @@ class Nutrition extends React.Component {
     };
 
     render() {
-        const { day, user } = this.state;
+        const { userData } = this.props;
+        const { day, user, todayButton, loading } = this.state;
         const { protein, carbs, fat } = day.nutrition || 0;
 
         return (
             <div>
-                {!this.state.loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
+                {!loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
                     <div className="nutrition">
-                        <h1>Nutrition</h1>
-                        <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
+                        <HeaderWrapper>
+                            <div>
+                                <h1>Nutrition</h1>
+                                <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
+                            </div>
+                            <div>
+                                <Button
+                                    onClick={() => {
+                                        this.mapDayToState(userData, true);
+                                    }}
+                                    color="primary"
+                                    variant="outlined"
+                                    size="large"
+                                    disabled={todayButton}
+                                >
+                                    Today
+                                </Button>
+                            </div>
+                        </HeaderWrapper>
                         <div className="nutrition__overview">
                             <div className="nutrition__overview--box">
                                 <div className="nutrition__overview--head">
