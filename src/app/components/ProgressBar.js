@@ -29,6 +29,17 @@ class ProgressBar extends React.Component {
             hello: false
         };
     }
+
+    renderBarBackground(progress, options) {
+        if (progress > 1) {
+            return `repeating-linear-gradient(135deg, ${options.color}, ${
+                options.color
+            } 10px, #5e639a 10px, #5e639a 20px`;
+        } else {
+            return options.color;
+        }
+    }
+
     render() {
         const { options, progress } = this.props;
 
@@ -39,7 +50,7 @@ class ProgressBar extends React.Component {
                         style={{
                             height: '100%',
                             width: progress > 1 ? '100%' : `${progress * 100}%`,
-                            background: options.color,
+                            background: this.renderBarBackground(progress, options),
                             marginBottom: `-${options.height}px`,
                             zIndex: '2'
                         }}
