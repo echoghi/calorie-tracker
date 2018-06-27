@@ -18,6 +18,7 @@ import Input from './Input';
 import ReactTable from 'react-table';
 import { Bar } from 'react-chartjs-2';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
+import styled from 'styled-components';
 
 // Reusable validation constuctor for each input
 const inputObj = class {
@@ -32,6 +33,12 @@ const mapStateToProps = state => ({
     userData: state.adminState.userData,
     data: state.adminState.data
 });
+
+const HeaderWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
 
 class Activity extends React.Component {
     constructor(props) {
@@ -75,8 +82,8 @@ class Activity extends React.Component {
         }
     }
 
-    mapDayToState = userData => {
-        const { location } = this.props;
+    mapDayToState = (userData, today) => {
+        const { location, history } = this.props;
         let { day, user, activity } = this.state;
         let requestedDate = null;
 
@@ -103,41 +110,7 @@ class Activity extends React.Component {
             callback({ user });
         });
 
-        if (requestedDate) {
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child('calendar')
-                .orderByChild('day');
-
-            queryRef.on('value', snapshot => {
-                snapshot.forEach(childSnapshot => {
-                    day = childSnapshot.val();
-
-                    dayIndex = childSnapshot.key;
-
-                    const { year, date, month } = day.day;
-                    day.day = moment([year, month, date]);
-
-                    if (
-                        day.day.date() === requestedDate.date() &&
-                        day.day.month() === requestedDate.month() &&
-                        day.day.year() === requestedDate.year()
-                    ) {
-                        const fitnessRef = database
-                            .ref('users')
-                            .child(userData.uid)
-                            .child(`calendar/${dayIndex}/fitness`);
-
-                        fitnessRef.on('value', snapshot => {
-                            activity = snapshot.val();
-
-                            callback({ activity, day, loading: false, requestedDate, dayIndex });
-                        });
-                    }
-                });
-            });
-        } else {
+        const loadToday = () => {
             const queryRef = database
                 .ref('users')
                 .child(userData.uid)
@@ -162,9 +135,60 @@ class Activity extends React.Component {
                 fitnessRef.on('value', snapshot => {
                     activity = snapshot.val();
 
-                    callback({ activity, day, loading: false, dayIndex });
+                    callback({ activity, day, loading: false, dayIndex, todayButton: true });
                 });
             });
+        };
+
+        if (!today) {
+            if (requestedDate) {
+                const queryRef = database
+                    .ref('users')
+                    .child(userData.uid)
+                    .child('calendar')
+                    .orderByChild('day');
+
+                queryRef.on('value', snapshot => {
+                    snapshot.forEach(childSnapshot => {
+                        day = childSnapshot.val();
+
+                        dayIndex = childSnapshot.key;
+
+                        const { year, date, month } = day.day;
+                        day.day = moment([year, month, date]);
+
+                        if (
+                            day.day.date() === requestedDate.date() &&
+                            day.day.month() === requestedDate.month() &&
+                            day.day.year() === requestedDate.year()
+                        ) {
+                            const fitnessRef = database
+                                .ref('users')
+                                .child(userData.uid)
+                                .child(`calendar/${dayIndex}/fitness`);
+
+                            fitnessRef.on('value', snapshot => {
+                                activity = snapshot.val();
+
+                                callback({
+                                    activity,
+                                    day,
+                                    loading: false,
+                                    requestedDate,
+                                    dayIndex,
+                                    todayButton: false
+                                });
+                            });
+                        }
+                    });
+                });
+            } else {
+                loadToday();
+            }
+        } else {
+            history.push('/activity');
+
+            loadToday();
         }
     };
 
@@ -670,7 +694,6 @@ class Activity extends React.Component {
         const { confirmationDialog, deleteExercise, day } = this.state;
 
         const buttonStyle = {
-            color: '#269bda',
             fontSize: 14,
             height: 43
         };
@@ -714,14 +737,32 @@ class Activity extends React.Component {
     };
 
     render() {
-        const { day, user, loading } = this.state;
+        const { userData } = this.props;
+        const { day, user, loading, todayButton } = this.state;
 
         return (
             <div>
                 {!loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
                     <div className="activity">
-                        <h1>Activity</h1>
-                        <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
+                        <HeaderWrapper>
+                            <div>
+                                <h1>Activity</h1>
+                                <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
+                            </div>
+                            <div>
+                                <Button
+                                    onClick={() => {
+                                        this.mapDayToState(userData, true);
+                                    }}
+                                    color="primary"
+                                    variant="outlined"
+                                    size="large"
+                                    disabled={todayButton}
+                                >
+                                    Today
+                                </Button>
+                            </div>
+                        </HeaderWrapper>
 
                         <div className="activity__overview">
                             {this.renderCalorieBox()}
