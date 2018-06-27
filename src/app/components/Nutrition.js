@@ -31,6 +31,7 @@ const MealsHeader = styled.div`
     height: 77px;
     box-sizing: border-box;
     align-items: center;
+    justify-content: space-between;
     border-bottom: 1px solid #e6eaee;
 `;
 
@@ -657,13 +658,16 @@ class Nutrition extends React.Component {
     };
 
     renderMealBox() {
-        const { validation } = this.state;
+        const { validation, day, user } = this.state;
 
         const validate = name => (validation[name].dirty && !validation[name].valid ? true : false);
 
         return (
             <div className="nutrition__overview--meals">
-                <MealsHeader>Log Meals</MealsHeader>
+                <MealsHeader>
+                    <span>Log Meals</span>
+                    <span>{`${day.nutrition.calories} / ${user.goals.calories} cal`}</span>
+                </MealsHeader>
                 <MealForm className="add__meal" noValidate autoComplete="off">
                     <div className="add__meal--input">
                         <Input
