@@ -11,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
+import Fade from '@material-ui/core/Fade';
 import { Link } from 'react-router-dom';
 
 // Images
@@ -452,34 +453,36 @@ class Calendar extends React.Component {
 
         return (
             <div>
-                <div className="calendar">
-                    <div className="calendar__toggle--month">
-                        <IconButton aria-label="Last Month" component="div" onClick={() => this.changeMonth(false)}>
-                            <i className="icon-chevron-left" />
-                        </IconButton>
+                <Fade in={true}>
+                    <div className="calendar">
+                        <div className="calendar__toggle--month">
+                            <IconButton aria-label="Last Month" component="div" onClick={() => this.changeMonth(false)}>
+                                <i className="icon-chevron-left" />
+                            </IconButton>
 
-                        <h2>{month}</h2>
-                        <IconButton aria-label="Next Month" component="div" onClick={() => this.changeMonth(true)}>
-                            <i className="icon-chevron-right" />
-                        </IconButton>
-                    </div>
-                    <h4>{year}</h4>
-                    <div className="calendar__wrapper">
-                        <div className="calendar__container">
-                            <div className="calendar__head">
-                                <span>Sun</span>
-                                <span>Mon</span>
-                                <span>Tue</span>
-                                <span>Wed</span>
-                                <span>Thu</span>
-                                <span>Fri</span>
-                                <span>Sat</span>
-                            </div>
-                            {!_.isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
+                            <h2>{month}</h2>
+                            <IconButton aria-label="Next Month" component="div" onClick={() => this.changeMonth(true)}>
+                                <i className="icon-chevron-right" />
+                            </IconButton>
                         </div>
-                        {this.renderLegend()}
+                        <h4>{year}</h4>
+                        <div className="calendar__wrapper">
+                            <div className="calendar__container">
+                                <div className="calendar__head">
+                                    <span>Sun</span>
+                                    <span>Mon</span>
+                                    <span>Tue</span>
+                                    <span>Wed</span>
+                                    <span>Thu</span>
+                                    <span>Fri</span>
+                                    <span>Sat</span>
+                                </div>
+                                {!_.isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
+                            </div>
+                            {this.renderLegend()}
+                        </div>
                     </div>
-                </div>
+                </Fade>
 
                 {this.renderBreakdown()}
             </div>
