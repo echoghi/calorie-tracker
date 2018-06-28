@@ -13,7 +13,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Fade from '@material-ui/core/Fade';
 import ReactTable from 'react-table';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
@@ -1078,36 +1077,32 @@ class Nutrition extends React.Component {
                             </div>
                         </HeaderWrapper>
                         <div className="nutrition__overview">
-                            <Fade in={true}>
-                                <div className="nutrition__overview--box">
-                                    <div className="nutrition__overview--head">
-                                        <h1>{protein}</h1>
-                                        <span>g</span>
-                                        <h3>Protein</h3>
-                                    </div>
-                                    {this.renderProgressBar('protein')}
+                            <div className="nutrition__overview--box">
+                                <div className="nutrition__overview--head">
+                                    <h1>{protein}</h1>
+                                    <span>g</span>
+                                    <h3>Protein</h3>
                                 </div>
-                            </Fade>
-                            <Fade in={true}>
-                                <div className="nutrition__overview--box">
-                                    <div className="nutrition__overview--head">
-                                        <h1>{carbs}</h1>
-                                        <span>g</span>
-                                        <h3>Carbohydrates</h3>
-                                    </div>
-                                    {this.renderProgressBar('carbs')}
+                                {this.renderProgressBar('protein')}
+                            </div>
+
+                            <div className="nutrition__overview--box">
+                                <div className="nutrition__overview--head">
+                                    <h1>{carbs}</h1>
+                                    <span>g</span>
+                                    <h3>Carbohydrates</h3>
                                 </div>
-                            </Fade>
-                            <Fade in={true}>
-                                <div className="nutrition__overview--box">
-                                    <div className="nutrition__overview--head">
-                                        <h1>{fat}</h1>
-                                        <span>g</span>
-                                        <h3>Fat</h3>
-                                    </div>
-                                    {this.renderProgressBar('fat')}
+                                {this.renderProgressBar('carbs')}
+                            </div>
+
+                            <div className="nutrition__overview--box">
+                                <div className="nutrition__overview--head">
+                                    <h1>{fat}</h1>
+                                    <span>g</span>
+                                    <h3>Fat</h3>
                                 </div>
-                            </Fade>
+                                {this.renderProgressBar('fat')}
+                            </div>
                         </div>
                         <div className="nutrition__overview">
                             {this.renderNoteBox()}
