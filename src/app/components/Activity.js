@@ -350,7 +350,7 @@ class Activity extends React.Component {
 
         day.fitness.activities = day.fitness.activities.filter(exercise => exercise !== day.fitness.activities[index]);
 
-        queryRef.update(day);
+        queryRef.set(day);
 
         this.setState({ confirmationDialog: false, deleteExercise: null });
     };
@@ -612,7 +612,7 @@ class Activity extends React.Component {
                     formSwitch: false
                 },
                 () => {
-                    queryRef.update(day);
+                    queryRef.set(day);
                     // Reset Validation
                     for (let attr in validation) {
                         if (validation[attr]) {

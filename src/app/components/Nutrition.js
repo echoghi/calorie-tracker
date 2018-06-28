@@ -442,7 +442,7 @@ class Nutrition extends React.Component {
 
         day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
-        queryRef.update(day);
+        queryRef.set(day);
 
         this.queue.push({
             message: 'Meal Removed',
@@ -477,7 +477,7 @@ class Nutrition extends React.Component {
 
         day.notes = day.notes.filter(note => note !== day.notes[index]);
 
-        queryRef.update(day);
+        queryRef.set(day);
 
         this.queue.push({
             message: 'Note Removed',
@@ -631,7 +631,7 @@ class Nutrition extends React.Component {
             }
 
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
-                queryRef.update(day);
+                queryRef.set(day);
 
                 this.resetMealValidation();
 
@@ -648,7 +648,7 @@ class Nutrition extends React.Component {
                     carbs: parseFloat(carbs)
                 });
 
-                mealsRef.update(meals);
+                mealsRef.set(meals);
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -702,7 +702,7 @@ class Nutrition extends React.Component {
             }
 
             this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
-                queryRef.update(day);
+                queryRef.set(day);
 
                 this.resetNoteValidation();
             });
