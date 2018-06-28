@@ -165,9 +165,9 @@ class Nutrition extends React.Component {
         }
     }
 
-    mapDayToState = (userData, today) => {
+    mapDayToState = userData => {
         const { location, history } = this.props;
-        let { day, user, meals, mealTypes } = this.state;
+        let { day, user, meals, mealTypes, today } = this.state;
         let requestedDate = null;
 
         if (location.search) {
@@ -1148,7 +1148,9 @@ class Nutrition extends React.Component {
                             <div>
                                 <Button
                                     onClick={() => {
-                                        this.mapDayToState(userData, true);
+                                        this.setState({ today: true }, () => {
+                                            this.mapDayToState(userData);
+                                        });
                                     }}
                                     color="primary"
                                     variant="outlined"
