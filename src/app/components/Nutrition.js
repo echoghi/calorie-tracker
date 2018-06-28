@@ -121,7 +121,15 @@ class Nutrition extends React.Component {
     constructor(props) {
         super(props);
 
+        let requestedDate = null;
+
+        if (this.props.location.search) {
+            const parsed = queryString.parse(location.search);
+            requestedDate = moment(parseInt(parsed.d));
+        }
+
         this.state = {
+            requestedDate,
             now: moment(),
             day: {},
             user: {},
@@ -166,18 +174,10 @@ class Nutrition extends React.Component {
     }
 
     mapDayToState = userData => {
-        const { location, history } = this.props;
-        let { day, user, meals, mealTypes, today } = this.state;
-        let requestedDate = null;
-
-        if (location.search) {
-            const parsed = queryString.parse(location.search);
-            requestedDate = parseInt(parsed.d);
-        }
+        const { history } = this.props;
+        let { day, user, meals, mealTypes, today, requestedDate } = this.state;
 
         let dayIndex;
-
-        requestedDate = requestedDate ? moment(requestedDate) : null;
 
         const callback = state => {
             this.setState(state);
