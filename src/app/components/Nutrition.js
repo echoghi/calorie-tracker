@@ -13,6 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
 import ReactTable from 'react-table';
 import { tableStyle, getSortedComponentClass } from './TableUtils';
 import ProgressBar from './ProgressBar';
@@ -101,6 +102,11 @@ const NoteActions = styled.div`
     text-align: right;
 `;
 
+const snackbarOrigin = {
+    vertical: 'bottom',
+    horizontal: 'left'
+};
+
 // Reusable validation constuctor for each input
 let inputObj = required => {
     this.valid = required ? false : true;
@@ -120,7 +126,8 @@ class Nutrition extends React.Component {
             day: {},
             user: {},
             loading: true,
-
+            snackbar: false,
+            messageInfo: {},
             mealTypes: [],
             validation: {
                 name: new inputObj(true),
@@ -136,6 +143,8 @@ class Nutrition extends React.Component {
             },
             sorted: []
         };
+
+        this.queue = [];
 
         window.scrollTo(0, 0);
     }
@@ -267,7 +276,7 @@ class Nutrition extends React.Component {
                 loadToday();
             }
         } else {
-            history.push('/nutrition');
+            history.push({ pathname: '/nutrition', search: '' });
 
             loadToday();
         }
@@ -435,6 +444,19 @@ class Nutrition extends React.Component {
 
         queryRef.update(day);
 
+        this.queue.push({
+            message: 'Meal Removed',
+            key: new Date().getTime()
+        });
+
+        if (this.state.snackbar) {
+            // immediately begin dismissing current message
+            // to start showing new one
+            this.setState({ snackbar: false });
+        } else {
+            this.processQueue();
+        }
+
         this.setState({ confirmationDialog: false, deleteMeal: null });
     };
 
@@ -456,6 +478,19 @@ class Nutrition extends React.Component {
         day.notes = day.notes.filter(note => note !== day.notes[index]);
 
         queryRef.update(day);
+
+        this.queue.push({
+            message: 'Note Removed',
+            key: new Date().getTime()
+        });
+
+        if (this.state.snackbar) {
+            // immediately begin dismissing current message
+            // to start showing new one
+            this.setState({ snackbar: false });
+        } else {
+            this.processQueue();
+        }
 
         this.setState({ noteConfirmationDialog: false });
     };
@@ -550,7 +585,7 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let { dayIndex, name, type, calories, fat, carbs, protein, validation, meals } = this.state;
+        let { dayIndex, name, type, calories, fat, carbs, protein, validation, meals, snackbar } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
@@ -581,6 +616,19 @@ class Nutrition extends React.Component {
             document.getElementById('carbs').value = '';
             document.getElementById('fat').value = '';
             document.getElementById('protein').value = '';
+
+            this.queue.push({
+                message: 'Meal Added',
+                key: new Date().getTime()
+            });
+
+            if (snackbar) {
+                // immediately begin dismissing current message
+                // to start showing new one
+                this.setState({ snackbar: false });
+            } else {
+                this.processQueue();
+            }
 
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
                 queryRef.update(day);
@@ -639,6 +687,19 @@ class Nutrition extends React.Component {
                 body: noteBody,
                 time: moment().format('h:mm a')
             });
+
+            this.queue.push({
+                message: 'Note Added',
+                key: new Date().getTime()
+            });
+
+            if (this.state.snackbar) {
+                // immediately begin dismissing current message
+                // to start showing new one
+                this.setState({ snackbar: false });
+            } else {
+                this.processQueue();
+            }
 
             this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
                 queryRef.update(day);
@@ -1048,9 +1109,31 @@ class Nutrition extends React.Component {
         }
     };
 
+    processQueue = () => {
+        if (this.queue.length > 0) {
+            this.setState({
+                messageInfo: this.queue.shift(),
+                snackbar: true
+            });
+        }
+    };
+
+    handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({ snackbar: false });
+    };
+
+    handleExited = () => {
+        this.processQueue();
+    };
+
     render() {
         const { userData } = this.props;
-        const { day, user, todayButton, loading } = this.state;
+        const { day, user, todayButton, loading, messageInfo, snackbar } = this.state;
+        const { message, key } = messageInfo;
         const { protein, carbs, fat } = day.nutrition || 0;
 
         return (
@@ -1113,6 +1196,20 @@ class Nutrition extends React.Component {
                 ) : (
                     'Loading...'
                 )}
+                <Snackbar
+                    key={key}
+                    anchorOrigin={snackbarOrigin}
+                    open={snackbar}
+                    autoHideDuration={6000}
+                    onClose={this.handleSnackbarClose}
+                    onExited={this.handleExited}
+                    message={<span id="message-id">{message}</span>}
+                    action={[
+                        <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
+                            <i className="icon-x" style={{ color: 'white' }} />
+                        </IconButton>
+                    ]}
+                />
                 {this.renderConfirmationDialog()}
                 {this.renderNoteConfirmationDialog()}
                 {this.renderAddNote()}
