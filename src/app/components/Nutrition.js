@@ -135,6 +135,7 @@ class Nutrition extends React.Component {
             user: {},
             loading: true,
             snackbar: false,
+            todayButton: false,
             messageInfo: {},
             mealTypes: [],
             validation: {
@@ -175,7 +176,7 @@ class Nutrition extends React.Component {
 
     mapDayToState = userData => {
         const { history } = this.props;
-        let { day, user, meals, mealTypes, today, requestedDate } = this.state;
+        let { day, user, meals, mealTypes, today, requestedDate, todayButton } = this.state;
 
         let dayIndex;
 
@@ -259,6 +260,15 @@ class Nutrition extends React.Component {
                             day.day.month() === requestedDate.month() &&
                             day.day.year() === requestedDate.year()
                         ) {
+                            // If requestedDate is Today, disable the today button
+                            if (
+                                moment().date() === requestedDate.date() &&
+                                moment().month() === requestedDate.month() &&
+                                moment().year() === requestedDate.year()
+                            ) {
+                                todayButton = true;
+                            }
+
                             const mealsRef = database
                                 .ref('users')
                                 .child(userData.uid)
@@ -267,7 +277,7 @@ class Nutrition extends React.Component {
                             mealsRef.on('value', snapshot => {
                                 meals = snapshot.val();
 
-                                callback({ meals, day, loading: false, requestedDate, dayIndex, todayButton: false });
+                                callback({ meals, day, loading: false, requestedDate, dayIndex, todayButton });
                             });
                         }
                     });
