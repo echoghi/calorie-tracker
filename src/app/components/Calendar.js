@@ -67,10 +67,9 @@ class Calendar extends React.Component {
             trailColor
         };
         const calorieContainerStyle = {
-            width: '90px',
-            height: '90px',
+            size: 90,
             yOffSet: -1,
-            xOffSet: 0
+            xOffSet: 1
         };
         const proteinOptions = {
             strokeWidth: 6,
@@ -78,8 +77,7 @@ class Calendar extends React.Component {
             trailColor
         };
         const proteinContainerStyle = {
-            width: '70px',
-            height: '70px',
+            size: 70,
             xOffSet: 1,
             yOffSet: -87
         };
@@ -89,8 +87,7 @@ class Calendar extends React.Component {
             trailColor
         };
         const carbContainerStyle = {
-            width: '50px',
-            height: '50px',
+            size: 50,
             xOffSet: 1,
             yOffSet: -153
         };
@@ -100,8 +97,7 @@ class Calendar extends React.Component {
             trailColor
         };
         const fatContainerStyle = {
-            width: '30px',
-            height: '30px',
+            size: 30,
             xOffSet: 1,
             yOffSet: -199
         };
@@ -109,7 +105,6 @@ class Calendar extends React.Component {
         return (
             <div className="day__overview">
                 <CircleProgress
-                    key={Math.random()}
                     progress={calorieProgress}
                     options={calorieOptions}
                     animate={animate}
@@ -117,7 +112,6 @@ class Calendar extends React.Component {
                     containerClassName={'day__overview--calories'}
                 />
                 <CircleProgress
-                    key={Math.random()}
                     progress={proteinProgress}
                     options={proteinOptions}
                     animate={animate}
@@ -125,7 +119,6 @@ class Calendar extends React.Component {
                     containerClassName={'day__overview--protein'}
                 />
                 <CircleProgress
-                    key={Math.random()}
                     progress={carbProgress}
                     options={carbOptions}
                     animate={animate}
@@ -133,7 +126,6 @@ class Calendar extends React.Component {
                     containerClassName={'day__overview--carbs'}
                 />
                 <CircleProgress
-                    key={Math.random()}
                     progress={fatProgress}
                     options={fatOptions}
                     animate={animate}

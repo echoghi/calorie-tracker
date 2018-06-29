@@ -1,77 +1,78 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const CircleContainer = styled.div`
     position: relative;
+
+    &:first-child {
+        margin-top: 3px;
+    }
 `;
 
 class CircleProgress extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            hello: false
-        };
-    }
 
-    renderProgress(height, value) {
-        const radius = parseInt(height.split('px')[0]) / 4;
+        const { containerStyle, progress, options } = this.props;
+        const { size } = containerStyle;
+
+        const radius = size / 2 - options.strokeWidth / 2;
+        const center = size / 2;
         const circumference = 2 * Math.PI * radius;
-        const progress = value / 100;
         const dashoffset = circumference * (1 - progress);
 
-        // console.log('progress:', value + '%', '|', 'offset:', dashoffset);
-
-        return dashoffset;
-    }
-
-    render() {
-        const { containerStyle, options, animate, progress, containerClassName, key } = this.props;
-        const { height, width, xOffSet, yOffSet } = containerStyle;
-        const heightNum = height.split('px')[0];
-        const widthNum = width.split('px')[0];
-        const radius = heightNum / 2 - options.strokeWidth / 2;
-
-        const dash = keyframes`
-        to {
-            stroke-dashoffset: ${this.renderProgress(height, progress)};
-        }
-        `;
-
         const Progress = styled.circle`
-            stroke-dasharray: 339.292;
-            stroke-dashoffset: 339.292;
+            stroke-dasharray: ${circumference};
             stroke-linecap: round;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
             transition: stroke-dashoffset 1s linear;
-            animation: ${props => (props.animate ? `${dash} 1s linear forwards` : `${dash} 0s linear forwards`)};
         `;
 
+        this.state = {
+            Progress,
+            radius,
+            center,
+            dashoffset,
+            circumference
+        };
+    }
+
+    render() {
+        const { Progress, radius, center, circumference, dashoffset } = this.state;
+        const { containerStyle, options, containerClassName } = this.props;
+        const { size, xOffSet, yOffSet } = containerStyle;
+
+        const style = {
+            strokeDashoffset: dashoffset
+        };
+
         return (
-            <CircleContainer xOffSet={xOffSet} yOffSet={yOffSet} key={key}>
+            <CircleContainer xOffSet={xOffSet} yOffSet={yOffSet} key={`${containerClassName}-${Math.random}`}>
                 <svg
-                    width={widthNum}
-                    height={heightNum}
+                    width={size}
+                    height={size}
                     style={{ transform: `translateY(${yOffSet}px) translateX(${xOffSet}px)`, position: 'relative' }}
-                    viewBox={`0 0 ${parseInt(widthNum)} ${parseInt(heightNum)}`}
+                    viewBox={`0 0 ${size} ${size}`}
                     className={containerClassName}
                 >
                     <circle
-                        cx={widthNum / 2}
-                        cy={heightNum / 2}
+                        cx={center}
+                        cy={center}
                         r={radius}
                         fill="none"
                         stroke={options.trailColor || '#e6e6e6'}
                         strokeWidth={options.strokeWidth}
                     />
                     <Progress
-                        animate={animate}
-                        cx={widthNum / 2}
-                        cy={heightNum / 2}
+                        cx={center}
+                        cy={center}
                         r={radius}
                         fill="none"
+                        style={style}
                         stroke={options.color}
                         strokeWidth={options.strokeWidth}
+                        strokeDasharray={circumference}
                     />
                 </svg>
             </CircleContainer>
