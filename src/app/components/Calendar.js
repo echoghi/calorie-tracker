@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import ProgressBar from 'react-progress-bar.js';
-let { Circle } = ProgressBar;
+import CircleProgress from './CircleProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -70,68 +69,76 @@ class Calendar extends React.Component {
         const calorieContainerStyle = {
             width: '90px',
             height: '90px',
-            margin: '0 auto'
+            yOffSet: -1,
+            xOffSet: 0
         };
         const proteinOptions = {
-            strokeWidth: 7,
+            strokeWidth: 6,
             color: '#F5729C',
             trailColor
         };
         const proteinContainerStyle = {
             width: '70px',
             height: '70px',
-            margin: '-80px auto'
+            xOffSet: 1,
+            yOffSet: -87
         };
         const carbOptions = {
-            strokeWidth: 8,
+            strokeWidth: 5,
             color: '#7BD4F8',
             trailColor
         };
         const carbContainerStyle = {
             width: '50px',
             height: '50px',
-            margin: '20px auto'
+            xOffSet: 1,
+            yOffSet: -153
         };
         const fatOptions = {
-            strokeWidth: 9,
+            strokeWidth: 5,
             color: '#55F3B3',
             trailColor
         };
         const fatContainerStyle = {
             width: '30px',
             height: '30px',
-            margin: '-60px auto'
+            xOffSet: 1,
+            yOffSet: -199
         };
 
         return (
             <div className="day__overview">
-                <Circle
+                <CircleProgress
+                    key={Math.random()}
                     progress={calorieProgress}
                     options={calorieOptions}
-                    initialAnimate={animate}
+                    animate={animate}
                     containerStyle={calorieContainerStyle}
-                    containerClassName={'.day__overview--calories'}
+                    containerClassName={'day__overview--calories'}
                 />
-                <Circle
+                <CircleProgress
+                    key={Math.random()}
                     progress={proteinProgress}
                     options={proteinOptions}
-                    initialAnimate={animate}
+                    animate={animate}
                     containerStyle={proteinContainerStyle}
-                    containerClassName={'.day__overview--protein'}
+                    containerClassName={'day__overview--protein'}
                 />
-                <Circle
+                <CircleProgress
+                    key={Math.random()}
                     progress={carbProgress}
                     options={carbOptions}
-                    initialAnimate={animate}
+                    animate={animate}
                     containerStyle={carbContainerStyle}
-                    containerClassName={'.day__overview--carbs'}
+                    containerClassName={'day__overview--carbs'}
                 />
-                <Circle
+                <CircleProgress
+                    key={Math.random()}
                     progress={fatProgress}
                     options={fatOptions}
-                    initialAnimate={animate}
+                    animate={animate}
                     containerStyle={fatContainerStyle}
-                    containerClassName={'.day__overview--fats'}
+                    containerClassName={'day__overview--fats'}
                 />
             </div>
         );
@@ -317,13 +324,14 @@ class Calendar extends React.Component {
                     >
                         <div className="number">{calendar[i].days[j].date()}</div>
                         {this.renderExerciseIcon(calendar[i].data[j], calendar[i].days[j])}
-                        {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j])
-                            ? this.renderDayProgressCircles(calendar[i].data[j])
-                            : ''}
+                        {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? (
+                            this.renderDayProgressCircles(calendar[i].data[j])
+                        ) : (
+                            <div className="day__overview" />
+                        )}
                         <a onClick={() => this.setState({ breakdown: true, breakdownDay: calendar[i].days[j] })}>
                             <span className={this.handleIconClass(calendar[i].days[j])} />
                         </a>
-                        {/* {this.renderExerciseTooltip(calendar[i].data[j], calendar[i].days[j])} */}
                     </div>
                 );
             }

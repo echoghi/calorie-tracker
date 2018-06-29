@@ -98,6 +98,9 @@
 
         &__overview {
             margin: -20px auto;
+            text-align: center;
+            height: 100px;
+            overflow: hidden;
         }
 
         &.inactive {
