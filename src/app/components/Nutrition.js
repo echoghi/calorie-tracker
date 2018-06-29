@@ -1208,7 +1208,7 @@ class Nutrition extends React.Component {
                     message={<span id="message-id">{message}</span>}
                     action={[
                         <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
-                            <i className="icon-x" style={{ color: 'white' }} />
+                            <i className="icon-x2" style={{ color: 'white' }} />
                         </IconButton>
                     ]}
                 />

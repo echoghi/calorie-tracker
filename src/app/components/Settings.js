@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -65,9 +66,8 @@ class Settings extends React.Component {
 
         this.state = {
             fitnessGoal: 'maintain',
-            generalSnackbar: false,
-            accountSnackbar: false,
-            goalsSnackbar: false,
+            snackbar: false,
+            messageInfo: {},
             validation: {
                 general: {
                     firstName: new inputObj(),
@@ -85,6 +85,8 @@ class Settings extends React.Component {
                 }
             }
         };
+
+        this.queue = [];
 
         window.scrollTo(0, 0);
     }
@@ -183,7 +185,7 @@ class Settings extends React.Component {
     }
 
     onSubmitGeneral = () => {
-        const { firstName, lastName, validation } = this.state;
+        const { firstName, lastName, validation, snackbar } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
@@ -208,7 +210,20 @@ class Settings extends React.Component {
                 document.getElementById('lastName').value = '';
             }
 
-            this.setState({ firstName: '', lastName: '', generalSnackbar: true }, () => {
+            this.queue.push({
+                message: 'Display Name Updated',
+                key: new Date().getTime()
+            });
+    
+            if (snackbar) {
+                // immediately begin dismissing current message
+                // to start showing new one
+                this.setState({ snackbar: false });
+            } else {
+                this.processQueue();
+            }
+
+            this.setState({ firstName: '', lastName: ''}, () => {
                 queryRef.update(user);
                 this.resetInputs();
             });
@@ -250,7 +265,20 @@ class Settings extends React.Component {
                 document.getElementById('weight').value = '';
             }
 
-            this.setState({ height: '', weight: '', accountSnackbar: true }, () => {
+            this.queue.push({
+                message: 'Account Info Updated',
+                key: new Date().getTime()
+            });
+    
+            if (snackbar) {
+                // immediately begin dismissing current message
+                // to start showing new one
+                this.setState({ snackbar: false });
+            } else {
+                this.processQueue();
+            }
+
+            this.setState({ height: '', weight: '' }, () => {
                 queryRef.update(user);
                 this.resetInputs();
             });
@@ -302,7 +330,20 @@ class Settings extends React.Component {
                 document.getElementById('protein').value = '';
             }
 
-            this.setState({ calories: '', carbs: '', fat: '', protein: '', goalsSnackbar: true }, () => {
+            this.queue.push({
+                message: 'Account Goals Update',
+                key: new Date().getTime()
+            });
+    
+            if (snackbar) {
+                // immediately begin dismissing current message
+                // to start showing new one
+                this.setState({ snackbar: false });
+            } else {
+                this.processQueue();
+            }
+
+            this.setState({ calories: '', carbs: '', fat: '', protein: '' }, () => {
                 queryRef.update(goals);
                 this.resetInputs();
             });
@@ -318,29 +359,53 @@ class Settings extends React.Component {
         }
     };
 
-    handleGeneralClose = (event, reason) => {
+    processQueue = () => {
+        if (this.queue.length > 0) {
+            this.setState({
+                messageInfo: this.queue.shift(),
+                snackbar: true
+            });
+        }
+    };
+
+    handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
 
-        this.setState({ generalSnackbar: false });
+        this.setState({ snackbar: false });
     };
 
-    handleAccountClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
+    handleExited = () => {
+        this.processQueue();
+    };
+
+    renderSnackBar() {
+        const { snackbar, messageInfo } = this.state;
+        const { message, key } = messageInfo;
+
+        const snackbarOrigin = {
+            vertical: 'bottom',
+            horizontal: 'left'
+        };
+
+        if(snackbar) {
+            return (<Snackbar
+                key={key}
+                anchorOrigin={snackbarOrigin}
+                open={snackbar}
+                autoHideDuration={6000}
+                onClose={this.handleSnackbarClose}
+                onExited={this.handleExited}
+                message={<span id="message-id">{message}</span>}
+                action={[
+                    <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
+                        <i className="icon-x2" style={{ color: 'white' }} />
+                    </IconButton>
+                ]}
+            />);
         }
-
-        this.setState({ accountSnackbar: false });
-    };
-
-    handleGoalsClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        this.setState({ goalsSnackbar: false });
-    };
+    }
 
     deleteAccount() {
         const { userData } = this.props;
@@ -590,38 +655,7 @@ class Settings extends React.Component {
 
                 {this.renderAccountDialog()}
 
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                    }}
-                    open={this.state.generalSnackbar}
-                    autoHideDuration={6000}
-                    onClose={this.handleGeneralClose}
-                    message={<span id="message-id">Display Name Saved</span>}
-                />
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                    }}
-                    open={this.state.accountSnackbar}
-                    autoHideDuration={6000}
-                    onClose={this.handleAccountClose}
-                    message={<span id="message-id">Account Info Updated</span>}
-                />
-
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                    }}
-                    open={this.state.goalsSnackbar}
-                    autoHideDuration={6000}
-                    onClose={this.handleGoalsClose}
-                    message={<span id="message-id">Goals Updated</span>}
-                />
+                {this.renderSnackBar()}
             </div>
         );
     }
