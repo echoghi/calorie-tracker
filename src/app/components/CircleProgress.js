@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const CircleContainer = styled.div`
     position: relative;
@@ -21,12 +21,23 @@ class CircleProgress extends React.Component {
         const circumference = 2 * Math.PI * radius;
         const dashoffset = circumference * (1 - progress);
 
+        const dash = keyframes`
+            from {
+                stroke-dashoffset: 1000;
+                stroke-dasharray: 1000;
+            }
+            to {
+                stroke-dashoffset: ${dashoffset};
+                stroke-dasharray: ${circumference};
+            }
+        `;
+
         const Progress = styled.circle`
             stroke-dasharray: ${circumference};
             stroke-linecap: round;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
-            transition: stroke-dashoffset 1s linear;
+            animation: ${props => (props.animate ? `${dash} 1s linear forwards` : 'none')};
         `;
 
         this.state = {
@@ -38,21 +49,24 @@ class CircleProgress extends React.Component {
         };
     }
 
+    renderSvgStyle(x, y) {
+        return { transform: `translateY(${y}px) translateX(${x}px)`, position: 'relative' };
+    }
+
     render() {
         const { Progress, radius, center, circumference, dashoffset } = this.state;
-        const { containerStyle, options, containerClassName } = this.props;
+        const { containerStyle, options, containerClassName, animate } = this.props;
         const { size, xOffSet, yOffSet } = containerStyle;
-
         const style = {
             strokeDashoffset: dashoffset
         };
 
         return (
-            <CircleContainer xOffSet={xOffSet} yOffSet={yOffSet} key={`${containerClassName}-${Math.random}`}>
+            <CircleContainer xOffSet={xOffSet} yOffSet={yOffSet} key={`${containerClassName}-${xOffSet}`}>
                 <svg
                     width={size}
                     height={size}
-                    style={{ transform: `translateY(${yOffSet}px) translateX(${xOffSet}px)`, position: 'relative' }}
+                    style={this.renderSvgStyle(xOffSet, yOffSet)}
                     viewBox={`0 0 ${size} ${size}`}
                     className={containerClassName}
                 >
@@ -73,6 +87,7 @@ class CircleProgress extends React.Component {
                         stroke={options.color}
                         strokeWidth={options.strokeWidth}
                         strokeDasharray={circumference}
+                        animate={animate}
                     />
                 </svg>
             </CircleContainer>
