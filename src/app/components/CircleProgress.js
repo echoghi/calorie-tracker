@@ -37,7 +37,7 @@ class CircleProgress extends React.Component {
             stroke-linecap: round;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
-            animation: ${props => (props.animate ? `${dash} 1s linear forwards` : 'none')};
+            animation: ${props => (props.animate ? `${dash} 1s ease forwards` : 'none')};
         `;
 
         this.state = {
