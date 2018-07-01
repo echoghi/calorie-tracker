@@ -56,7 +56,8 @@ class Activity extends React.Component {
                 exerciseType: new inputObj(true),
                 minutes: new inputObj(false),
                 weight: new inputObj(false),
-                repetitions: new inputObj(false)
+                repetitions: new inputObj(false),
+                sets: new inputObj(false)
             },
             sorted: [],
             confirmationDialog: false,
@@ -262,6 +263,22 @@ class Activity extends React.Component {
                         style: tableStyle.cell
                     },
                     {
+                        Cell: row => row.original.sets || '---',
+                        headerText: 'Sets',
+                        accessor: 'sets',
+                        headerStyle: tableStyle.theadTh,
+
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
                         Cell: row => row.original.calories || '---',
                         headerText: 'Calories',
                         accessor: 'calories',
@@ -375,17 +392,31 @@ class Activity extends React.Component {
                             width: '45%'
                         }}
                     />
-                    <Input
-                        name="repetitions"
-                        id="repetitions"
-                        label="Repetitions"
-                        type="number"
-                        onChange={this.onChange('repetitions')}
-                        error={validate('repetitions')}
-                        style={{
-                            width: '45%'
-                        }}
-                    />
+                    <div className="add__exercise--input-wrapper">
+                        <Input
+                            name="repetitions"
+                            id="repetitions"
+                            label="Repetitions"
+                            type="number"
+                            onChange={this.onChange('repetitions')}
+                            error={validate('repetitions')}
+                            style={{
+                                width: '45%',
+                                marginRight: 15
+                            }}
+                        />
+                        <Input
+                            name="sets"
+                            id="sets"
+                            label="Sets"
+                            type="number"
+                            onChange={this.onChange('sets')}
+                            error={validate('sets')}
+                            style={{
+                                width: '45%'
+                            }}
+                        />
+                    </div>
                 </div>
             );
         }
@@ -562,6 +593,7 @@ class Activity extends React.Component {
             validation,
             weight,
             repetitions,
+            sets,
             formSwitch
         } = this.state;
 
@@ -587,12 +619,14 @@ class Activity extends React.Component {
                 calories: calories ? parseInt(calories) : '',
                 minutes: calories ? parseInt(minutes) : '',
                 weight: weight ? parseInt(weight) : '',
-                repetitions: repetitions ? parseInt(repetitions) : ''
+                repetitions: repetitions ? parseInt(repetitions) : '',
+                sets: sets ? parseInt(sets) : ''
             });
 
             if (formSwitch) {
                 document.getElementById('weight').value = '';
                 document.getElementById('repetitions').value = '';
+                document.getElementById('sets').value = '';
             } else {
                 document.getElementById('calories').value = '';
                 document.getElementById('minutes').value = '';
@@ -608,6 +642,7 @@ class Activity extends React.Component {
                     exerciseName: '',
                     exerciseType: '',
                     repetitions: '',
+                    sets: '',
                     weight: '',
                     formSwitch: false
                 },

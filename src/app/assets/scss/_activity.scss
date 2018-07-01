@@ -135,6 +135,12 @@
                     justify-content: space-between;
                 }
 
+                &--input-wrapper {
+                    width: 45%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
                 &--save {
                     position: absolute;
                     bottom: 0;
