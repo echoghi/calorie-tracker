@@ -77,7 +77,7 @@ module.exports = function(env) {
                 },
                 minify: true, // minify and uglify the script
                 navigateFallback: '/index.html',
-                staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/]
+                staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/, /_redirects$/]
             }),
             new webpack.optimize.AggressiveMergingPlugin(),
             new webpack.BannerPlugin({
