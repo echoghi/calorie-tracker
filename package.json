@@ -85,10 +85,12 @@
         "sass-loader": "^6.0.3",
         "style-loader": "^0.13.2",
         "stylelint-webpack-plugin": "^0.7.0",
+        "sw-precache-webpack-plugin": "^0.11.5",
         "system-bell-webpack-plugin": "^1.0.0",
         "tls": "0.0.1",
         "url-loader": "^0.5.9",
         "webpack": "^3.5.5",
-        "webpack-dev-server": "^2.4.1"
+        "webpack-dev-server": "^2.4.1",
+        "webpack-manifest-plugin": "^2.0.3"
     }
 }

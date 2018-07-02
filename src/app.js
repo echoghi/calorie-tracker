@@ -21,6 +21,9 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { theme } from './app/components/MaterialTheme';
 import thunk from 'redux-thunk';
 
+// Service Worker
+import registerServiceWorker from './registerServiceWorker';
+
 //Reducers
 import { adminState } from './app/components/reducers';
 
@@ -74,3 +77,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('app')
 );
+
+registerServiceWorker();
