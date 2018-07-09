@@ -29,6 +29,16 @@ const Brand = styled.div`
     cursor: pointer;
 `;
 
+const Name = styled.div`
+    font-family: Oregano;
+    font-size: 35px;
+    color: rgb(0, 132, 137);
+    position: absolute;
+    top: 35%;
+    left: 45%;
+    font-style: italic;
+`;
+
 class NavBar extends React.Component {
     state = {
         width: 0,
@@ -162,6 +172,7 @@ class NavBar extends React.Component {
                         <div />
                         <div />
                     </div>
+                    <Name>Doughboy</Name>
                     {this.renderMenu()}
                     {this.renderUserMenu()}
                 </div>
