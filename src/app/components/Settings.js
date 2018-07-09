@@ -214,7 +214,7 @@ class Settings extends React.Component {
                 message: 'Display Name Updated',
                 key: new Date().getTime()
             });
-    
+
             if (snackbar) {
                 // immediately begin dismissing current message
                 // to start showing new one
@@ -223,7 +223,7 @@ class Settings extends React.Component {
                 this.processQueue();
             }
 
-            this.setState({ firstName: '', lastName: ''}, () => {
+            this.setState({ firstName: '', lastName: '' }, () => {
                 queryRef.update(user);
                 this.resetInputs();
             });
@@ -269,7 +269,7 @@ class Settings extends React.Component {
                 message: 'Account Info Updated',
                 key: new Date().getTime()
             });
-    
+
             if (snackbar) {
                 // immediately begin dismissing current message
                 // to start showing new one
@@ -334,7 +334,7 @@ class Settings extends React.Component {
                 message: 'Account Goals Update',
                 key: new Date().getTime()
             });
-    
+
             if (snackbar) {
                 // immediately begin dismissing current message
                 // to start showing new one
@@ -389,21 +389,23 @@ class Settings extends React.Component {
             horizontal: 'left'
         };
 
-        if(snackbar) {
-            return (<Snackbar
-                key={key}
-                anchorOrigin={snackbarOrigin}
-                open={snackbar}
-                autoHideDuration={6000}
-                onClose={this.handleSnackbarClose}
-                onExited={this.handleExited}
-                message={<span id="message-id">{message}</span>}
-                action={[
-                    <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
-                        <i className="icon-x2" style={{ color: 'white' }} />
-                    </IconButton>
-                ]}
-            />);
+        if (snackbar) {
+            return (
+                <Snackbar
+                    key={key}
+                    anchorOrigin={snackbarOrigin}
+                    open={snackbar}
+                    autoHideDuration={6000}
+                    onClose={this.handleSnackbarClose}
+                    onExited={this.handleExited}
+                    message={<span id="message-id">{message}</span>}
+                    action={[
+                        <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
+                            <i className="icon-x2" style={{ color: 'white' }} />
+                        </IconButton>
+                    ]}
+                />
+            );
         }
     }
 
@@ -430,11 +432,6 @@ class Settings extends React.Component {
     renderAccountDialog = () => {
         const { deleteAccountDialog } = this.state;
 
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
-
         if (deleteAccountDialog) {
             return (
                 <Dialog open={deleteAccountDialog} onClose={() => this.setState({ deleteAccountDialog: false })}>
@@ -447,15 +444,14 @@ class Settings extends React.Component {
                     </DialogContent>
 
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={() => this.deleteAccount()} color="primary">
+                        <Button
+                            style={{ background: '#cb2431', color: 'white' }}
+                            onClick={() => this.deleteAccount()}
+                            variant="raised"
+                        >
                             Delete
                         </Button>
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => this.setState({ deleteAccountDialog: false })}
-                            color="primary"
-                            autoFocus
-                        >
+                        <Button onClick={() => this.setState({ deleteAccountDialog: false })} color="primary" autoFocus>
                             Cancel
                         </Button>
                     </DialogActions>
@@ -489,8 +485,6 @@ class Settings extends React.Component {
                             />
                             <Button
                                 style={{
-                                    fontSize: 14,
-                                    height: 43,
                                     display: 'inline-block',
                                     verticalAlign: 'bottom',
                                     margin: '0 10px'
@@ -530,8 +524,6 @@ class Settings extends React.Component {
                             />
                             <Button
                                 style={{
-                                    fontSize: 14,
-                                    height: 43,
                                     display: 'inline-block',
                                     verticalAlign: 'bottom',
                                     margin: '0 10px'
@@ -589,8 +581,6 @@ class Settings extends React.Component {
                             />
                             <Button
                                 style={{
-                                    fontSize: 14,
-                                    height: 43,
                                     display: 'inline-block',
                                     verticalAlign: 'bottom',
                                     margin: '0 10px'
@@ -643,7 +633,7 @@ class Settings extends React.Component {
                         </SettingsSubHeader>
 
                         <Button
-                            style={{ background: '#cb2431', fontSize: 14, display: 'block' }}
+                            style={{ background: '#cb2431', display: 'block' }}
                             color="primary"
                             variant="raised"
                             onClick={() => this.setState({ deleteAccountDialog: true })}

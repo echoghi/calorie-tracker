@@ -4,6 +4,14 @@ export const theme = createMuiTheme({
     palette: {
         primary: { main: 'rgb(0, 132, 137)' },
         secondary: { main: '#FF5A5F' }
+    },
+    overrides: {
+        MuiButton: {
+            root: {
+                fontSize: 14,
+                height: 43
+            }
+        }
     }
 });
 

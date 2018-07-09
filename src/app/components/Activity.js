@@ -728,11 +728,6 @@ class Activity extends React.Component {
     renderConfirmationDialog = () => {
         const { confirmationDialog, deleteExercise, day } = this.state;
 
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
-
         if (confirmationDialog) {
             const exercise = day.fitness.activities[deleteExercise];
 
@@ -749,20 +744,10 @@ class Activity extends React.Component {
                     </DialogContent>
 
                     <DialogActions>
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => this.deleteExercise(deleteExercise)}
-                            color="primary"
-                            variant="raised"
-                        >
+                        <Button onClick={() => this.deleteExercise(deleteExercise)} color="primary" variant="raised">
                             Delete
                         </Button>
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => this.setState({ confirmationDialog: false })}
-                            color="primary"
-                            autoFocus
-                        >
+                        <Button onClick={() => this.setState({ confirmationDialog: false })} color="primary" autoFocus>
                             Cancel
                         </Button>
                     </DialogActions>

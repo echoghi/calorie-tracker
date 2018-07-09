@@ -838,11 +838,6 @@ class Nutrition extends React.Component {
     renderConfirmationDialog = () => {
         const { confirmationDialog, deleteMeal, day } = this.state;
 
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
-
         if (confirmationDialog) {
             const meal = day.nutrition.meals[deleteMeal];
 
@@ -858,20 +853,10 @@ class Nutrition extends React.Component {
                         <DialogContentText>Are you sure you want to remove this entry?</DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => this.deleteMeal(deleteMeal)}
-                            color="primary"
-                            variant="raised"
-                        >
+                        <Button onClick={() => this.deleteMeal(deleteMeal)} color="primary" variant="raised">
                             Delete
                         </Button>
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => this.setState({ confirmationDialog: false })}
-                            color="primary"
-                            autoFocus
-                        >
+                        <Button onClick={() => this.setState({ confirmationDialog: false })} color="primary" autoFocus>
                             Cancel
                         </Button>
                     </DialogActions>
@@ -882,11 +867,6 @@ class Nutrition extends React.Component {
 
     renderNoteConfirmationDialog = () => {
         const { noteConfirmationDialog, deleteNote, day } = this.state;
-
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
 
         if (noteConfirmationDialog) {
             const note = day.notes[deleteNote];
@@ -903,16 +883,10 @@ class Nutrition extends React.Component {
                         <DialogContentText>Are you sure you want to remove this note?</DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button
-                            style={buttonStyle}
-                            onClick={() => this.deleteNote(deleteNote)}
-                            color="primary"
-                            variant="raised"
-                        >
+                        <Button onClick={() => this.deleteNote(deleteNote)} color="primary" variant="raised">
                             Delete
                         </Button>
                         <Button
-                            style={buttonStyle}
                             onClick={() => this.setState({ noteConfirmationDialog: false })}
                             color="primary"
                             autoFocus
@@ -1027,11 +1001,6 @@ class Nutrition extends React.Component {
     renderNote = () => {
         const { activeNote } = this.state;
 
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
-
         if (activeNote) {
             return (
                 <Dialog
@@ -1045,7 +1014,7 @@ class Nutrition extends React.Component {
                         <DialogContentText>{activeNote.body}</DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={() => this.setState({ activeNote: null })} color="primary">
+                        <Button onClick={() => this.setState({ activeNote: null })} color="primary">
                             Close
                         </Button>
                     </DialogActions>
@@ -1058,11 +1027,6 @@ class Nutrition extends React.Component {
         const { addNote, validation } = this.state;
 
         const validate = name => (validation['note'][name].dirty && !validation['note'][name].valid ? true : false);
-
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
 
         if (addNote) {
             return (
@@ -1103,11 +1067,10 @@ class Nutrition extends React.Component {
                         </div>
                     </DialogContent>
                     <DialogActions>
-                        <Button style={buttonStyle} onClick={this.addNote} color="primary" variant="raised">
+                        <Button onClick={this.addNote} color="primary" variant="raised">
                             Save
                         </Button>
                         <Button
-                            style={buttonStyle}
                             onClick={() => {
                                 this.resetNoteValidation();
                                 this.setState({ addNote: false, noteTitle: '', noteBody: '' });
