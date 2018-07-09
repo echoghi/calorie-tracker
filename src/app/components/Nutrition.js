@@ -61,6 +61,10 @@ const Note = styled.div`
     &:first-child {
         border-top: 0;
     }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.03);
+    }
 `;
 
 const NoteContainer = styled.div`

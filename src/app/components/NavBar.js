@@ -36,7 +36,8 @@ const Name = styled.div`
     color: rgb(0, 132, 137);
     position: absolute;
     top: 35%;
-    left: 45%;
+    left: 50%;
+    transform: translateX(-50%);
     font-style: italic;
 `;
 
