@@ -108,9 +108,12 @@ const snackbarOrigin = {
 };
 
 // Reusable validation constuctor for each input
-let inputObj = required => {
-    this.valid = required ? false : true;
-    this.dirty = false;
+const inputObj = class {
+    constructor(required) {
+        this.required = required;
+        this.valid = !required;
+        this.dirty = false;
+    }
 };
 
 const mapStateToProps = state => ({

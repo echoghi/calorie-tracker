@@ -1,15 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
-const NyanProgressPlugin = require('nyan-progress-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const PACKAGE = require('./package.json');
@@ -21,16 +22,30 @@ module.exports = function(env) {
     const nodeEnv = env && env.prod ? 'production' : 'development';
     const isProd = nodeEnv === 'production';
 
-    const plugins = [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: Infinity,
-            filename: '[name].bundle.js'
-        }),
-        new webpack.NamedModulesPlugin()
-    ];
+    const plugins = [new webpack.NamedModulesPlugin()];
+
+    const optimization = {
+        minimizer: []
+    };
 
     if (isProd) {
+        optimization.minimizer.push(
+            new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: true,
+                    ecma: 6,
+                    output: {
+                        comments: false
+                    },
+                    compress: {
+                        dead_code: true,
+                        drop_console: true
+                    }
+                },
+                sourceMap: false
+            })
+        );
+
         plugins.push(
             new HtmlWebpackPlugin({
                 filename: 'index.html',
@@ -43,23 +58,6 @@ module.exports = function(env) {
             new webpack.LoaderOptionsPlugin({
                 minimize: true,
                 debug: false
-            }),
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false,
-                    screw_ie8: true,
-                    conditionals: true,
-                    unused: true,
-                    comparisons: true,
-                    sequences: true,
-                    dead_code: true,
-                    evaluate: true,
-                    if_return: true,
-                    join_vars: true
-                },
-                output: {
-                    comments: false
-                }
             }),
             new SWPrecacheWebpackPlugin({
                 // By default, a cache-busting query parameter is appended to requests
@@ -96,7 +94,7 @@ module.exports = function(env) {
                     `:` +
                     new Date().getMinutes()
             }),
-            new ExtractTextPlugin('styles.css'),
+            new MiniCssExtractPlugin('styles.css'),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production')
             }),
@@ -125,7 +123,7 @@ module.exports = function(env) {
             new CaseSensitivePathsPlugin(),
             new FriendlyErrorsWebpackPlugin(),
             new SystemBellPlugin(),
-            new NyanProgressPlugin(),
+            new ProgressBarPlugin(),
             new DuplicatePackageCheckerPlugin(),
             new StyleLintPlugin({
                 files: './app/assets/scss/*.scss'
@@ -165,35 +163,33 @@ module.exports = function(env) {
                         fix: false
                     }
                 },
-
+                {
+                    test: /\.json$/,
+                    loader: 'json-loader',
+                    type: 'javascript/auto'
+                },
                 {
                     test: /\.(scss|css)$/,
-                    use: isProd // If Prod
-                        ? ExtractTextPlugin.extract({
-                              fallback: 'style-loader',
-                              use: ['css-loader', 'sass-loader']
-                          })
-                        : // Else
-                          [
-                              {
-                                  loader: 'style-loader',
-                                  options: {
-                                      sourceMap: false
-                                  }
-                              },
-                              {
-                                  loader: 'css-loader',
-                                  options: {
-                                      sourceMap: true
-                                  }
-                              },
-                              {
-                                  loader: 'sass-loader',
-                                  options: {
-                                      sourceMap: true
-                                  }
-                              }
-                          ]
+                    use: [
+                        {
+                            loader: 'style-loader',
+                            options: {
+                                sourceMap: false
+                            }
+                        },
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                    ]
                 },
                 {
                     test: /\.(js|jsx)$/,
