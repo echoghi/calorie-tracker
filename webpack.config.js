@@ -243,6 +243,8 @@ module.exports = function(env) {
 
         plugins,
 
+        optimization,
+
         performance: isProd && {
             maxAssetSize: 600000,
             maxEntrypointSize: 600000,
