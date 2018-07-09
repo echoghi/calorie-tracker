@@ -31,6 +31,7 @@ const Brand = styled.div`
 
 const Name = styled.div`
     font-family: Oregano;
+    cursor: pointer;
     font-size: 35px;
     color: rgb(0, 132, 137);
     position: absolute;
@@ -172,7 +173,7 @@ class NavBar extends React.Component {
                         <div />
                         <div />
                     </div>
-                    <Name>Doughboy</Name>
+                    <Name onClick={this.goHome}>Doughboy</Name>
                     {this.renderMenu()}
                     {this.renderUserMenu()}
                 </div>
