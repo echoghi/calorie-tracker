@@ -508,6 +508,49 @@ class Nutrition extends React.Component {
         this.setState({ noteConfirmationDialog: false });
     };
 
+    editNote = index => {
+        const { userData } = this.props;
+        const { dayIndex, noteBody, noteTitle, snackbar } = this.state;
+
+        if (this.validateEditedNotes()) {
+            let day;
+
+            const queryRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${dayIndex}`);
+
+            queryRef.on('value', snapshot => {
+                day = snapshot.val();
+            });
+
+            let note = day.notes[index];
+
+            note.title = noteTitle;
+            note.body = noteBody;
+            note.time = moment().format('lll');
+            note.edited = true;
+
+            this.queue.push({
+                message: 'Note Saved',
+                key: new Date().getTime()
+            });
+
+            if (snackbar) {
+                // immediately begin dismissing current message
+                // to start showing new one
+                this.setState({ snackbar: false });
+            } else {
+                this.processQueue();
+            }
+
+            this.setState({ editNote: false, noteBody: '', noteTitle: '' }, () => {
+                queryRef.set(day);
+                this.resetNoteValidation();
+            });
+        }
+    };
+
     /**
      * Validate Inputs
      *
@@ -563,6 +606,16 @@ class Nutrition extends React.Component {
         }
 
         return valid;
+    }
+
+    validateEditedNotes() {
+        let { noteBody, noteTitle } = this.state;
+
+        if (noteBody && noteTitle) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     onChange = name => event => {
@@ -954,10 +1007,23 @@ class Nutrition extends React.Component {
                 <Note key={i} onClick={() => this.setState({ activeNote: note })}>
                     <NoteTitle>{note.title}</NoteTitle>
                     <NoteBody>
-                        <span>{`${note.body.substring(0, 30)}...`}</span>
+                        <span>{note.body.length > 30 ? `${note.body.substring(0, 30)}...` : note.body}</span>
                         <span>{note.time}</span>
                     </NoteBody>
                     <NoteActions>
+                        <IconButton
+                            onClick={e => {
+                                this.setState({
+                                    editNote: true,
+                                    noteToEdit: i,
+                                    noteBody: note.body,
+                                    noteTitle: note.title
+                                });
+                                e.stopPropagation();
+                            }}
+                        >
+                            <i className="icon-edit" />
+                        </IconButton>
                         <IconButton
                             onClick={e => {
                                 this.setState({ noteConfirmationDialog: true, deleteNote: i });
@@ -989,7 +1055,7 @@ class Nutrition extends React.Component {
                         aria-label="add note"
                         onClick={() => this.setState({ addNote: true })}
                     >
-                        <i className="icon-edit-2" />
+                        <i className="icon-plus" />
                     </Button>
                 </NotesHeader>
 
@@ -1074,6 +1140,78 @@ class Nutrition extends React.Component {
                             onClick={() => {
                                 this.resetNoteValidation();
                                 this.setState({ addNote: false, noteTitle: '', noteBody: '' });
+                            }}
+                            color="primary"
+                        >
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            );
+        }
+    };
+
+    renderEditNote = () => {
+        const { userData } = this.props;
+        const { editNote, noteToEdit, dayIndex } = this.state;
+
+        if (editNote) {
+            let day;
+
+            const queryRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${dayIndex}`);
+
+            queryRef.once('value', snapshot => {
+                day = snapshot.val();
+            });
+
+            const note = day.notes[noteToEdit];
+
+            return (
+                <Dialog
+                    fullWidth
+                    maxWidth={'sm'}
+                    open={editNote}
+                    onClose={() => {
+                        this.resetNoteValidation();
+                        this.setState({ editNote: false, noteTitle: '', noteBody: '' });
+                    }}
+                >
+                    <DialogTitle>Edit Note</DialogTitle>
+                    <DialogContent>
+                        <div style={{ margin: '10px 0' }}>
+                            <Input
+                                name="noteTitle"
+                                id="noteTitle"
+                                label="Title"
+                                fullWidth
+                                defaultValue={note.title}
+                                onChange={this.onNoteChange('noteTitle')}
+                            />
+                        </div>
+                        <div style={{ margin: '20px 0' }}>
+                            <Input
+                                name="noteBody"
+                                id="noteBody"
+                                label="Note"
+                                multiline
+                                fullWidth
+                                rows="6"
+                                defaultValue={note.body}
+                                onChange={this.onNoteChange('noteBody')}
+                            />
+                        </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.editNote(noteToEdit)} color="primary" variant="raised">
+                            Save
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                this.resetNoteValidation();
+                                this.setState({ editNote: false, noteTitle: '', noteBody: '' });
                             }}
                             color="primary"
                         >
@@ -1191,6 +1329,7 @@ class Nutrition extends React.Component {
                 {this.renderConfirmationDialog()}
                 {this.renderNoteConfirmationDialog()}
                 {this.renderAddNote()}
+                {this.renderEditNote()}
                 {this.renderNote()}
             </div>
         );
