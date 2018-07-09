@@ -23,6 +23,10 @@ a {
 .calendar {
     padding: 200px 125px 30px 125px;
 
+    @include sm-desktop {
+        padding: 200px 80px 30px 80px;
+    }
+
     @include less-than-ipad {
         padding: 185px 15px 30px 15px;
     }

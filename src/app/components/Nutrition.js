@@ -698,7 +698,7 @@ class Nutrition extends React.Component {
             day.notes.push({
                 title: noteTitle,
                 body: noteBody,
-                time: moment().format('h:mm a')
+                time: moment().format('lll')
             });
 
             this.queue.push({
