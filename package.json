@@ -4,8 +4,8 @@
     "description": "Health Dashboard",
     "scripts": {
         "dev": "yarn install && nodemon --watch webpack.config.js --exec \"webpack-dev-server --env development\" --mode development",
-        "build": "rm -rf node_modules && rm -rf build && yarn install && NODE_ENV=production webpack --env.prod=true --mode production",
-        "build-windows": "cross-env NODE_ENV=production webpack --env.prod=true --mode production",
+        "build": "rm -rf node_modules && rm -rf build && yarn install && webpack --env.prod=true --mode production",
+        "build-windows": "webpack --env.prod=true --mode production",
         "server": "node app"
     },
     "repository": {
@@ -32,10 +32,10 @@
         "react-router": "^4.2.0",
         "react-router-dom": "^4.2.2",
         "react-table": "^6.7.4",
-        "redux": "3.7.2",
+        "redux": "4.0.0",
         "redux-devtools-extension": "^2.13.2",
-        "redux-thunk": "2.2.0",
-        "styled-components": "^3.2.6"
+        "redux-thunk": "2.3.0",
+        "styled-components": "3.3.3"
     },
     "devDependencies": {
         "babel": "^6.23.0",
@@ -55,7 +55,6 @@
         "css-loader": "0.28.8",
         "duplicate-package-checker-webpack-plugin": "^1.2.4",
         "eslint": "5.1.0",
-        "eslint-config-airbnb": "^15.0.0",
         "eslint-config-prettier": "^2.2.0",
         "eslint-loader": "2",
         "eslint-plugin-import": "^2.3.0",
@@ -75,7 +74,7 @@
         "mini-css-extract-plugin": "^0.4.1",
         "net": "^1.0.2",
         "node-sass": "4.5.3",
-        "nodemon": "^1.11.0",
+        "nodemon": "1.17.5",
         "path": "^0.12.7",
         "progress-bar-webpack-plugin": "^1.11.0",
         "promise": "^7.1.1",
@@ -89,7 +88,7 @@
         "system-bell-webpack-plugin": "^1.0.0",
         "tls": "0.0.1",
         "uglifyjs-webpack-plugin": "^1.2.7",
-        "url-loader": "^0.5.9",
+        "url-loader": "1.0.1",
         "webpack": "4.15.1",
         "webpack-cli": "^3.0.8",
         "webpack-dev-server": "3.1.4",
