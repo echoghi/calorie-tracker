@@ -124,6 +124,7 @@ module.exports = function(env) {
         },
         output: {
             path: publicPath,
+            publicPath: '/',
             filename: '[name].bundle.js'
         },
         module: {
