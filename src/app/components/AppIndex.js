@@ -80,16 +80,16 @@ class AppIndex extends React.PureComponent {
     }
 
     render() {
-        const { userData, userLoading, loading } = this.props;
+        const { userData, userLoading, loading, location } = this.props;
 
         if (!_.isEmpty(userData) && !userLoading && !loading) {
             return (
                 <div>
                     <ErrorBoundary>
-                        <NavBar path={this.props.location.pathname} />
+                        <NavBar path={location.pathname} />
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <SubNav path={this.props.location.pathname} />
+                        <SubNav path={location.pathname} />
                     </ErrorBoundary>
                     <ErrorBoundary>
                         <Route exact path="/" component={Home} />
