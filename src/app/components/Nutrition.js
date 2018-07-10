@@ -1058,6 +1058,7 @@ class Nutrition extends React.Component {
                         color="primary"
                         aria-label="add note"
                         onClick={() => this.setState({ addNote: true })}
+                        style={{ fontSize: 20 }}
                     >
                         <i className="icon-plus" />
                     </Button>
