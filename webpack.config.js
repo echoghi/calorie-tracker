@@ -183,7 +183,7 @@ module.exports = function(env) {
                 },
                 {
                     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
-                    loader: 'file-loader'
+                    loader: 'url-loader'
                 },
                 {
                     test: /\.(png|jpg)$/,
