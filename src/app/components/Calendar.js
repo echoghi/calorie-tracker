@@ -16,13 +16,13 @@ import styled from 'styled-components';
 
 const Icon = styled.i`
     position: absolute;
-    height: 25px;
-    width: 25px;
+    height: 22px;
+    width: 22px;
     box-sizing: border-box;
-    padding: 1px 5px;
+    padding: 1px 4.5px;
     top: 15px;
     right: 10px;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
     border-radius: 50%;
 
