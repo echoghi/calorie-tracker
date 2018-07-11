@@ -43,6 +43,7 @@ const Icon = styled.i`
         right: 0;
         margin: 0;
         border: none;
+        margin-left: -2px;
     }
 
     &:before {
