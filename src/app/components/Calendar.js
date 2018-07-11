@@ -12,6 +12,43 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import Fade from '@material-ui/core/Fade';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const Icon = styled.i`
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    box-sizing: border-box;
+    padding: 1px 5px;
+    top: 15px;
+    right: 10px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 50%;
+
+    &.icon-feather {
+        background: #ece7fe;
+        color: #6031e1;
+    }
+
+    &.icon-star-full {
+        color: #ffba00;
+        background: #ffefe7;
+    }
+
+    &.legend {
+        position: relative;
+        min-width: 0;
+        top: 0;
+        right: 0;
+        margin: 0;
+        border: none;
+    }
+
+    &:before {
+        vertical-align: middle;
+    }
+`;
 
 // Images
 import runnerIcon from '../assets/images/apple-runner.png';
@@ -153,24 +190,39 @@ class Calendar extends React.Component {
         }
     }
 
-    renderExerciseIcon(data, day) {
+    renderIcons(data, day) {
         const { time } = this.state;
 
-        if (data && data.fitness.activities && day.month() === time.month()) {
-            return (
-                <Tooltip
-                    id="tooltip-top"
-                    title={`You recorded ${data.fitness.activities.length} exercise(s)`}
-                    placement="top"
-                >
-                    <img
-                        className="exercise__icon"
-                        src={runnerIcon}
-                        data-for={`${day.date()}-${day.get('month')}`}
-                        data-tip="tooltip"
-                    />
-                </Tooltip>
-            );
+        if (data && day.month() === time.month()) {
+            if (data.notes && data.fitness.activities) {
+                return (
+                    <Tooltip
+                        id="tooltip-top"
+                        title={`You recorded ${data.notes.length} note(s) and ${
+                            data.fitness.activities.length
+                        } exercise(s)`}
+                        placement="top"
+                    >
+                        <Icon className="icon-star-full" />
+                    </Tooltip>
+                );
+            } else if (data.notes && !data.fitness.activities) {
+                return (
+                    <Tooltip id="tooltip-top" title={`You recorded ${data.notes.length} note(s)`} placement="top">
+                        <Icon className="icon-feather" />
+                    </Tooltip>
+                );
+            } else if (data.fitness.activities) {
+                return (
+                    <Tooltip
+                        id="tooltip-top"
+                        title={`You recorded ${data.fitness.activities.length} exercise(s)`}
+                        placement="top"
+                    >
+                        <img className="exercise__icon" src={runnerIcon} />
+                    </Tooltip>
+                );
+            }
         }
     }
 
@@ -315,7 +367,7 @@ class Calendar extends React.Component {
                         key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get('month')}-${Math.random()}`}
                     >
                         <div className="number">{calendar[i].days[j].date()}</div>
-                        {this.renderExerciseIcon(calendar[i].data[j], calendar[i].days[j])}
+                        {this.renderIcons(calendar[i].data[j], calendar[i].days[j])}
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? (
                             this.renderDayProgressCircles(calendar[i].data[j])
                         ) : (
@@ -392,6 +444,14 @@ class Calendar extends React.Component {
                     <div className="legend__body--item">
                         <img src={runnerIcon} />
                         <div className="legend__body--name">Exercise Recorded</div>
+                    </div>
+                    <div className="legend__body--item">
+                        <Icon className="icon-feather legend" />
+                        <div className="legend__body--name">Notes Recorded</div>
+                    </div>
+                    <div className="legend__body--item">
+                        <Icon className="icon-star-full legend" />
+                        <div className="legend__body--name">Notes & Exercise</div>
                     </div>
                     <div className="legend__body--item">
                         <i className="icon-info" />

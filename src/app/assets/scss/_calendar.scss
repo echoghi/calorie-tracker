@@ -118,9 +118,8 @@
             position: absolute;
             color: $limed-spruce;
             font-size: 20px;
-            bottom: 0;
-            right: 0;
-            padding: 10px;
+            bottom: 10px;
+            right: 10px;
 
             &.hidden {
                 display: none;
@@ -151,7 +150,7 @@
 .legend {
     display: inline-block;
     border: 1px solid $athens-gray;
-    height: 300px;
+    height: 370px;
     margin: 0 0 0 30px;
     min-width: 240px;
     background: $white;
@@ -174,7 +173,7 @@
             display: block;
             margin: 5px 0;
 
-            i {
+            .icon-info {
                 display: inline-block;
                 font-size: 20px;
                 padding: 10px 0;

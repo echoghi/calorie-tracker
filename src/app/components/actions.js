@@ -86,8 +86,7 @@ export function createUser(id) {
                     },
                     fitness: {
                         calories: 0,
-                        exercise: 0,
-                        stand: 0
+                        exercise: 0
                     }
                 }
             ],
@@ -150,8 +149,7 @@ export function fetchData(id) {
                             },
                             fitness: {
                                 calories: 0,
-                                exercise: 0,
-                                stand: 0
+                                exercise: 0
                             }
                         };
 

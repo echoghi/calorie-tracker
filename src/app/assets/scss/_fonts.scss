@@ -2,7 +2,6 @@
 $icomoon-font-path: '../fonts' !default;
 
 $icon-activity: '\e945';
-$icon-airplay: '\e946';
 $icon-alert-circle: '\e947';
 $icon-alert-octagon: '\e948';
 $icon-alert-triangle: '\e949';
@@ -38,7 +37,6 @@ $icon-chevrons-down: '\e977';
 $icon-chevrons-left: '\e978';
 $icon-chevrons-right: '\e979';
 $icon-chevrons-up: '\e97a';
-$icon-chrome: '\e97b';
 $icon-circle: '\e97c';
 $icon-clipboard: '\e97d';
 $icon-clock: '\e97e';
@@ -58,9 +56,7 @@ $icon-corner-right-down: '\e98e';
 $icon-corner-right-up: '\e98f';
 $icon-corner-up-left: '\e990';
 $icon-corner-up-right: '\e991';
-$icon-cpu: '\e992';
 $icon-credit-card: '\e993';
-$icon-crop: '\e994';
 $icon-crosshair: '\e995';
 $icon-database: '\e996';
 $icon-delete: '\e997';
@@ -74,7 +70,6 @@ $icon-edit-2: '\e99e';
 $icon-edit-3: '\e99f';
 $icon-external-link: '\e9a0';
 $icon-eye: '\e9a1';
-$icon-eye-off: '\e9a2';
 $icon-facebook: '\e9a3';
 $icon-fast-forward: '\e9a4';
 $icon-feather: '\e9a5';
@@ -82,20 +77,12 @@ $icon-file: '\e9a6';
 $icon-file-minus: '\e9a7';
 $icon-file-plus: '\e9a8';
 $icon-file-text: '\e9a9';
-$icon-film: '\e9aa';
 $icon-filter: '\e9ab';
 $icon-flag: '\e9ac';
 $icon-folder: '\e9ad';
 $icon-folder-minus: '\e9ae';
 $icon-folder-plus: '\e9af';
-$icon-gift: '\e9b0';
-$icon-git-branch: '\e9b1';
-$icon-git-commit: '\e9b2';
-$icon-git-merge: '\e9b3';
-$icon-git-pull-request: '\e9b4';
 $icon-github: '\e9b5';
-$icon-globe: '\e9b7';
-$icon-grid: '\e9b8';
 $icon-hard-drive: '\e9b9';
 $icon-hash: '\e9ba';
 $icon-headphones: '\e9bb';
@@ -149,8 +136,6 @@ $icon-plus-circle: '\e9f2';
 $icon-plus-square: '\e9f3';
 $icon-pocket: '\e9f4';
 $icon-power: '\e9f5';
-$icon-printer: '\e9f6';
-$icon-radio: '\e9f7';
 $icon-refresh-ccw: '\e9f8';
 $icon-refresh-cw: '\e9f9';
 $icon-repeat: '\e9fa';
@@ -162,12 +147,10 @@ $icon-send: '\ea02';
 $icon-server: '\ea03';
 $icon-settings: '\ea04';
 $icon-share: '\ea05';
-$icon-share-2: '\ea06';
 $icon-shield: '\ea07';
 $icon-shopping-bag: '\ea08';
 $icon-shopping-cart: '\ea09';
 $icon-shuffle: '\ea0a';
-$icon-sidebar: '\ea0b';
 $icon-skip-back: '\ea0c';
 $icon-skip-forward: '\ea0d';
 $icon-slash: '\ea0f';
@@ -176,24 +159,15 @@ $icon-speaker: '\ea12';
 $icon-star: '\ea14';
 $icon-stop-circle: '\ea15';
 $icon-sun: '\ea16';
-$icon-sunrise: '\ea17';
-$icon-sunset: '\ea18';
 $icon-tag: '\ea1a';
 $icon-target: '\ea1b';
-$icon-terminal: '\ea1c';
-$icon-thermometer: '\ea1d';
 $icon-thumbs-down: '\ea1e';
 $icon-thumbs-up: '\ea1f';
-$icon-trash: '\ea22';
 $icon-trash-2: '\ea23';
 $icon-trending-down: '\ea24';
 $icon-trending-up: '\ea25';
 $icon-triangle: '\ea26';
-$icon-truck: '\ea27';
-$icon-tv: '\ea28';
 $icon-twitter: '\ea29';
-$icon-umbrella: '\ea2a';
-$icon-unlock: '\ea2b';
 $icon-upload: '\ea2c';
 $icon-upload-cloud: '\ea2d';
 $icon-user: '\e944';
@@ -204,7 +178,6 @@ $icon-user-x: '\ea31';
 $icon-users: '\ea32';
 $icon-watch: '\ea33';
 $icon-wifi: '\ea34';
-$icon-wind: '\ea36';
 $icon-x2: '\ea37';
 $icon-x-circle: '\ea38';
 $icon-x-square: '\ea39';
@@ -212,14 +185,15 @@ $icon-youtube: '\ea3a';
 $icon-zoom-in: '\ea3d';
 $icon-zoom-out: '\ea3e';
 $icon-bar-chart: '\e90d';
+$icon-star-full: '\e9e7';
 
 @font-face {
     font-family: 'fitness';
-    src: url('#{$icomoon-font-path}/fitness.eot?wxlkpf');
-    src: url('#{$icomoon-font-path}/fitness.eot?wxlkpf#iefix') format('embedded-opentype'),
-        url('#{$icomoon-font-path}/fitness.ttf?wxlkpf') format('truetype'),
-        url('#{$icomoon-font-path}/fitness.woff?wxlkpf') format('woff'),
-        url('#{$icomoon-font-path}/fitness.svg?wxlkpf#fitness') format('svg');
+    src: url('#{$icomoon-font-path}/fitness.eot?sabn1f');
+    src: url('#{$icomoon-font-path}/fitness.eot?sabn1f#iefix') format('embedded-opentype'),
+        url('#{$icomoon-font-path}/fitness.ttf?sabn1f') format('truetype'),
+        url('#{$icomoon-font-path}/fitness.woff?sabn1f') format('woff'),
+        url('#{$icomoon-font-path}/fitness.svg?sabn1f#fitness') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -243,11 +217,6 @@ $icon-bar-chart: '\e90d';
 .icon-activity {
     &:before {
         content: $icon-activity;
-    }
-}
-.icon-airplay {
-    &:before {
-        content: $icon-airplay;
     }
 }
 .icon-alert-circle {
@@ -425,11 +394,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-chevrons-up;
     }
 }
-.icon-chrome {
-    &:before {
-        content: $icon-chrome;
-    }
-}
 .icon-circle {
     &:before {
         content: $icon-circle;
@@ -525,19 +489,9 @@ $icon-bar-chart: '\e90d';
         content: $icon-corner-up-right;
     }
 }
-.icon-cpu {
-    &:before {
-        content: $icon-cpu;
-    }
-}
 .icon-credit-card {
     &:before {
         content: $icon-credit-card;
-    }
-}
-.icon-crop {
-    &:before {
-        content: $icon-crop;
     }
 }
 .icon-crosshair {
@@ -605,11 +559,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-eye;
     }
 }
-.icon-eye-off {
-    &:before {
-        content: $icon-eye-off;
-    }
-}
 .icon-facebook {
     &:before {
         content: $icon-facebook;
@@ -645,11 +594,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-file-text;
     }
 }
-.icon-film {
-    &:before {
-        content: $icon-film;
-    }
-}
 .icon-filter {
     &:before {
         content: $icon-filter;
@@ -675,44 +619,9 @@ $icon-bar-chart: '\e90d';
         content: $icon-folder-plus;
     }
 }
-.icon-gift {
-    &:before {
-        content: $icon-gift;
-    }
-}
-.icon-git-branch {
-    &:before {
-        content: $icon-git-branch;
-    }
-}
-.icon-git-commit {
-    &:before {
-        content: $icon-git-commit;
-    }
-}
-.icon-git-merge {
-    &:before {
-        content: $icon-git-merge;
-    }
-}
-.icon-git-pull-request {
-    &:before {
-        content: $icon-git-pull-request;
-    }
-}
 .icon-github {
     &:before {
         content: $icon-github;
-    }
-}
-.icon-globe {
-    &:before {
-        content: $icon-globe;
-    }
-}
-.icon-grid {
-    &:before {
-        content: $icon-grid;
     }
 }
 .icon-hard-drive {
@@ -980,16 +889,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-power;
     }
 }
-.icon-printer {
-    &:before {
-        content: $icon-printer;
-    }
-}
-.icon-radio {
-    &:before {
-        content: $icon-radio;
-    }
-}
 .icon-refresh-ccw {
     &:before {
         content: $icon-refresh-ccw;
@@ -1045,11 +944,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-share;
     }
 }
-.icon-share-2 {
-    &:before {
-        content: $icon-share-2;
-    }
-}
 .icon-shield {
     &:before {
         content: $icon-shield;
@@ -1068,11 +962,6 @@ $icon-bar-chart: '\e90d';
 .icon-shuffle {
     &:before {
         content: $icon-shuffle;
-    }
-}
-.icon-sidebar {
-    &:before {
-        content: $icon-sidebar;
     }
 }
 .icon-skip-back {
@@ -1115,16 +1004,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-sun;
     }
 }
-.icon-sunrise {
-    &:before {
-        content: $icon-sunrise;
-    }
-}
-.icon-sunset {
-    &:before {
-        content: $icon-sunset;
-    }
-}
 .icon-tag {
     &:before {
         content: $icon-tag;
@@ -1135,16 +1014,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-target;
     }
 }
-.icon-terminal {
-    &:before {
-        content: $icon-terminal;
-    }
-}
-.icon-thermometer {
-    &:before {
-        content: $icon-thermometer;
-    }
-}
 .icon-thumbs-down {
     &:before {
         content: $icon-thumbs-down;
@@ -1153,11 +1022,6 @@ $icon-bar-chart: '\e90d';
 .icon-thumbs-up {
     &:before {
         content: $icon-thumbs-up;
-    }
-}
-.icon-trash {
-    &:before {
-        content: $icon-trash;
     }
 }
 .icon-trash-2 {
@@ -1180,29 +1044,9 @@ $icon-bar-chart: '\e90d';
         content: $icon-triangle;
     }
 }
-.icon-truck {
-    &:before {
-        content: $icon-truck;
-    }
-}
-.icon-tv {
-    &:before {
-        content: $icon-tv;
-    }
-}
 .icon-twitter {
     &:before {
         content: $icon-twitter;
-    }
-}
-.icon-umbrella {
-    &:before {
-        content: $icon-umbrella;
-    }
-}
-.icon-unlock {
-    &:before {
-        content: $icon-unlock;
     }
 }
 .icon-upload {
@@ -1255,11 +1099,6 @@ $icon-bar-chart: '\e90d';
         content: $icon-wifi;
     }
 }
-.icon-wind {
-    &:before {
-        content: $icon-wind;
-    }
-}
 .icon-x2 {
     &:before {
         content: $icon-x2;
@@ -1293,5 +1132,10 @@ $icon-bar-chart: '\e90d';
 .icon-bar-chart {
     &:before {
         content: $icon-bar-chart;
+    }
+}
+.icon-star-full {
+    &:before {
+        content: $icon-star-full;
     }
 }
