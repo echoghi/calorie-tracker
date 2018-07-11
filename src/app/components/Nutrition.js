@@ -1012,7 +1012,7 @@ class Nutrition extends React.Component {
                     <NoteTitle>{note.title}</NoteTitle>
                     <NoteBody>
                         <span>{note.body.length > 30 ? `${note.body.substring(0, 30)}...` : note.body}</span>
-                        <span>{note.time}</span>
+                        <span>{note.edited ? `${note.time} (edited)` : note.time}</span>
                     </NoteBody>
                     <NoteActions>
                         <IconButton
