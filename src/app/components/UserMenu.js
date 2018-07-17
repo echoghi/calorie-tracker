@@ -36,11 +36,6 @@ const Name = styled.div`
 `;
 
 class UserMenu extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
     componentDidMount() {
         window.addEventListener('mousedown', this.handleClickOutside);
     }
