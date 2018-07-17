@@ -10,11 +10,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+// import Radio from '@material-ui/core/Radio';
+// import RadioGroup from '@material-ui/core/RadioGroup';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import FormControl from '@material-ui/core/FormControl';
+// import FormLabel from '@material-ui/core/FormLabel';
 import Input from './Input';
 
 const SettingsWrapper = styled.div`
@@ -591,7 +591,7 @@ class Settings extends React.Component {
                                 Update Goals
                             </Button>
                         </form>
-                        <FormControl
+                        {/* <FormControl
                             style={{ marginTop: 15 }}
                             value={this.state.fitnessGoal}
                             onChange={event => this.setState({ fitnessGoal: event.target.value })}
@@ -622,7 +622,7 @@ class Settings extends React.Component {
                                     style={{ padding: '0 10px' }}
                                 />
                             </RadioGroup>
-                        </FormControl>
+                        </FormControl> */}
                     </SettingsSection>
 
                     <DeleteAccount>

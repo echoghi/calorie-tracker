@@ -17,8 +17,8 @@ const SubNav = Loadable({
     loading: Loading
 });
 
-const Home = Loadable({
-    loader: () => import('./Home'),
+const ComingSoon = Loadable({
+    loader: () => import('./ComingSoon'),
     loading: Loading
 });
 
@@ -92,7 +92,7 @@ class AppIndex extends React.PureComponent {
                         <SubNav path={location.pathname} />
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <Route exact path="/" component={Home} />
+                        <Route exact path="/" component={ComingSoon} />
                     </ErrorBoundary>
                     <ErrorBoundary>
                         <Route path="/settings" component={Settings} name="Settings" />
