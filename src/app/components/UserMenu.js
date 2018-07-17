@@ -7,7 +7,7 @@ const Menu = styled.ul`
     position: absolute;
     width: 200px;
     font-family: 'Varela Round';
-    margin-top: 9px;
+    margin-top: 118px;
     background: #fff;
     list-style: none;
     padding: 15px;
@@ -27,6 +27,12 @@ const Menu = styled.ul`
             opacity: .8;
         }
     }
+`;
+
+const Name = styled.div`
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 15px;
 `;
 
 class UserMenu extends React.Component {
@@ -90,7 +96,8 @@ class UserMenu extends React.Component {
                 }}
             >
                 <div onClick={this.handleMenu}>
-                    <img className="user__img" src={userData.photoURL} />
+                    <img src={userData.photoURL} />
+                    <Name>{userData.displayName}</Name>
                     <i className="icon-chevron-down" />
                 </div>
 

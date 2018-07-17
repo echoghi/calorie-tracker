@@ -44,7 +44,6 @@ const DeleteAccount = styled.div`
 `;
 
 // Reusable validation constuctor for each input
-
 class inputObj {
     constructor() {
         this.valid = false;
