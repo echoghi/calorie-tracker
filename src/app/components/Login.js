@@ -30,7 +30,9 @@ class Login extends React.Component {
     componentWillUnmount() {
         const { userData, fetchData } = this.props;
 
-        fetchData(userData.uid);
+        if (!_.isEmpty(userData)) {
+            fetchData(userData.uid);
+        }
     }
 
     render() {
