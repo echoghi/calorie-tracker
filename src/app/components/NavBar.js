@@ -141,7 +141,6 @@ class NavBar extends React.Component {
 
     logOut = () => {
         auth.signOut().then(() => {
-            console.log('yes');
             this.props.logOut();
         });
     };
