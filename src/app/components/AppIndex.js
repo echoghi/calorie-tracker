@@ -92,7 +92,7 @@ class AppIndex extends React.PureComponent {
                         <SubNav path={location.pathname} />
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <Route exact path="/" component={ComingSoon} />
+                        <Route exact path="/" component={ComingSoon} name="Overview" />
                     </ErrorBoundary>
                     <ErrorBoundary>
                         <Route path="/settings" component={Settings} name="Settings" />
