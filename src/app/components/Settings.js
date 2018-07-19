@@ -69,8 +69,7 @@ class Settings extends React.Component {
             messageInfo: {},
             validation: {
                 general: {
-                    firstName: new inputObj(),
-                    lastName: new inputObj()
+                    displayName: new inputObj()
                 },
                 account: {
                     height: new inputObj(),
@@ -184,30 +183,18 @@ class Settings extends React.Component {
     }
 
     onSubmitGeneral = () => {
-        const { firstName, lastName, validation, snackbar } = this.state;
-        const { userData } = this.props;
+        const { displayName, validation, snackbar } = this.state;
 
         if (this.validateInputs()) {
-            let user;
+            auth.currentUser
+                .updateProfile({
+                    displayName
+                })
+                .catch(error => {
+                    console.log(error);
+                });
 
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child('user');
-
-            queryRef.once('value', snapshot => {
-                user = snapshot.val();
-            });
-
-            if (validation.general.firstName.valid) {
-                user.firstName = firstName;
-                document.getElementById('firstName').value = '';
-            }
-
-            if (validation.general.lastName.valid) {
-                user.lastName = lastName;
-                document.getElementById('lastName').value = '';
-            }
+            document.getElementById('displayName').value = '';
 
             this.queue.push({
                 message: 'Display Name Updated',
@@ -222,8 +209,7 @@ class Settings extends React.Component {
                 this.processQueue();
             }
 
-            this.setState({ firstName: '', lastName: '' }, () => {
-                queryRef.update(user);
+            this.setState({ displayName: '' }, () => {
                 this.resetInputs();
             });
         } else {
@@ -468,19 +454,11 @@ class Settings extends React.Component {
                         <SettingsSubHeader>What would you like to be called?</SettingsSubHeader>
                         <form>
                             <Input
-                                name="firstName"
-                                id="firstName"
-                                label="First Name"
-                                error={this.validate('general', 'firstName')}
-                                onChange={this.onGeneralChange('firstName')}
-                                style={{ paddingRight: 20 }}
-                            />
-                            <Input
-                                name="lastName"
-                                id="lastName"
-                                label="Last Name"
-                                error={this.validate('general', 'lastName')}
-                                onChange={this.onGeneralChange('lastName')}
+                                name="displayName"
+                                id="displayName"
+                                label="Display Name"
+                                error={this.validate('general', 'displayName')}
+                                onChange={this.onGeneralChange('displayName')}
                             />
                             <Button
                                 style={{
