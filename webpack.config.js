@@ -48,7 +48,7 @@ module.exports = function(env) {
         plugins.push(
             new HtmlWebpackPlugin({
                 filename: 'index.html',
-                template: 'index.html'
+                template: 'netlify/index.html'
             }),
             new CopyWebpackPlugin([{ from: 'netlify' }]),
             new ManifestPlugin({
