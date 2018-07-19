@@ -17,7 +17,12 @@ class Loading extends React.Component {
         return (
             <div
                 style={{
-                    margin: '20% auto'
+                    height: '100%',
+                    width: '100%',
+                    display: 'flex',
+                    position: 'fixed',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }}
             >
                 <Lottie options={options} height={300} width={300} />

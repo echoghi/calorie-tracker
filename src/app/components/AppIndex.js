@@ -55,6 +55,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class AppIndex extends React.PureComponent {
+    state = {
+        width: 0
+    };
+
     componentWillReceiveProps(nextProps) {
         const { fetchData, userData, history, userLoading } = this.props;
 
@@ -77,39 +81,55 @@ class AppIndex extends React.PureComponent {
                 history.push('/login');
             }
         });
+
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({ width: window.innerWidth });
+    };
 
     render() {
         const { userData, userLoading, loading, location } = this.props;
+        const { width } = this.state;
 
-        if (!_.isEmpty(userData) && !userLoading && !loading) {
-            return (
-                <div>
-                    <ErrorBoundary>
-                        <NavBar path={location.pathname} />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <SubNav path={location.pathname} />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route exact path="/" component={ComingSoon} name="Overview" />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route path="/settings" component={Settings} name="Settings" />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route path="/calendar" component={Calendar} name="Calendar" />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route path="/nutrition" component={Nutrition} name="Nutrition" />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route path="/activity" component={Activity} name="Activity" />
-                    </ErrorBoundary>
-                </div>
-            );
+        if (width < 1024) {
+            return <ComingSoon width={width} />;
         } else {
-            return <Loading />;
+            if (!_.isEmpty(userData) && !userLoading && !loading) {
+                return (
+                    <div>
+                        <ErrorBoundary>
+                            <NavBar path={location.pathname} width={width} />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <SubNav path={location.pathname} />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route exact path="/" component={ComingSoon} name="Overview" />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route path="/settings" component={Settings} name="Settings" />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route path="/calendar" component={Calendar} name="Calendar" />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route path="/nutrition" component={Nutrition} name="Nutrition" />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route path="/activity" component={Activity} name="Activity" />
+                        </ErrorBoundary>
+                    </div>
+                );
+            } else {
+                return <Loading />;
+            }
         }
     }
 }

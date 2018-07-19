@@ -43,7 +43,6 @@ const Name = styled.div`
 
 class NavBar extends React.Component {
     state = {
-        width: 0,
         menuOpen: false,
         mobile: false,
         open: false
@@ -69,7 +68,7 @@ class NavBar extends React.Component {
     handleMenuClass() {
         let className;
 
-        if (this.state.width < 760) {
+        if (this.props.width < 760) {
             if (this.state.menuOpen) {
                 className = 'navbar__menu active';
             } else {
@@ -117,19 +116,6 @@ class NavBar extends React.Component {
 
         return className;
     }
-
-    componentDidMount() {
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-
-    updateWindowDimensions = () => {
-        this.setState({ width: window.innerWidth });
-    };
 
     goHome = () => {
         const { pathname } = this.props.history.location;
