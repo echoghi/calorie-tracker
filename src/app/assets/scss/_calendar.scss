@@ -59,43 +59,6 @@
         width: 14.285714285714285714285714285714%;
         height: 150px;
 
-        &.loading {
-            margin-bottom: -7px;
-
-            .number {
-                width: 20px;
-                height: 20px;
-                padding: 0;
-                position: absolute;
-                top: 15px;
-                left: 15px;
-                border-radius: 3px;
-
-                @include placeholder;
-            }
-
-            .circle {
-                height: 90px;
-                width: 90px;
-                margin: 0 auto;
-                margin-top: 30px;
-                border-radius: 50%;
-
-                @include placeholder;
-            }
-
-            .info {
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                height: 20px;
-                width: 20px;
-                border-radius: 50%;
-
-                @include placeholder;
-            }
-        }
-
         &__overview {
             margin: -20px auto;
             text-align: center;

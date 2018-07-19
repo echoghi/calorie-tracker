@@ -3,8 +3,6 @@
 @import 'variables';
 // Mixins
 @import 'mixins/breakpoints';
-@import 'mixins/loading-spinner';
-@import 'mixins/placeholder';
 // Main
 @import 'main';
 // Partials
@@ -15,9 +13,5 @@
 @import 'calendar';
 @import 'nutrition';
 @import 'activity';
-@import 'animations';
-@import 'loading';
-@import 'error';
 @import 'fonts';
-@import 'buttons';
 @import 'progressbar';

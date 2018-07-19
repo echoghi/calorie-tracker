@@ -144,20 +144,6 @@
 
     .login__button {
         margin: 20px 30px;
-
-        &.loading {
-            margin: 15px 30px;
-            display: inline-flex;
-            align-items: center;
-
-            div {
-                height: 50px;
-                width: 50px;
-                border-radius: 50%;
-
-                @include placeholder;
-            }
-        }
     }
 
     .greeting {
