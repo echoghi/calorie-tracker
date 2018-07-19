@@ -1,7 +1,6 @@
 import React from 'react';
 import UserMenu from './UserMenu';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from './actions';
@@ -65,58 +64,6 @@ class NavBar extends React.Component {
         return className;
     }
 
-    handleMenuClass() {
-        let className;
-
-        if (this.props.width < 760) {
-            if (this.state.menuOpen) {
-                className = 'navbar__menu active';
-            } else {
-                className = 'navbar__menu collapsed';
-            }
-        } else {
-            className = 'navbar__menu lg';
-        }
-
-        return className;
-    }
-
-    renderMenu() {
-        if (this.state.width < 760) {
-            return (
-                <ul className={this.handleMenuClass()}>
-                    <Link to="/">
-                        <li className={this.handleNavClass('')}>Overview</li>
-                    </Link>
-                    <Link to="/calendar">
-                        <li className={this.handleNavClass('calendar')}>Calendar</li>
-                    </Link>
-                    <Link to="/nutrition">
-                        <li className={this.handleNavClass('nutrition')}>Nutrition</li>
-                    </Link>
-                    <Link to="/activity">
-                        <li className={this.handleNavClass('activity')}>Activity</li>
-                    </Link>
-                    <Link to="/settings">
-                        <li className={this.handleNavClass('settings')}>Settings</li>
-                    </Link>
-                </ul>
-            );
-        }
-    }
-
-    handleHamburgerClass() {
-        let className;
-
-        if (this.state.menuOpen) {
-            className = 'hamburger active';
-        } else {
-            className = 'hamburger';
-        }
-
-        return className;
-    }
-
     goHome = () => {
         const { pathname } = this.props.history.location;
 
@@ -155,13 +102,7 @@ class NavBar extends React.Component {
                     <Brand onClick={this.goHome}>
                         <i className="icon-aperture" />
                     </Brand>
-                    <div className={this.handleHamburgerClass()} onClick={this.handleMenu}>
-                        <div />
-                        <div />
-                        <div />
-                    </div>
                     <Name onClick={this.goHome}>Doughboy</Name>
-                    {this.renderMenu()}
                     {this.renderUserMenu()}
                 </div>
             );
