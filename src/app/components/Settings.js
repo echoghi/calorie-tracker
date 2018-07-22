@@ -280,7 +280,7 @@ class Settings extends React.Component {
     };
 
     onSubmitGoals = () => {
-        const { calories, carbs, fat, protein, validation } = this.state;
+        const { calories, carbs, fat, protein, validation, snackbar } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
