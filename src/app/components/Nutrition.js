@@ -147,7 +147,7 @@ class Nutrition extends React.Component {
             mealTypes: [],
             validation: {
                 name: new inputObj(true),
-                type: new inputObj(),
+                servings: new inputObj(),
                 calories: new inputObj(true),
                 protein: new inputObj(true),
                 carbs: new inputObj(true),
@@ -324,20 +324,6 @@ class Nutrition extends React.Component {
                         style: tableStyle.cell
                     },
                     {
-                        headerText: 'Type',
-                        accessor: 'type',
-                        headerStyle: tableStyle.theadTh,
-                        Header: props => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
-                                </span>
-                            );
-                        },
-                        style: tableStyle.cell
-                    },
-                    {
                         headerText: 'Calories',
                         accessor: 'calories',
                         headerStyle: tableStyle.theadTh,
@@ -382,6 +368,21 @@ class Nutrition extends React.Component {
                     {
                         headerText: 'Fat',
                         accessor: 'fat',
+                        headerStyle: tableStyle.theadTh,
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    {props.column.headerText}
+                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                </span>
+                            );
+                        },
+                        style: tableStyle.cell
+                    },
+                    {
+                        headerText: 'Servings',
+                        accessor: 'servings',
+                        Cell: row => row.original.servings || '---',
                         headerStyle: tableStyle.theadTh,
                         Header: props => {
                             return (
@@ -452,10 +453,10 @@ class Nutrition extends React.Component {
 
         const meal = day.nutrition.meals[index];
 
-        day.nutrition.calories -= meal.calories;
-        day.nutrition.protein -= meal.protein;
-        day.nutrition.fat -= meal.fat;
-        day.nutrition.carbs -= meal.carbs;
+        day.nutrition.calories -= meal.calories * meal.servings;
+        day.nutrition.protein -= meal.protein * meal.servings;
+        day.nutrition.fat -= meal.fat * meal.servings;
+        day.nutrition.carbs -= meal.carbs * meal.servings;
 
         day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
@@ -655,7 +656,7 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let { dayIndex, name, type, calories, fat, carbs, protein, validation, meals, snackbar } = this.state;
+        let { dayIndex, name, servings, calories, fat, carbs, protein, validation, meals, snackbar } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
@@ -675,13 +676,13 @@ class Nutrition extends React.Component {
                 day = snapshot.val();
             });
 
-            day.nutrition.calories += parseInt(calories);
-            day.nutrition.fat += parseInt(fat);
-            day.nutrition.protein += parseInt(protein);
-            day.nutrition.carbs += parseInt(carbs);
+            day.nutrition.calories += parseInt(calories) * servings;
+            day.nutrition.fat += parseInt(fat) * servings;
+            day.nutrition.protein += parseInt(protein) * servings;
+            day.nutrition.carbs += parseInt(carbs) * servings;
 
             document.getElementById('name').value = '';
-            document.getElementById('type').value = '';
+            document.getElementById('servings').value = '';
             document.getElementById('calories').value = '';
             document.getElementById('carbs').value = '';
             document.getElementById('fat').value = '';
@@ -700,7 +701,7 @@ class Nutrition extends React.Component {
                 this.processQueue();
             }
 
-            this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', type: '' }, () => {
+            this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', servings: '' }, () => {
                 queryRef.set(day);
 
                 this.resetMealValidation();
@@ -711,7 +712,7 @@ class Nutrition extends React.Component {
 
                 meals.push({
                     name,
-                    type,
+                    servings: parseInt(servings),
                     calories: parseFloat(calories),
                     fat: parseFloat(fat),
                     protein: parseFloat(protein),
@@ -796,7 +797,7 @@ class Nutrition extends React.Component {
         return (
             <div className="nutrition__overview--meals">
                 <MealsHeader>
-                    <span>Log Meals</span>
+                    <span>Meals</span>
                     <span>{`${day.nutrition.calories} / ${user.goals.calories} cal`}</span>
                 </MealsHeader>
                 <MealForm className="add__meal" noValidate autoComplete="off">
@@ -813,12 +814,12 @@ class Nutrition extends React.Component {
                             }}
                         />
                         <Input
-                            name="type"
-                            id="type"
-                            label="Type"
+                            name="servings"
+                            id="servings"
+                            label="Servings"
                             required
-                            onChange={this.onChange('type')}
-                            error={validate('type')}
+                            onChange={this.onChange('servings')}
+                            error={validate('servings')}
                             style={{
                                 width: '45%'
                             }}
@@ -1052,7 +1053,7 @@ class Nutrition extends React.Component {
         return (
             <div className="nutrition__overview--calories">
                 <NotesHeader>
-                    Daily Notes{' '}
+                    Notes{' '}
                     <Button
                         variant="fab"
                         color="primary"
