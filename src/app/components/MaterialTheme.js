@@ -11,6 +11,11 @@ export const theme = createMuiTheme({
                 fontSize: 14,
                 height: 43
             }
+        },
+        MuiDialogActions: {
+            root: {
+                padding: '0 16px 16px 0'
+            }
         }
     }
 });
@@ -23,9 +28,7 @@ export const styles = theme => ({
     margin: {
         margin: theme.spacing.unit
     },
-
     cssFocused: {},
-
     bootstrapRoot: {
         padding: 0,
         'label + &': {
