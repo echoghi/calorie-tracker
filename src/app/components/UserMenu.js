@@ -72,10 +72,14 @@ class UserMenu extends React.Component {
                     <Fade in={open}>
                         <Menu className="logout__button" onClose={() => this.setState({ open: false })}>
                             <li>
-                                <Link to="settings">Account Settings</Link>
+                                <Link onClick={this.handleMenu} to="settings">
+                                    Account Settings
+                                </Link>
                             </li>
                             <li>
-                                <Link to="settings">Edit Profile</Link>
+                                <Link onClick={this.handleMenu} to="settings">
+                                    Edit Profile
+                                </Link>
                             </li>
                             <li onClick={this.props.logOut}>Log Out</li>
                         </Menu>
