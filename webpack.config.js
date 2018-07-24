@@ -22,7 +22,7 @@ module.exports = function(env) {
     const nodeEnv = env && env.prod ? 'production' : 'development';
     const isProd = nodeEnv === 'production';
 
-    const plugins = [new webpack.NamedModulesPlugin()];
+    const plugins = [new webpack.NamedModulesPlugin(), new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)];
 
     const optimization = {
         minimizer: []
@@ -79,8 +79,7 @@ module.exports = function(env) {
             new MiniCssExtractPlugin('styles.css'),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production')
-            }),
-            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+            })
         );
     } else {
         plugins.push(
