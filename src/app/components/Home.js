@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // Components
 import moment from 'moment';
 import { Doughnut, Line } from 'react-chartjs-2';
+import isEmpty from 'lodash.isempty';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -36,9 +37,9 @@ class Home extends React.Component {
         let graphData = [];
         let labels = [];
 
-        if (!_.isEmpty(data)) {
+        if (!isEmpty(data)) {
             // deep copy data prop to avoid modifying it directly
-            userData = _.cloneDeep(data);
+            userData = Object.assign({}, data);
             // Include last 30 days only
             const calendar = userData.calendar.splice(userData.calendar.length - 30, 30);
 
@@ -115,9 +116,9 @@ class Home extends React.Component {
         let totalCarbs = 0;
         let totalGrams = 0;
 
-        if (!_.isEmpty(data)) {
+        if (!isEmpty(data)) {
             // deep copy data prop to avoid modifying it directly
-            userData = _.cloneDeep(data);
+            userData = Object.assign({}, data);
             // Include last 30 days only
             const calendar = userData.calendar.splice(userData.calendar.length - 30, 30);
 

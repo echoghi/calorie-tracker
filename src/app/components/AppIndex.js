@@ -6,6 +6,7 @@ import Loadable from 'react-loadable';
 import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
 import ErrorBoundary from './ErrorBoundary';
+import isEmpty from 'lodash.isempty';
 
 const NavBar = Loadable({
     loader: () => import('./NavBar'),
@@ -63,7 +64,7 @@ class AppIndex extends React.PureComponent {
         const { fetchData, userData, history, userLoading } = this.props;
 
         if (userData !== nextProps.userData || userLoading !== nextProps.userLoading) {
-            if (!_.isEmpty(nextProps.userData) && !nextProps.userLoading) {
+            if (!isEmpty(nextProps.userData) && !nextProps.userLoading) {
                 fetchData(nextProps.userData.uid);
             } else {
                 history.push('/login');
@@ -101,7 +102,7 @@ class AppIndex extends React.PureComponent {
         if (width < 1024) {
             return <ComingSoon width={width} />;
         } else {
-            if (!_.isEmpty(userData) && !userLoading && !loading) {
+            if (!isEmpty(userData) && !userLoading && !loading) {
                 return (
                     <div>
                         <ErrorBoundary>

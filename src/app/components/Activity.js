@@ -4,6 +4,9 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 import queryString from 'query-string';
+import isEmpty from 'lodash.isempty';
+import keys from 'lodash.keys';
+import values from 'lodash.values';
 // Components
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
@@ -70,7 +73,7 @@ class Activity extends React.Component {
     componentDidMount() {
         const { userData } = this.props;
 
-        if (!_.isEmpty(userData)) {
+        if (!isEmpty(userData)) {
             this.mapDayToState(userData);
         }
     }
@@ -78,7 +81,7 @@ class Activity extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { userData } = this.props;
 
-        if (userData !== nextProps.userData && !_.isEmpty(nextProps.userData)) {
+        if (userData !== nextProps.userData && !isEmpty(nextProps.userData)) {
             this.mapDayToState(nextProps.userData);
         }
     }
@@ -543,7 +546,7 @@ class Activity extends React.Component {
     }
 
     onChange = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
         // Mark input as dirty (interacted with)
         obj.validation[name].dirty = true;
         obj[name] = event.target.value;
@@ -559,7 +562,7 @@ class Activity extends React.Component {
     };
 
     handleSwitch = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
 
         if (event.target.checked) {
             document.getElementById('exerciseType').value = 'Weight Training';
@@ -701,7 +704,7 @@ class Activity extends React.Component {
         }
 
         const chartData = {
-            labels: _.keys(counts),
+            labels: keys(counts),
             datasets: [
                 {
                     label: 'Exercise History',
@@ -711,7 +714,7 @@ class Activity extends React.Component {
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
                     pointHoverBorderColor: 'rgba(255,99,132,1)',
-                    data: _.values(counts)
+                    data: values(counts)
                 }
             ]
         };
@@ -762,7 +765,7 @@ class Activity extends React.Component {
 
         return (
             <div>
-                {!loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
+                {!loading && !isEmpty(day) && !isEmpty(user) ? (
                     <div className="activity">
                         <HeaderWrapper>
                             <div>

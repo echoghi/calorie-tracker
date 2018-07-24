@@ -7,7 +7,6 @@
 /*eslint-disable*/
 import Styles from './app/assets/scss/style.scss';
 import 'react-table/react-table.css';
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 /*eslint-enable*/
 

@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { saveUserData, fetchData } from './actions';
 import { auth, provider } from './firebase.js';
+import isEmpty from 'lodash.isempty';
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData
@@ -30,7 +31,7 @@ class Login extends React.Component {
     componentWillUnmount() {
         const { userData, fetchData } = this.props;
 
-        if (!_.isEmpty(userData)) {
+        if (!isEmpty(userData)) {
             fetchData(userData.uid);
         }
     }

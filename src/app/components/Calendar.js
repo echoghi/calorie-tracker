@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Fade from '@material-ui/core/Fade';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import isEmpty from 'lodash.isempty';
 
 const Icon = styled.i`
     position: absolute;
@@ -538,7 +539,7 @@ class Calendar extends React.Component {
                                     <span>Fri</span>
                                     <span>Sat</span>
                                 </div>
-                                {!_.isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
+                                {!isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
                             </div>
                             {this.renderLegend()}
                         </div>

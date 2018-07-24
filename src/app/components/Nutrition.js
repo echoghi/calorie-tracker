@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { database } from './firebase.js';
 import moment from 'moment';
 import queryString from 'query-string';
+import isEmpty from 'lodash.isempty';
 // Components
 import Input from './Input';
 import Dialog from '@material-ui/core/Dialog';
@@ -168,7 +169,7 @@ class Nutrition extends React.Component {
     componentDidMount() {
         const { userData } = this.props;
 
-        if (!_.isEmpty(userData)) {
+        if (!isEmpty(userData)) {
             this.mapDayToState(userData);
         }
     }
@@ -176,7 +177,7 @@ class Nutrition extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { userData } = this.props;
 
-        if (userData !== nextProps.userData && !_.isEmpty(nextProps.userData)) {
+        if (userData !== nextProps.userData && !isEmpty(nextProps.userData)) {
             this.mapDayToState(nextProps.userData);
         }
     }
@@ -624,7 +625,7 @@ class Nutrition extends React.Component {
     }
 
     onChange = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
         // Mark input as dirty (interacted with)
         obj.validation[name].dirty = true;
         obj[name] = event.target.value;
@@ -640,7 +641,7 @@ class Nutrition extends React.Component {
     };
 
     onNoteChange = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
         // Mark input as dirty (interacted with)
         obj.validation['note'][name].dirty = true;
         obj[name] = event.target.value;
@@ -1258,7 +1259,7 @@ class Nutrition extends React.Component {
 
         return (
             <div>
-                {!loading && !_.isEmpty(day) && !_.isEmpty(user) ? (
+                {!loading && !isEmpty(day) && !isEmpty(user) ? (
                     <div className="nutrition">
                         <HeaderWrapper>
                             <div>

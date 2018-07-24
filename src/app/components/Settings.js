@@ -90,7 +90,7 @@ class Settings extends React.Component {
     }
 
     onGeneralChange = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
         // Mark input as dirty (interacted with)
         obj.validation.general[name].dirty = true;
         obj[name] = event.target.value;
@@ -106,7 +106,7 @@ class Settings extends React.Component {
     };
 
     onAccountChange = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
         // Mark input as dirty (interacted with)
         obj.validation.account[name].dirty = true;
         obj[name] = event.target.value;
@@ -122,7 +122,7 @@ class Settings extends React.Component {
     };
 
     onGoalsChange = name => event => {
-        const obj = _.cloneDeep(this.state);
+        let obj = Object.assign({}, this.state);
         // Mark input as dirty (interacted with)
         obj.validation.goals[name].dirty = true;
         obj[name] = event.target.value;
