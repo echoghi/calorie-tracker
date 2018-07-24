@@ -153,13 +153,13 @@ export function fetchData(id) {
                             }
                         };
 
-                        // Save new entries to firebase and reload them into the app
-                        database.ref().update(update, () => {
-                            dispatch(reloadData(id));
-                        });
-
                         dayKey++;
                     }
+
+                    // Save new entries to firebase and reload them into the app
+                    database.ref().update(update, () => {
+                        dispatch(reloadData(id));
+                    });
                 } else {
                     console.log('User Data Pulled:', user);
                     dispatch(receiveData(user));
