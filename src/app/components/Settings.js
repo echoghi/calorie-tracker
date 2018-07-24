@@ -64,7 +64,6 @@ class Settings extends React.Component {
         super(props);
 
         this.state = {
-            fitnessGoal: 'maintain',
             snackbar: false,
             messageInfo: {},
             validation: {
@@ -72,6 +71,7 @@ class Settings extends React.Component {
                     displayName: new inputObj()
                 },
                 account: {
+                    age: new inputObj(),
                     height: new inputObj(),
                     weight: new inputObj()
                 },
@@ -225,7 +225,7 @@ class Settings extends React.Component {
     };
 
     onSubmitAccount = () => {
-        const { height, weight, validation } = this.state;
+        const { age, height, weight, validation, snackbar } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
@@ -239,6 +239,11 @@ class Settings extends React.Component {
             queryRef.once('value', snapshot => {
                 user = snapshot.val();
             });
+
+            if (validation.account.age.valid) {
+                user.age = parseInt(age);
+                document.getElementById('age').value = '';
+            }
 
             if (validation.account.height.valid) {
                 user.height = parseInt(height);
@@ -263,7 +268,7 @@ class Settings extends React.Component {
                 this.processQueue();
             }
 
-            this.setState({ height: '', weight: '' }, () => {
+            this.setState({ height: '', weight: '', age: '' }, () => {
                 queryRef.update(user);
                 this.resetInputs();
             });
@@ -482,6 +487,15 @@ class Settings extends React.Component {
                             experience.
                         </SettingsSubHeader>
                         <form>
+                            <Input
+                                name="age"
+                                id="age"
+                                label="Age"
+                                type="number"
+                                error={this.validate('account', 'age')}
+                                onChange={this.onAccountChange('age')}
+                                style={{ paddingRight: 20 }}
+                            />
                             <Input
                                 name="height"
                                 id="height"
