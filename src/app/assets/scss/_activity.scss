@@ -13,51 +13,6 @@
             display: block;
         }
 
-        &--box {
-            display: inline-block;
-            height: 270px;
-            width: 31%;
-            padding-bottom: 20px;
-            border: 1px solid $athens-gray;
-            border-radius: 3px;
-            background: $white;
-            text-align: center;
-
-            @include less-than-ipad {
-                width: 100%;
-                display: block;
-                margin: 30px 0;
-            }
-
-            &.large {
-                width: 100%;
-                display: block;
-            }
-
-            h1,
-            span {
-                display: inline-block;
-            }
-
-            span {
-                font-size: 50px;
-                padding-left: 5px;
-                color: $cold-purple;
-            }
-
-            h1 {
-                font-size: 100px;
-                color: $waikawa-gray;
-                margin-bottom: 0;
-            }
-
-            h3 {
-                font-size: 25px;
-                text-transform: uppercase;
-                color: $cold-purple;
-            }
-        }
-
         &--exercises,
         &--chart {
             position: relative;
@@ -102,14 +57,6 @@
         }
 
         &--exercises {
-            h4 {
-                color: $cold-purple;
-                padding: 0 30px;
-                font-size: 25px;
-                text-align: left;
-                margin: 0;
-            }
-
             .add__exercise {
                 &--input {
                     display: flex;

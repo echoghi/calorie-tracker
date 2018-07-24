@@ -114,7 +114,7 @@ export function fetchData(id) {
     return dispatch => {
         dispatch(loadingData());
 
-        usersRef.child(id).on('value', snapshot => {
+        usersRef.child(id).once('value', snapshot => {
             let user = snapshot.val();
             let lastDay;
 
@@ -161,8 +161,7 @@ export function fetchData(id) {
                         dispatch(reloadData(id));
                     });
                 } else {
-                    console.log('User Data Pulled:', user);
-                    dispatch(receiveData(user));
+                    dispatch(reloadData(id));
                 }
             } else {
                 dispatch(createUser(id));
