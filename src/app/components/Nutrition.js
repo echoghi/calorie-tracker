@@ -147,7 +147,7 @@ class Nutrition extends React.Component {
             mealTypes: [],
             validation: {
                 name: new inputObj(true),
-                servings: new inputObj(),
+                servings: new inputObj(true),
                 calories: new inputObj(true),
                 protein: new inputObj(true),
                 carbs: new inputObj(true),
