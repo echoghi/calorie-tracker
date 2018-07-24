@@ -13,6 +13,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const PACKAGE = require('./package.json');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const sourcePath = path.join(__dirname, './src');
 const publicPath = path.join(__dirname, './build');
@@ -83,6 +84,7 @@ module.exports = function(env) {
         );
     } else {
         plugins.push(
+            //new BundleAnalyzerPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new BrowserSyncPlugin(
                 // BrowserSync options

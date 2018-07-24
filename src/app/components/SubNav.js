@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 
 const Menu = styled.div`
@@ -49,19 +49,6 @@ const PageIndicator = styled.span`
 `;
 
 class SubNav extends React.Component {
-    handleNavClass(name) {
-        const { path } = this.props;
-        let className;
-
-        if (path === `/${name}`) {
-            className = 'active';
-        } else {
-            className = '';
-        }
-
-        return className;
-    }
-
     renderIndicator(name) {
         const { path } = this.props;
         let indicator;
@@ -82,31 +69,31 @@ class SubNav extends React.Component {
     render() {
         return (
             <Menu>
-                <Link to="/" className={this.handleNavClass('')}>
+                <NavLink to="/" activeClassName="active" exact={true}>
                     <Icon className="icon-user" />
                     <li>Overview</li>
                     {this.renderIndicator('')}
-                </Link>
-                <Link to="/calendar" className={this.handleNavClass('calendar')}>
+                </NavLink>
+                <NavLink to="/calendar" activeClassName="active">
                     <Icon className="icon-calendar" />
                     <li>Calendar</li>
                     {this.renderIndicator('calendar')}
-                </Link>
-                <Link to="/nutrition" className={this.handleNavClass('nutrition')}>
+                </NavLink>
+                <NavLink to="/nutrition" activeClassName="active">
                     <Icon className="icon-bar-chart" />
                     <li>Nutrition</li>
                     {this.renderIndicator('nutrition')}
-                </Link>
-                <Link to="/activity" className={this.handleNavClass('activity')}>
+                </NavLink>
+                <NavLink to="/activity" activeClassName="active">
                     <Icon className="icon-activity" />
                     <li>Activity</li>
                     {this.renderIndicator('activity')}
-                </Link>
-                <Link to="/settings" className={this.handleNavClass('settings')}>
+                </NavLink>
+                <NavLink to="/settings" activeClassName="active">
                     <Icon className="icon-settings" />
                     <li>Settings</li>
                     {this.renderIndicator('settings')}
-                </Link>
+                </NavLink>
             </Menu>
         );
     }
