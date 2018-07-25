@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { styles } from './MaterialTheme';
 
 function Select(props) {
-    const { classes, required, label, name, id, style, options, error, onChange, value, defaultValue } = props;
+    const { classes, label, name, id, style, options, error, onChange, value, defaultValue } = props;
 
     return (
         <FormControl>
@@ -24,7 +24,6 @@ function Select(props) {
                 id={id}
                 value={value}
                 defaultValue={defaultValue}
-                required={required}
                 onChange={onChange}
                 classes={{
                     root: classes.bootstrapRoot,

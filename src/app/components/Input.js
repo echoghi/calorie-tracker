@@ -35,7 +35,7 @@ function Input(props) {
                 disableUnderline: true,
                 classes: {
                     root: classes.bootstrapRoot,
-                    input: classes.bootstrapInput
+                    input: multiline ? classes.bootstrapInputMulti : classes.bootstrapInput
                 }
             }}
             InputLabelProps={{
