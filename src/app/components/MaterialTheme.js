@@ -9,7 +9,7 @@ export const theme = createMuiTheme({
         MuiButton: {
             root: {
                 fontSize: 14,
-                height: 43
+                height: 40
             }
         },
         MuiDialogActions: {
