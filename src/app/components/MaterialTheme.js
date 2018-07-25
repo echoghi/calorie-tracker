@@ -41,6 +41,8 @@ export const styles = theme => ({
         border: '1px solid #ced4da',
         fontSize: 16,
         padding: '10px 12px',
+        height: 40,
+        boxSizing: 'border-box',
         width: 'calc(100% - 24px)',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
         fontFamily: [
@@ -62,5 +64,38 @@ export const styles = theme => ({
     },
     bootstrapFormLabel: {
         fontSize: 18
+    },
+    select: {
+        borderRadius: 4,
+        backgroundColor: theme.palette.common.white,
+        border: '1px solid #ced4da',
+        fontSize: 16,
+        padding: '10px 12px',
+        height: 40,
+        boxSizing: 'border-box',
+        width: 200,
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"'
+        ].join(','),
+        '&:focus': {
+            borderColor: '#80bdff',
+            borderRadius: 4,
+            backgroundColor: 'white',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+        }
+    },
+    selectLabel: {
+        fontSize: 18,
+        top: '-8px'
     }
 });

@@ -10,11 +10,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-// import Radio from '@material-ui/core/Radio';
-// import RadioGroup from '@material-ui/core/RadioGroup';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormControl from '@material-ui/core/FormControl';
-// import FormLabel from '@material-ui/core/FormLabel';
+import isEmpty from 'lodash.isempty';
+import Select from './Select';
 import Input from './Input';
 
 const SettingsWrapper = styled.div`
@@ -52,7 +49,8 @@ class inputObj {
 }
 
 const mapStateToProps = state => ({
-    userData: state.adminState.userData
+    userData: state.adminState.userData,
+    data: state.adminState.data
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -72,6 +70,7 @@ class Settings extends React.Component {
                 },
                 account: {
                     age: new inputObj(),
+                    gender: new inputObj(),
                     height: new inputObj(),
                     weight: new inputObj()
                 },
@@ -87,6 +86,20 @@ class Settings extends React.Component {
         this.queue = [];
 
         window.scrollTo(0, 0);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { data } = this.props;
+
+        if (nextProps.data !== data) {
+            if (!isEmpty(data) && data.user.gender) {
+                let obj = Object.assign({}, this.state);
+
+                obj.validation.account.gender.valid = true;
+
+                this.setState(obj);
+            }
+        }
     }
 
     onGeneralChange = name => event => {
@@ -107,9 +120,9 @@ class Settings extends React.Component {
 
     onAccountChange = name => event => {
         let obj = Object.assign({}, this.state);
+
         // Mark input as dirty (interacted with)
         obj.validation.account[name].dirty = true;
-        obj[name] = event.target.value;
 
         // If there is any value, mark it valid
         if (event.target.value !== '') {
@@ -117,6 +130,8 @@ class Settings extends React.Component {
         } else {
             obj.validation.account[name].valid = false;
         }
+
+        obj[name] = event.target.value;
 
         this.setState(obj);
     };
@@ -225,7 +240,7 @@ class Settings extends React.Component {
     };
 
     onSubmitAccount = () => {
-        const { age, height, weight, validation, snackbar } = this.state;
+        const { age, gender, height, weight, validation, snackbar } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
@@ -243,6 +258,10 @@ class Settings extends React.Component {
             if (validation.account.age.valid) {
                 user.age = parseInt(age);
                 document.getElementById('age').value = '';
+            }
+
+            if (validation.account.gender.valid && gender) {
+                user.gender = gender;
             }
 
             if (validation.account.height.valid) {
@@ -451,6 +470,8 @@ class Settings extends React.Component {
     };
 
     render() {
+        const { data } = this.props;
+
         return (
             <div className="settings">
                 <SettingsWrapper>
@@ -495,6 +516,17 @@ class Settings extends React.Component {
                                 error={this.validate('account', 'age')}
                                 onChange={this.onAccountChange('age')}
                                 style={{ paddingRight: 20 }}
+                            />
+                            <Select
+                                name="gender"
+                                id="gender"
+                                label="Gender"
+                                options={['Male', 'Female']}
+                                onChange={this.onAccountChange('gender')}
+                                error={this.validate('account', 'gender')}
+                                defaultValue={!isEmpty(data) ? data.user.gender : ''}
+                                value={this.state.gender}
+                                style={{ paddingRight: 20, transform: 'translateY(-1px)' }}
                             />
                             <Input
                                 name="height"
