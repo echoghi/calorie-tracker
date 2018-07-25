@@ -532,8 +532,8 @@ class Settings extends React.Component {
                         <SettingsHeader>Goals</SettingsHeader>
                         <SettingsSubHeader>
                             Already have goals in mind? Enter them here or your calorie goal will be based on your TDEE,
-                            which is calculated with your height, wieght, gender, and age. If you haven't provided
-                            either, then your calorie goal will default to 2000.
+                            which is calculated with your height, wieght, gender, and age. If you haven't provided the
+                            necessary info, then your calorie goal will default to 2000.
                         </SettingsSubHeader>
                         <form>
                             <Input
