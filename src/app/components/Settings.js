@@ -531,8 +531,9 @@ class Settings extends React.Component {
                     <SettingsSection>
                         <SettingsHeader>Goals</SettingsHeader>
                         <SettingsSubHeader>
-                            Are you trying to cut, bulk, or maintain? Pick a strategy and we'll calculate your macros
-                            based on your estimated daily expenditure.
+                            Already have goals in mind? Enter them here or your calorie goal will be based on your TDEE,
+                            which is calculated with your height, wieght, gender, and age. If you haven't provided
+                            either, then your calorie goal will default to 2000.
                         </SettingsSubHeader>
                         <form>
                             <Input
