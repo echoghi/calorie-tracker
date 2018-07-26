@@ -141,6 +141,7 @@ class Nutrition extends React.Component {
             requestedDate,
             now: moment(),
             day: {},
+            formattedDay: {},
             loading: true,
             snackbar: false,
             todayButton: false,
@@ -184,7 +185,7 @@ class Nutrition extends React.Component {
 
     mapDayToState = userData => {
         const { history } = this.props;
-        let { day, meals, today, requestedDate, todayButton } = this.state;
+        let { day, formattedDay, today, requestedDate, todayButton } = this.state;
 
         let dayIndex;
 
@@ -203,26 +204,25 @@ class Nutrition extends React.Component {
             queryRef.on('value', snapshot => {
                 day = snapshot.val();
                 dayIndex = Object.keys(day)[0];
-
+                formattedDay = Object.assign({}, day[dayIndex]);
                 day = day[dayIndex];
 
                 const { year, date, month } = day.day;
-                day.day = moment([year, month, date]);
-
-                const mealsRef = database
-                    .ref('users')
-                    .child(userData.uid)
-                    .child(`calendar/${dayIndex}/nutrition/meals`);
+                formattedDay.day = moment([year, month, date]);
 
                 const dayRef = database
                     .ref('users')
                     .child(userData.uid)
                     .child(`calendar/${dayIndex}`);
 
-                mealsRef.on('value', snapshot => {
-                    meals = snapshot.val();
-
-                    callback({ meals, day, loading: false, dayRef, dayIndex, todayButton: true, requestedDate: null });
+                callback({
+                    day,
+                    formattedDay,
+                    loading: false,
+                    dayRef,
+                    dayIndex,
+                    todayButton: true,
+                    requestedDate: null
                 });
             });
         };
@@ -238,16 +238,16 @@ class Nutrition extends React.Component {
                 queryRef.on('value', snapshot => {
                     snapshot.forEach(childSnapshot => {
                         day = childSnapshot.val();
-
+                        formattedDay = childSnapshot.val();
                         dayIndex = childSnapshot.key;
 
                         const { year, date, month } = day.day;
-                        day.day = moment([year, month, date]);
+                        formattedDay.day = moment([year, month, date]);
 
                         if (
-                            day.day.date() === requestedDate.date() &&
-                            day.day.month() === requestedDate.month() &&
-                            day.day.year() === requestedDate.year()
+                            formattedDay.day.date() === requestedDate.date() &&
+                            formattedDay.day.month() === requestedDate.month() &&
+                            formattedDay.day.year() === requestedDate.year()
                         ) {
                             // If requestedDate is Today, disable the today button
                             if (
@@ -258,20 +258,19 @@ class Nutrition extends React.Component {
                                 todayButton = true;
                             }
 
-                            const mealsRef = database
-                                .ref('users')
-                                .child(userData.uid)
-                                .child(`calendar/${dayIndex}/nutrition/meals`);
-
                             const dayRef = database
                                 .ref('users')
                                 .child(userData.uid)
                                 .child(`calendar/${dayIndex}`);
 
-                            mealsRef.on('value', snapshot => {
-                                meals = snapshot.val();
-
-                                callback({ meals, day, loading: false, requestedDate, dayRef, dayIndex, todayButton });
+                            callback({
+                                day,
+                                formattedDay,
+                                loading: false,
+                                requestedDate,
+                                dayRef,
+                                dayIndex,
+                                todayButton
                             });
                         }
                     });
@@ -287,13 +286,13 @@ class Nutrition extends React.Component {
     };
 
     renderMealsTable() {
-        const { meals, sorted } = this.state;
+        const { day, sorted } = this.state;
 
         return (
             <ReactTable
                 style={tableStyle.table}
                 ref={instance => (this.tableInstance = instance)}
-                data={meals || []}
+                data={!isEmpty(day) ? day.nutrition.meals : []}
                 noDataText="No Meals Found"
                 columns={[
                     {
@@ -424,13 +423,7 @@ class Nutrition extends React.Component {
     }
 
     deleteMeal = index => {
-        const { dayRef } = this.state;
-
-        let day;
-
-        dayRef.on('value', snapshot => {
-            day = snapshot.val();
-        });
+        const { dayRef, day } = this.state;
 
         const meal = day.nutrition.meals[index];
 
@@ -460,13 +453,7 @@ class Nutrition extends React.Component {
     };
 
     deleteNote = index => {
-        const { dayRef } = this.state;
-
-        let day;
-
-        dayRef.on('value', snapshot => {
-            day = snapshot.val();
-        });
+        const { dayRef, day } = this.state;
 
         day.notes = day.notes.filter(note => note !== day.notes[index]);
 
@@ -489,15 +476,9 @@ class Nutrition extends React.Component {
     };
 
     editNote = index => {
-        const { dayRef, noteBody, noteTitle, snackbar } = this.state;
+        const { dayRef, noteBody, noteTitle, snackbar, day } = this.state;
 
         if (this.validateEditedNotes()) {
-            let day;
-
-            dayRef.on('value', snapshot => {
-                day = snapshot.val();
-            });
-
             let note = day.notes[index];
 
             note.title = noteTitle;
@@ -625,33 +606,9 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let {
-            dayRef,
-            name,
-            servings,
-            calories,
-            fat,
-            carbs,
-            protein,
-            validation,
-            meals,
-            snackbar,
-            dayIndex
-        } = this.state;
-        const { userData } = this.props;
+        let { dayRef, day, name, servings, calories, fat, carbs, protein, validation, snackbar } = this.state;
 
         if (this.validateInputs()) {
-            let day;
-
-            const mealsRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${dayIndex}/nutrition/meals`);
-
-            dayRef.on('value', snapshot => {
-                day = snapshot.val();
-            });
-
             day.nutrition.calories += parseInt(calories) * servings;
             day.nutrition.fat += parseInt(fat) * servings;
             day.nutrition.protein += parseInt(protein) * servings;
@@ -678,15 +635,13 @@ class Nutrition extends React.Component {
             }
 
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', servings: '' }, () => {
-                dayRef.set(day);
-
                 this.resetMealValidation();
 
-                if (!meals) {
-                    meals = [];
+                if (!day.nutrition.meals) {
+                    day.nutrition.meals = [];
                 }
 
-                meals.push({
+                day.nutrition.meals.push({
                     name,
                     servings: parseInt(servings),
                     calories: parseFloat(calories),
@@ -695,7 +650,7 @@ class Nutrition extends React.Component {
                     carbs: parseFloat(carbs)
                 });
 
-                mealsRef.set(meals);
+                dayRef.set(day);
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -710,15 +665,9 @@ class Nutrition extends React.Component {
     };
 
     addNote = () => {
-        let { dayRef, noteBody, noteTitle, validation } = this.state;
+        let { dayRef, noteBody, noteTitle, validation, day, snackbar } = this.state;
 
         if (this.validateNotes()) {
-            let day;
-
-            dayRef.on('value', snapshot => {
-                day = snapshot.val();
-            });
-
             if (!day.notes) {
                 day.notes = [];
             }
@@ -734,7 +683,7 @@ class Nutrition extends React.Component {
                 key: new Date().getTime()
             });
 
-            if (this.state.snackbar) {
+            if (snackbar) {
                 // immediately begin dismissing current message
                 // to start showing new one
                 this.setState({ snackbar: false });
@@ -1130,15 +1079,9 @@ class Nutrition extends React.Component {
     };
 
     renderEditNote = () => {
-        const { editNote, noteToEdit, dayRef } = this.state;
+        const { editNote, noteToEdit, day } = this.state;
 
         if (editNote) {
-            let day;
-
-            dayRef.once('value', snapshot => {
-                day = snapshot.val();
-            });
-
             const note = day.notes[noteToEdit];
 
             return (
@@ -1218,7 +1161,7 @@ class Nutrition extends React.Component {
 
     render() {
         const { userData, data } = this.props;
-        const { day, todayButton, loading, messageInfo, snackbar } = this.state;
+        const { formattedDay, day, todayButton, loading, messageInfo, snackbar } = this.state;
         const { message, key } = messageInfo;
         const { protein, carbs, fat } = day.nutrition || 0;
 
@@ -1229,7 +1172,7 @@ class Nutrition extends React.Component {
                         <HeaderWrapper>
                             <div>
                                 <h1>Nutrition</h1>
-                                <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
+                                <h3>{formattedDay.day.format('dddd, MMMM Do YYYY')}</h3>
                             </div>
                             <div>
                                 <Button
