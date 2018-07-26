@@ -50,7 +50,6 @@ class Activity extends React.Component {
         this.state = {
             now: moment(),
             day: {},
-            user: {},
             activity: {},
             loading: true,
             validation: {
@@ -88,7 +87,7 @@ class Activity extends React.Component {
 
     mapDayToState = (userData, today) => {
         const { location, history } = this.props;
-        let { day, user, activity } = this.state;
+        let { day, activity } = this.state;
         let requestedDate = null;
 
         if (location.search) {
@@ -103,16 +102,6 @@ class Activity extends React.Component {
         const callback = state => {
             this.setState(state);
         };
-
-        const userRef = database
-            .ref('users')
-            .child(userData.uid)
-            .child('user');
-
-        userRef.once('value', snapshot => {
-            user = snapshot.val();
-            callback({ user });
-        });
 
         const loadToday = () => {
             const queryRef = database
@@ -760,12 +749,12 @@ class Activity extends React.Component {
     };
 
     render() {
-        const { userData } = this.props;
-        const { day, user, loading, todayButton } = this.state;
+        const { userData, data } = this.props;
+        const { day, loading, todayButton } = this.state;
 
         return (
             <div>
-                {!loading && !isEmpty(day) && !isEmpty(user) ? (
+                {!loading && !isEmpty(day) && !isEmpty(data) ? (
                     <div className="activity">
                         <HeaderWrapper>
                             <div>

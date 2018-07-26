@@ -122,7 +122,8 @@ const inputObj = class {
 };
 
 const mapStateToProps = state => ({
-    userData: state.adminState.userData
+    userData: state.adminState.userData,
+    data: state.adminState.data
 });
 
 class Nutrition extends React.Component {
@@ -140,7 +141,6 @@ class Nutrition extends React.Component {
             requestedDate,
             now: moment(),
             day: {},
-            user: {},
             loading: true,
             snackbar: false,
             todayButton: false,
@@ -184,37 +184,13 @@ class Nutrition extends React.Component {
 
     mapDayToState = userData => {
         const { history } = this.props;
-        let { day, user, meals, mealTypes, today, requestedDate, todayButton } = this.state;
+        let { day, meals, today, requestedDate, todayButton } = this.state;
 
         let dayIndex;
 
         const callback = state => {
             this.setState(state);
         };
-
-        const userRef = database
-            .ref('users')
-            .child(userData.uid)
-            .child('user');
-
-        userRef.once('value', snapshot => {
-            user = snapshot.val();
-            callback({ user });
-        });
-
-        const mealTypeRef = database
-            .ref('users')
-            .child(userData.uid)
-            .child('mealTypes');
-
-        mealTypeRef.on('value', snapshot => {
-            snapshot.forEach(childSnapshot => {
-                let mealType = childSnapshot.val();
-                mealTypes.push(mealType.type);
-            });
-
-            callback({ mealTypes });
-        });
 
         const loadToday = () => {
             const queryRef = database
@@ -238,10 +214,15 @@ class Nutrition extends React.Component {
                     .child(userData.uid)
                     .child(`calendar/${dayIndex}/nutrition/meals`);
 
+                const dayRef = database
+                    .ref('users')
+                    .child(userData.uid)
+                    .child(`calendar/${dayIndex}`);
+
                 mealsRef.on('value', snapshot => {
                     meals = snapshot.val();
 
-                    callback({ meals, day, loading: false, dayIndex, todayButton: true, requestedDate: null });
+                    callback({ meals, day, loading: false, dayRef, dayIndex, todayButton: true, requestedDate: null });
                 });
             });
         };
@@ -282,10 +263,15 @@ class Nutrition extends React.Component {
                                 .child(userData.uid)
                                 .child(`calendar/${dayIndex}/nutrition/meals`);
 
+                            const dayRef = database
+                                .ref('users')
+                                .child(userData.uid)
+                                .child(`calendar/${dayIndex}`);
+
                             mealsRef.on('value', snapshot => {
                                 meals = snapshot.val();
 
-                                callback({ meals, day, loading: false, requestedDate, dayIndex, todayButton });
+                                callback({ meals, day, loading: false, requestedDate, dayRef, dayIndex, todayButton });
                             });
                         }
                     });
@@ -438,17 +424,11 @@ class Nutrition extends React.Component {
     }
 
     deleteMeal = index => {
-        const { userData } = this.props;
-        const { dayIndex } = this.state;
+        const { dayRef } = this.state;
 
         let day;
 
-        const queryRef = database
-            .ref('users')
-            .child(userData.uid)
-            .child(`calendar/${dayIndex}`);
-
-        queryRef.on('value', snapshot => {
+        dayRef.on('value', snapshot => {
             day = snapshot.val();
         });
 
@@ -461,7 +441,7 @@ class Nutrition extends React.Component {
 
         day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
-        queryRef.set(day);
+        dayRef.set(day);
 
         this.queue.push({
             message: 'Meal Removed',
@@ -480,23 +460,17 @@ class Nutrition extends React.Component {
     };
 
     deleteNote = index => {
-        const { userData } = this.props;
-        const { dayIndex } = this.state;
+        const { dayRef } = this.state;
 
         let day;
 
-        const queryRef = database
-            .ref('users')
-            .child(userData.uid)
-            .child(`calendar/${dayIndex}`);
-
-        queryRef.on('value', snapshot => {
+        dayRef.on('value', snapshot => {
             day = snapshot.val();
         });
 
         day.notes = day.notes.filter(note => note !== day.notes[index]);
 
-        queryRef.set(day);
+        dayRef.set(day);
 
         this.queue.push({
             message: 'Note Removed',
@@ -515,18 +489,12 @@ class Nutrition extends React.Component {
     };
 
     editNote = index => {
-        const { userData } = this.props;
-        const { dayIndex, noteBody, noteTitle, snackbar } = this.state;
+        const { dayRef, noteBody, noteTitle, snackbar } = this.state;
 
         if (this.validateEditedNotes()) {
             let day;
 
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${dayIndex}`);
-
-            queryRef.on('value', snapshot => {
+            dayRef.on('value', snapshot => {
                 day = snapshot.val();
             });
 
@@ -551,7 +519,7 @@ class Nutrition extends React.Component {
             }
 
             this.setState({ editNote: false, noteBody: '', noteTitle: '' }, () => {
-                queryRef.set(day);
+                dayRef.set(day);
                 this.resetNoteValidation();
             });
         }
@@ -657,26 +625,33 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let { dayIndex, name, servings, calories, fat, carbs, protein, validation, meals, snackbar } = this.state;
+        let {
+            dayRef,
+            name,
+            servings,
+            calories,
+            fat,
+            carbs,
+            protein,
+            validation,
+            meals,
+            snackbar,
+            dayIndex
+        } = this.state;
         const { userData } = this.props;
 
         if (this.validateInputs()) {
             let day;
-
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${dayIndex}`);
 
             const mealsRef = database
                 .ref('users')
                 .child(userData.uid)
                 .child(`calendar/${dayIndex}/nutrition/meals`);
 
-            queryRef.on('value', snapshot => {
+            dayRef.on('value', snapshot => {
                 day = snapshot.val();
             });
-
+            console.log(dayRef, day);
             day.nutrition.calories += parseInt(calories) * servings;
             day.nutrition.fat += parseInt(fat) * servings;
             day.nutrition.protein += parseInt(protein) * servings;
@@ -703,7 +678,7 @@ class Nutrition extends React.Component {
             }
 
             this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', servings: '' }, () => {
-                queryRef.set(day);
+                dayRef.set(day);
 
                 this.resetMealValidation();
 
@@ -735,18 +710,12 @@ class Nutrition extends React.Component {
     };
 
     addNote = () => {
-        let { dayIndex, noteBody, noteTitle, validation } = this.state;
-        const { userData } = this.props;
+        let { dayRef, noteBody, noteTitle, validation } = this.state;
 
         if (this.validateNotes()) {
             let day;
 
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${dayIndex}`);
-
-            queryRef.on('value', snapshot => {
+            dayRef.on('value', snapshot => {
                 day = snapshot.val();
             });
 
@@ -774,7 +743,7 @@ class Nutrition extends React.Component {
             }
 
             this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
-                queryRef.set(day);
+                dayRef.set(day);
 
                 this.resetNoteValidation();
             });
@@ -791,7 +760,8 @@ class Nutrition extends React.Component {
     };
 
     renderMealBox() {
-        const { validation, day, user } = this.state;
+        const { data } = this.props;
+        const { validation, day } = this.state;
 
         const validate = name => (validation[name].dirty && !validation[name].valid ? true : false);
 
@@ -799,7 +769,7 @@ class Nutrition extends React.Component {
             <div className="nutrition__overview--meals">
                 <MealsHeader>
                     <span>Meals</span>
-                    <span>{`${day.nutrition.calories} / ${user.goals.calories} cal`}</span>
+                    <span>{`${day.nutrition.calories} / ${data.user.goals.calories} cal`}</span>
                 </MealsHeader>
                 <MealForm className="add__meal" noValidate autoComplete="off">
                     <div className="add__meal--input">
@@ -959,7 +929,8 @@ class Nutrition extends React.Component {
     };
 
     renderProgressBar(type) {
-        const { day, user } = this.state;
+        const { data } = this.props;
+        const { day } = this.state;
 
         let color;
         let progress;
@@ -967,16 +938,16 @@ class Nutrition extends React.Component {
 
         if (type === 'protein') {
             color = '#F5729C';
-            progress = day.nutrition.protein / user.goals.protein;
-            text = day.nutrition.protein / user.goals.protein;
+            progress = day.nutrition.protein / data.user.goals.protein;
+            text = day.nutrition.protein / data.user.goals.protein;
         } else if (type === 'carbs') {
             color = '#7BD4F8';
-            progress = day.nutrition.carbs / user.goals.carbs;
-            text = day.nutrition.carbs / user.goals.carbs;
+            progress = day.nutrition.carbs / data.user.goals.carbs;
+            text = day.nutrition.carbs / data.user.goals.carbs;
         } else {
             color = '#55F3B3';
-            progress = day.nutrition.fat / user.goals.fat;
-            text = day.nutrition.fat / user.goals.fat;
+            progress = day.nutrition.fat / data.user.goals.fat;
+            text = day.nutrition.fat / data.user.goals.fat;
         }
         text = `${Math.round(text * 100)}% of daily goal`;
 
@@ -1159,18 +1130,12 @@ class Nutrition extends React.Component {
     };
 
     renderEditNote = () => {
-        const { userData } = this.props;
-        const { editNote, noteToEdit, dayIndex } = this.state;
+        const { editNote, noteToEdit, dayRef } = this.state;
 
         if (editNote) {
             let day;
 
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${dayIndex}`);
-
-            queryRef.once('value', snapshot => {
+            dayRef.once('value', snapshot => {
                 day = snapshot.val();
             });
 
@@ -1252,14 +1217,14 @@ class Nutrition extends React.Component {
     };
 
     render() {
-        const { userData } = this.props;
-        const { day, user, todayButton, loading, messageInfo, snackbar } = this.state;
+        const { userData, data } = this.props;
+        const { day, todayButton, loading, messageInfo, snackbar } = this.state;
         const { message, key } = messageInfo;
         const { protein, carbs, fat } = day.nutrition || 0;
 
         return (
             <div>
-                {!loading && !isEmpty(day) && !isEmpty(user) ? (
+                {!loading && !isEmpty(day) && !isEmpty(data) ? (
                     <div className="nutrition">
                         <HeaderWrapper>
                             <div>
