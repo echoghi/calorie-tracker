@@ -148,28 +148,24 @@ class Calendar extends React.Component {
                     options={calorieOptions}
                     animate={animate}
                     containerStyle={calorieContainerStyle}
-                    containerClassName={'day__overview--calories'}
                 />
                 <CircleProgress
                     progress={proteinProgress}
                     options={proteinOptions}
                     animate={animate}
                     containerStyle={proteinContainerStyle}
-                    containerClassName={'day__overview--protein'}
                 />
                 <CircleProgress
                     progress={carbProgress}
                     options={carbOptions}
                     animate={animate}
                     containerStyle={carbContainerStyle}
-                    containerClassName={'day__overview--carbs'}
                 />
                 <CircleProgress
                     progress={fatProgress}
                     options={fatOptions}
                     animate={animate}
                     containerStyle={fatContainerStyle}
-                    containerClassName={'day__overview--fats'}
                 />
             </div>
         );

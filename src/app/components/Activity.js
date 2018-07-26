@@ -48,7 +48,6 @@ class Activity extends React.Component {
         super(props);
 
         this.state = {
-            now: moment(),
             day: {},
             activity: {},
             loading: true,

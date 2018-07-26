@@ -139,7 +139,6 @@ class Nutrition extends React.Component {
 
         this.state = {
             requestedDate,
-            now: moment(),
             day: {},
             formattedDay: {},
             loading: true,
