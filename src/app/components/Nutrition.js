@@ -651,7 +651,7 @@ class Nutrition extends React.Component {
             dayRef.on('value', snapshot => {
                 day = snapshot.val();
             });
-            console.log(dayRef, day);
+
             day.nutrition.calories += parseInt(calories) * servings;
             day.nutrition.fat += parseInt(fat) * servings;
             day.nutrition.protein += parseInt(protein) * servings;

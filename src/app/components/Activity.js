@@ -120,6 +120,11 @@ class Activity extends React.Component {
                 const { year, date, month } = day.day;
                 day.day = moment([year, month, date]);
 
+                const dayRef = database
+                    .ref('users')
+                    .child(userData.uid)
+                    .child(`calendar/${dayIndex}`);
+
                 const fitnessRef = database
                     .ref('users')
                     .child(userData.uid)
@@ -128,7 +133,15 @@ class Activity extends React.Component {
                 fitnessRef.on('value', snapshot => {
                     activity = snapshot.val();
 
-                    callback({ activity, day, loading: false, dayIndex, todayButton: true, requestedDate: null });
+                    callback({
+                        activity,
+                        day,
+                        loading: false,
+                        dayIndex,
+                        dayRef,
+                        todayButton: true,
+                        requestedDate: null
+                    });
                 });
             });
         };
@@ -160,6 +173,11 @@ class Activity extends React.Component {
                                 .child(userData.uid)
                                 .child(`calendar/${dayIndex}/fitness`);
 
+                            const dayRef = database
+                                .ref('users')
+                                .child(userData.uid)
+                                .child(`calendar/${dayIndex}`);
+
                             fitnessRef.on('value', snapshot => {
                                 activity = snapshot.val();
 
@@ -169,6 +187,7 @@ class Activity extends React.Component {
                                     loading: false,
                                     requestedDate,
                                     dayIndex,
+                                    dayRef,
                                     todayButton: false
                                 });
                             });
@@ -343,23 +362,17 @@ class Activity extends React.Component {
     }
 
     deleteExercise = index => {
-        const { userData } = this.props;
-        const { dayIndex } = this.state;
+        const { dayRef } = this.state;
 
         let day;
 
-        const queryRef = database
-            .ref('users')
-            .child(userData.uid)
-            .child(`calendar/${dayIndex}`);
-
-        queryRef.on('value', snapshot => {
+        dayRef.on('value', snapshot => {
             day = snapshot.val();
         });
 
         day.fitness.activities = day.fitness.activities.filter(exercise => exercise !== day.fitness.activities[index]);
 
-        queryRef.set(day);
+        dayRef.set(day);
 
         this.setState({ confirmationDialog: false, deleteExercise: null });
     };
@@ -575,9 +588,8 @@ class Activity extends React.Component {
     };
 
     onSubmit = () => {
-        const { userData } = this.props;
         let {
-            dayIndex,
+            dayRef,
             exerciseName,
             exerciseType,
             calories,
@@ -592,12 +604,7 @@ class Activity extends React.Component {
         if (this.validateInputs()) {
             let day;
 
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${dayIndex}`);
-
-            queryRef.on('value', snapshot => {
+            dayRef.on('value', snapshot => {
                 day = snapshot.val();
             });
 
@@ -639,7 +646,7 @@ class Activity extends React.Component {
                     formSwitch: false
                 },
                 () => {
-                    queryRef.set(day);
+                    dayRef.set(day);
                     // Reset Validation
                     for (let attr in validation) {
                         if (validation[attr]) {
