@@ -257,7 +257,6 @@ class Settings extends React.Component {
 
             if (validation.account.age.valid) {
                 user.age = parseInt(age);
-                document.getElementById('age').value = '';
             }
 
             if (validation.account.gender.valid && gender) {
@@ -266,12 +265,10 @@ class Settings extends React.Component {
 
             if (validation.account.height.valid) {
                 user.height = parseInt(height);
-                document.getElementById('height').value = '';
             }
 
             if (validation.account.weight.valid) {
                 user.weight = parseInt(weight);
-                document.getElementById('weight').value = '';
             }
 
             this.queue.push({
@@ -321,22 +318,18 @@ class Settings extends React.Component {
 
             if (validation.goals.calories.valid) {
                 goals.calories = parseInt(calories);
-                document.getElementById('calories').value = '';
             }
 
             if (validation.goals.carbs.valid) {
                 goals.carbs = parseInt(carbs);
-                document.getElementById('carbs').value = '';
             }
 
             if (validation.goals.fat.valid) {
                 goals.fat = parseInt(fat);
-                document.getElementById('fat').value = '';
             }
 
             if (validation.goals.protein.valid) {
                 goals.protein = parseInt(protein);
-                document.getElementById('protein').value = '';
             }
 
             this.queue.push({
@@ -517,6 +510,7 @@ class Settings extends React.Component {
                                 error={this.validate('account', 'age')}
                                 onChange={this.onAccountChange('age')}
                                 style={{ paddingRight: 20 }}
+                                defaultValue={!isEmpty(data) && data.user.age ? data.user.age : ''}
                             />
                             <Select
                                 name="gender"
@@ -537,6 +531,7 @@ class Settings extends React.Component {
                                 error={this.validate('account', 'height')}
                                 onChange={this.onAccountChange('height')}
                                 style={{ paddingRight: 20 }}
+                                defaultValue={!isEmpty(data) && data.user.height ? data.user.height : ''}
                             />
                             <Input
                                 name="weight"
@@ -545,6 +540,7 @@ class Settings extends React.Component {
                                 type="number"
                                 error={this.validate('account', 'weight')}
                                 onChange={this.onAccountChange('weight')}
+                                defaultValue={!isEmpty(data) && data.user.weight ? data.user.weight : ''}
                             />
                             <Button
                                 style={{
@@ -577,6 +573,9 @@ class Settings extends React.Component {
                                 error={this.validate('goals', 'calories')}
                                 onChange={this.onGoalsChange('calories')}
                                 style={{ paddingRight: 20 }}
+                                defaultValue={
+                                    !isEmpty(data) && data.user.goals.calories ? data.user.goals.calories : ''
+                                }
                             />
                             <Input
                                 name="carbs"
@@ -586,6 +585,7 @@ class Settings extends React.Component {
                                 error={this.validate('goals', 'carbs')}
                                 onChange={this.onGoalsChange('carbs')}
                                 style={{ paddingRight: 20 }}
+                                defaultValue={!isEmpty(data) && data.user.goals.carbs ? data.user.goals.carbs : ''}
                             />
                             <Input
                                 name="fat"
@@ -595,6 +595,7 @@ class Settings extends React.Component {
                                 error={this.validate('goals', 'fat')}
                                 onChange={this.onGoalsChange('fat')}
                                 style={{ paddingRight: 20 }}
+                                defaultValue={!isEmpty(data) && data.user.goals.fat ? data.user.goals.fat : ''}
                             />
                             <Input
                                 name="protein"
@@ -603,6 +604,7 @@ class Settings extends React.Component {
                                 type="number"
                                 error={this.validate('goals', 'protein')}
                                 onChange={this.onGoalsChange('protein')}
+                                defaultValue={!isEmpty(data) && data.user.goals.protein ? data.user.goals.protein : ''}
                             />
                             <Button
                                 style={{
