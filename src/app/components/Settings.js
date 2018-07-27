@@ -197,7 +197,9 @@ class Settings extends React.Component {
         return error && validation[name][input].dirty;
     }
 
-    onSubmitGeneral = () => {
+    onSubmitGeneral = event => {
+        event.preventDefault();
+
         const { displayName, validation, snackbar } = this.state;
 
         if (this.validateInputs()) {
@@ -208,8 +210,6 @@ class Settings extends React.Component {
                 .catch(error => {
                     console.log(error);
                 });
-
-            document.getElementById('displayName').value = '';
 
             this.queue.push({
                 message: 'Display Name Updated',
@@ -470,7 +470,7 @@ class Settings extends React.Component {
     };
 
     render() {
-        const { data } = this.props;
+        const { data, userData } = this.props;
 
         return (
             <div className="settings">
@@ -478,13 +478,14 @@ class Settings extends React.Component {
                     <SettingsSection>
                         <SettingsHeader>General Info</SettingsHeader>
                         <SettingsSubHeader>What would you like to be called?</SettingsSubHeader>
-                        <form>
+                        <form onSubmit={this.onSubmitGeneral}>
                             <Input
                                 name="displayName"
                                 id="displayName"
                                 label="Display Name"
                                 error={this.validate('general', 'displayName')}
                                 onChange={this.onGeneralChange('displayName')}
+                                defaultValue={!isEmpty(userData) ? userData.displayName : ''}
                             />
                             <Button
                                 style={{
