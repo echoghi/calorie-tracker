@@ -50,7 +50,6 @@ class Activity extends React.Component {
         this.state = {
             day: {},
             formattedDay: {},
-            loading: true,
             validation: {
                 calories: new inputObj(false),
                 exerciseName: new inputObj(true),
@@ -129,7 +128,6 @@ class Activity extends React.Component {
                 callback({
                     day,
                     formattedDay,
-                    loading: false,
                     dayIndex,
                     dayRef,
                     todayButton: true,
@@ -168,7 +166,6 @@ class Activity extends React.Component {
                             callback({
                                 day,
                                 formattedDay,
-                                loading: false,
                                 requestedDate,
                                 dayIndex,
                                 dayRef,
@@ -729,11 +726,11 @@ class Activity extends React.Component {
 
     render() {
         const { userData, data } = this.props;
-        const { day, formattedDay, loading, todayButton } = this.state;
+        const { day, formattedDay, todayButton } = this.state;
 
         return (
             <div>
-                {!loading && !isEmpty(day) && !isEmpty(data) ? (
+                {!isEmpty(day) && !isEmpty(data) ? (
                     <div className="activity">
                         <HeaderWrapper>
                             <div>

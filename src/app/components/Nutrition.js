@@ -141,7 +141,6 @@ class Nutrition extends React.Component {
             requestedDate,
             day: {},
             formattedDay: {},
-            loading: true,
             snackbar: false,
             todayButton: false,
             messageInfo: {},
@@ -216,7 +215,6 @@ class Nutrition extends React.Component {
                 callback({
                     day,
                     formattedDay,
-                    loading: false,
                     dayRef,
                     dayIndex,
                     todayButton: true,
@@ -264,7 +262,6 @@ class Nutrition extends React.Component {
                             callback({
                                 day,
                                 formattedDay,
-                                loading: false,
                                 requestedDate,
                                 dayRef,
                                 dayIndex,
@@ -1159,13 +1156,13 @@ class Nutrition extends React.Component {
 
     render() {
         const { userData, data } = this.props;
-        const { formattedDay, day, todayButton, loading, messageInfo, snackbar } = this.state;
+        const { formattedDay, day, todayButton, messageInfo, snackbar } = this.state;
         const { message, key } = messageInfo;
         const { protein, carbs, fat } = day.nutrition || 0;
 
         return (
             <div>
-                {!loading && !isEmpty(day) && !isEmpty(data) ? (
+                {!isEmpty(day) && !isEmpty(data) ? (
                     <div className="nutrition">
                         <HeaderWrapper>
                             <div>
