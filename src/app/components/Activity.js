@@ -49,7 +49,7 @@ class Activity extends React.Component {
 
         this.state = {
             day: {},
-            activity: {},
+            formattedDay: {},
             loading: true,
             validation: {
                 calories: new inputObj(false),
@@ -86,7 +86,7 @@ class Activity extends React.Component {
 
     mapDayToState = (userData, today) => {
         const { location, history } = this.props;
-        let { day, activity } = this.state;
+        let { day, formattedDay } = this.state;
         let requestedDate = null;
 
         if (location.search) {
@@ -110,37 +110,30 @@ class Activity extends React.Component {
                 .orderByChild('day')
                 .limitToLast(1);
 
-            queryRef.on('value', snapshot => {
+            queryRef.once('value', snapshot => {
                 day = snapshot.val();
+                formattedDay = snapshot.val();
                 dayIndex = Object.keys(day)[0];
 
                 day = day[dayIndex];
+                formattedDay = Object.assign({}, day[dayIndex]);
 
                 const { year, date, month } = day.day;
-                day.day = moment([year, month, date]);
+                formattedDay.day = moment([year, month, date]);
 
                 const dayRef = database
                     .ref('users')
                     .child(userData.uid)
                     .child(`calendar/${dayIndex}`);
 
-                const fitnessRef = database
-                    .ref('users')
-                    .child(userData.uid)
-                    .child(`calendar/${dayIndex}/fitness`);
-
-                fitnessRef.on('value', snapshot => {
-                    activity = snapshot.val();
-
-                    callback({
-                        activity,
-                        day,
-                        loading: false,
-                        dayIndex,
-                        dayRef,
-                        todayButton: true,
-                        requestedDate: null
-                    });
+                callback({
+                    day,
+                    formattedDay,
+                    loading: false,
+                    dayIndex,
+                    dayRef,
+                    todayButton: true,
+                    requestedDate: null
                 });
             });
         };
@@ -153,42 +146,33 @@ class Activity extends React.Component {
                     .child('calendar')
                     .orderByChild('day');
 
-                queryRef.on('value', snapshot => {
+                queryRef.once('value', snapshot => {
                     snapshot.forEach(childSnapshot => {
                         day = childSnapshot.val();
-
+                        formattedDay = childSnapshot.val();
                         dayIndex = childSnapshot.key;
 
                         const { year, date, month } = day.day;
-                        day.day = moment([year, month, date]);
+                        formattedDay.day = moment([year, month, date]);
 
                         if (
                             day.day.date() === requestedDate.date() &&
                             day.day.month() === requestedDate.month() &&
                             day.day.year() === requestedDate.year()
                         ) {
-                            const fitnessRef = database
-                                .ref('users')
-                                .child(userData.uid)
-                                .child(`calendar/${dayIndex}/fitness`);
-
                             const dayRef = database
                                 .ref('users')
                                 .child(userData.uid)
                                 .child(`calendar/${dayIndex}`);
 
-                            fitnessRef.on('value', snapshot => {
-                                activity = snapshot.val();
-
-                                callback({
-                                    activity,
-                                    day,
-                                    loading: false,
-                                    requestedDate,
-                                    dayIndex,
-                                    dayRef,
-                                    todayButton: false
-                                });
+                            callback({
+                                day,
+                                formattedDay,
+                                loading: false,
+                                requestedDate,
+                                dayIndex,
+                                dayRef,
+                                todayButton: false
                             });
                         }
                     });
@@ -204,13 +188,13 @@ class Activity extends React.Component {
     };
 
     renderActivityTable() {
-        const { activity, sorted } = this.state;
+        const { day, sorted } = this.state;
 
         return (
             <ReactTable
                 style={tableStyle.table}
                 ref={instance => (this.tableInstance = instance)}
-                data={activity.activities || []}
+                data={!isEmpty(day) && day.fitness.activities ? day.fitness.activities : []}
                 noDataText="No Exercises Found"
                 columns={[
                     {
@@ -361,13 +345,7 @@ class Activity extends React.Component {
     }
 
     deleteExercise = index => {
-        const { dayRef } = this.state;
-
-        let day;
-
-        dayRef.on('value', snapshot => {
-            day = snapshot.val();
-        });
+        const { dayRef, day } = this.state;
 
         day.fitness.activities = day.fitness.activities.filter(exercise => exercise !== day.fitness.activities[index]);
 
@@ -589,6 +567,7 @@ class Activity extends React.Component {
     onSubmit = () => {
         let {
             dayRef,
+            day,
             exerciseName,
             exerciseType,
             calories,
@@ -601,12 +580,6 @@ class Activity extends React.Component {
         } = this.state;
 
         if (this.validateInputs()) {
-            let day;
-
-            dayRef.on('value', snapshot => {
-                day = snapshot.val();
-            });
-
             if (!day.fitness.activities) {
                 day.fitness.activities = [];
             }
@@ -756,7 +729,7 @@ class Activity extends React.Component {
 
     render() {
         const { userData, data } = this.props;
-        const { day, loading, todayButton } = this.state;
+        const { day, formattedDay, loading, todayButton } = this.state;
 
         return (
             <div>
@@ -765,7 +738,7 @@ class Activity extends React.Component {
                         <HeaderWrapper>
                             <div>
                                 <h1>Activity</h1>
-                                <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
+                                <h3>{formattedDay.day.format('dddd, MMMM Do YYYY')}</h3>
                             </div>
                             <div>
                                 <Button

@@ -145,7 +145,6 @@ class Nutrition extends React.Component {
             snackbar: false,
             todayButton: false,
             messageInfo: {},
-            mealTypes: [],
             validation: {
                 name: new inputObj(true),
                 servings: new inputObj(true),
@@ -200,7 +199,7 @@ class Nutrition extends React.Component {
                 .orderByChild('day')
                 .limitToLast(1);
 
-            queryRef.on('value', snapshot => {
+            queryRef.once('value', snapshot => {
                 day = snapshot.val();
                 dayIndex = Object.keys(day)[0];
                 formattedDay = Object.assign({}, day[dayIndex]);
@@ -234,7 +233,7 @@ class Nutrition extends React.Component {
                     .child('calendar')
                     .orderByChild('day');
 
-                queryRef.on('value', snapshot => {
+                queryRef.once('value', snapshot => {
                     snapshot.forEach(childSnapshot => {
                         day = childSnapshot.val();
                         formattedDay = childSnapshot.val();
