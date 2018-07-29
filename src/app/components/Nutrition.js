@@ -418,7 +418,7 @@ class Nutrition extends React.Component {
     }
 
     deleteMeal = index => {
-        const { dayRef, day } = this.state;
+        const { dayRef, day, snackbar } = this.state;
 
         const meal = day.nutrition.meals[index];
 
@@ -429,45 +429,53 @@ class Nutrition extends React.Component {
 
         day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
-        dayRef.set(day);
-
-        this.queue.push({
-            message: 'Meal Removed',
-            key: new Date().getTime()
-        });
-
-        if (this.state.snackbar) {
-            // immediately begin dismissing current message
-            // to start showing new one
-            this.setState({ snackbar: false });
-        } else {
-            this.processQueue();
-        }
-
         this.setState({ confirmationDialog: false, deleteMeal: null });
+
+        dayRef.set(day, error => {
+            if (error) {
+                console.log('Delete Meal Error', error);
+            } else {
+                this.queue.push({
+                    message: 'Meal Removed',
+                    key: new Date().getTime()
+                });
+
+                if (snackbar) {
+                    // immediately begin dismissing current message
+                    // to start showing new one
+                    this.setState({ snackbar: false });
+                } else {
+                    this.processQueue();
+                }
+            }
+        });
     };
 
     deleteNote = index => {
-        const { dayRef, day } = this.state;
+        const { dayRef, day, snackbar } = this.state;
 
         day.notes = day.notes.filter(note => note !== day.notes[index]);
 
-        dayRef.set(day);
-
-        this.queue.push({
-            message: 'Note Removed',
-            key: new Date().getTime()
-        });
-
-        if (this.state.snackbar) {
-            // immediately begin dismissing current message
-            // to start showing new one
-            this.setState({ snackbar: false });
-        } else {
-            this.processQueue();
-        }
-
         this.setState({ noteConfirmationDialog: false });
+
+        dayRef.set(day, error => {
+            if (error) {
+                console.log('Remove Note Error', error);
+            } else {
+                this.queue.push({
+                    message: 'Note Removed',
+                    key: new Date().getTime()
+                });
+
+                if (snackbar) {
+                    // immediately begin dismissing current message
+                    // to start showing new one
+                    this.setState({ snackbar: false });
+                } else {
+                    this.processQueue();
+                }
+            }
+        });
     };
 
     editNote = index => {
@@ -481,22 +489,26 @@ class Nutrition extends React.Component {
             note.time = moment().format('lll');
             note.edited = true;
 
-            this.queue.push({
-                message: 'Note Saved',
-                key: new Date().getTime()
-            });
+            dayRef.set(day, error => {
+                if (error) {
+                    console.log('Edit Note Error', error);
+                } else {
+                    this.queue.push({
+                        message: 'Note Saved',
+                        key: new Date().getTime()
+                    });
 
-            if (snackbar) {
-                // immediately begin dismissing current message
-                // to start showing new one
-                this.setState({ snackbar: false });
-            } else {
-                this.processQueue();
-            }
+                    if (snackbar) {
+                        // immediately begin dismissing current message
+                        // to start showing new one
+                        this.setState({ snackbar: false });
+                    } else {
+                        this.processQueue();
+                    }
 
-            this.setState({ editNote: false, noteBody: '', noteTitle: '' }, () => {
-                dayRef.set(day);
-                this.resetNoteValidation();
+                    this.setState({ editNote: false, noteBody: '', noteTitle: '' });
+                    this.resetNoteValidation();
+                }
             });
         }
     };
@@ -616,36 +628,39 @@ class Nutrition extends React.Component {
             document.getElementById('fat').value = '';
             document.getElementById('protein').value = '';
 
-            this.queue.push({
-                message: 'Meal Added',
-                key: new Date().getTime()
-            });
-
-            if (snackbar) {
-                // immediately begin dismissing current message
-                // to start showing new one
-                this.setState({ snackbar: false });
-            } else {
-                this.processQueue();
+            if (!day.nutrition.meals) {
+                day.nutrition.meals = [];
             }
 
-            this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', servings: '' }, () => {
-                this.resetMealValidation();
+            day.nutrition.meals.push({
+                name,
+                servings: parseInt(servings),
+                calories: parseFloat(calories),
+                fat: parseFloat(fat),
+                protein: parseFloat(protein),
+                carbs: parseFloat(carbs)
+            });
 
-                if (!day.nutrition.meals) {
-                    day.nutrition.meals = [];
+            dayRef.set(day, error => {
+                if (error) {
+                    console.log('Add Meal Error', error);
+                } else {
+                    this.queue.push({
+                        message: 'Meal Added',
+                        key: new Date().getTime()
+                    });
+
+                    if (snackbar) {
+                        // immediately begin dismissing current message
+                        // to start showing new one
+                        this.setState({ snackbar: false });
+                    } else {
+                        this.processQueue();
+                    }
+
+                    this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', servings: '' });
+                    this.resetMealValidation();
                 }
-
-                day.nutrition.meals.push({
-                    name,
-                    servings: parseInt(servings),
-                    calories: parseFloat(calories),
-                    fat: parseFloat(fat),
-                    protein: parseFloat(protein),
-                    carbs: parseFloat(carbs)
-                });
-
-                dayRef.set(day);
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
@@ -673,23 +688,26 @@ class Nutrition extends React.Component {
                 time: moment().format('lll')
             });
 
-            this.queue.push({
-                message: 'Note Added',
-                key: new Date().getTime()
-            });
+            dayRef.set(day, error => {
+                if (error) {
+                    console.log('Add Note Error', error);
+                } else {
+                    this.queue.push({
+                        message: 'Note Added',
+                        key: new Date().getTime()
+                    });
 
-            if (snackbar) {
-                // immediately begin dismissing current message
-                // to start showing new one
-                this.setState({ snackbar: false });
-            } else {
-                this.processQueue();
-            }
+                    if (snackbar) {
+                        // immediately begin dismissing current message
+                        // to start showing new one
+                        this.setState({ snackbar: false });
+                    } else {
+                        this.processQueue();
+                    }
 
-            this.setState({ noteTitle: '', noteBody: '', addNote: false }, () => {
-                dayRef.set(day);
-
-                this.resetNoteValidation();
+                    this.setState({ noteTitle: '', noteBody: '', addNote: false });
+                    this.resetNoteValidation();
+                }
             });
         } else {
             // If there is an invalid input, mark all as dirty on submit to alert the user
