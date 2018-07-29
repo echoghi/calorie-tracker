@@ -419,13 +419,13 @@ class Nutrition extends React.Component {
 
     deleteMeal = index => {
         const { dayRef, day, snackbar } = this.state;
-
         const meal = day.nutrition.meals[index];
 
-        day.nutrition.calories -= meal.calories * meal.servings;
-        day.nutrition.protein -= meal.protein * meal.servings;
-        day.nutrition.fat -= meal.fat * meal.servings;
-        day.nutrition.carbs -= meal.carbs * meal.servings;
+        for (let name in day.nutrition) {
+            if (name !== 'meals') {
+                day.nutrition[name] -= meal[name] * meal.servings;
+            }
+        }
 
         day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
 
