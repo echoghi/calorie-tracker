@@ -403,18 +403,6 @@ class Calendar extends React.Component {
         this.setState({ time });
     }
 
-    renderPlaceholders() {
-        return Array(42)
-            .fill(0)
-            .map((n, i) => (
-                <div className={`day loading ${n}`} key={i}>
-                    <div className="number" />
-                    <div className="circle" />
-                    <div className="info" />
-                </div>
-            ));
-    }
-
     renderLegend() {
         return (
             <div className="legend">
@@ -469,9 +457,8 @@ class Calendar extends React.Component {
                     <DialogTitle>{breakdownDay.format('MMMM Do, YYYY')}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            If you've got a smart watch or fitness tracker, you can add your fitness stats in the
-                            activity tab. This will override your calculated total daily energy expenditure (TDEE) and
-                            keep your data more accurate. If you've taken notes for the day, they'll show up here.
+                            If you've got a smart watch or fitness tracker, you can add your workouts in the activity
+                            section. You can then track your personal bests and other stats via the overview section.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -524,7 +511,7 @@ class Calendar extends React.Component {
                                     <span>Fri</span>
                                     <span>Sat</span>
                                 </div>
-                                {!isEmpty(data) && !loading ? this.renderDays() : this.renderPlaceholders()}
+                                {!isEmpty(data) && !loading ? this.renderDays() : ''}
                             </div>
                             {this.renderLegend()}
                         </div>
