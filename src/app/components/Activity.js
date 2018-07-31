@@ -47,9 +47,20 @@ class Activity extends React.Component {
     constructor(props) {
         super(props);
 
+        let requestedDate = null;
+
+        if (this.props.location.search) {
+            const parsed = queryString.parse(location.search);
+            requestedDate = moment(parseInt(parsed.d));
+        }
+
         this.state = {
+            requestedDate,
             day: {},
             formattedDay: {},
+            snackbar: false,
+            todayButton: false,
+            messageInfo: {},
             validation: {
                 calories: new inputObj(false),
                 exerciseName: new inputObj(true),
@@ -84,14 +95,8 @@ class Activity extends React.Component {
     }
 
     mapDayToState = (userData, today) => {
-        const { location, history } = this.props;
-        let { day, formattedDay } = this.state;
-        let requestedDate = null;
-
-        if (location.search) {
-            const parsed = queryString.parse(location.search);
-            requestedDate = parseInt(parsed.d);
-        }
+        const { history } = this.props;
+        let { day, formattedDay, requestedDate, todayButton } = this.state;
 
         let dayIndex;
 
@@ -111,11 +116,9 @@ class Activity extends React.Component {
 
             queryRef.once('value', snapshot => {
                 day = snapshot.val();
-                formattedDay = snapshot.val();
                 dayIndex = Object.keys(day)[0];
-
-                day = day[dayIndex];
                 formattedDay = Object.assign({}, day[dayIndex]);
+                day = day[dayIndex];
 
                 const { year, date, month } = day.day;
                 formattedDay.day = moment([year, month, date]);
@@ -128,8 +131,8 @@ class Activity extends React.Component {
                 callback({
                     day,
                     formattedDay,
-                    dayIndex,
                     dayRef,
+                    dayIndex,
                     todayButton: true,
                     requestedDate: null
                 });
@@ -154,10 +157,19 @@ class Activity extends React.Component {
                         formattedDay.day = moment([year, month, date]);
 
                         if (
-                            day.day.date() === requestedDate.date() &&
-                            day.day.month() === requestedDate.month() &&
-                            day.day.year() === requestedDate.year()
+                            formattedDay.day.date() === requestedDate.date() &&
+                            formattedDay.day.month() === requestedDate.month() &&
+                            formattedDay.day.year() === requestedDate.year()
                         ) {
+                            // If requestedDate is Today, disable the today button
+                            if (
+                                moment().date() === requestedDate.date() &&
+                                moment().month() === requestedDate.month() &&
+                                moment().year() === requestedDate.year()
+                            ) {
+                                todayButton = true;
+                            }
+
                             const dayRef = database
                                 .ref('users')
                                 .child(userData.uid)
@@ -169,7 +181,7 @@ class Activity extends React.Component {
                                 requestedDate,
                                 dayIndex,
                                 dayRef,
-                                todayButton: false
+                                todayButton
                             });
                         }
                     });

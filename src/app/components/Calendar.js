@@ -463,11 +463,6 @@ class Calendar extends React.Component {
     renderBreakdown = () => {
         const { breakdown, breakdownDay } = this.state;
 
-        const buttonStyle = {
-            fontSize: 14,
-            height: 43
-        };
-
         if (breakdown) {
             return (
                 <Dialog open={breakdown} onClose={() => this.setState({ breakdown: false })}>
@@ -481,20 +476,14 @@ class Calendar extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button
-                            style={buttonStyle}
                             component={Link}
                             to={`/nutrition?d=${breakdownDay.format('x')}`}
                             color="primary"
+                            autoFocus
                         >
                             View Nutrition
                         </Button>
-                        <Button
-                            style={buttonStyle}
-                            component={Link}
-                            to={`/activity?d=${breakdownDay.format('x')}`}
-                            color="primary"
-                            autoFocus
-                        >
+                        <Button component={Link} to={`/activity?d=${breakdownDay.format('x')}`} color="primary">
                             View Activity
                         </Button>
                     </DialogActions>
