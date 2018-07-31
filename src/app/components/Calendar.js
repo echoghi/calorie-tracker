@@ -14,6 +14,8 @@ import Fade from '@material-ui/core/Fade';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import isEmpty from 'lodash.isempty';
+// Images
+import runnerIcon from '../assets/images/apple-runner.png';
 
 const Icon = styled.i`
     position: absolute;
@@ -52,9 +54,6 @@ const Icon = styled.i`
     }
 `;
 
-// Images
-import runnerIcon from '../assets/images/apple-runner.png';
-
 const mapStateToProps = state => ({
     data: state.adminState.data,
     loading: state.adminState.loading
@@ -77,8 +76,7 @@ class Calendar extends React.Component {
         let { time } = this.state;
         let now = moment();
         let animate;
-        const calorieGoal = day.fitness.calories ? day.fitness.calories : data.user.goals.calories;
-        let calorieProgress = calories / calorieGoal;
+        let calorieProgress = calories / data.user.goals.calories;
         let proteinProgress = protein / data.user.goals.protein;
         let carbProgress = carbs / data.user.goals.carbs;
         let fatProgress = fat / data.user.goals.fat;
