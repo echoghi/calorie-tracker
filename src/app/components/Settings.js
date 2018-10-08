@@ -402,7 +402,11 @@ class Settings extends React.Component {
                     onExited={this.handleExited}
                     message={<span id="message-id">{message}</span>}
                     action={[
-                        <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            onClick={this.handleSnackbarClose}
+                        >
                             <i className="icon-x2" style={{ color: 'white' }} />
                         </IconButton>
                     ]}
@@ -436,12 +440,15 @@ class Settings extends React.Component {
 
         if (deleteAccountDialog) {
             return (
-                <Dialog open={deleteAccountDialog} onClose={() => this.setState({ deleteAccountDialog: false })}>
+                <Dialog
+                    open={deleteAccountDialog}
+                    onClose={() => this.setState({ deleteAccountDialog: false })}
+                >
                     <DialogTitle>Delete Account?</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Are you sure you want to delete this account? All of your data will be permanently deleted
-                            from our database.
+                            Are you sure you want to delete this account? All of your data will be
+                            permanently deleted from our database.
                         </DialogContentText>
                     </DialogContent>
 
@@ -453,7 +460,11 @@ class Settings extends React.Component {
                         >
                             Delete
                         </Button>
-                        <Button onClick={() => this.setState({ deleteAccountDialog: false })} color="primary" autoFocus>
+                        <Button
+                            onClick={() => this.setState({ deleteAccountDialog: false })}
+                            color="primary"
+                            autoFocus
+                        >
                             Cancel
                         </Button>
                     </DialogActions>
@@ -498,8 +509,8 @@ class Settings extends React.Component {
                     <SettingsSection>
                         <SettingsHeader>Account Info</SettingsHeader>
                         <SettingsSubHeader>
-                            Setup your body measurements and let us calculate your TDEE to provide a more accurate
-                            experience.
+                            Setup your body measurements and let us calculate your TDEE to provide a
+                            more accurate experience.
                         </SettingsSubHeader>
                         <form>
                             <Input
@@ -531,7 +542,9 @@ class Settings extends React.Component {
                                 error={this.validate('account', 'height')}
                                 onChange={this.onAccountChange('height')}
                                 style={{ paddingRight: 20 }}
-                                defaultValue={!isEmpty(data) && data.user.height ? data.user.height : ''}
+                                defaultValue={
+                                    !isEmpty(data) && data.user.height ? data.user.height : ''
+                                }
                             />
                             <Input
                                 name="weight"
@@ -540,7 +553,9 @@ class Settings extends React.Component {
                                 type="number"
                                 error={this.validate('account', 'weight')}
                                 onChange={this.onAccountChange('weight')}
-                                defaultValue={!isEmpty(data) && data.user.weight ? data.user.weight : ''}
+                                defaultValue={
+                                    !isEmpty(data) && data.user.weight ? data.user.weight : ''
+                                }
                             />
                             <Button
                                 style={{
@@ -560,9 +575,10 @@ class Settings extends React.Component {
                     <SettingsSection>
                         <SettingsHeader>Goals</SettingsHeader>
                         <SettingsSubHeader>
-                            Already have goals in mind? Enter them here or your calorie goal will be based on your TDEE,
-                            which is calculated with your height, wieght, gender, and age. If you haven't provided the
-                            necessary info, then your calorie goal will default to 2000.
+                            Already have goals in mind? Enter them here or your calorie goal will be
+                            based on your TDEE, which is calculated with your height, weight,
+                            gender, and age. If you haven't provided the necessary info, then your
+                            calorie goal will default to 2000.
                         </SettingsSubHeader>
                         <form>
                             <Input
@@ -574,7 +590,9 @@ class Settings extends React.Component {
                                 onChange={this.onGoalsChange('calories')}
                                 style={{ paddingRight: 20 }}
                                 defaultValue={
-                                    !isEmpty(data) && data.user.goals.calories ? data.user.goals.calories : ''
+                                    !isEmpty(data) && data.user.goals.calories
+                                        ? data.user.goals.calories
+                                        : ''
                                 }
                             />
                             <Input
@@ -585,7 +603,11 @@ class Settings extends React.Component {
                                 error={this.validate('goals', 'carbs')}
                                 onChange={this.onGoalsChange('carbs')}
                                 style={{ paddingRight: 20 }}
-                                defaultValue={!isEmpty(data) && data.user.goals.carbs ? data.user.goals.carbs : ''}
+                                defaultValue={
+                                    !isEmpty(data) && data.user.goals.carbs
+                                        ? data.user.goals.carbs
+                                        : ''
+                                }
                             />
                             <Input
                                 name="fat"
@@ -595,7 +617,9 @@ class Settings extends React.Component {
                                 error={this.validate('goals', 'fat')}
                                 onChange={this.onGoalsChange('fat')}
                                 style={{ paddingRight: 20 }}
-                                defaultValue={!isEmpty(data) && data.user.goals.fat ? data.user.goals.fat : ''}
+                                defaultValue={
+                                    !isEmpty(data) && data.user.goals.fat ? data.user.goals.fat : ''
+                                }
                             />
                             <Input
                                 name="protein"
@@ -604,7 +628,11 @@ class Settings extends React.Component {
                                 type="number"
                                 error={this.validate('goals', 'protein')}
                                 onChange={this.onGoalsChange('protein')}
-                                defaultValue={!isEmpty(data) && data.user.goals.protein ? data.user.goals.protein : ''}
+                                defaultValue={
+                                    !isEmpty(data) && data.user.goals.protein
+                                        ? data.user.goals.protein
+                                        : ''
+                                }
                             />
                             <Button
                                 style={{
@@ -656,7 +684,8 @@ class Settings extends React.Component {
                     <DeleteAccount>
                         <SettingsHeader>Delete Account</SettingsHeader>
                         <SettingsSubHeader>
-                            We do our best to give you a great experience - we'll be sad to see you leave us.{' '}
+                            We do our best to give you a great experience - we'll be sad to see you
+                            leave us.{' '}
                         </SettingsSubHeader>
 
                         <Button
