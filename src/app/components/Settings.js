@@ -647,38 +647,6 @@ class Settings extends React.Component {
                                 Update Goals
                             </Button>
                         </form>
-                        {/* <FormControl
-                            style={{ marginTop: 15 }}
-                            value={this.state.fitnessGoal}
-                            onChange={event => this.setState({ fitnessGoal: event.target.value })}
-                            component="fieldset"
-                            required
-                        >
-                            <FormLabel component="legend">Fitness Goal</FormLabel>
-                            <RadioGroup row aria-label="fitness" name="fitness">
-                                <FormControlLabel
-                                    checked={this.state.fitnessGoal === 'maintain'}
-                                    value="maintain"
-                                    control={<Radio />}
-                                    label="Maintain"
-                                    style={{ padding: '0 10px' }}
-                                />
-                                <FormControlLabel
-                                    checked={this.state.fitnessGoal === 'cut'}
-                                    value="cut"
-                                    control={<Radio />}
-                                    label="Cut"
-                                    style={{ padding: '0 10px' }}
-                                />
-                                <FormControlLabel
-                                    checked={this.state.fitnessGoal === 'bulk'}
-                                    value="bulk"
-                                    control={<Radio />}
-                                    label="Bulk"
-                                    style={{ padding: '0 10px' }}
-                                />
-                            </RadioGroup>
-                        </FormControl> */}
                     </SettingsSection>
 
                     <DeleteAccount>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
@@ -35,11 +35,10 @@ const Name = styled.div`
     padding: 0 15px;
 `;
 
-class UserMenu extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+class UserMenu extends Component {
+    state = {
+        open: false
+    };
 
     componentDidMount() {
         window.addEventListener('mousedown', this.handleClickOutside);
@@ -50,7 +49,11 @@ class UserMenu extends React.Component {
     }
 
     handleClickOutside = event => {
-        if (this.menuRef && !this.menuRef.contains(event.target) && !this.imageRef.contains(event.target)) {
+        if (
+            this.menuRef &&
+            !this.menuRef.contains(event.target) &&
+            !this.imageRef.contains(event.target)
+        ) {
             this.setState({ open: false });
         }
     };
@@ -70,7 +73,10 @@ class UserMenu extends React.Component {
                     }}
                 >
                     <Fade in={open}>
-                        <Menu className="logout__button" onClose={() => this.setState({ open: false })}>
+                        <Menu
+                            className="logout__button"
+                            onClose={() => this.setState({ open: false })}
+                        >
                             <li>
                                 <Link onClick={this.handleMenu} to="settings">
                                     Account Settings

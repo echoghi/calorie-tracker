@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { database } from './firebase.js';
+import withFirebase from './HOC/withFirebase';
 import moment from 'moment';
 import queryString from 'query-string';
 import isEmpty from 'lodash.isempty';
@@ -172,111 +172,46 @@ class Nutrition extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         const { userData } = this.props;
 
-        if (userData !== nextProps.userData && !isEmpty(nextProps.userData)) {
-            this.mapDayToState(nextProps.userData);
+        if (userData !== prevProps.userData && !isEmpty(userData)) {
+            this.mapDayToState(userData);
         }
     }
 
     mapDayToState = userData => {
-        const { history } = this.props;
-        let { day, formattedDay, today, requestedDate, todayButton } = this.state;
-
-        let dayIndex;
-
-        const callback = state => {
-            this.setState(state);
-        };
-
-        const loadToday = () => {
-            const queryRef = database
-                .ref('users')
-                .child(userData.uid)
-                .child('calendar')
-                .orderByChild('day')
-                .limitToLast(1);
-
-            queryRef.once('value', snapshot => {
-                day = snapshot.val();
-                dayIndex = Object.keys(day)[0];
-                formattedDay = Object.assign({}, day[dayIndex]);
-                day = day[dayIndex];
-
-                const { year, date, month } = day.day;
-                formattedDay.day = moment([year, month, date]);
-
-                const dayRef = database
-                    .ref('users')
-                    .child(userData.uid)
-                    .child(`calendar/${dayIndex}`);
-
-                callback({
-                    day,
-                    formattedDay,
-                    dayRef,
-                    dayIndex,
-                    todayButton: true,
-                    requestedDate: null
-                });
-            });
-        };
+        let { today, requestedDate } = this.state;
 
         if (!today) {
-            if (requestedDate) {
-                const queryRef = database
-                    .ref('users')
-                    .child(userData.uid)
-                    .child('calendar')
-                    .orderByChild('day');
+            const { loadDay } = this.props;
 
-                queryRef.once('value', snapshot => {
-                    snapshot.forEach(childSnapshot => {
-                        day = childSnapshot.val();
-                        formattedDay = childSnapshot.val();
-                        dayIndex = childSnapshot.key;
+            const { day, todayButton, formattedDay, dayRef, dayIndex } = loadDay(
+                userData,
+                requestedDate
+            );
 
-                        const { year, date, month } = day.day;
-                        formattedDay.day = moment([year, month, date]);
-
-                        if (
-                            formattedDay.day.date() === requestedDate.date() &&
-                            formattedDay.day.month() === requestedDate.month() &&
-                            formattedDay.day.year() === requestedDate.year()
-                        ) {
-                            // If requestedDate is Today, disable the today button
-                            if (
-                                moment().date() === requestedDate.date() &&
-                                moment().month() === requestedDate.month() &&
-                                moment().year() === requestedDate.year()
-                            ) {
-                                todayButton = true;
-                            }
-
-                            const dayRef = database
-                                .ref('users')
-                                .child(userData.uid)
-                                .child(`calendar/${dayIndex}`);
-
-                            callback({
-                                day,
-                                formattedDay,
-                                requestedDate,
-                                dayRef,
-                                dayIndex,
-                                todayButton
-                            });
-                        }
-                    });
-                });
-            } else {
-                loadToday();
-            }
+            this.setState({
+                todayButton,
+                day,
+                formattedDay,
+                dayRef,
+                dayIndex
+            });
         } else {
+            const { loadDay, history } = this.props;
+
             history.push({ pathname: '/nutrition', search: '' });
 
-            loadToday();
+            const { day, todayButton, formattedDay, dayRef, dayIndex } = loadDay(userData);
+
+            this.setState({
+                day,
+                todayButton,
+                formattedDay,
+                dayRef,
+                dayIndex
+            });
         }
     };
 
@@ -298,7 +233,9 @@ class Nutrition extends React.Component {
                             return (
                                 <span style={tableStyle.thead}>
                                     {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
                                 </span>
                             );
                         },
@@ -312,7 +249,9 @@ class Nutrition extends React.Component {
                             return (
                                 <span style={tableStyle.thead}>
                                     {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
                                 </span>
                             );
                         },
@@ -326,7 +265,9 @@ class Nutrition extends React.Component {
                             return (
                                 <span style={tableStyle.thead}>
                                     {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
                                 </span>
                             );
                         },
@@ -340,7 +281,9 @@ class Nutrition extends React.Component {
                             return (
                                 <span style={tableStyle.thead}>
                                     {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
                                 </span>
                             );
                         },
@@ -354,7 +297,9 @@ class Nutrition extends React.Component {
                             return (
                                 <span style={tableStyle.thead}>
                                     {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
                                 </span>
                             );
                         },
@@ -369,7 +314,9 @@ class Nutrition extends React.Component {
                             return (
                                 <span style={tableStyle.thead}>
                                     {props.column.headerText}
-                                    <i className={getSortedComponentClass(sorted, props.column.id)} />
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
                                 </span>
                             );
                         },
@@ -411,7 +358,9 @@ class Nutrition extends React.Component {
 
     renderActions(index) {
         return (
-            <IconButton onClick={() => this.setState({ confirmationDialog: true, deleteMeal: index })}>
+            <IconButton
+                onClick={() => this.setState({ confirmationDialog: true, deleteMeal: index })}
+            >
                 <i className="icon-trash-2" />
             </IconButton>
         );
@@ -427,7 +376,9 @@ class Nutrition extends React.Component {
             }
         }
 
-        day.nutrition.meals = day.nutrition.meals.filter(meal => meal !== day.nutrition.meals[index]);
+        day.nutrition.meals = day.nutrition.meals.filter(
+            meal => meal !== day.nutrition.meals[index]
+        );
 
         this.setState({ confirmationDialog: false, deleteMeal: null });
 
@@ -613,7 +564,18 @@ class Nutrition extends React.Component {
     };
 
     onSubmit = () => {
-        let { dayRef, day, name, servings, calories, fat, carbs, protein, validation, snackbar } = this.state;
+        let {
+            dayRef,
+            day,
+            name,
+            servings,
+            calories,
+            fat,
+            carbs,
+            protein,
+            validation,
+            snackbar
+        } = this.state;
 
         if (this.validateInputs()) {
             day.nutrition.calories += parseInt(calories) * servings;
@@ -658,7 +620,14 @@ class Nutrition extends React.Component {
                         this.processQueue();
                     }
 
-                    this.setState({ calories: '', fat: '', carbs: '', protein: '', name: '', servings: '' });
+                    this.setState({
+                        calories: '',
+                        fat: '',
+                        carbs: '',
+                        protein: '',
+                        name: '',
+                        servings: ''
+                    });
                     this.resetMealValidation();
                 }
             });
@@ -841,13 +810,23 @@ class Nutrition extends React.Component {
                 >
                     <DialogTitle>{`Remove "${meal.name}"`}</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>Are you sure you want to remove this entry?</DialogContentText>
+                        <DialogContentText>
+                            Are you sure you want to remove this entry?
+                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.deleteMeal(deleteMeal)} color="primary" variant="raised">
+                        <Button
+                            onClick={() => this.deleteMeal(deleteMeal)}
+                            color="primary"
+                            variant="raised"
+                        >
                             Delete
                         </Button>
-                        <Button onClick={() => this.setState({ confirmationDialog: false })} color="primary" autoFocus>
+                        <Button
+                            onClick={() => this.setState({ confirmationDialog: false })}
+                            color="primary"
+                            autoFocus
+                        >
                             Cancel
                         </Button>
                     </DialogActions>
@@ -871,10 +850,16 @@ class Nutrition extends React.Component {
                 >
                     <DialogTitle>{`Remove "${note.title}"`}</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>Are you sure you want to remove this note?</DialogContentText>
+                        <DialogContentText>
+                            Are you sure you want to remove this note?
+                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.deleteNote(deleteNote)} color="primary" variant="raised">
+                        <Button
+                            onClick={() => this.deleteNote(deleteNote)}
+                            color="primary"
+                            variant="raised"
+                        >
                             Delete
                         </Button>
                         <Button
@@ -946,7 +931,9 @@ class Nutrition extends React.Component {
                 <Note key={i} onClick={() => this.setState({ activeNote: note })}>
                     <NoteTitle>{note.title}</NoteTitle>
                     <NoteBody>
-                        <span>{note.body.length > 30 ? `${note.body.substring(0, 30)}...` : note.body}</span>
+                        <span>
+                            {note.body.length > 30 ? `${note.body.substring(0, 30)}...` : note.body}
+                        </span>
                         <span>{note.edited ? `${note.time} (edited)` : note.time}</span>
                     </NoteBody>
                     <NoteActions>
@@ -1032,7 +1019,8 @@ class Nutrition extends React.Component {
     renderAddNote = () => {
         const { addNote, validation } = this.state;
 
-        const validate = name => (validation['note'][name].dirty && !validation['note'][name].valid ? true : false);
+        const validate = name =>
+            validation['note'][name].dirty && !validation['note'][name].valid ? true : false;
 
         if (addNote) {
             return (
@@ -1133,7 +1121,11 @@ class Nutrition extends React.Component {
                         </div>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.editNote(noteToEdit)} color="primary" variant="raised">
+                        <Button
+                            onClick={() => this.editNote(noteToEdit)}
+                            color="primary"
+                            variant="raised"
+                        >
                             Save
                         </Button>
                         <Button
@@ -1249,7 +1241,11 @@ class Nutrition extends React.Component {
                     onExited={this.handleExited}
                     message={<span id="message-id">{message}</span>}
                     action={[
-                        <IconButton key="close" aria-label="Close" onClick={this.handleSnackbarClose}>
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            onClick={this.handleSnackbarClose}
+                        >
                             <i className="icon-x2" style={{ color: 'white' }} />
                         </IconButton>
                     ]}
@@ -1264,4 +1260,4 @@ class Nutrition extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(Nutrition));
+export default withFirebase(withRouter(connect(mapStateToProps)(Nutrition)));
