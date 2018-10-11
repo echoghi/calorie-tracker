@@ -11,6 +11,7 @@ const loadDay = (userData, requestedDate) => {
     let dayIndex;
     let formattedDay;
     let result;
+    let todayButton = false;
 
     if (requestedDate) {
         const queryRef = database
