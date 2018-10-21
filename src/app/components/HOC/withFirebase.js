@@ -11,7 +11,7 @@ const loadDay = (userData, requestedDate) => {
     let dayIndex;
     let formattedDay;
     let result;
-    let todayButton = false;
+    let todayButton = true;
 
     if (requestedDate) {
         const queryRef = database
@@ -40,7 +40,7 @@ const loadDay = (userData, requestedDate) => {
                         moment().month() === requestedDate.month() &&
                         moment().year() === requestedDate.year()
                     ) {
-                        todayButton = true;
+                        todayButton = false;
                     }
 
                     const dayRef = database
@@ -86,7 +86,7 @@ const loadDay = (userData, requestedDate) => {
                 formattedDay,
                 dayRef,
                 dayIndex,
-                todayButton: true,
+                todayButton: false,
                 requestedDate: null
             };
         });

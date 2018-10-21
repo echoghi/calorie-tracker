@@ -181,38 +181,25 @@ class Nutrition extends React.Component {
     }
 
     mapDayToState = userData => {
-        let { today, requestedDate } = this.state;
+        const { today, requestedDate } = this.state;
+        const { loadDay, history } = this.props;
 
-        if (!today) {
-            const { loadDay } = this.props;
-
-            const { day, todayButton, formattedDay, dayRef, dayIndex } = loadDay(
-                userData,
-                requestedDate
-            );
-
-            this.setState({
-                todayButton,
-                day,
-                formattedDay,
-                dayRef,
-                dayIndex
-            });
-        } else {
-            const { loadDay, history } = this.props;
-
+        if (today) {
             history.push({ pathname: '/nutrition', search: '' });
-
-            const { day, todayButton, formattedDay, dayRef, dayIndex } = loadDay(userData);
-
-            this.setState({
-                day,
-                todayButton,
-                formattedDay,
-                dayRef,
-                dayIndex
-            });
         }
+
+        const { day, todayButton, formattedDay, dayRef, dayIndex } = loadDay(
+            userData,
+            requestedDate
+        );
+
+        this.setState({
+            todayButton,
+            day,
+            formattedDay,
+            dayRef,
+            dayIndex
+        });
     };
 
     renderMealsTable() {
@@ -1180,19 +1167,23 @@ class Nutrition extends React.Component {
                                 <h3>{formattedDay.day.format('dddd, MMMM Do YYYY')}</h3>
                             </div>
                             <div>
-                                <Button
-                                    onClick={() => {
-                                        this.setState({ today: true }, () => {
-                                            this.mapDayToState(userData);
-                                        });
-                                    }}
-                                    color="primary"
-                                    variant="outlined"
-                                    size="large"
-                                    disabled={todayButton}
-                                >
-                                    Today
-                                </Button>
+                                {todayButton ? (
+                                    <Button
+                                        onClick={() => {
+                                            this.setState(
+                                                { today: true, requestedDate: null },
+                                                () => {
+                                                    this.mapDayToState(userData);
+                                                }
+                                            );
+                                        }}
+                                        color="primary"
+                                        variant="outlined"
+                                        size="large"
+                                    >
+                                        Go to Today
+                                    </Button>
+                                ) : null}
                             </div>
                         </HeaderWrapper>
                         <div className="nutrition__overview">
