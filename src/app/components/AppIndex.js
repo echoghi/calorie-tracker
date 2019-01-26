@@ -9,17 +9,12 @@ import ErrorBoundary from './ErrorBoundary';
 import isEmpty from 'lodash.isempty';
 
 const NavBar = Loadable({
-    loader: () => import('./NavBar'),
+    loader: () => import('./Nav/NavBar'),
     loading: Loading
 });
 
 const SubNav = Loadable({
-    loader: () => import('./SubNav'),
-    loading: Loading
-});
-
-const ComingSoon = Loadable({
-    loader: () => import('./ComingSoon'),
+    loader: () => import('./Nav/SubNav'),
     loading: Loading
 });
 
@@ -28,13 +23,13 @@ const Calendar = Loadable({
     loading: Loading
 });
 
-const Nutrition = Loadable({
-    loader: () => import('./Nutrition'),
+const ComingSoon = Loadable({
+    loader: () => import('./ComingSoon'),
     loading: Loading
 });
 
-const Activity = Loadable({
-    loader: () => import('./Activity'),
+const Nutrition = Loadable({
+    loader: () => import('./Nutrition'),
     loading: Loading
 });
 
@@ -112,19 +107,14 @@ class AppIndex extends React.PureComponent {
                             <SubNav path={location.pathname} />
                         </ErrorBoundary>
                         <ErrorBoundary>
-                            <Route exact path="/" component={ComingSoon} name="Overview" />
+                            <Route exact path="/" component={Calendar} name="Overview" />
                         </ErrorBoundary>
                         <ErrorBoundary>
                             <Route path="/settings" component={Settings} name="Settings" />
                         </ErrorBoundary>
-                        <ErrorBoundary>
-                            <Route path="/calendar" component={Calendar} name="Calendar" />
-                        </ErrorBoundary>
+
                         <ErrorBoundary>
                             <Route path="/nutrition" component={Nutrition} name="Nutrition" />
-                        </ErrorBoundary>
-                        <ErrorBoundary>
-                            <Route path="/activity" component={Activity} name="Activity" />
                         </ErrorBoundary>
                     </div>
                 );

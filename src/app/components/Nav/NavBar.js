@@ -1,10 +1,10 @@
 import React from 'react';
-import UserMenu from './UserMenu';
+import UserMenu from '../UserMenu';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { logOut } from './actions';
-import { auth } from './firebase.js';
+import { logOut } from '../actions';
+import { auth } from '../firebase.js';
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData,
@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => ({
     logOut: () => dispatch(logOut())
 });
 
-const Brand = styled.div`
+const Brand = styled(NavLink)`
     position: relative;
     font-size: 50px;
     background: #fff;
@@ -51,27 +51,6 @@ class NavBar extends React.Component {
         this.setState({ menuOpen: !this.state.menuOpen });
     };
 
-    handleNavClass(name) {
-        const { path } = this.props;
-        let className;
-
-        if (path === `/${name}`) {
-            className = 'active';
-        } else {
-            className = '';
-        }
-
-        return className;
-    }
-
-    goHome = () => {
-        const { pathname } = this.props.history.location;
-
-        if (pathname !== '/') {
-            this.props.history.push('/');
-        }
-    };
-
     logOut = () => {
         auth.signOut().then(() => {
             this.props.logOut();
@@ -93,24 +72,22 @@ class NavBar extends React.Component {
         return <UserMenu userData={userData} logOut={this.logOut} />;
     }
 
-    renderNav() {
+    render() {
         const { path } = this.props;
 
-        if (path !== '/login') {
-            return (
-                <div className="navbar">
-                    <Brand onClick={this.goHome}>
-                        <i className="icon-aperture" />
-                    </Brand>
-                    <Name onClick={this.goHome}>Doughboy</Name>
-                    {this.renderUserMenu()}
-                </div>
-            );
-        }
-    }
-
-    render() {
-        return <div>{this.renderNav()}</div>;
+        return (
+            <div>
+                {path !== '/login' && (
+                    <div className="navbar">
+                        <Brand to="/">
+                            <i className="icon-aperture" />
+                        </Brand>
+                        <Name>Doughboy</Name>
+                        {this.renderUserMenu()}
+                    </div>
+                )}
+            </div>
+        );
     }
 }
 
