@@ -1,15 +1,8 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { CircleContainer } from './styles';
 
-const CircleContainer = styled.div`
-    position: relative;
-
-    &:first-child {
-        margin-top: 3px;
-    }
-`;
-
-const CircleProgress = ({ containerStyle, progress, options, containerClassName, animate }) => {
+const Circle = ({ containerStyle, progress, options, containerClassName, animate }) => {
     const { size, xOffSet, yOffSet } = containerStyle;
 
     const radius = size / 2 - options.strokeWidth / 2;
@@ -79,4 +72,4 @@ const CircleProgress = ({ containerStyle, progress, options, containerClassName,
     );
 };
 
-export default CircleProgress;
+export default Circle;

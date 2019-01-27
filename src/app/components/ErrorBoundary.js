@@ -1,17 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
 // Images
 import errorImg from '../assets/images/error.png';
 
-class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
+const Wrapper = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    alignitems: center;
+    justifycontent: center;
+`;
 
-        this.state = {
-            hasError: false,
-            error: null,
-            info: null
-        };
-    }
+class ErrorBoundary extends React.Component {
+    state = {
+        hasError: false,
+        error: null,
+        info: null
+    };
 
     componentDidCatch(error, info) {
         this.setState({ hasError: true, error, info });
@@ -20,20 +26,12 @@ class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                        display: 'flex',
-                        position: 'fixed',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
+                <Wrapper>
                     <img src={errorImg} />
-                </div>
+                </Wrapper>
             );
         }
+
         return this.props.children;
     }
 }

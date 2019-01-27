@@ -1,10 +1,11 @@
 import React from 'react';
-import UserMenu from '../UserMenu';
+import UserMenu from './UserMenu';
 import styled from 'styled-components';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from '../actions';
 import { auth } from '../firebase.js';
+import SubNav from './SubNav';
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData,
@@ -58,6 +59,7 @@ const NavBar = ({ userData, path, logOut }) => {
                     <UserMenu userData={userData} logOut={logOutHandler} />
                 </div>
             )}
+            <SubNav />
         </React.Fragment>
     );
 };

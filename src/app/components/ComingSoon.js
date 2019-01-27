@@ -20,8 +20,8 @@ const Banner = styled.div`
     }
 `;
 
-const ComingSoon = () => (
-    <Banner>{this.props.width < 1024 ? 'Mobile Experience coming soon.' : 'Coming Soon!'}</Banner>
+const ComingSoon = ({ width }) => (
+    <Banner>{width < 1024 ? 'Mobile Experience coming soon.' : 'Coming Soon!'}</Banner>
 );
 
 export default ComingSoon;

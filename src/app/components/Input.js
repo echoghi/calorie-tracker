@@ -4,45 +4,22 @@ import { withStyles } from '@material-ui/core/styles';
 import { styles } from './MaterialTheme';
 
 function Input(props) {
-    const {
-        classes,
-        required,
-        defaultValue,
-        label,
-        id,
-        style,
-        type,
-        error,
-        onChange,
-        multiline,
-        rows,
-        fullWidth
-    } = props;
-
     return (
         <TextField
-            defaultValue={defaultValue || ''}
-            label={label}
-            id={id}
-            type={type}
-            error={error}
-            required={required}
-            onChange={onChange}
-            multiline={multiline}
-            fullWidth={fullWidth}
-            rows={rows}
+            {...props}
             InputProps={{
                 disableUnderline: true,
                 classes: {
-                    root: classes.bootstrapRoot,
-                    input: multiline ? classes.bootstrapInputMulti : classes.bootstrapInput
+                    root: props.classes.bootstrapRoot,
+                    input: props.multiline
+                        ? props.classes.bootstrapInputMulti
+                        : props.classes.bootstrapInput
                 }
             }}
             InputLabelProps={{
                 shrink: true,
-                className: classes.bootstrapFormLabel
+                className: props.classes.bootstrapFormLabel
             }}
-            style={style}
         />
     );
 }

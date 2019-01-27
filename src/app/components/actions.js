@@ -32,6 +32,39 @@ export function loadingData() {
     };
 }
 
+export function closeSnackBar() {
+    return {
+        type: 'CLOSE_SNACKBAR'
+    };
+}
+
+export function warningNotification(data) {
+    return {
+        type: 'SNACKBAR_WARNING',
+        data
+    };
+}
+
+export function successNotification(data) {
+    return {
+        type: 'SNACKBAR_SUCCESS',
+        data
+    };
+}
+
+export function errorNotification(data) {
+    return {
+        type: 'SNACKBAR_ERROR',
+        data
+    };
+}
+
+export function processQueue() {
+    return {
+        type: 'PROCESS_SNACKBAR_QUEUE'
+    };
+}
+
 export function dataError() {
     return {
         type: 'DATA_ERROR'

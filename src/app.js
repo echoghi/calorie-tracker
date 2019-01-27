@@ -17,14 +17,15 @@ import { theme } from './app/components/MaterialTheme';
 import thunk from 'redux-thunk';
 
 //Reducers
-import { adminState } from './app/components/reducers';
+import { adminState, notificationState } from './app/components/reducers';
 
 //components
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
 
 const adminApp = combineReducers({
-    adminState
+    adminState,
+    notificationState
 });
 
 // Manually enable/disable Redux dev tools

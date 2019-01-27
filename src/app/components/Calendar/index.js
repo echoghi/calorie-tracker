@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import CircleProgress from '../CircleProgress';
+import Circle from '../ProgressBar/Circle';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
@@ -19,15 +19,11 @@ const mapStateToProps = state => ({
 
 const Calendar = ({ data, loading }) => {
     let [time, setTime] = React.useState(moment());
-    const [mounted] = React.useState(false);
     let [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
 
-    React.useEffect(
-        () => {
-            window.scrollTo(0, 0);
-        },
-        [mounted]
-    );
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     function renderDayProgressCircles(day) {
         const { calories, protein, carbs, fat } = day.nutrition;
@@ -104,25 +100,25 @@ const Calendar = ({ data, loading }) => {
 
         return (
             <div className="day__overview">
-                <CircleProgress
+                <Circle
                     progress={calorieProgress}
                     options={options.calorie}
                     animate={animate}
                     containerStyle={options.calorie.container}
                 />
-                <CircleProgress
+                <Circle
                     progress={proteinProgress}
                     options={options.protein}
                     animate={animate}
                     containerStyle={options.protein.container}
                 />
-                <CircleProgress
+                <Circle
                     progress={carbProgress}
                     options={options.carb}
                     animate={animate}
                     containerStyle={options.carb.container}
                 />
-                <CircleProgress
+                <Circle
                     progress={fatProgress}
                     options={options.fat}
                     animate={animate}
@@ -345,14 +341,16 @@ const Calendar = ({ data, loading }) => {
         return calendarDays;
     }
 
-    function changeMonth(bool) {
-        if (bool) {
+    function changeMonth(increment) {
+        if (increment) {
+            // if its December, increment the year
             if (time.get('month') === 11) {
                 time = moment([time.get('year') + 1, 0, 1]);
             } else {
                 time = moment([time.get('year'), time.get('month') + 1, 1]);
             }
         } else {
+            // if its January, decrement the year
             if (time.get('month') === 0) {
                 time = moment([time.get('year') - 1, 11, 1]);
             } else {

@@ -7,15 +7,11 @@ import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
 import { useWindowSize } from 'the-platform';
 import ErrorBoundary from './ErrorBoundary';
+import Notifications from './Notifications';
 import isEmpty from 'lodash.isempty';
 
 const NavBar = Loadable({
-    loader: () => import('./Nav/NavBar'),
-    loading: Loading
-});
-
-const SubNav = Loadable({
-    loader: () => import('./Nav/SubNav'),
+    loader: () => import('./Nav'),
     loading: Loading
 });
 
@@ -83,15 +79,16 @@ function AppIndex({ fetchData, userData, loading, location, history, userLoading
                 <React.Fragment>
                     <ErrorBoundary>
                         <NavBar path={location.pathname} width={width} />
-                        <SubNav path={location.pathname} />
                     </ErrorBoundary>
+
+                    <Notifications />
+
                     <ErrorBoundary>
                         <Route exact path="/" component={Calendar} name="Overview" />
                     </ErrorBoundary>
                     <ErrorBoundary>
                         <Route path="/settings" component={Settings} name="Settings" />
                     </ErrorBoundary>
-
                     <ErrorBoundary>
                         <Route path="/nutrition" component={Nutrition} name="Nutrition" />
                     </ErrorBoundary>
