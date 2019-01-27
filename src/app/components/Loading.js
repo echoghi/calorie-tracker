@@ -1,34 +1,33 @@
 import React from 'react';
 import Lottie from 'react-lottie';
+import styled from 'styled-components';
 import * as loadingAnimation from '../assets/animations/loading.json';
 
-class Loading extends React.Component {
-    render() {
-        const options = {
-            loop: true,
-            autoplay: true,
-            animationData: loadingAnimation,
-            rendererSettings: {
-                preserveAspectRatio: 'xMidYMid slice',
-                progressiveLoad: true
-            }
-        };
+const LoadingWrapper = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+`;
 
-        return (
-            <div
-                style={{
-                    height: '100%',
-                    width: '100%',
-                    display: 'flex',
-                    position: 'fixed',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-                <Lottie options={options} height={300} width={300} />
-            </div>
-        );
-    }
-}
+const Loading = () => {
+    const options = {
+        loop: true,
+        autoplay: true,
+        animationData: loadingAnimation,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice',
+            progressiveLoad: true
+        }
+    };
+
+    return (
+        <LoadingWrapper>
+            <Lottie options={options} height={300} width={300} />
+        </LoadingWrapper>
+    );
+};
 
 export default Loading;

@@ -1,14 +1,10 @@
 /**
- * Health Dashboard 1.0.0
- * Copyright (c) Emile Choghi 2018
+ * Doughboy 1.0.0
+ * Copyright (c) Emile Choghi 2019
  *
  */
 
-/*eslint-disable*/
-import Styles from './app/assets/scss/style.scss';
-import 'react-table/react-table.css';
-import PropTypes from 'prop-types';
-/*eslint-enable*/
+import './app/assets/scss/style.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -58,7 +54,7 @@ if (enableReduxDevTools) {
     activeComposer = compose;
 }
 
-export const store = activeComposer(applyMiddleware(thunk))(createStore)(adminApp);
+const store = activeComposer(applyMiddleware(thunk))(createStore)(adminApp);
 
 ReactDOM.render(
     <Provider store={store}>

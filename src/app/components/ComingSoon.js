@@ -20,10 +20,8 @@ const Banner = styled.div`
     }
 `;
 
-class ComingSoon extends React.Component {
-    render() {
-        return <Banner>{this.props.width < 1024 ? 'Mobile Experience coming soon.' : 'Coming Soon!'}</Banner>;
-    }
-}
+const ComingSoon = () => (
+    <Banner>{this.props.width < 1024 ? 'Mobile Experience coming soon.' : 'Coming Soon!'}</Banner>
+);
 
 export default ComingSoon;

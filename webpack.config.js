@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
@@ -22,110 +23,25 @@ module.exports = function(env) {
     const nodeEnv = env && env.prod ? 'production' : 'development';
     const isProd = nodeEnv === 'production';
 
-    const plugins = [new webpack.NamedModulesPlugin(), new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)];
-
-    const optimization = {
-        minimizer: []
-    };
-
-    if (isProd) {
-        optimization.minimizer.push(
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    compress: true,
-                    ecma: 6,
-                    output: {
-                        comments: false
-                    },
-                    compress: {
-                        dead_code: true,
-                        drop_console: true
-                    }
-                },
-                sourceMap: false
-            })
-        );
-
-        plugins.push(
-            new HtmlWebpackPlugin({
-                filename: 'index.html',
-                template: 'netlify/index.html'
-            }),
-            new CopyWebpackPlugin([{ from: 'netlify' }]),
-            new ManifestPlugin({
-                fileName: 'asset-manifest.json'
-            }),
-            new webpack.LoaderOptionsPlugin({
-                minimize: true,
-                debug: false
-            }),
-            new webpack.optimize.AggressiveMergingPlugin(),
-            new webpack.BannerPlugin({
-                banner:
-                    `Health Dashboard ` +
-                    `Version: ` +
-                    PACKAGE.version +
-                    ` Date: ` +
-                    parseInt(new Date().getMonth() + 1) +
-                    `/` +
-                    new Date().getDate() +
-                    `/` +
-                    new Date().getFullYear() +
-                    ` @ ` +
-                    new Date().getHours() +
-                    `:` +
-                    new Date().getMinutes()
-            }),
-            new MiniCssExtractPlugin('styles.css'),
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('production')
-            })
-        );
-    } else {
-        plugins.push(
-            //new BundleAnalyzerPlugin(),
-            new webpack.HotModuleReplacementPlugin(),
-            new BrowserSyncPlugin(
-                // BrowserSync options
-                {
-                    host: 'localhost',
-                    port: 8080,
-                    open: false,
-                    // proxy the Webpack Dev Server endpoint
-                    // (which should be serving on http://localhost:8080/)
-                    // through BrowserSync
-                    proxy: 'http://localhost:8080/',
-                    logPrefix: 'Health Dashboard'
-                },
-                // plugin options
-                {
-                    reload: false
-                }
-            ),
-            new CaseSensitivePathsPlugin(),
-            new FriendlyErrorsWebpackPlugin(),
-            new SystemBellPlugin(),
-            new ProgressBarPlugin(),
-            new DuplicatePackageCheckerPlugin(),
-            new StyleLintPlugin({
-                files: './app/assets/scss/*.scss'
-            }),
-            new webpack.DefinePlugin({
-                NODE_ENV: JSON.stringify(nodeEnv)
-            })
-        );
-    }
-
     return {
-        devtool: isProd ? 'hidden-source-map' : 'eval',
+        devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
         context: sourcePath,
         entry: {
-            js: 'app.js',
-            vendor: ['react']
+            js: [
+                // react-error-overlay
+                !isProd && 'react-dev-utils/webpackHotDevClient',
+                // fetch polyfill
+                isProd && 'whatwg-fetch',
+                // app entry
+                'app.js'
+            ].filter(Boolean)
         },
         output: {
             path: publicPath,
-            filename: '[name].bundle.js'
+            filename: '[name].bundle.js',
+            devtoolModuleFilenameTemplate: isProd
+                ? info => path.relative(sourcePath, info.absoluteResourcePath).replace(/\\/g, '/')
+                : info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
         },
         module: {
             rules: [
@@ -150,10 +66,14 @@ module.exports = function(env) {
                     loader: 'json-loader',
                     type: 'javascript/auto'
                 },
+
                 {
                     test: /\.(scss|css)$/,
                     use: [
-                        {
+                        isProd && {
+                            loader: MiniCssExtractPlugin.loader
+                        },
+                        !isProd && {
                             loader: 'style-loader',
                             options: {
                                 sourceMap: false
@@ -171,8 +91,9 @@ module.exports = function(env) {
                                 sourceMap: true
                             }
                         }
-                    ]
+                    ].filter(Boolean)
                 },
+
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
@@ -223,9 +144,96 @@ module.exports = function(env) {
             modules: [path.resolve(__dirname, 'node_modules'), sourcePath]
         },
 
-        plugins,
+        plugins: [
+            new webpack.NamedModulesPlugin(),
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+            // Dev
+            //new BundleAnalyzerPlugin(),
+            !isProd && new webpack.HotModuleReplacementPlugin(),
+            !isProd &&
+                new BrowserSyncPlugin(
+                    // BrowserSync options
+                    {
+                        host: 'localhost',
+                        port: 8080,
+                        open: false,
+                        // proxy the Webpack Dev Server endpoint
+                        // (which should be serving on http://localhost:8080/)
+                        // through BrowserSync
+                        proxy: 'http://localhost:8080/',
+                        logPrefix: 'Health Dashboard'
+                    },
+                    // plugin options
+                    {
+                        reload: false
+                    }
+                ),
+            !isProd && new CaseSensitivePathsPlugin(),
+            !isProd && new FriendlyErrorsWebpackPlugin(),
+            !isProd && new SystemBellPlugin(),
+            !isProd && new ProgressBarPlugin(),
+            !isProd && new DuplicatePackageCheckerPlugin(),
+            !isProd &&
+                new StyleLintPlugin({
+                    files: './app/assets/scss/*.scss'
+                }),
+            !isProd &&
+                new webpack.DefinePlugin({
+                    NODE_ENV: JSON.stringify(nodeEnv)
+                }),
+            // Prod
+            isProd &&
+                new HtmlWebpackPlugin({
+                    filename: 'index.html',
+                    template: 'netlify/index.html'
+                }),
+            isProd && new CopyWebpackPlugin([{ from: 'netlify' }]),
+            isProd &&
+                new ManifestPlugin({
+                    fileName: 'asset-manifest.json'
+                }),
+            isProd &&
+                new webpack.LoaderOptionsPlugin({
+                    minimize: true,
+                    debug: false
+                }),
+            isProd && new webpack.optimize.AggressiveMergingPlugin(),
+            isProd &&
+                new webpack.BannerPlugin({
+                    banner:
+                        `Health Dashboard ` +
+                        `Version: ` +
+                        PACKAGE.version +
+                        ` Date: ` +
+                        parseInt(new Date().getMonth() + 1) +
+                        `/` +
+                        new Date().getDate() +
+                        `/` +
+                        new Date().getFullYear() +
+                        ` @ ` +
+                        new Date().getHours() +
+                        `:` +
+                        new Date().getMinutes()
+                }),
+            isProd && new MiniCssExtractPlugin('styles.css'),
+            isProd &&
+                new webpack.DefinePlugin({
+                    'process.env.NODE_ENV': JSON.stringify('production')
+                })
+        ].filter(Boolean),
 
-        optimization,
+        // split out vendor js into its own bundle
+        optimization: {
+            splitChunks: {
+                cacheGroups: {
+                    commons: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendor',
+                        chunks: 'initial'
+                    }
+                }
+            }
+        },
 
         performance: isProd && {
             maxAssetSize: 600000,
@@ -245,25 +253,11 @@ module.exports = function(env) {
             port: 8080,
             compress: isProd,
             inline: !isProd,
-            hot: true,
+            hot: false,
             quiet: true,
-            overlay: {
-                errors: true,
-                warnings: true
-            },
-            stats: {
-                assets: true,
-                children: false,
-                chunks: false,
-                hash: false,
-                modules: false,
-                publicPath: false,
-                timings: true,
-                version: false,
-                warnings: true,
-                colors: {
-                    green: '\u001b[32m'
-                }
+            before: function(app) {
+                // This lets us open files from the runtime error overlay.
+                app.use(errorOverlayMiddleware());
             }
         }
     };

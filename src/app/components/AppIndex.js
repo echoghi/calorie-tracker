@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
+import { useWindowSize } from 'the-platform';
 import ErrorBoundary from './ErrorBoundary';
 import isEmpty from 'lodash.isempty';
 
@@ -50,26 +51,21 @@ const mapDispatchToProps = dispatch => ({
     saveUserData: user => dispatch(saveUserData(user))
 });
 
-class AppIndex extends React.PureComponent {
-    state = {
-        width: 0
-    };
+function AppIndex({ fetchData, userData, loading, location, history, userLoading, saveUserData }) {
+    const { width } = useWindowSize();
 
-    componentWillReceiveProps(nextProps) {
-        const { fetchData, userData, history, userLoading } = this.props;
-
-        if (userData !== nextProps.userData || userLoading !== nextProps.userLoading) {
-            if (!isEmpty(nextProps.userData) && !nextProps.userLoading) {
-                fetchData(nextProps.userData.uid);
-            } else {
+    React.useEffect(
+        () => {
+            if (!isEmpty(userData) && !userLoading) {
+                fetchData(userData.uid);
+            } else if (isEmpty(userData) && !userLoading) {
                 history.push('/login');
             }
-        }
-    }
+        },
+        [userData, userLoading]
+    );
 
-    componentDidMount() {
-        const { saveUserData, history } = this.props;
-
+    React.useEffect(() => {
         auth.onAuthStateChanged(user => {
             if (user) {
                 saveUserData(user);
@@ -77,50 +73,32 @@ class AppIndex extends React.PureComponent {
                 history.push('/login');
             }
         });
+    });
 
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
-    }
+    if (width < 1024) {
+        return <ComingSoon width={width} />;
+    } else {
+        if (!isEmpty(userData) && !userLoading && !loading) {
+            return (
+                <React.Fragment>
+                    <ErrorBoundary>
+                        <NavBar path={location.pathname} width={width} />
+                        <SubNav path={location.pathname} />
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                        <Route exact path="/" component={Calendar} name="Overview" />
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                        <Route path="/settings" component={Settings} name="Settings" />
+                    </ErrorBoundary>
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-
-    updateWindowDimensions = () => {
-        this.setState({ width: window.innerWidth });
-    };
-
-    render() {
-        const { userData, userLoading, loading, location } = this.props;
-        const { width } = this.state;
-
-        if (width < 1024) {
-            return <ComingSoon width={width} />;
+                    <ErrorBoundary>
+                        <Route path="/nutrition" component={Nutrition} name="Nutrition" />
+                    </ErrorBoundary>
+                </React.Fragment>
+            );
         } else {
-            if (!isEmpty(userData) && !userLoading && !loading) {
-                return (
-                    <div>
-                        <ErrorBoundary>
-                            <NavBar path={location.pathname} width={width} />
-                        </ErrorBoundary>
-                        <ErrorBoundary>
-                            <SubNav path={location.pathname} />
-                        </ErrorBoundary>
-                        <ErrorBoundary>
-                            <Route exact path="/" component={Calendar} name="Overview" />
-                        </ErrorBoundary>
-                        <ErrorBoundary>
-                            <Route path="/settings" component={Settings} name="Settings" />
-                        </ErrorBoundary>
-
-                        <ErrorBoundary>
-                            <Route path="/nutrition" component={Nutrition} name="Nutrition" />
-                        </ErrorBoundary>
-                    </div>
-                );
-            } else {
-                return <Loading />;
-            }
+            return <Loading />;
         }
     }
 }

@@ -1,10 +1,3 @@
-export const LOADING_DATA = 'LOADING_DATA';
-export const RECEIVE_DATA = 'RECEIVE_DATA';
-export const DATA_ERROR = 'DATA_ERROR';
-export const RESET_ERROR = 'RESET_ERROR';
-export const SAVE_USER_DATA = 'SAVE_USER_DATA';
-
-export const LOGOUT = 'LOGOUT';
 import { database } from './firebase.js';
 import moment from 'moment';
 
@@ -28,47 +21,48 @@ export function reloadData(id) {
 
 export function receiveData(data) {
     return {
-        type: RECEIVE_DATA,
+        type: 'RECEIVE_DATA',
         data
     };
 }
 
 export function loadingData() {
     return {
-        type: LOADING_DATA
+        type: 'LOADING_DATA'
     };
 }
 
 export function dataError() {
     return {
-        type: DATA_ERROR
+        type: 'DATA_ERROR'
     };
 }
 
 export function resetError() {
     return {
-        type: RESET_ERROR
+        type: 'RESET_ERROR'
     };
 }
 
 export function saveUserData(data) {
     return {
-        type: SAVE_USER_DATA,
+        type: 'SAVE_USER_DATA',
         data
     };
 }
 
 export function logOut() {
     return {
-        type: LOGOUT
+        type: 'LOGOUT'
     };
 }
 
 export function createUser(id) {
     return dispatch => {
-        console.log('creating new user');
         let newUser = {};
         const now = moment();
+
+        console.log('creating new user', id, now);
 
         newUser[`users/${id}`] = {
             calendar: [
@@ -127,7 +121,11 @@ export function fetchData(id) {
                 }
 
                 // If the calendar entries are not caught up to today, create the missing entries
-                if (moment([moment().get('year'), moment().get('month'), moment().date()]).isAfter(lastDay)) {
+                if (
+                    moment([moment().get('year'), moment().get('month'), moment().date()]).isAfter(
+                        lastDay
+                    )
+                ) {
                     const daysToAdd = moment().diff(lastDay, 'days');
                     let dayKey = user.calendar.length;
                     let update = {};

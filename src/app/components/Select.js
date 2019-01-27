@@ -5,9 +5,18 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './MaterialTheme';
 
-function Select(props) {
-    const { classes, label, name, id, style, options, error, onChange, value, defaultValue } = props;
-
+function Select({
+    classes,
+    label,
+    name,
+    id,
+    style,
+    options,
+    error,
+    onChange,
+    value,
+    defaultValue
+}) {
     return (
         <FormControl>
             <InputLabel

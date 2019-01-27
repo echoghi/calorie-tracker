@@ -40,56 +40,27 @@ const Name = styled.div`
     font-style: italic;
 `;
 
-class NavBar extends React.Component {
-    state = {
-        menuOpen: false,
-        mobile: false,
-        open: false
-    };
-
-    handleMenu = () => {
-        this.setState({ menuOpen: !this.state.menuOpen });
-    };
-
-    logOut = () => {
+const NavBar = ({ userData, path, logOut }) => {
+    const logOutHandler = () => {
         auth.signOut().then(() => {
-            this.props.logOut();
+            logOut();
         });
     };
 
-    handleClick = event => {
-        event.preventDefault();
-
-        this.setState({
-            open: true,
-            anchorEl: event.currentTarget
-        });
-    };
-
-    renderUserMenu() {
-        const { userData } = this.props;
-
-        return <UserMenu userData={userData} logOut={this.logOut} />;
-    }
-
-    render() {
-        const { path } = this.props;
-
-        return (
-            <div>
-                {path !== '/login' && (
-                    <div className="navbar">
-                        <Brand to="/">
-                            <i className="icon-aperture" />
-                        </Brand>
-                        <Name>Doughboy</Name>
-                        {this.renderUserMenu()}
-                    </div>
-                )}
-            </div>
-        );
-    }
-}
+    return (
+        <React.Fragment>
+            {path !== '/login' && (
+                <div className="navbar">
+                    <Brand to="/">
+                        <i className="icon-aperture" />
+                    </Brand>
+                    <Name>Doughboy</Name>
+                    <UserMenu userData={userData} logOut={logOutHandler} />
+                </div>
+            )}
+        </React.Fragment>
+    );
+};
 
 export default withRouter(
     connect(
