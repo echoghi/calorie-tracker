@@ -1,15 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-// Images
-import errorImg from '../assets/images/error.png';
 
-const Wrapper = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    position: fixed;
-    alignitems: center;
-    justifycontent: center;
+const NotFound = styled.div`
+    position: relative;
+    padding: 15rem 1.5rem;
+    margin: 15% auto;
+    text-align: left;
+    max-width: 36.4rem;
+    height: 100px;
+    p {
+        font-size: 16px;
+    }
+    a {
+        font-weight: bold;
+    }
+    @media (max-width: 767px) {
+        padding: 10rem 1.5rem;
+    }
 `;
 
 class ErrorBoundary extends React.Component {
@@ -26,9 +33,11 @@ class ErrorBoundary extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <Wrapper>
-                    <img src={errorImg} />
-                </Wrapper>
+                <NotFound>
+                    <h1>Oops! </h1>
+                    <p>💀 Something went wrong 💀</p>
+                    <a href=".">Refresh page</a>
+                </NotFound>
             );
         }
 
