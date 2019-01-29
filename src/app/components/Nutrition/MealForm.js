@@ -82,6 +82,13 @@ function MealForm({ day, dayRef, errorNotification, successNotification }) {
 
         if (validateInputs()) {
             const mealData = produce(day, payload => {
+                // convert moment object back to original format
+                payload.day = {
+                    month: day.day.get('month'),
+                    date: day.day.date(),
+                    year: day.day.get('year')
+                };
+
                 payload.nutrition.calories += parseInt(calories) * parseInt(servings);
                 payload.nutrition.fat += parseInt(fat) * parseInt(servings);
                 payload.nutrition.protein += parseInt(protein) * parseInt(servings);
@@ -90,6 +97,7 @@ function MealForm({ day, dayRef, errorNotification, successNotification }) {
                 if (!day.nutrition.meals) {
                     payload.nutrition.meals = [];
                 }
+
                 // add new meal
                 payload.nutrition.meals.push({
                     name,
@@ -118,7 +126,9 @@ function MealForm({ day, dayRef, errorNotification, successNotification }) {
                         // reset meal validation
                         for (let attr in draftState.validation) {
                             if (draftState.validation[attr]) {
-                                draftState.validation[attr] = new inputObj(true);
+                                const valid = attr !== 'servings' && attr !== 'name';
+
+                                draftState.validation[attr] = new inputObj(valid);
                             }
                         }
                     });

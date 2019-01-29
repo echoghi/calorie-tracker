@@ -2,6 +2,14 @@ export function adminState(
     state = {
         data: {},
         userData: {},
+        day: {
+            day: {},
+            todayButton: true,
+            formattedDay: {},
+            requestedDate: null,
+            dayRef: {},
+            dayIndex: 0
+        },
         userLoading: true,
         loading: false,
         success: null,
@@ -44,6 +52,11 @@ export function adminState(
             return Object.assign({}, state, {
                 userData: {},
                 data: {}
+            });
+
+        case 'SAVE_DAY':
+            return Object.assign({}, state, {
+                day: action.data
             });
 
         default:

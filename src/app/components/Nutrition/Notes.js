@@ -114,6 +114,13 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
 
         if (noteBody && noteTitle) {
             const noteData = produce(day, data => {
+                // convert moment object back to original format
+                data.day = {
+                    month: day.day.get('month'),
+                    date: day.day.date(),
+                    year: day.day.get('year')
+                };
+
                 const note = data.notes[index];
                 note.title = noteTitle;
                 note.body = noteBody;
@@ -149,6 +156,13 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
     const removeNote = index => {
         const noteData = produce(day, data => {
             data.notes = data.notes.filter(note => note !== data.notes[index]);
+
+            // convert moment object back to original format
+            data.day = {
+                month: day.day.get('month'),
+                date: day.day.date(),
+                year: day.day.get('year')
+            };
         });
 
         dayRef.set(noteData, error => {
@@ -203,6 +217,13 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
 
         if (validateNotes()) {
             const noteData = produce(day, payload => {
+                // convert moment object back to original format
+                payload.day = {
+                    month: day.day.get('month'),
+                    date: day.day.date(),
+                    year: day.day.get('year')
+                };
+
                 if (!payload.notes) {
                     payload.notes = [];
                 }

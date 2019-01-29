@@ -3,14 +3,14 @@ import moment from 'moment';
 
 const usersRef = database.ref('users');
 
-export function reloadData(id) {
+export function loadData(id) {
     return dispatch => {
         usersRef.child(id).on('value', snapshot => {
             let user = snapshot.val();
 
-            for (let i = 0; i < user.calendar.length; i++) {
-                const { year, date, month } = user.calendar[i].day;
-                user.calendar[i].day = moment([year, month, date]);
+            for (let day of user.calendar) {
+                const { year, date, month } = day.day;
+                day.day = moment([year, month, date]);
             }
 
             console.log('Data update loaded:', user);
@@ -90,6 +90,13 @@ export function logOut() {
     };
 }
 
+export function saveDay(data) {
+    return {
+        type: 'SAVE_DAY',
+        data
+    };
+}
+
 export function createUser(id) {
     return dispatch => {
         let newUser = {};
@@ -132,7 +139,7 @@ export function createUser(id) {
 
         // Save new entries to firebase and reload them into the app
         database.ref().update(newUser, () => {
-            dispatch(reloadData(id));
+            dispatch(loadData(id));
         });
     };
 }
@@ -153,12 +160,9 @@ export function fetchData(id) {
                     lastDay = user.calendar[i].day;
                 }
 
-                // If the calendar entries are not caught up to today, create the missing entries
-                if (
-                    moment([moment().get('year'), moment().get('month'), moment().date()]).isAfter(
-                        lastDay
-                    )
-                ) {
+                // If the calendar entries are not caught up to today,
+                // create the missing entries
+                if (moment().isAfter(lastDay)) {
                     const daysToAdd = moment().diff(lastDay, 'days');
                     let dayKey = user.calendar.length;
                     let update = {};
@@ -189,10 +193,10 @@ export function fetchData(id) {
 
                     // Save new entries to firebase and reload them into the app
                     database.ref().update(update, () => {
-                        dispatch(reloadData(id));
+                        dispatch(loadData(id));
                     });
                 } else {
-                    dispatch(reloadData(id));
+                    dispatch(loadData(id));
                 }
             } else {
                 dispatch(createUser(id));

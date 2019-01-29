@@ -32,6 +32,8 @@ module.exports = function(env) {
                 !isProd && 'react-dev-utils/webpackHotDevClient',
                 // fetch polyfill
                 isProd && 'whatwg-fetch',
+                // JS
+                'babel-polyfill',
                 // app entry
                 'app.js'
             ].filter(Boolean)

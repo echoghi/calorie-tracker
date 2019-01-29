@@ -50,6 +50,14 @@ const mapDispatchToProps = dispatch => ({
 function AppIndex({ fetchData, userData, loading, location, history, userLoading, saveUserData }) {
     const { width } = useWindowSize();
 
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            saveUserData(user);
+        } else {
+            history.push('/login');
+        }
+    });
+
     React.useEffect(
         () => {
             if (!isEmpty(userData) && !userLoading) {
@@ -58,18 +66,8 @@ function AppIndex({ fetchData, userData, loading, location, history, userLoading
                 history.push('/login');
             }
         },
-        [userData, userLoading]
+        [userData]
     );
-
-    React.useEffect(() => {
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                saveUserData(user);
-            } else {
-                history.push('/login');
-            }
-        });
-    });
 
     if (width < 1024) {
         return <ComingSoon width={width} />;

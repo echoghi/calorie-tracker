@@ -1,21 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import withFirebase from '../HOC/withFirebase';
-import moment from 'moment';
-import queryString from 'query-string';
 import isEmpty from 'lodash.isempty';
 import produce from 'immer';
+import { database } from '../firebase.js';
+import moment from 'moment';
 // Components
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Bar from '../ProgressBar/Bar';
 import MealTable from './MealTable';
+import queryString from 'query-string';
 import MealForm from './MealForm';
 import Notes from './Notes';
 import { HeaderWrapper } from './styles';
 import ConfirmationDialog from './ConfirmationDialog';
-import { errorNotification, successNotification, warningNotification } from '../actions';
+import { errorNotification, successNotification } from '../actions';
 
 // Reusable validation constuctor for each input
 const inputObj = class {
@@ -28,34 +28,24 @@ const inputObj = class {
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData,
-    data: state.adminState.data,
-    snackbar: state.notificationState.open
+    data: state.adminState.data
 });
 
 const mapDispatchToProps = dispatch => ({
     errorNotification: message => dispatch(errorNotification(message)),
-    successNotification: message => dispatch(successNotification(message)),
-    warningNotification: message => dispatch(warningNotification(message))
+    successNotification: message => dispatch(successNotification(message))
 });
 
-const Nutrition = ({
-    location,
-    userData,
-    data,
-    loadDay,
-    history,
-    snackbar,
-    errorNotification,
-    successNotification
-}) => {
+const Nutrition = ({ data, userData, history, errorNotification, successNotification }) => {
     const [state, setState] = React.useState({
-        requestedDate: null,
-        mounted: false,
-        day: {},
-        formattedDay: {},
-        todayButton: false,
+        day: {
+            nutrition: {},
+            fitness: {},
+            day: {}
+        },
         dayRef: {},
         deleteMeal: null,
+        todayButton: false,
         validation: {
             name: new inputObj(true),
             servings: new inputObj(true),
@@ -65,50 +55,68 @@ const Nutrition = ({
             fat: new inputObj(true)
         }
     });
+    const { confirmationDialog, deleteMeal, requestedDate, day, dayRef, todayButton } = state;
 
-    // load user data
-    React.useEffect(
-        () => {
-            if (!isEmpty(userData)) {
-                mapDayToState(userData);
-            }
-        },
-        [snackbar]
-    );
-
-    // parse requested day
     React.useEffect(() => {
-        if (location.search) {
-            const parsed = queryString.parse(location.search);
-            saveDateQuery(moment(parseInt(parsed.d)));
-        }
-        window.scrollTo(0, 0);
+        loadDay();
     }, []);
 
-    const mapDayToState = userData => {
-        const { today, requestedDate } = state;
+    // fetch data when requested date changes
+    React.useEffect(
+        () => {
+            loadDay();
+        },
+        [requestedDate, data]
+    );
 
-        if (today) {
-            history.push({ pathname: '/nutrition', search: '' });
-        }
-
-        const { day, todayButton, formattedDay, dayRef } = loadDay(userData, requestedDate);
-
+    function loadDay() {
         const nextState = produce(state, draftState => {
-            draftState.todayButton = todayButton;
-            draftState.day = day;
-            draftState.formattedDay = formattedDay;
-            draftState.dayRef = dayRef;
+            let requestedDate = false;
+
+            if (location.search) {
+                const parsed = queryString.parse(location.search);
+                requestedDate = moment(parseInt(parsed.d));
+
+                draftState.todayButton = true;
+            }
+
+            if (requestedDate) {
+                for (let day in data.calendar) {
+                    const calendarDay = data.calendar[day];
+
+                    if (calendarDay.day.isSame(requestedDate)) {
+                        draftState.day = calendarDay;
+                        draftState.dayRef = database
+                            .ref('users')
+                            .child(userData.uid)
+                            .child(`calendar/${day}`);
+                    }
+                }
+            } else {
+                const dayIndex = data.calendar.length - 1;
+
+                draftState.dayRef = database
+                    .ref('users')
+                    .child(userData.uid)
+                    .child(`calendar/${dayIndex}`);
+                draftState.day = data.calendar[dayIndex];
+            }
         });
 
         setState(nextState);
-    };
+    }
 
     const removeMeal = index => {
-        const { dayRef, day } = state;
+        const { dayRef } = state;
 
         const mealData = produce(day, data => {
             const meal = data.nutrition.meals[index];
+
+            data.day = {
+                month: day.day.get('month'),
+                date: day.day.date(),
+                year: day.day.get('year')
+            };
 
             for (let name in day.nutrition) {
                 if (name !== 'meals') {
@@ -188,18 +196,18 @@ const Nutrition = ({
         return <Bar progress={progress} options={options} />;
     }
 
-    const { day, confirmationDialog, formattedDay, todayButton, deleteMeal, dayRef } = state;
-
     const { protein, carbs, fat } = day.nutrition || 0;
 
     function goToToday() {
         const nextState = produce(state, draftState => {
             draftState.today = true;
+            draftState.todayButton = false;
             draftState.requestedDate = null;
         });
 
+        history.push({ pathname: '/nutrition', search: '' });
+
         setState(nextState);
-        mapDayToState(userData);
     }
 
     function renderActions(index) {
@@ -221,12 +229,12 @@ const Nutrition = ({
 
     return (
         <React.Fragment>
-            {!isEmpty(day) && !isEmpty(data) && (
+            {!isEmpty(day.day) && !isEmpty(data) && (
                 <div className="nutrition">
                     <HeaderWrapper>
                         <div>
                             <h1>Nutrition</h1>
-                            <h3>{formattedDay.day.format('dddd, MMMM Do YYYY')}</h3>
+                            <h3>{day.day.format('dddd, MMMM Do YYYY')}</h3>
                         </div>
                         <div>
                             {todayButton && (
@@ -274,29 +282,25 @@ const Nutrition = ({
                         <MealForm day={day} dayRef={dayRef} />
                     </div>
 
-                    <MealTable day={day} ata={data} actions={renderActions} />
+                    <MealTable day={day} data={data} actions={renderActions} />
                 </div>
             )}
 
-            {confirmationDialog && (
+            {confirmationDialog && day.nutrition.meals[deleteMeal] && (
                 <ConfirmationDialog
                     open={confirmationDialog}
                     action={() => removeMeal(deleteMeal)}
                     onClose={closeConfirmationDialog}
-                    name={
-                        day.nutrition.meals ? `"${day.nutrition.meals[deleteMeal].name}"` : 'Meal'
-                    }
+                    name={`"${day.nutrition.meals[deleteMeal].name}"`}
                 />
             )}
         </React.Fragment>
     );
 };
 
-export default withFirebase(
-    withRouter(
-        connect(
-            mapStateToProps,
-            mapDispatchToProps
-        )(Nutrition)
-    )
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Nutrition)
 );
