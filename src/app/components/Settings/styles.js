@@ -4,6 +4,10 @@ const SettingsWrapper = styled.div`
     padding: 20px;
     background: #fff;
     border: 1px solid #dbdbdb;
+
+    @media (max-width: 768px) {
+        border: none;
+    }
 `;
 
 const SettingsHeader = styled.h1`
@@ -28,6 +32,10 @@ const DeleteAccountWrapper = styled.div`
 
 const Container = styled.div`
     padding: 215px 125px 30px 125px;
+
+    @media (max-width: 768px) {
+        padding: 80px 0 90px 0;
+    }
 `;
 
 export {

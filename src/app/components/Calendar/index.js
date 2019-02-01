@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import Circle from '../ProgressBar/Circle';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
 import isEmpty from 'lodash.isempty';
 import DaySummary from './DaySummary';
 import Legend from './Legend';
+import Day from './Day';
 // Images
 import runnerIcon from '../../assets/images/apple-runner.png';
 import { Icon } from './styles';
@@ -19,114 +19,11 @@ const mapStateToProps = state => ({
 
 const Calendar = ({ data, loading }) => {
     let [time, setTime] = React.useState(moment());
-    let [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
+    const [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    function renderDayProgressCircles(day) {
-        const { calories, protein, carbs, fat } = day.nutrition;
-        let now = moment();
-        let animate;
-        let calorieProgress = calories / data.user.goals.calories;
-        let proteinProgress = protein / data.user.goals.protein;
-        let carbProgress = carbs / data.user.goals.carbs;
-        let fatProgress = fat / data.user.goals.fat;
-
-        const trailColor = '#f4f4f4';
-
-        // Only animate today's calendar box
-        if (
-            now.date() === day.day.date() &&
-            now.month() === day.day.month() &&
-            now.year() === day.day.year()
-        ) {
-            animate = false;
-
-            if (day.day.month() === time.month()) {
-                animate = true;
-            }
-        }
-
-        // Prevent progress bar bug by converting 100%+ to 100%
-        calorieProgress = calorieProgress > 1 ? (calorieProgress = 1) : calorieProgress;
-        proteinProgress = proteinProgress > 1 ? (proteinProgress = 1) : proteinProgress;
-        carbProgress = carbProgress > 1 ? (carbProgress = 1) : carbProgress;
-        fatProgress = fatProgress > 1 ? (fatProgress = 1) : fatProgress;
-
-        const options = {
-            calorie: {
-                strokeWidth: 6,
-                color: '#8E81E3',
-                trailColor,
-                container: {
-                    size: 90,
-                    yOffSet: -1,
-                    xOffSet: 1
-                }
-            },
-            protein: {
-                strokeWidth: 6,
-                color: '#F5729C',
-                trailColor,
-                container: {
-                    size: 70,
-                    xOffSet: 1,
-                    yOffSet: -87
-                }
-            },
-            carb: {
-                strokeWidth: 5,
-                color: '#7BD4F8',
-                trailColor,
-                container: {
-                    size: 50,
-                    xOffSet: 1,
-                    yOffSet: -153
-                }
-            },
-            fat: {
-                strokeWidth: 5,
-                color: '#55F3B3',
-                trailColor,
-                container: {
-                    size: 30,
-                    xOffSet: 1,
-                    yOffSet: -199
-                }
-            }
-        };
-
-        return (
-            <div className="day__overview">
-                <Circle
-                    progress={calorieProgress}
-                    options={options.calorie}
-                    animate={animate}
-                    containerStyle={options.calorie.container}
-                />
-                <Circle
-                    progress={proteinProgress}
-                    options={options.protein}
-                    animate={animate}
-                    containerStyle={options.protein.container}
-                />
-                <Circle
-                    progress={carbProgress}
-                    options={options.carb}
-                    animate={animate}
-                    containerStyle={options.carb.container}
-                />
-                <Circle
-                    progress={fatProgress}
-                    options={options.fat}
-                    animate={animate}
-                    containerStyle={options.fat.container}
-                />
-            </div>
-        );
-    }
 
     function handleDayClass(day) {
         const now = moment();
@@ -189,7 +86,7 @@ const Calendar = ({ data, loading }) => {
                 data.calendar[i].day.month() === day.month() &&
                 data.calendar[i].day.year() === day.year()
             ) {
-                if (time.isAfter(day) && data.calendar[i]) {
+                if (moment().isSameOrAfter(day) && data.calendar[i]) {
                     return 'icon-info';
                 } else {
                     return 'icon-info hidden';
@@ -322,7 +219,7 @@ const Calendar = ({ data, loading }) => {
                         <div className="number">{calendar[i].days[j].date()}</div>
                         {renderIcons(calendar[i].data[j], calendar[i].days[j])}
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? (
-                            renderDayProgressCircles(calendar[i].data[j])
+                            <Day day={calendar[i].data[j]} data={data} context={time} />
                         ) : (
                             <div className="day__overview" />
                         )}

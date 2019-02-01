@@ -3,6 +3,7 @@ import Input from '../Input';
 import Button from '@material-ui/core/Button';
 import { MealForm as Form, MealsHeader } from './styles';
 import { connect } from 'react-redux';
+import { database } from '../firebase.js';
 import produce from 'immer';
 import { errorNotification, successNotification, warningNotification } from '../actions';
 
@@ -10,6 +11,10 @@ const mapDispatchToProps = dispatch => ({
     errorNotification: message => dispatch(errorNotification(message)),
     successNotification: message => dispatch(successNotification(message)),
     warningNotification: message => dispatch(warningNotification(message))
+});
+
+const mapStateToProps = state => ({
+    userData: state.adminState.userData
 });
 
 const inputObj = class {
@@ -20,7 +25,7 @@ const inputObj = class {
     }
 };
 
-function MealForm({ day, dayRef, errorNotification, successNotification }) {
+function MealForm({ day, index, userData, errorNotification, successNotification }) {
     const [state, setState] = React.useState({
         name: '',
         servings: 0,
@@ -89,10 +94,15 @@ function MealForm({ day, dayRef, errorNotification, successNotification }) {
                     year: day.day.get('year')
                 };
 
-                payload.nutrition.calories += parseInt(calories) * parseInt(servings);
-                payload.nutrition.fat += parseInt(fat) * parseInt(servings);
-                payload.nutrition.protein += parseInt(protein) * parseInt(servings);
-                payload.nutrition.carbs += parseInt(carbs) * parseInt(servings);
+                function servingSize(type) {
+                    // prettier-ignore
+                    return parseInt((parseInt(type) * parseFloat(servings)).toFixed(2));
+                }
+
+                payload.nutrition.calories += servingSize(calories);
+                payload.nutrition.fat += servingSize(fat);
+                payload.nutrition.protein += servingSize(protein);
+                payload.nutrition.carbs += servingSize(carbs);
 
                 if (!day.nutrition.meals) {
                     payload.nutrition.meals = [];
@@ -101,13 +111,18 @@ function MealForm({ day, dayRef, errorNotification, successNotification }) {
                 // add new meal
                 payload.nutrition.meals.push({
                     name,
-                    servings: parseInt(servings),
+                    servings: parseFloat(servings),
                     calories: parseInt(calories),
                     fat: parseInt(fat),
                     protein: parseInt(protein),
                     carbs: parseInt(carbs)
                 });
             });
+
+            const dayRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${index}`);
 
             dayRef.set(mealData, error => {
                 if (error) {
@@ -261,6 +276,6 @@ function MealForm({ day, dayRef, errorNotification, successNotification }) {
 }
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(MealForm);

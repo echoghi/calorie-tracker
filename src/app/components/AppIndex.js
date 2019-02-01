@@ -1,39 +1,22 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { auth } from './firebase.js';
 import { connect } from 'react-redux';
-import Loadable from 'react-loadable';
 import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
-import { useWindowSize } from 'the-platform';
 import ErrorBoundary from './ErrorBoundary';
 import Notifications from './Notifications';
+import NavBar from './Nav';
 import isEmpty from 'lodash.isempty';
 
-const NavBar = Loadable({
-    loader: () => import('./Nav'),
-    loading: Loading
-});
-
-const Calendar = Loadable({
-    loader: () => import('./Calendar'),
-    loading: Loading
-});
-
-const ComingSoon = Loadable({
-    loader: () => import('./ComingSoon'),
-    loading: Loading
-});
-
-const Nutrition = Loadable({
-    loader: () => import('./Nutrition'),
-    loading: Loading
-});
-
-const Settings = Loadable({
-    loader: () => import('./Settings'),
-    loading: Loading
-});
+// no lambda
+const CalendarImport = () => import('./Calendar');
+const NutritionImport = () => import('./Nutrition');
+const SettingsImport = () => import('./Settings');
+// routes
+const Calendar = React.lazy(CalendarImport);
+const Nutrition = React.lazy(NutritionImport);
+const Settings = React.lazy(SettingsImport);
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -47,9 +30,7 @@ const mapDispatchToProps = dispatch => ({
     saveUserData: user => dispatch(saveUserData(user))
 });
 
-function AppIndex({ fetchData, userData, loading, location, history, userLoading, saveUserData }) {
-    const { width } = useWindowSize();
-
+function AppIndex({ fetchData, userData, data, loading, history, userLoading, saveUserData }) {
     auth.onAuthStateChanged(user => {
         if (user) {
             saveUserData(user);
@@ -69,18 +50,13 @@ function AppIndex({ fetchData, userData, loading, location, history, userLoading
         [userData]
     );
 
-    if (width < 1024) {
-        return <ComingSoon width={width} />;
-    } else {
-        if (!isEmpty(userData) && !userLoading && !loading) {
-            return (
+    return (
+        <Suspense fallback={<Loading />}>
+            <NavBar />
+            <Notifications />
+
+            {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) && (
                 <React.Fragment>
-                    <ErrorBoundary>
-                        <NavBar path={location.pathname} width={width} />
-                    </ErrorBoundary>
-
-                    <Notifications />
-
                     <ErrorBoundary>
                         <Route exact path="/" component={Calendar} name="Overview" />
                     </ErrorBoundary>
@@ -91,11 +67,9 @@ function AppIndex({ fetchData, userData, loading, location, history, userLoading
                         <Route path="/nutrition" component={Nutrition} name="Nutrition" />
                     </ErrorBoundary>
                 </React.Fragment>
-            );
-        } else {
-            return <Loading />;
-        }
-    }
+            )}
+        </Suspense>
+    );
 }
 
 export default withRouter(

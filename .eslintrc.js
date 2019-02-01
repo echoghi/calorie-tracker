@@ -3,7 +3,8 @@ module.exports = {
         browser: true,
         commonjs: true,
         es6: true,
-        node: true
+        node: true,
+        jest: true
     },
 
     plugins: ['react'],
@@ -19,7 +20,6 @@ module.exports = {
         }
     },
     rules: {
-        //indent: ['error', 4, { SwitchCase: 1 }],
         quotes: ['error', 'single'],
         semi: ['error', 'always'],
         'no-var': 'error',
@@ -29,8 +29,11 @@ module.exports = {
         'no-multiple-empty-lines': [2, { max: 1 }],
         'no-multi-spaces': [2],
         'react/prop-types': 0,
-        'react/no-unescaped-entities': 0,
-        //we need to fix this at some stage but for now just leave it off
-        'react/no-string-refs': 0
+        'react/no-unescaped-entities': 0
+    },
+    settings: {
+        react: {
+            version: '16.8.0-alpha.1'
+        }
     }
 };

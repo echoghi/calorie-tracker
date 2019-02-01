@@ -8,12 +8,12 @@ export function loadData(id) {
         usersRef.child(id).on('value', snapshot => {
             let user = snapshot.val();
 
-            for (let day of user.calendar) {
+            for (let i = 0; i < user.calendar.length; i++) {
+                const day = user.calendar[i];
                 const { year, date, month } = day.day;
                 day.day = moment([year, month, date]);
             }
-
-            console.log('Data update loaded:', user);
+            console.warn('DATA UPDATE', user);
             dispatch(receiveData(user));
         });
     };

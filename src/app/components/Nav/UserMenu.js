@@ -7,25 +7,25 @@ const Menu = styled.ul`
     position: absolute;
     width: 200px;
     font-family: 'Varela Round';
-    margin-top: 118px;
+    margin-top: 40px;
     background: #fff;
     list-style: none;
     padding: 15px;
-    right: 25px
+    right: 0;
     border: 1px solid #dbdbdb;
-    border-radius:  0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+`;
 
-    li {
-        padding: 10px;
-        border-top: 1px solid rgb(242, 242, 242);
+const MenuItem = styled.li`
+    padding: 10px;
+    border-top: 1px solid rgb(242, 242, 242);
 
-        &:first-child {
-            border-top: 0
-        }
+    &:first-child {
+        border-top: 0;
+    }
 
-        &:hover {
-            opacity: .8;
-        }
+    &:hover {
+        opacity: 0.8;
     }
 `;
 
@@ -33,6 +33,40 @@ const Name = styled.div`
     font-size: 12px;
     font-weight: bold;
     padding: 0 15px;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const Icon = styled.i`
+    display: inline-block;
+    vertical-align: top;
+    padding: 20px 5px;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const Greeting = styled.div`
+    float: right;
+    padding: 0 20px;
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+    cursor: pointer;
+`;
+
+const MenuWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const Image = styled.img`
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px;
 `;
 
 class UserMenu extends Component {
@@ -62,57 +96,49 @@ class UserMenu extends Component {
         this.setState({ open: !this.state.open });
     };
 
-    renderMenu() {
-        const { open } = this.state;
-
-        if (open) {
-            return (
-                <div
-                    ref={node => {
-                        this.menuRef = node;
-                    }}
-                >
-                    <Fade in={open}>
-                        <Menu
-                            className="logout__button"
-                            onClose={() => this.setState({ open: false })}
-                        >
-                            <li>
-                                <Link onClick={this.handleMenu} to="settings">
-                                    Account Settings
-                                </Link>
-                            </li>
-                            <li>
-                                <Link onClick={this.handleMenu} to="settings">
-                                    Edit Profile
-                                </Link>
-                            </li>
-                            <li onClick={this.props.logOut}>Log Out</li>
-                        </Menu>
-                    </Fade>
-                </div>
-            );
-        }
-    }
-
     render() {
+        const { open } = this.state;
         const { userData } = this.props;
 
         return (
-            <div
-                className="greeting"
+            <Greeting
                 ref={node => {
                     this.imageRef = node;
                 }}
             >
-                <div onClick={this.handleMenu}>
-                    <img src={userData.photoURL} />
+                <MenuWrapper onClick={this.handleMenu}>
+                    <Image src={userData.photoURL} />
                     <Name>{userData.displayName}</Name>
-                    <i className="icon-chevron-down" />
-                </div>
+                    <Icon className="icon-chevron-down" />
+                </MenuWrapper>
 
-                {this.renderMenu()}
-            </div>
+                {open && (
+                    <div
+                        ref={node => {
+                            this.menuRef = node;
+                        }}
+                    >
+                        <Fade in={open}>
+                            <Menu
+                                className="logout__button"
+                                onClose={() => this.setState({ open: false })}
+                            >
+                                <MenuItem>
+                                    <Link onClick={this.handleMenu} to="settings">
+                                        Account Settings
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Link onClick={this.handleMenu} to="settings">
+                                        Edit Profile
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem onClick={this.props.logOut}>Log Out</MenuItem>
+                            </Menu>
+                        </Fade>
+                    </div>
+                )}
+            </Greeting>
         );
     }
 }

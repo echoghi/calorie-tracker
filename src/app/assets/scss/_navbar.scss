@@ -1,14 +1,4 @@
 .navbar {
-    font-family: 'Source Sans Pro', serif;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 80px;
-    background: $white;
-    color: $mirage;
-    border-bottom: 1px solid rgb(219, 219, 219);
-    z-index: 999;
-
     &__menu {
         margin: 0;
         vertical-align: text-bottom;
@@ -61,32 +51,6 @@
             &:hover {
                 opacity: 0.8;
             }
-        }
-    }
-    /* stylelint-disable */
-    .greeting {
-        float: right;
-        padding: 0 20px;
-        display: inline-flex;
-        height: 100%;
-        align-items: center;
-        cursor: pointer;
-
-        div {
-            display: flex;
-            align-items: center;
-        }
-
-        img {
-            height: 40px;
-            border-radius: 50%;
-            box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px;
-        }
-
-        i {
-            display: inline-block;
-            vertical-align: top;
-            padding: 20px 5px;
         }
     }
 }

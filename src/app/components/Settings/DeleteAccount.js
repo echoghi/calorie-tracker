@@ -1,17 +1,38 @@
 import React from 'react';
-import DeleteAccountDialog from './DeleteAccountDialog';
+import { connect } from 'react-redux';
+import { database, auth } from '../firebase.js';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import { DeleteAccountWrapper, SettingsHeader, SettingsSubHeader } from './styles';
 
-const DeleteAccount = ({}) => {
-    const [deleteAccountDialog, setDeleteAccountDialog] = React.useState(false);
+const mapStateToProps = state => ({
+    userData: state.adminState.userData
+});
 
-    function closeDeleteDialog() {
-        setDeleteAccountDialog(false);
-    }
+const DeleteAccount = ({ userData }) => {
+    const [dialog, setDialog] = React.useState(false);
 
-    function openDeleteDialog() {
-        setDeleteAccountDialog(true);
+    function deleteAccount() {
+        const user = auth.currentUser;
+
+        user.delete()
+            .then(() => {
+                const userRef = database.ref('users').child(userData.uid);
+
+                userRef.on('value', snapshot => {
+                    snapshot.ref.remove();
+                    console.warn('User Account Deleted');
+
+                    window.location.reload(true);
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     return (
@@ -20,22 +41,43 @@ const DeleteAccount = ({}) => {
                 <SettingsHeader>Delete Account</SettingsHeader>
                 <SettingsSubHeader>
                     We do our best to give you a great experience - we'll be sad to see you leave
-                    us.{' '}
+                    us.
                 </SettingsSubHeader>
 
                 <Button
                     style={{ background: '#cb2431', display: 'block' }}
                     color="primary"
                     variant="raised"
-                    onClick={openDeleteDialog}
+                    onClick={() => setDialog(true)}
                 >
                     Delete Account
                 </Button>
             </DeleteAccountWrapper>
 
-            <DeleteAccountDialog open={deleteAccountDialog} onClose={closeDeleteDialog} />
+            <Dialog open={dialog} onClose={() => setDialog(false)}>
+                <DialogTitle>Delete Account?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this account? All of your data will be
+                        permanently deleted from our database.
+                    </DialogContentText>
+                </DialogContent>
+
+                <DialogActions>
+                    <Button
+                        style={{ background: '#cb2431', color: '#FFFFFF' }}
+                        onClick={deleteAccount}
+                        variant="raised"
+                    >
+                        Delete
+                    </Button>
+                    <Button onClick={() => setDialog(false)} color="primary" autoFocus>
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     );
 };
 
-export default DeleteAccount;
+export default connect(mapStateToProps)(DeleteAccount);

@@ -39,9 +39,25 @@ const Name = styled.div`
     left: 50%;
     transform: translateX(-50%);
     font-style: italic;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
-const NavBar = ({ userData, path, logOut }) => {
+const Nav = styled.div`
+    font-family: 'Source Sans Pro', serif;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background: #ffffff;
+    color: #1b2431;
+    border-bottom: 1px solid rgb(219, 219, 219);
+    z-index: 999;
+`;
+
+const NavBar = ({ userData, logOut }) => {
     const logOutHandler = () => {
         auth.signOut().then(() => {
             logOut();
@@ -50,15 +66,14 @@ const NavBar = ({ userData, path, logOut }) => {
 
     return (
         <React.Fragment>
-            {path !== '/login' && (
-                <div className="navbar">
-                    <Brand to="/">
-                        <i className="icon-aperture" />
-                    </Brand>
-                    <Name>Doughboy</Name>
-                    <UserMenu userData={userData} logOut={logOutHandler} />
-                </div>
-            )}
+            <Nav>
+                <Brand to="/">
+                    <i className="icon-aperture" />
+                </Brand>
+                <Name>Doughboy</Name>
+                <UserMenu userData={userData} logOut={logOutHandler} />
+            </Nav>
+
             <SubNav />
         </React.Fragment>
     );

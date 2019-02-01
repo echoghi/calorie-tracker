@@ -14,11 +14,8 @@ const Settings = () => {
         <Container>
             <SettingsWrapper>
                 <GeneralInfo />
-
                 <AccountInfo />
-
                 <GoalsInfo />
-
                 <DeleteAccount />
             </SettingsWrapper>
         </Container>

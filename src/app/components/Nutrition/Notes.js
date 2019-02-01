@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { database } from '../firebase.js';
 import moment from 'moment';
 import {
     NoteActions,
@@ -29,13 +30,17 @@ const inputObj = class {
     }
 };
 
+const mapStateToProps = state => ({
+    userData: state.adminState.userData
+});
+
 const mapDispatchToProps = dispatch => ({
     errorNotification: message => dispatch(errorNotification(message)),
     successNotification: message => dispatch(successNotification(message)),
     warningNotification: message => dispatch(warningNotification(message))
 });
 
-function Notes({ day, dayRef, errorNotification, successNotification }) {
+function Notes({ day, index, userData, errorNotification, successNotification }) {
     const [state, setState] = React.useState({
         noteToEdit: 0,
         noteToRemove: 0,
@@ -109,7 +114,7 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
         setState(nextState);
     }
 
-    const saveEditedNote = index => {
+    const saveEditedNote = noteIndex => {
         const { noteBody, noteTitle } = state;
 
         if (noteBody && noteTitle) {
@@ -121,12 +126,17 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
                     year: day.day.get('year')
                 };
 
-                const note = data.notes[index];
+                const note = data.notes[noteIndex];
                 note.title = noteTitle;
                 note.body = noteBody;
                 note.time = moment().format('lll');
                 note.edited = true;
             });
+
+            const dayRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${index}`);
 
             dayRef.set(noteData, error => {
                 if (error) {
@@ -153,9 +163,9 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
         }
     };
 
-    const removeNote = index => {
+    const removeNote = noteIndex => {
         const noteData = produce(day, data => {
-            data.notes = data.notes.filter(note => note !== data.notes[index]);
+            data.notes = data.notes.filter(note => note !== data.notes[noteIndex]);
 
             // convert moment object back to original format
             data.day = {
@@ -164,6 +174,11 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
                 year: day.day.get('year')
             };
         });
+
+        const dayRef = database
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${index}`);
 
         dayRef.set(noteData, error => {
             if (error) {
@@ -234,6 +249,11 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
                     time: moment().format('lll')
                 });
             });
+
+            const dayRef = database
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${index}`);
 
             dayRef.set(noteData, error => {
                 if (error) {
@@ -519,6 +539,6 @@ function Notes({ day, dayRef, errorNotification, successNotification }) {
 }
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Notes);

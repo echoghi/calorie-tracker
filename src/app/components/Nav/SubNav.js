@@ -32,6 +32,16 @@ const Menu = styled.div`
             color: #ff5a5f;
         }
     }
+
+    @media (max-width: 768px) {
+        top: auto;
+        padding: 25px 0;
+        bottom: 0;
+
+        li {
+            display: none;
+        }
+    }
 `;
 
 const Icon = styled.i`
