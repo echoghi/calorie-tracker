@@ -10,6 +10,7 @@ const DaySummary = ({ day }) => {
             return meal.name;
         }
     }
+
     return (
         <Fade in={true}>
             <Summary>
@@ -23,7 +24,7 @@ const DaySummary = ({ day }) => {
                         return (
                             <Meal key={meal.name}>
                                 <span>{displayMealName(meal)}</span>
-                                <span>{`${meal.calories} cal`}</span>
+                                <span>{`${meal.calories * meal.servings} cal`}</span>
                             </Meal>
                         );
                     })}

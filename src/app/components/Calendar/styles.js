@@ -85,7 +85,7 @@ const ToggleMonth = styled.div`
 `;
 
 const Summary = styled.div`
-    padding: 15px;
+    padding: 15px 15px 150px 15px;
     background: #ffffff;
 
     h2 {
