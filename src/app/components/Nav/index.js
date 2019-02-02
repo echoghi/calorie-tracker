@@ -27,6 +27,13 @@ const Brand = styled(NavLink)`
     display: inline-block;
     padding: 15px 30px;
     cursor: pointer;
+
+    @media (max-width: 768px) {
+        font-size: 40px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+    }
 `;
 
 const Name = styled.div`
@@ -48,6 +55,8 @@ const Name = styled.div`
 const Nav = styled.div`
     font-family: 'Source Sans Pro', serif;
     position: fixed;
+    display: flex;
+    justify-content: space-between;
     top: 0;
     width: 100%;
     height: 80px;
@@ -55,6 +64,10 @@ const Nav = styled.div`
     color: #1b2431;
     border-bottom: 1px solid rgb(219, 219, 219);
     z-index: 999;
+
+    @media (max-width: 768px) {
+        height: 65px;
+    }
 `;
 
 const NavBar = ({ userData, logOut }) => {

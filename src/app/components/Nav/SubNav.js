@@ -35,7 +35,7 @@ const Menu = styled.div`
 
     @media (max-width: 768px) {
         top: auto;
-        padding: 25px 0;
+        padding: 10px 0;
         bottom: 0;
 
         li {

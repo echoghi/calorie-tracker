@@ -146,7 +146,7 @@ const NoteActions = styled.div`
     text-align: right;
 
     @media (max-width: 768px) {
-        width: 30%;
+        width: 35%;
     }
 `;
 

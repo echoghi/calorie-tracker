@@ -67,6 +67,10 @@ const Image = styled.img`
     height: 50px;
     border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px;
+
+    @media (max-width: 768px) {
+        height: 40px;
+    }
 `;
 
 class UserMenu extends Component {
