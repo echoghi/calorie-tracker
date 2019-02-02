@@ -311,6 +311,8 @@ function Notes({ day, index, userData, errorNotification, successNotification })
         setState(nextState);
     }
 
+    const maxNoteLength = window.innerWidth <= 768 ? 15 : 30;
+
     for (let i in day.notes) {
         const note = day.notes[i];
 
@@ -319,7 +321,9 @@ function Notes({ day, index, userData, errorNotification, successNotification })
                 <NoteTitle>{note.title}</NoteTitle>
                 <NoteBody>
                     <span>
-                        {note.body.length > 30 ? `${note.body.substring(0, 30)}...` : note.body}
+                        {note.body.length > maxNoteLength
+                            ? `${note.body.substring(0, maxNoteLength)}...`
+                            : note.body}
                     </span>
                     <span>{note.edited ? `${note.time} (edited)` : note.time}</span>
                 </NoteBody>

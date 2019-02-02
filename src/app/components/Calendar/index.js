@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { useWindowSize } from 'the-platform';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
@@ -20,6 +21,7 @@ const mapStateToProps = state => ({
 const Calendar = ({ data, loading }) => {
     let [time, setTime] = React.useState(moment());
     const [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
+    const { width } = useWindowSize();
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
@@ -42,6 +44,10 @@ const Calendar = ({ data, loading }) => {
     }
 
     function renderIcons(data, day) {
+        if (width < 768) {
+            return null;
+        }
+
         if (data && day.month() === time.month()) {
             if (data.notes && data.fitness.activities) {
                 return (
@@ -260,6 +266,18 @@ const Calendar = ({ data, loading }) => {
 
     const { active, day } = dayDetails;
 
+    const Header = () => (
+        <div className="calendar__head">
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+        </div>
+    );
+
     return (
         <React.Fragment>
             <Fade in={true}>
@@ -284,16 +302,9 @@ const Calendar = ({ data, loading }) => {
                     </div>
                     <h4>{time.format('YYYY')}</h4>
                     <div className="calendar__wrapper">
+                        {width < 768 && <Header />}
                         <div className="calendar__container">
-                            <div className="calendar__head">
-                                <span>Sun</span>
-                                <span>Mon</span>
-                                <span>Tue</span>
-                                <span>Wed</span>
-                                <span>Thu</span>
-                                <span>Fri</span>
-                                <span>Sat</span>
-                            </div>
+                            {width >= 768 && <Header />}
                             {!isEmpty(data) && !loading && renderDays()}
                         </div>
                         <Legend />

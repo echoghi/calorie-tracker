@@ -2,10 +2,6 @@ import styled from 'styled-components';
 
 const CircleContainer = styled.div`
     position: relative;
-
-    &:first-child {
-        margin-top: 3px;
-    }
 `;
 
 const Text = styled.span`

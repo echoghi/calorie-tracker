@@ -68,6 +68,10 @@ const NoNotes = styled.div`
 const NoteTitle = styled.div`
     width: 40.3%;
     text-align: left;
+
+    @media (max-width: 768px) {
+        width: 20%;
+    }
 `;
 
 const NoteBody = styled.div`
@@ -140,6 +144,10 @@ const Box = styled.div`
 const NoteActions = styled.div`
     width: 20.3%;
     text-align: right;
+
+    @media (max-width: 768px) {
+        width: 30%;
+    }
 `;
 
 const BoxHeader = styled.div`

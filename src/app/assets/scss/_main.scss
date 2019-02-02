@@ -19,8 +19,7 @@ a {
 .overview__container,
 .nutrition,
 .activity,
-.reports,
-.calendar {
+.reports {
     padding: 200px 125px 30px 125px;
 
     @include sm-desktop {
@@ -32,11 +31,22 @@ a {
     }
 }
 
+.nutrition {
+    @include less-than-ipad {
+        padding: 90px 15px 120px 15px;
+    }
+}
+
 .calendar {
     padding: 200px 50px 30px 50px;
 
     @include sm-desktop {
         padding: 200px 30px 30px 30px;
+    }
+
+    @include less-than-ipad {
+        background: $white;
+        padding: 80px 0px;
     }
 }
 
