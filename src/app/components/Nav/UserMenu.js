@@ -14,6 +14,10 @@ const Menu = styled.ul`
     right: 0;
     border: 1px solid #dbdbdb;
     border-radius: 0 0 4px 4px;
+
+    @media (max-width: 768px) {
+        margin-top: 32px;
+    }
 `;
 
 const MenuItem = styled.li`

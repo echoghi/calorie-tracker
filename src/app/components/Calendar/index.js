@@ -291,7 +291,11 @@ const Calendar = ({ data, loading }) => {
                             <i className="icon-chevron-left" />
                         </IconButton>
 
-                        <h2>{time.format('MMMM')}</h2>
+                        <h2>
+                            {width < 768
+                                ? `${time.format('MMMM')} ${time.format('YYYY')}`
+                                : time.format('MMMM')}
+                        </h2>
                         <IconButton
                             aria-label="Next Month"
                             component="div"
@@ -300,11 +304,10 @@ const Calendar = ({ data, loading }) => {
                             <i className="icon-chevron-right" />
                         </IconButton>
                     </div>
-                    <h4>{time.format('YYYY')}</h4>
+                    {width >= 768 && <h4>{time.format('YYYY')}</h4>}
                     <div className="calendar__wrapper">
-                        {width < 768 && <Header />}
                         <div className="calendar__container">
-                            {width >= 768 && <Header />}
+                            <Header />
                             {!isEmpty(data) && !loading && renderDays()}
                         </div>
                         <Legend />

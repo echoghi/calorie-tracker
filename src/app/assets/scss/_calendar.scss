@@ -14,9 +14,9 @@
         background: $white;
 
         @include less-than-ipad {
-            display: grid;
-            grid-template: repeat(6, 1fr) / repeat(7, 1fr);
-            grid-auto-flow: dense;
+            // display: grid;
+            // grid-template: repeat(6, 1fr) / repeat(7, 1fr);
+            // grid-auto-flow: dense;
             box-shadow: none;
         }
     }
@@ -50,6 +50,8 @@
         margin-right: 270px;
 
         @include less-than-ipad {
+            display: flex;
+            justify-content: space-between;
             margin: 0 auto;
         }
 
@@ -59,6 +61,10 @@
             vertical-align: sub;
             font-size: 25px;
             opacity: 0.8;
+
+            @include less-than-ipad {
+                font-size: 35px;
+            }
         }
 
         h2 {
@@ -66,6 +72,11 @@
             vertical-align: middle;
             padding: 10px;
             margin: 0;
+
+            @include less-than-ipad {
+                display: flex;
+                align-items: center;
+            }
         }
     }
 
@@ -79,7 +90,6 @@
 
         @include less-than-ipad {
             height: 60px;
-            width: auto;
         }
 
         &__overview {
@@ -89,9 +99,8 @@
             overflow: hidden;
 
             @include less-than-ipad {
-                overflow: visible;
                 margin: auto;
-                height: auto;
+                height: 30px;
             }
         }
 
