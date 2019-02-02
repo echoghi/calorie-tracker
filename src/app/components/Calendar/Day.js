@@ -1,9 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import Circle from '../ProgressBar/Circle';
+import { DayOverview } from './styles';
 import { useWindowSize } from 'the-platform';
 
-const Day = React.memo(({ data, day, context }) => {
+const Day = React.memo(({ data, day, context, onClick }) => {
     const { width } = useWindowSize();
     const { calories, protein, carbs, fat } = day.nutrition;
     const now = moment();
@@ -21,7 +22,7 @@ const Day = React.memo(({ data, day, context }) => {
     }
 
     return (
-        <div className="day__overview">
+        <DayOverview onClick={onClick}>
             <Circle
                 progress={calories / data.user.goals.calories}
                 size={width < 768 ? 30 : 90}
@@ -78,7 +79,7 @@ const Day = React.memo(({ data, day, context }) => {
                     position: 'relative'
                 }}
             />
-        </div>
+        </DayOverview>
     );
 });
 

@@ -6,12 +6,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
 import isEmpty from 'lodash.isempty';
+import DayDialog from './DayDialog';
 import DaySummary from './DaySummary';
 import Legend from './Legend';
 import Day from './Day';
 // Images
 import runnerIcon from '../../assets/images/apple-runner.png';
-import { Icon } from './styles';
+import { Icon, ToggleMonth } from './styles';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -21,6 +22,7 @@ const mapStateToProps = state => ({
 const Calendar = ({ data, loading }) => {
     let [time, setTime] = React.useState(moment());
     const [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
+    const [summary, setMobileSummary] = React.useState({ active: false, day: moment() });
     const { width } = useWindowSize();
 
     React.useEffect(() => {
@@ -225,7 +227,20 @@ const Calendar = ({ data, loading }) => {
                         <div className="number">{calendar[i].days[j].date()}</div>
                         {renderIcons(calendar[i].data[j], calendar[i].days[j])}
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? (
-                            <Day day={calendar[i].data[j]} data={data} context={time} />
+                            <Day
+                                day={calendar[i].data[j]}
+                                data={data}
+                                context={time}
+                                onClick={
+                                    width < 768
+                                        ? () =>
+                                              setMobileSummary({
+                                                  active: true,
+                                                  day: calendar[i].data[j]
+                                              })
+                                        : () => {}
+                                }
+                            />
                         ) : (
                             <div className="day__overview" />
                         )}
@@ -261,6 +276,7 @@ const Calendar = ({ data, loading }) => {
             }
         }
 
+        setMobileSummary({ active: false, day: moment() });
         setTime(time);
     }
 
@@ -282,7 +298,7 @@ const Calendar = ({ data, loading }) => {
         <React.Fragment>
             <Fade in={true}>
                 <div className="calendar">
-                    <div className="calendar__toggle--month">
+                    <ToggleMonth>
                         <IconButton
                             aria-label="Last Month"
                             component="div"
@@ -303,7 +319,7 @@ const Calendar = ({ data, loading }) => {
                         >
                             <i className="icon-chevron-right" />
                         </IconButton>
-                    </div>
+                    </ToggleMonth>
                     {width >= 768 && <h4>{time.format('YYYY')}</h4>}
                     <div className="calendar__wrapper">
                         <div className="calendar__container">
@@ -315,7 +331,9 @@ const Calendar = ({ data, loading }) => {
                 </div>
             </Fade>
 
-            <DaySummary
+            {summary.active && <DaySummary day={summary.day} />}
+
+            <DayDialog
                 open={active}
                 day={day.format('MMMM Do, YYYY')}
                 id={day.format('x')}

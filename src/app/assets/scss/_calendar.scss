@@ -45,41 +45,6 @@
         }
     }
 
-    &__toggle--month {
-        text-align: center;
-        margin-right: 270px;
-
-        @include less-than-ipad {
-            display: flex;
-            justify-content: space-between;
-            margin: 0 auto;
-        }
-
-        i {
-            display: inline-block;
-            cursor: pointer;
-            vertical-align: sub;
-            font-size: 25px;
-            opacity: 0.8;
-
-            @include less-than-ipad {
-                font-size: 35px;
-            }
-        }
-
-        h2 {
-            display: inline-block;
-            vertical-align: middle;
-            padding: 10px;
-            margin: 0;
-
-            @include less-than-ipad {
-                display: flex;
-                align-items: center;
-            }
-        }
-    }
-
     .day {
         position: relative;
         border: 1px solid $mystic;
@@ -90,18 +55,6 @@
 
         @include less-than-ipad {
             height: 60px;
-        }
-
-        &__overview {
-            margin: -20px auto;
-            text-align: center;
-            height: 100px;
-            overflow: hidden;
-
-            @include less-than-ipad {
-                margin: auto;
-                height: 30px;
-            }
         }
 
         &.inactive {

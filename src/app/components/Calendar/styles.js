@@ -37,4 +37,78 @@ const Icon = styled.i`
     }
 `;
 
-export { Icon };
+const DayOverview = styled.div`
+    margin: -20px auto;
+    text-align: center;
+    height: 100px;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+        margin: auto;
+        height: 30px;
+    }
+`;
+
+const ToggleMonth = styled.div`
+    text-align: center;
+    margin-right: 270px;
+
+    @media (max-width: 768px) {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+    }
+
+    i {
+        display: inline-block;
+        cursor: pointer;
+        vertical-align: sub;
+        font-size: 25px;
+        opacity: 0.8;
+
+        @media (max-width: 768px) {
+            font-size: 35px;
+        }
+    }
+
+    h2 {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 10px;
+        margin: 0;
+
+        @media (max-width: 768px) {
+            display: flex;
+            align-items: center;
+        }
+    }
+`;
+
+const Summary = styled.div`
+    padding: 15px;
+    background: #ffffff;
+
+    h2 {
+        color: rgb(0, 132, 137);
+    }
+`;
+
+const Meals = styled.div``;
+
+const MealHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const Meal = styled.div`
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e6edef;
+
+    span:first-child {
+        flex-grow: 2;
+    }
+`;
+
+export { Icon, DayOverview, ToggleMonth, Summary, Meals, Meal, MealHeader };

@@ -1,28 +1,36 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import Dialog from '@material-ui/core/Dialog';
+import Fade from '@material-ui/core/Fade';
+import { Summary, Meals, Meal, MealHeader } from './styles';
 
-const DaySummary = ({ day, id, open, onClose }) => (
-    <Dialog open={open} onClose={onClose}>
-        <DialogTitle>{day}</DialogTitle>
-        <DialogContent>
-            <DialogContentText>
-                If you've got a smart watch or fitness tracker, you can add your workouts in the
-                activity section. You can then track your personal bests and other stats via the
-                overview section.
-            </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-            <Button component={Link} to={`/nutrition?d=${id}`} color="primary" autoFocus>
-                View Nutrition
-            </Button>
-        </DialogActions>
-    </Dialog>
-);
+const DaySummary = ({ day }) => {
+    function displayMealName(meal) {
+        if (meal.name.length > 40) {
+            return `${meal.name.substring(0, 40)}..`;
+        } else {
+            return meal.name;
+        }
+    }
+    return (
+        <Fade in={true}>
+            <Summary>
+                <h2>{day.day.format('MMMM Do')}</h2>
+                <MealHeader>
+                    <h3>Meals</h3>
+                    <h4>{`${day.nutrition.calories} cal`}</h4>
+                </MealHeader>
+                <Meals>
+                    {day.nutrition.meals.map(meal => {
+                        return (
+                            <Meal key={meal.name}>
+                                <span>{displayMealName(meal)}</span>
+                                <span>{`${meal.calories} cal`}</span>
+                            </Meal>
+                        );
+                    })}
+                </Meals>
+            </Summary>
+        </Fade>
+    );
+};
 
 export default DaySummary;
