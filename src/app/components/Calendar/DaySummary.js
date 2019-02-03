@@ -20,14 +20,15 @@ const DaySummary = ({ day }) => {
                     <h4>{`${day.nutrition.calories} cal`}</h4>
                 </MealHeader>
                 <Meals>
-                    {day.nutrition.meals.map(meal => {
-                        return (
-                            <Meal key={meal.name}>
-                                <span>{displayMealName(meal)}</span>
-                                <span>{`${meal.calories * meal.servings} cal`}</span>
-                            </Meal>
-                        );
-                    })}
+                    {day.nutrition.meals &&
+                        day.nutrition.meals.map(meal => {
+                            return (
+                                <Meal key={meal.name}>
+                                    <span>{displayMealName(meal)}</span>
+                                    <span>{`${meal.calories * meal.servings} cal`}</span>
+                                </Meal>
+                            );
+                        })}
                 </Meals>
             </Summary>
         </Fade>
