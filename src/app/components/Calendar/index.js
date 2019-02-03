@@ -9,10 +9,20 @@ import isEmpty from 'lodash.isempty';
 import DayDialog from './DayDialog';
 import DaySummary from './DaySummary';
 import Legend from './Legend';
-import Day from './Day';
+import NutritionRings from './NutritionRings';
 // Images
 import runnerIcon from '../../assets/images/apple-runner.png';
-import { Icon, ToggleMonth } from './styles';
+import {
+    Icon,
+    Day,
+    ToggleMonth,
+    Wrapper,
+    CalendarWrapper,
+    CalendarContainer,
+    YearHeader,
+    CalendarHeader,
+    DayNumber
+} from './styles';
 
 const mapStateToProps = state => ({
     data: state.adminState.data,
@@ -29,19 +39,19 @@ const Calendar = ({ data, loading }) => {
         window.scrollTo(0, 0);
     }, []);
 
-    function handleDayClass(day) {
+    function handleDayProps(day) {
         const now = moment();
 
         if (now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
             if (day.month() !== time.month()) {
-                return 'day today inactive';
+                return { today: true, inactive: true };
             } else {
-                return 'day today';
+                return { today: true, inactive: false };
             }
         } else if (day.month() !== time.month()) {
-            return 'day inactive';
+            return { today: false, inactive: true };
         } else {
-            return 'day';
+            return { today: false, inactive: false };
         }
     }
 
@@ -218,16 +228,16 @@ const Calendar = ({ data, loading }) => {
                 }
 
                 calendarDays.push(
-                    <div
-                        className={handleDayClass(calendar[i].days[j])}
+                    <Day
+                        {...handleDayProps(calendar[i].days[j])}
                         key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get(
                             'month'
                         )}-${Math.random()}`}
                     >
-                        <div className="number">{calendar[i].days[j].date()}</div>
+                        <DayNumber>{calendar[i].days[j].date()}</DayNumber>
                         {renderIcons(calendar[i].data[j], calendar[i].days[j])}
                         {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? (
-                            <Day
+                            <NutritionRings
                                 day={calendar[i].data[j]}
                                 data={data}
                                 context={time}
@@ -251,7 +261,7 @@ const Calendar = ({ data, loading }) => {
                         >
                             <span className={handleIconClass(calendar[i].days[j])} />
                         </a>
-                    </div>
+                    </Day>
                 );
             }
         }
@@ -283,7 +293,7 @@ const Calendar = ({ data, loading }) => {
     const { active, day } = dayDetails;
 
     const Header = () => (
-        <div className="calendar__head">
+        <CalendarHeader>
             <span>Sun</span>
             <span>Mon</span>
             <span>Tue</span>
@@ -291,13 +301,13 @@ const Calendar = ({ data, loading }) => {
             <span>Thu</span>
             <span>Fri</span>
             <span>Sat</span>
-        </div>
+        </CalendarHeader>
     );
 
     return (
         <React.Fragment>
             <Fade in={true}>
-                <div className="calendar">
+                <Wrapper>
                     <ToggleMonth>
                         <IconButton
                             aria-label="Last Month"
@@ -320,18 +330,17 @@ const Calendar = ({ data, loading }) => {
                             <i className="icon-chevron-right" />
                         </IconButton>
                     </ToggleMonth>
-                    {width >= 768 && <h4>{time.format('YYYY')}</h4>}
-                    <div className="calendar__wrapper">
-                        <div className="calendar__container">
+                    {width >= 768 && <YearHeader>{time.format('YYYY')}</YearHeader>}
+                    <CalendarWrapper>
+                        <CalendarContainer>
                             <Header />
                             {!isEmpty(data) && !loading && renderDays()}
-                        </div>
+                        </CalendarContainer>
                         <Legend />
-                    </div>
-                </div>
+                    </CalendarWrapper>
+                    {summary.active && <DaySummary day={summary.day} />}
+                </Wrapper>
             </Fade>
-
-            {summary.active && <DaySummary day={summary.day} />}
 
             <DayDialog
                 open={active}

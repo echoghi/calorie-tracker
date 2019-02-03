@@ -4,7 +4,7 @@ import Circle from '../ProgressBar/Circle';
 import { DayOverview } from './styles';
 import { useWindowSize } from 'the-platform';
 
-const Day = React.memo(({ data, day, context, onClick }) => {
+const NutritionRings = React.memo(({ data, day, context, onClick }) => {
     const { width } = useWindowSize();
     const { calories, protein, carbs, fat } = day.nutrition;
     const now = moment();
@@ -87,4 +87,4 @@ const Day = React.memo(({ data, day, context, onClick }) => {
     );
 });
 
-export default Day;
+export default NutritionRings;

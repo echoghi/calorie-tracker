@@ -93,11 +93,68 @@ const Summary = styled.div`
     }
 `;
 
+const Wrapper = styled.div`
+    padding: 200px 50px 30px 50px;
+
+    @media (min-width: 1024px) and (max-width: 1199px) {
+        padding: 200px 30px 30px 30px;
+    }
+
+    @media (max-width: 768px) {
+        background: #ffffff;
+        padding: 65px 0 0 0;
+    }
+`;
+
+const CalendarWrapper = styled.div`
+    display: flex;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+`;
+
+const CalendarContainer = styled.div`
+    display: inline-block;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    background: #ffffff;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        box-shadow: none;
+    }
+`;
+
 const Meals = styled.div``;
+
+const YearHeader = styled.h4`
+    text-align: center;
+    margin: 0 270px 20px 0;
+
+    @media (max-width: 1024px) {
+        margin: 5px auto;
+    }
+`;
 
 const MealHeader = styled.div`
     display: flex;
     justify-content: space-between;
+`;
+
+const CalendarHeader = styled.div`
+    display: flex;
+    border: 1px solid #e6eaee;
+    border-bottom: none;
+    background: #ffffff;
+
+    span {
+        opacity: 0.8;
+        width: 14.3%;
+        text-align: center;
+        font-weight: bold;
+        padding: 15px 0;
+    }
 `;
 
 const Meal = styled.div`
@@ -111,4 +168,73 @@ const Meal = styled.div`
     }
 `;
 
-export { Icon, DayOverview, ToggleMonth, Summary, Meals, Meal, MealHeader };
+const DayNumber = styled.div`
+    padding: 15px;
+    opacity: 0.8;
+    font-weight: bold;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        padding: 0;
+        text-align: center;
+    }
+`;
+
+const Day = styled.div`
+    position: relative;
+    border: 1px solid #e6edef;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 14.2857%;
+    height: 150px;
+    background: ${props => (props.inactive ? '#f6fafd' : '#ffffff')};
+    opacity: ${props => (props.inactive ? 0.5 : 1)};
+    color: ${props => (props.today ? '#ed5454' : 'inherit')};
+
+    @media (max-width: 768px) {
+        height: 60px;
+    }
+
+    .icon-info {
+        opacity: 0.8;
+        cursor: pointer;
+        position: absolute;
+        color: $limed-spruce;
+        font-size: 20px;
+        bottom: 10px;
+        right: 10px;
+
+        @include less-than-ipad {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            display: none;
+        }
+
+        &.hidden {
+            display: none;
+        }
+
+        &:hover {
+            color: $burnt-sienna;
+        }
+    }
+`;
+
+export {
+    Icon,
+    Day,
+    DayOverview,
+    ToggleMonth,
+    Summary,
+    Meals,
+    Meal,
+    MealHeader,
+    Wrapper,
+    YearHeader,
+    DayNumber,
+    CalendarWrapper,
+    CalendarHeader,
+    CalendarContainer
+};

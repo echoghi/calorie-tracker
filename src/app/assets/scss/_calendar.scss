@@ -1,101 +1,10 @@
 .calendar {
-    &__wrapper {
-        display: flex;
-
-        @include less-than-ipad {
-            display: block;
-        }
-    }
-
-    &__container {
-        display: inline-block;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-        border-radius: 3px;
-        background: $white;
-
-        @include less-than-ipad {
-            width: 100%;
-            box-shadow: none;
-        }
-    }
-
     h4 {
         text-align: center;
         margin: 0 270px 20px 0;
 
         @include less-than-tab-land {
             margin: 5px auto;
-        }
-    }
-
-    &__head {
-        display: flex;
-        border: 1px solid $athens-gray;
-        border-bottom: none;
-        background: $white;
-
-        span {
-            opacity: 0.8;
-            width: 14.3%;
-            text-align: center;
-            font-weight: bold;
-            padding: 15px 0;
-        }
-    }
-
-    .day {
-        position: relative;
-        border: 1px solid $mystic;
-        display: inline-block;
-        box-sizing: border-box;
-        width: 14.2857%;
-        height: 150px;
-
-        @include less-than-ipad {
-            height: 60px;
-        }
-
-        &.inactive {
-            background: $polar;
-            opacity: 0.65;
-        }
-
-        &.today {
-            color: $burnt-sienna;
-        }
-
-        .icon-info {
-            opacity: 0.8;
-            cursor: pointer;
-            position: absolute;
-            color: $limed-spruce;
-            font-size: 20px;
-            bottom: 10px;
-            right: 10px;
-
-            @include less-than-ipad {
-                display: none;
-            }
-
-            &.hidden {
-                display: none;
-            }
-
-            &:hover {
-                color: $burnt-sienna;
-            }
-        }
-    }
-
-    .number {
-        padding: 15px;
-        opacity: 0.8;
-        font-weight: bold;
-        box-sizing: border-box;
-
-        @include less-than-ipad {
-            padding: 0;
-            text-align: center;
         }
     }
 

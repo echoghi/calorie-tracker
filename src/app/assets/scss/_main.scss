@@ -37,19 +37,6 @@ a {
     }
 }
 
-.calendar {
-    padding: 200px 50px 30px 50px;
-
-    @include sm-desktop {
-        padding: 200px 30px 30px 30px;
-    }
-
-    @include less-than-ipad {
-        background: $white;
-        padding: 65px 0 0 0;
-    }
-}
-
 .clearfix:after {
     content: '';
     display: table;
