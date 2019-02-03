@@ -97,7 +97,7 @@ const Calendar = ({ data, loading }) => {
         }
     }
 
-    function handleIconClass(day) {
+    function handleIcon(day) {
         for (let i = 0; i < data.calendar.length; i++) {
             if (
                 data.calendar[i].day.date() === day.date() &&
@@ -105,9 +105,7 @@ const Calendar = ({ data, loading }) => {
                 data.calendar[i].day.year() === day.year()
             ) {
                 if (moment().isSameOrAfter(day) && data.calendar[i]) {
-                    return 'icon-info';
-                } else {
-                    return 'icon-info hidden';
+                    return <span className="icon-info" />;
                 }
             }
         }
@@ -259,7 +257,7 @@ const Calendar = ({ data, loading }) => {
                                 toggleBreakdown({ active: true, day: calendar[i].days[j] });
                             }}
                         >
-                            <span className={handleIconClass(calendar[i].days[j])} />
+                            {handleIcon(calendar[i].days[j])}
                         </a>
                     </Day>
                 );
