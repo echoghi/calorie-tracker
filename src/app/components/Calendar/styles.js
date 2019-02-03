@@ -94,8 +94,20 @@ const Summary = styled.div`
 `;
 
 const InfoIcon = styled.span`
+    opacity: 0.8;
+    cursor: pointer;
+    position: absolute;
+    color: #3d575d;
+    font-size: 20px;
+    bottom: 10px;
+    right: 10px;
+
     @media (max-width: 1024px) {
         display: none;
+    }
+
+    &:hover {
+        color: #ed5454;
     }
 `;
 
@@ -109,6 +121,7 @@ const Wrapper = styled.div`
     @media (max-width: 768px) {
         background: #ffffff;
         padding: 65px 0 0 0;
+        margin-bottom: 30px;
     }
 `;
 
@@ -199,32 +212,6 @@ const Day = styled.div`
 
     @media (max-width: 768px) {
         height: 60px;
-    }
-
-    .icon-info {
-        opacity: 0.8;
-        cursor: pointer;
-        position: absolute;
-        color: $limed-spruce;
-        font-size: 20px;
-        bottom: 10px;
-        right: 10px;
-
-        @include less-than-ipad {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            display: none;
-        }
-
-        &.hidden {
-            display: none;
-        }
-
-        &:hover {
-            color: $burnt-sienna;
-        }
     }
 `;
 
