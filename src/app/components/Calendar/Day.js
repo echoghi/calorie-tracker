@@ -28,7 +28,8 @@ const Day = React.memo(({ data, day, context, onClick }) => {
                 size={width < 768 ? 30 : 90}
                 animate={animate}
                 strokeWidth={width < 768 ? 2 : 6}
-                color="#8E81E3"
+                color="#FFAB3E"
+                trailColor="#FFE9C6"
                 style={{
                     transform:
                         width < 768
@@ -42,7 +43,8 @@ const Day = React.memo(({ data, day, context, onClick }) => {
                 size={width < 768 ? 23 : 70}
                 animate={animate}
                 strokeWidth={width < 768 ? 2 : 6}
-                color="#F5729C"
+                color="#32C9D5"
+                trailColor="#E6FDF3"
                 style={{
                     transform:
                         width < 768
@@ -56,7 +58,8 @@ const Day = React.memo(({ data, day, context, onClick }) => {
                 size={width < 768 ? 16 : 50}
                 animate={animate}
                 strokeWidth={width < 768 ? 1 : 5}
-                color="#7BD4F8"
+                color="#5B6AEE"
+                trailColor="#D0D4FA"
                 style={{
                     transform:
                         width < 768
@@ -70,7 +73,8 @@ const Day = React.memo(({ data, day, context, onClick }) => {
                 size={width < 768 ? 10 : 30}
                 animate={animate}
                 strokeWidth={width < 768 ? 1 : 5}
-                color="#55F3B3"
+                color="#F08EC1"
+                trailColor="#FCDFED"
                 style={{
                     transform:
                         width < 768

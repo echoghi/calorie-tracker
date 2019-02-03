@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { CircleContainer } from './styles';
 
-const Circle = React.memo(({ progress, color, style, animate, size, strokeWidth }) => {
+const Circle = React.memo(({ progress, color, style, animate, size, strokeWidth, trailColor }) => {
     progress = progress > 1 ? 1 : progress;
 
     const radius = size / 2 - strokeWidth / 2;
@@ -46,7 +46,7 @@ const Circle = React.memo(({ progress, color, style, animate, size, strokeWidth 
                     cy={center}
                     r={radius}
                     fill="none"
-                    stroke="#f4f4f4"
+                    stroke={trailColor || '#f4f4f4'}
                     strokeWidth={strokeWidth}
                 />
                 <ProgressCircle cx={center} cy={center} r={radius} animate={animate} />

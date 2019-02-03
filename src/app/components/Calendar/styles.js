@@ -53,7 +53,7 @@ const ToggleMonth = styled.div`
     text-align: center;
     margin-right: 270px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
         display: flex;
         justify-content: space-between;
         margin: 0 auto;
@@ -66,7 +66,7 @@ const ToggleMonth = styled.div`
         font-size: 25px;
         opacity: 0.8;
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             font-size: 35px;
         }
     }
@@ -77,7 +77,7 @@ const ToggleMonth = styled.div`
         padding: 10px;
         margin: 0;
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             display: flex;
             align-items: center;
         }

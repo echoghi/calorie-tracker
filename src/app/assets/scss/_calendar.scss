@@ -14,9 +14,7 @@
         background: $white;
 
         @include less-than-ipad {
-            // display: grid;
-            // grid-template: repeat(6, 1fr) / repeat(7, 1fr);
-            // grid-auto-flow: dense;
+            width: 100%;
             box-shadow: none;
         }
     }
@@ -25,7 +23,7 @@
         text-align: center;
         margin: 0 270px 20px 0;
 
-        @include less-than-ipad {
+        @include less-than-tab-land {
             margin: 5px auto;
         }
     }
@@ -120,7 +118,7 @@
     vertical-align: top;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 
-    @include less-than-ipad {
+    @include less-than-tab-land {
         display: none;
     }
 
