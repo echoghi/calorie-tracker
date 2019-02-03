@@ -93,6 +93,12 @@ const Summary = styled.div`
     }
 `;
 
+const InfoIcon = styled.span`
+    @media (max-width: 1024px) {
+        display: none;
+    }
+`;
+
 const Wrapper = styled.div`
     padding: 200px 50px 30px 50px;
 
@@ -229,6 +235,7 @@ export {
     ToggleMonth,
     Summary,
     Meals,
+    InfoIcon,
     Meal,
     MealHeader,
     Wrapper,

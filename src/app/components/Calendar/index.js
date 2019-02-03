@@ -21,7 +21,8 @@ import {
     CalendarContainer,
     YearHeader,
     CalendarHeader,
-    DayNumber
+    DayNumber,
+    InfoIcon
 } from './styles';
 
 const mapStateToProps = state => ({
@@ -105,7 +106,7 @@ const Calendar = ({ data, loading }) => {
                 data.calendar[i].day.year() === day.year()
             ) {
                 if (moment().isSameOrAfter(day) && data.calendar[i]) {
-                    return <span className="icon-info" />;
+                    return <InfoIcon className="icon-info" />;
                 }
             }
         }
