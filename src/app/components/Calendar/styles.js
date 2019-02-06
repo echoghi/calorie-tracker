@@ -134,7 +134,9 @@ const CalendarWrapper = styled.div`
 `;
 
 const CalendarContainer = styled.div`
-    display: inline-block;
+    display: grid;
+    width: 100%;
+    grid-template: 50px 5fr / repeat(7, 1fr);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     background: #ffffff;
@@ -154,6 +156,10 @@ const YearHeader = styled.h4`
     @media (max-width: 1024px) {
         margin: 5px auto;
     }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 const MealHeader = styled.div`
@@ -162,14 +168,15 @@ const MealHeader = styled.div`
 `;
 
 const CalendarHeader = styled.div`
+    grid-area: 1/1/1/8;
     display: flex;
+    justify-content: space-around;
     border: 1px solid #e6eaee;
     border-bottom: none;
     background: #ffffff;
 
     span {
         opacity: 0.8;
-        width: 14.3%;
         text-align: center;
         font-weight: bold;
         padding: 15px 0;
@@ -204,7 +211,6 @@ const Day = styled.div`
     border: 1px solid #e6edef;
     display: inline-block;
     box-sizing: border-box;
-    width: 14.2857%;
     height: 150px;
     background: ${props => (props.inactive ? '#f6fafd' : '#ffffff')};
     opacity: ${props => (props.inactive ? 0.5 : 1)};

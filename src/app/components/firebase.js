@@ -4,9 +4,9 @@ const config = {
     apiKey: 'AIzaSyAvzipfoqp3pei3BvDt4fp4oBTffr9QqsE',
     authDomain: 'health-dashboard-e6394.firebaseapp.com',
     databaseURL: 'https://health-dashboard-e6394.firebaseio.com',
+    messagingSenderId: '698208103192',
     projectId: 'health-dashboard-e6394',
-    storageBucket: '',
-    messagingSenderId: '698208103192'
+    storageBucket: ''
 };
 firebase.initializeApp(config);
 

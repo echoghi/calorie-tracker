@@ -1,13 +1,46 @@
 import React from 'react';
 import Fade from '@material-ui/core/Fade';
 import { Summary, Meals, Meal, MealHeader } from './styles';
+import moment from 'moment';
 
-const DaySummary = ({ day }) => {
-    function displayMealName(meal) {
-        if (meal.name.length > 40) {
-            return `${meal.name.substring(0, 40)}..`;
+type Note = {
+    title: string;
+    time: string;
+    body: string;
+    edited: boolean;
+};
+
+type Meal = {
+    name: string;
+    calories: number;
+    servings: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+};
+
+type Day = {
+    nutrition: {
+        fat: number;
+        calories: number;
+        carbs: number;
+        protein: number;
+        meals?: Meal[];
+    };
+    day: moment.Moment;
+    notes?: Note[];
+    fitness?: {
+        calories: number;
+        activities: string[];
+    };
+};
+
+const DaySummary = ({ day }: { day: Day }) => {
+    function displayMealName(meal: string) {
+        if (meal.length > 40) {
+            return `${meal.substring(0, 40)}..`;
         } else {
-            return meal.name;
+            return meal;
         }
     }
 
@@ -24,7 +57,7 @@ const DaySummary = ({ day }) => {
                         day.nutrition.meals.map(meal => {
                             return (
                                 <Meal key={meal.name}>
-                                    <span>{displayMealName(meal)}</span>
+                                    <span>{displayMealName(meal.name)}</span>
                                     <span>{`${meal.calories * meal.servings} cal`}</span>
                                 </Meal>
                             );

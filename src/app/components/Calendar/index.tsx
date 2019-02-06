@@ -25,22 +25,66 @@ import {
     InfoIcon
 } from './styles';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
     data: state.adminState.data,
     loading: state.adminState.loading
 });
 
-const Calendar = ({ data, loading }) => {
+interface Note {
+    title: string;
+    time: string;
+    body: string;
+    edited: boolean;
+}
+
+interface Day {
+    nutrition: {
+        fat: number;
+        calories: number;
+        carbs: number;
+        protein: number;
+    };
+    day: moment.Moment;
+    notes?: Note[];
+    fitness?: {
+        calories: number;
+        activities: string[];
+    };
+}
+
+interface CalendarDay {
+    week: number;
+    days: moment.Moment[];
+    data: Day[];
+    [index: number]: any;
+}
+
+interface Calendar {
+    data: {
+        user: {
+            goals: {
+                fat: number;
+                carbs: number;
+                calories: number;
+                protein: number;
+            };
+        };
+        calendar: Day[];
+    };
+    loading: boolean;
+}
+
+const Calendar = ({ data, loading }: Calendar) => {
     let [time, setTime] = React.useState(moment());
     const [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
-    const [summary, setMobileSummary] = React.useState({ active: false, day: moment() });
+    const [summary, setMobileSummary] = React.useState({ active: false, day: null });
     const { width } = useWindowSize();
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
-    function handleDayProps(day) {
+    function handleDayProps(day: moment.Moment) {
         const now = moment();
 
         if (now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
@@ -56,7 +100,7 @@ const Calendar = ({ data, loading }) => {
         }
     }
 
-    function renderIcons(data, day) {
+    function renderIcons(data: Day, day: moment.Moment) {
         if (width < 768) {
             return null;
         }
@@ -98,14 +142,14 @@ const Calendar = ({ data, loading }) => {
         }
     }
 
-    function handleIcon(day) {
-        for (let i = 0; i < data.calendar.length; i++) {
+    function handleIcon(day: moment.Moment) {
+        for (const calendarDay of data.calendar) {
             if (
-                data.calendar[i].day.date() === day.date() &&
-                data.calendar[i].day.month() === day.month() &&
-                data.calendar[i].day.year() === day.year()
+                calendarDay.day.date() === day.date() &&
+                calendarDay.day.month() === day.month() &&
+                calendarDay.day.year() === day.year()
             ) {
-                if (moment().isSameOrAfter(day) && data.calendar[i]) {
+                if (moment().isSameOrAfter(day) && calendarDay) {
                     return <InfoIcon className="icon-info" />;
                 }
             }
@@ -113,8 +157,8 @@ const Calendar = ({ data, loading }) => {
     }
 
     function renderDays() {
-        let calendarDays = [];
-        let calendar = [];
+        const calendarDays: React.ReactNode[] = [];
+        let calendar: CalendarDay[] = [];
         const startWeek = time
             .clone()
             .startOf('month')
@@ -195,7 +239,7 @@ const Calendar = ({ data, loading }) => {
         } else {
             for (let week = startWeek; week <= endWeek; week++) {
                 calendar.push({
-                    week: week,
+                    data: [],
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
@@ -205,7 +249,7 @@ const Calendar = ({ data, loading }) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    data: []
+                    week: week
                 });
             }
         }
@@ -268,7 +312,7 @@ const Calendar = ({ data, loading }) => {
         return calendarDays;
     }
 
-    function changeMonth(increment) {
+    function changeMonth(increment: boolean) {
         if (increment) {
             // if its December, increment the year
             if (time.get('month') === 11) {
@@ -303,16 +347,16 @@ const Calendar = ({ data, loading }) => {
         </CalendarHeader>
     );
 
+    const lastMonth = () => changeMonth(false);
+    const nextMonth = () => changeMonth(true);
+    const closeBreakdown = () => toggleBreakdown({ active: false, day: moment() });
+
     return (
         <React.Fragment>
             <Fade in={true}>
                 <Wrapper>
                     <ToggleMonth>
-                        <IconButton
-                            aria-label="Last Month"
-                            component="div"
-                            onClick={() => changeMonth(false)}
-                        >
+                        <IconButton aria-label="Last Month" component="div" onClick={lastMonth}>
                             <i className="icon-chevron-left" />
                         </IconButton>
 
@@ -321,11 +365,7 @@ const Calendar = ({ data, loading }) => {
                                 ? `${time.format('MMMM')} ${time.format('YYYY')}`
                                 : time.format('MMMM')}
                         </h2>
-                        <IconButton
-                            aria-label="Next Month"
-                            component="div"
-                            onClick={() => changeMonth(true)}
-                        >
+                        <IconButton aria-label="Next Month" component="div" onClick={nextMonth}>
                             <i className="icon-chevron-right" />
                         </IconButton>
                     </ToggleMonth>
@@ -345,7 +385,7 @@ const Calendar = ({ data, loading }) => {
                 open={active}
                 day={day.format('MMMM Do, YYYY')}
                 id={day.format('x')}
-                onClose={() => toggleBreakdown({ active: false, day: moment() })}
+                onClose={closeBreakdown}
             />
         </React.Fragment>
     );

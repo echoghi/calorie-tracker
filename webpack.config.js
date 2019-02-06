@@ -56,13 +56,22 @@ module.exports = function(env) {
                 },
 
                 {
-                    test: /\.js$/,
+                    test: /\.(js|ts|tsx)$/,
                     enforce: 'pre',
-                    loader: 'eslint-loader',
-                    options: {
-                        fix: false
-                    }
+                    use: [
+                        {
+                            loader: 'eslint-loader',
+                            options: { fix: false }
+                        },
+                        {
+                            loader: 'tslint-loader'
+                        },
+                        {
+                            loader: 'source-map-loader'
+                        }
+                    ]
                 },
+
                 {
                     test: /\.json$/,
                     loader: 'json-loader',
@@ -105,6 +114,13 @@ module.exports = function(env) {
                         }
                     ]
                 },
+
+                {
+                    test: /\.(ts|tsx)?$/,
+                    use: 'ts-loader',
+                    exclude: /node_modules/
+                },
+
                 {
                     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
                     loader: 'url-loader'
@@ -142,7 +158,15 @@ module.exports = function(env) {
             ]
         },
         resolve: {
-            extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
+            extensions: [
+                '.webpack-loader.js',
+                '.web-loader.js',
+                '.loader.js',
+                '.js',
+                '.jsx',
+                '.ts',
+                '.tsx'
+            ],
             modules: [path.resolve(__dirname, 'node_modules'), sourcePath]
         },
 

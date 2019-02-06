@@ -1,8 +1,15 @@
 {
     "presets": [
-        "react",
+        "@babel/preset-react",
         [
-            "env",
+            "@babel/preset-typescript",
+            {
+                "isTSX": true,
+                "allExtensions": true
+            }
+        ],
+        [
+            "@babel/env",
             {
                 "targets": {
                     "browsers": "last 2 versions"
@@ -12,5 +19,14 @@
             }
         ]
     ],
-    "plugins": ["babel-plugin-transform-class-properties", "syntax-dynamic-import"]
+    "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-syntax-dynamic-import"],
+    "env": {
+        "test": {
+            "plugins": [
+                "transform-es2015-modules-commonjs",
+                "babel-plugin-transform-dynamic-import"
+            ],
+            "presets": [["@babel/preset-env"], "@babel/react"]
+        }
+    }
 }

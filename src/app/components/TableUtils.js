@@ -1,4 +1,17 @@
 export const tableStyle = {
+    cell: {
+        fontSize: 12,
+        color: '#6b6b6b',
+        letterSpacing: 0.5,
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 10
+    },
+    cellCentered: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     table: {
         border: '1px solid #d8d8d8',
         borderRadius: 3,
@@ -29,19 +42,6 @@ export const tableStyle = {
         width: '100%',
         fontSize: 12,
         border: '1px solid #c9c9c9'
-    },
-    cell: {
-        fontSize: 12,
-        color: '#6b6b6b',
-        letterSpacing: 0.5,
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: 10
-    },
-    cellCentered: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     thead: { display: 'block' },
     theadTh: {

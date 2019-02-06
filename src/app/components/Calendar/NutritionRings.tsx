@@ -4,7 +4,31 @@ import Circle from '../ProgressBar/Circle';
 import { DayOverview } from './styles';
 import { useWindowSize } from 'the-platform';
 
-const NutritionRings = React.memo(({ data, day, context, onClick }) => {
+interface NutritionRings {
+    data: {
+        user: {
+            goals: {
+                fat: number;
+                carbs: number;
+                calories: number;
+                protein: number;
+            };
+        };
+    };
+    day: {
+        nutrition: {
+            fat: number;
+            calories: number;
+            carbs: number;
+            protein: number;
+        };
+        day: moment.Moment;
+    };
+    context: moment.Moment;
+    onClick: () => void;
+}
+
+const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRings) => {
     const { width } = useWindowSize();
     const { calories, protein, carbs, fat } = day.nutrition;
     const now = moment();
@@ -31,11 +55,11 @@ const NutritionRings = React.memo(({ data, day, context, onClick }) => {
                 color="#FFAB3E"
                 trailColor="#FFE9C6"
                 style={{
+                    position: 'relative',
                     transform:
                         width < 768
                             ? 'translateY(0px) translateX(-0.5px)'
-                            : 'translateY(0) translateX(0)',
-                    position: 'relative'
+                            : 'translateY(0) translateX(0)'
                 }}
             />
             <Circle
@@ -46,11 +70,11 @@ const NutritionRings = React.memo(({ data, day, context, onClick }) => {
                 color="#32C9D5"
                 trailColor="#E6FDF3"
                 style={{
+                    position: 'relative',
                     transform:
                         width < 768
                             ? 'translateY(-32.5px) translateX(-.5px)'
-                            : 'translateY(-87px) translateX(1px)',
-                    position: 'relative'
+                            : 'translateY(-87px) translateX(1px)'
                 }}
             />
             <Circle
@@ -61,11 +85,11 @@ const NutritionRings = React.memo(({ data, day, context, onClick }) => {
                 color="#5B6AEE"
                 trailColor="#D0D4FA"
                 style={{
+                    position: 'relative',
                     transform:
                         width < 768
                             ? 'translateY(-58px) translateX(0px)'
-                            : 'translateY(-153px) translateX(1px)',
-                    position: 'relative'
+                            : 'translateY(-153px) translateX(1px)'
                 }}
             />
             <Circle
@@ -76,11 +100,11 @@ const NutritionRings = React.memo(({ data, day, context, onClick }) => {
                 color="#F08EC1"
                 trailColor="#FCDFED"
                 style={{
+                    position: 'relative',
                     transform:
                         width < 768
                             ? 'translateY(-82px) translateX(0px)'
-                            : 'translateY(-199px) translateX(1px)',
-                    position: 'relative'
+                            : 'translateY(-199px) translateX(1px)'
                 }}
             />
         </DayOverview>
