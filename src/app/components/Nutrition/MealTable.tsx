@@ -4,30 +4,77 @@ import { database } from '../firebase.js';
 import produce from 'immer';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import ConfirmationDialog from './ConfirmationDialog';
 import IconButton from '@material-ui/core/IconButton';
 import { errorNotification, successNotification } from '../actions';
 import { tableStyle, getSortedComponentClass } from '../TableUtils';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = dispatch => ({
-    errorNotification: message => dispatch(errorNotification(message)),
-    successNotification: message => dispatch(successNotification(message))
+const mapDispatchToProps = (dispatch: any) => ({
+    errorNotification: (message: any) => dispatch(errorNotification(message)),
+    successNotification: (message: any) => dispatch(successNotification(message))
 });
 
+interface Note {
+    title: string;
+    time: string;
+    body: string;
+    edited: boolean;
+    [index: string]: boolean | string;
+}
+
+interface Meal {
+    name: string;
+    fat: number;
+    calories: number;
+    carbs: number;
+    protein: number;
+    servings: string;
+    [index: string]: any;
+}
+
+interface DayFormat {
+    date: number;
+    month: number;
+    year: number;
+}
+
+interface Day {
+    nutrition: {
+        fat: number;
+        calories: number;
+        carbs: number;
+        protein: number;
+        meals?: Meal[];
+        [index: string]: number | Meal[];
+    };
+    day: moment.Moment | DayFormat | any;
+    notes?: Note[];
+    fitness?: {
+        calories: number;
+        activities: string[];
+    };
+    [index: string]: any;
+}
+
+interface UserProps {
+    uid: string;
+}
+
 /*eslint-disable */
-function MealTable({ day, userData, index, actions }) {
+function MealTable({ day, userData, index }: { day: Day; userData: UserProps; index: number }) {
     const [sorted, setSorted] = React.useState([]);
     const [dialog, setDialog] = React.useState(false);
     const [mealToDelete, setMealToDelete] = React.useState(0);
 
-    function renderActions(index) {
+    function renderActions(rowIndex: number) {
         const clickHandler = () => {
             setDialog(true);
-            setMealToDelete(index);
+            setMealToDelete(rowIndex);
         };
 
         return (
@@ -37,25 +84,25 @@ function MealTable({ day, userData, index, actions }) {
         );
     }
 
-    const removeMeal = mealIndex => {
+    const removeMeal = (mealIndex: number) => {
         const mealData = produce(day, draftState => {
             const meal = draftState.nutrition.meals[mealIndex];
 
             draftState.day = {
-                month: day.day.get('month'),
                 date: day.day.date(),
+                month: day.day.get('month'),
                 year: day.day.get('year')
             };
 
-            for (let name in draftState.nutrition) {
+            for (const name in draftState.nutrition) {
                 if (name !== 'meals') {
                     // prettier-ignore
-                    draftState.nutrition[name] -= parseInt((parseInt(meal[name]) * parseFloat(meal.servings)).toFixed(2));
+                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((parseInt(meal[name], 10) * parseFloat(meal.servings)).toFixed(2), 10);
                 }
             }
 
             draftState.nutrition.meals = draftState.nutrition.meals.filter(
-                meal => meal !== draftState.nutrition.meals[mealIndex]
+                mealRef => mealRef !== draftState.nutrition.meals[mealIndex]
             );
         });
 
@@ -86,107 +133,101 @@ function MealTable({ day, userData, index, actions }) {
                 noDataText="No Meals Found"
                 columns={[
                     {
-                        headerText: 'Meal',
+                        Header: props => {
+                            return (
+                                <span style={tableStyle.thead}>
+                                    Meal
+                                    <i
+                                        className={getSortedComponentClass(sorted, props.column.id)}
+                                    />
+                                </span>
+                            );
+                        },
                         accessor: 'name',
                         headerStyle: tableStyle.theadTh,
+                        style: tableStyle.cell
+                    },
+                    {
                         Header: props => {
                             return (
                                 <span style={tableStyle.thead}>
-                                    {props.column.headerText}
+                                    Calories
                                     <i
                                         className={getSortedComponentClass(sorted, props.column.id)}
                                     />
                                 </span>
                             );
                         },
-                        style: tableStyle.cell
-                    },
-                    {
-                        headerText: 'Calories',
                         accessor: 'calories',
                         headerStyle: tableStyle.theadTh,
+                        style: tableStyle.cell
+                    },
+                    {
                         Header: props => {
                             return (
                                 <span style={tableStyle.thead}>
-                                    {props.column.headerText}
+                                    Protein
                                     <i
                                         className={getSortedComponentClass(sorted, props.column.id)}
                                     />
                                 </span>
                             );
                         },
-                        style: tableStyle.cell
-                    },
-                    {
-                        headerText: 'Protein',
                         accessor: 'protein',
                         headerStyle: tableStyle.theadTh,
+                        style: tableStyle.cell
+                    },
+                    {
                         Header: props => {
                             return (
                                 <span style={tableStyle.thead}>
-                                    {props.column.headerText}
+                                    Carbs
                                     <i
                                         className={getSortedComponentClass(sorted, props.column.id)}
                                     />
                                 </span>
                             );
                         },
-                        style: tableStyle.cell
-                    },
-                    {
-                        headerText: 'Carbs',
                         accessor: 'carbs',
                         headerStyle: tableStyle.theadTh,
+                        style: tableStyle.cell
+                    },
+                    {
                         Header: props => {
                             return (
                                 <span style={tableStyle.thead}>
-                                    {props.column.headerText}
+                                    Fat
                                     <i
                                         className={getSortedComponentClass(sorted, props.column.id)}
                                     />
                                 </span>
                             );
                         },
-                        style: tableStyle.cell
-                    },
-                    {
-                        headerText: 'Fat',
                         accessor: 'fat',
                         headerStyle: tableStyle.theadTh,
-                        Header: props => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    {props.column.headerText}
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
                         style: tableStyle.cell
                     },
                     {
-                        headerText: 'Servings',
-                        accessor: 'servings',
                         Cell: row => row.original.servings || '---',
-                        headerStyle: tableStyle.theadTh,
                         Header: props => {
                             return (
                                 <span style={tableStyle.thead}>
-                                    {props.column.headerText}
+                                    Servings
                                     <i
                                         className={getSortedComponentClass(sorted, props.column.id)}
                                     />
                                 </span>
                             );
                         },
+                        accessor: 'servings',
+                        headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
                     },
                     {
                         Cell: row => renderActions(row.index),
+                        Header: 'Modify',
                         accessor: 'fat',
                         headerStyle: tableStyle.theadTh,
-                        Header: 'Modify',
                         style: tableStyle.cellCentered
                     }
                 ]}
@@ -205,7 +246,7 @@ function MealTable({ day, userData, index, actions }) {
                         style: tableStyle.tbodyTr
                     };
                 }}
-                onSortedChange={sorted => setSorted(sorted)}
+                onSortedChange={sortedItems => setSorted(sortedItems)}
                 defaultPageSize={10}
                 className="-striped -highlight"
             />

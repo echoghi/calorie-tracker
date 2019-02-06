@@ -15,7 +15,6 @@
     "license": "MIT",
     "dependencies": {
         "@material-ui/core": "3.9.2",
-        "@types/react-redux": "^7.0.1",
         "babel-polyfill": "^6.26.0",
         "chart.js": "^2.7.2",
         "express": "^4.16.3",
@@ -56,7 +55,9 @@
         "@types/node": "^10.12.21",
         "@types/react": "^16.8.1",
         "@types/react-dom": "^16.0.11",
+        "@types/react-redux": "^7.0.1",
         "@types/react-router-dom": "^4.3.1",
+        "@types/react-table": "^6.7.21",
         "@types/styled-components": "^4.1.8",
         "babel": "^6.23.0",
         "babel-core": "7.0.0-bridge.0",

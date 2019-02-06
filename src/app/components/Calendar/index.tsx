@@ -42,6 +42,7 @@ interface Day {
         carbs: number;
         protein: number;
     };
+    notme: string;
     day: moment.Moment;
     notes?: Note[];
     fitness?: {
@@ -82,28 +83,32 @@ const Calendar = ({ data, loading }: Calendar) => {
         window.scrollTo(0, 0);
     }, []);
 
-    function handleDayProps(day: moment.Moment) {
+    function handleDayProps(dayMoment: moment.Moment) {
         const now = moment();
 
-        if (now.date() === day.date() && now.month() === day.month() && now.year() === day.year()) {
-            if (day.month() !== time.month()) {
+        if (
+            now.date() === dayMoment.date() &&
+            now.month() === dayMoment.month() &&
+            now.year() === dayMoment.year()
+        ) {
+            if (dayMoment.month() !== time.month()) {
                 return { today: true, inactive: true };
             } else {
                 return { today: true, inactive: false };
             }
-        } else if (day.month() !== time.month()) {
+        } else if (dayMoment.month() !== time.month()) {
             return { today: false, inactive: true };
         } else {
             return { today: false, inactive: false };
         }
     }
 
-    function renderIcons(data: Day, day: moment.Moment) {
+    function renderIcons(data: Day, tooltipDay: moment.Moment) {
         if (width < 768) {
             return null;
         }
 
-        if (data && day.month() === time.month() && data.notes) {
+        if (data && tooltipDay.month() === time.month() && data.notes) {
             return (
                 <Tooltip
                     id="tooltip-top"
@@ -145,7 +150,7 @@ const Calendar = ({ data, loading }: Calendar) => {
         if (startWeek > endWeek) {
             calendar = [
                 {
-                    week: 48,
+                    data: [],
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
@@ -155,10 +160,10 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    data: []
+                    week: 48
                 },
                 {
-                    week: 49,
+                    data: [],
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
@@ -168,10 +173,10 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    data: []
+                    week: 49
                 },
                 {
-                    week: 50,
+                    data: [],
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
@@ -181,10 +186,10 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    data: []
+                    week: 50
                 },
                 {
-                    week: 51,
+                    data: [],
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
@@ -194,10 +199,10 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    data: []
+                    week: 51
                 },
                 {
-                    week: 52,
+                    data: [],
                     days: Array(14)
                         .fill(0)
                         .map((n, i) =>
@@ -207,7 +212,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    data: []
+                    week: 52
                 }
             ];
         } else {
@@ -223,7 +228,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 .clone()
                                 .add(n + i, 'day')
                         ),
-                    week: week
+                    week
                 });
             }
         }
@@ -244,6 +249,24 @@ const Calendar = ({ data, loading }: Calendar) => {
                     }
                 }
 
+                const openBreakdown = () => {
+                    toggleBreakdown({ active: true, day: calendar[i].days[j] });
+                };
+
+                const openMobileSummary = () => {
+                    if (width < 768) {
+                        setMobileSummary({
+                            active: true,
+                            day: calendar[i].data[j]
+                        });
+
+                        window.scroll({
+                            behavior: 'smooth',
+                            top: 745
+                        });
+                    }
+                };
+
                 calendarDays.push(
                     <Day
                         {...handleDayProps(calendar[i].days[j])}
@@ -258,26 +281,12 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 day={calendar[i].data[j]}
                                 data={data}
                                 context={time}
-                                onClick={
-                                    width < 768
-                                        ? () =>
-                                              setMobileSummary({
-                                                  active: true,
-                                                  day: calendar[i].data[j]
-                                              })
-                                        : () => {}
-                                }
+                                onClick={openMobileSummary}
                             />
                         ) : (
                             <div className="day__overview" />
                         )}
-                        <a
-                            onClick={() => {
-                                toggleBreakdown({ active: true, day: calendar[i].days[j] });
-                            }}
-                        >
-                            {handleIcon(calendar[i].days[j])}
-                        </a>
+                        <a onClick={openBreakdown}>{handleIcon(calendar[i].days[j])}</a>
                     </Day>
                 );
             }
@@ -343,7 +352,9 @@ const Calendar = ({ data, loading }: Calendar) => {
                             <i className="icon-chevron-right" />
                         </IconButton>
                     </ToggleMonth>
-                    {width >= 768 && <YearHeader>{time.format('YYYY')}</YearHeader>}
+
+                    {/* Desktop Year Header */}
+                    <YearHeader>{time.format('YYYY')}</YearHeader>
                     <CalendarWrapper>
                         <CalendarContainer>
                             <Header />

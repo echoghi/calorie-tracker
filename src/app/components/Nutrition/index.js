@@ -33,18 +33,18 @@ const mapStateToProps = state => ({
 const Nutrition = ({ data, history }) => {
     const [state, setState] = React.useState({
         day: {
-            nutrition: {},
+            day: {},
             fitness: {},
-            day: {}
+            nutrition: {}
         },
         todayButton: false,
         validation: {
-            name: new inputObj(true),
-            servings: new inputObj(true),
             calories: new inputObj(true),
-            protein: new inputObj(true),
             carbs: new inputObj(true),
-            fat: new inputObj(true)
+            fat: new inputObj(true),
+            name: new inputObj(true),
+            protein: new inputObj(true),
+            servings: new inputObj(true)
         }
     });
 
@@ -72,20 +72,18 @@ const Nutrition = ({ data, history }) => {
             }
 
             if (requestedDate) {
-                for (let day in data.calendar) {
-                    const calendarDay = data.calendar[day];
-
+                for (let calendarDay of data.calendar) {
                     if (calendarDay.day.isSame(requestedDate)) {
                         draftState.day = calendarDay;
                         draftState.dayIndex = day;
                     }
                 }
             } else {
-                const dayIndex = Object.keys(data.calendar).length - 1;
+                const lastIndex = Object.keys(data.calendar).length - 1;
 
-                draftState.dayIndex = dayIndex;
+                draftState.dayIndex = lastIndex;
 
-                draftState.day = data.calendar[dayIndex];
+                draftState.day = data.calendar[lastIndex];
             }
         });
 
