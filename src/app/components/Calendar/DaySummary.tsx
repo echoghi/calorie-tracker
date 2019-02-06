@@ -3,23 +3,23 @@ import Fade from '@material-ui/core/Fade';
 import { Summary, Meals, Meal, MealHeader } from './styles';
 import moment from 'moment';
 
-type Note = {
+interface Note {
     title: string;
     time: string;
     body: string;
     edited: boolean;
-};
+}
 
-type Meal = {
+interface Meal {
     name: string;
     calories: number;
     servings: number;
     protein: number;
     carbs: number;
     fat: number;
-};
+}
 
-type Day = {
+interface Day {
     nutrition: {
         fat: number;
         calories: number;
@@ -33,7 +33,7 @@ type Day = {
         calories: number;
         activities: string[];
     };
-};
+}
 
 const DaySummary = ({ day }: { day: Day }) => {
     function displayMealName(meal: string) {

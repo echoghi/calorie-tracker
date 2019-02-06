@@ -10,8 +10,6 @@ import DayDialog from './DayDialog';
 import DaySummary from './DaySummary';
 import Legend from './Legend';
 import NutritionRings from './NutritionRings';
-// Images
-import runnerIcon from '../../assets/images/apple-runner.png';
 import {
     Icon,
     Day,
@@ -105,40 +103,16 @@ const Calendar = ({ data, loading }: Calendar) => {
             return null;
         }
 
-        if (data && day.month() === time.month()) {
-            if (data.notes && data.fitness.activities) {
-                return (
-                    <Tooltip
-                        id="tooltip-top"
-                        title={`You recorded ${data.notes.length} note(s) and ${
-                            data.fitness.activities.length
-                        } exercise(s)`}
-                        placement="top"
-                    >
-                        <Icon className="icon-star-full" />
-                    </Tooltip>
-                );
-            } else if (data.notes && !data.fitness.activities) {
-                return (
-                    <Tooltip
-                        id="tooltip-top"
-                        title={`You recorded ${data.notes.length} note(s)`}
-                        placement="top"
-                    >
-                        <Icon className="icon-feather" />
-                    </Tooltip>
-                );
-            } else if (data.fitness.activities) {
-                return (
-                    <Tooltip
-                        id="tooltip-top"
-                        title={`You recorded ${data.fitness.activities.length} exercise(s)`}
-                        placement="top"
-                    >
-                        <img className="exercise__icon" src={runnerIcon} />
-                    </Tooltip>
-                );
-            }
+        if (data && day.month() === time.month() && data.notes) {
+            return (
+                <Tooltip
+                    id="tooltip-top"
+                    title={`You recorded ${data.notes.length} note(s)`}
+                    placement="top"
+                >
+                    <Icon className="icon-feather" />
+                </Tooltip>
+            );
         }
     }
 

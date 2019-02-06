@@ -1,5 +1,96 @@
 import styled from 'styled-components';
 
+const LegendWrapper = styled.div`
+    display: inline-block;
+    border: 1px solid #e6eaee;
+    height: 370px;
+    margin: 0 0 0 30px;
+    min-width: 240px;
+    background: #ffffff;
+    vertical-align: top;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 1024px) {
+        display: none;
+    }
+`;
+
+const LegendHeader = styled.div`
+    padding: 15px 20px;
+    font-size: 17px;
+    font-weight: bold;
+    border-bottom: 1px solid #e6eaee;
+    background-image: linear-gradient(to top, #f8fafc, #ffffff);
+`;
+
+const LegendBody = styled.div`
+    padding: 20px;
+    font-size: 15px;
+`;
+
+const LegendName = styled.div`
+    display: inline-block;
+    padding: 0 10px;
+    vertical-align: text-bottom;
+`;
+
+const LegendCalories = styled.div`
+    background: #ffab3e;
+    border-radius: 3px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+`;
+
+const LegendProtein = styled.div`
+    background: #32c9d5;
+    border-radius: 3px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+`;
+
+const LegendFat = styled.div`
+    background: #f08ec1;
+    border-radius: 3px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+`;
+
+const LegendCarbs = styled.div`
+    background: #5b6aee;
+    border-radius: 3px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+`;
+
+const LegendItem = styled.div`
+    display: block;
+    margin: 5px 0;
+
+    .icon-info {
+        display: inline-block;
+        font-size: 20px;
+        color: #3d575d;
+    }
+
+    img {
+        height: 20px;
+        width: 20px;
+        vertical-align: text-bottom;
+    }
+`;
+
+const LegendSubhead = styled.div`
+    margin: 10px 0;
+    color: #7f8fa4;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+`;
+
 const Icon = styled.i`
     position: absolute;
     height: 22px;
@@ -142,7 +233,6 @@ const CalendarContainer = styled.div`
     background: #ffffff;
 
     @media (max-width: 768px) {
-        width: 100%;
         box-shadow: none;
     }
 `;
@@ -236,5 +326,15 @@ export {
     DayNumber,
     CalendarWrapper,
     CalendarHeader,
-    CalendarContainer
+    CalendarContainer,
+    LegendHeader,
+    LegendWrapper,
+    LegendBody,
+    LegendItem,
+    LegendSubhead,
+    LegendCalories,
+    LegendProtein,
+    LegendCarbs,
+    LegendFat,
+    LegendName
 };

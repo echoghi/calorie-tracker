@@ -96,17 +96,21 @@ const Nutrition = ({ data, history }) => {
         let color;
         let progress;
         let text;
+        let trailColor;
 
         if (type === 'protein') {
-            color = '#F5729C';
+            color = '#32c9d5';
+            trailColor = '#E6FDF3';
             progress = state.day.nutrition.protein / data.user.goals.protein;
             text = state.day.nutrition.protein / data.user.goals.protein;
         } else if (type === 'carbs') {
-            color = '#7BD4F8';
+            color = '#5b6aee';
+            trailColor = '#D0D4FA';
             progress = state.day.nutrition.carbs / data.user.goals.carbs;
             text = state.day.nutrition.carbs / data.user.goals.carbs;
         } else {
-            color = '#55F3B3';
+            color = '#f08ec1';
+            trailColor = '#FCDFED';
             progress = state.day.nutrition.fat / data.user.goals.fat;
             text = state.day.nutrition.fat / data.user.goals.fat;
         }
@@ -115,8 +119,8 @@ const Nutrition = ({ data, history }) => {
 
         const options = {
             height: 25,
-            color: color,
-            trailColor: '#f4f4f4',
+            color,
+            trailColor,
             containerStyle: {
                 width: '80%',
                 margin: '30px auto'

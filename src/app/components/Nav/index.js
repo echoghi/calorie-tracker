@@ -8,8 +8,8 @@ import { auth } from '../firebase.js';
 import SubNav from './SubNav';
 
 const mapStateToProps = state => ({
-    userData: state.adminState.userData,
     loading: state.adminState.loading,
+    userData: state.adminState.userData,
     userLoading: state.adminState.userLoading
 });
 
