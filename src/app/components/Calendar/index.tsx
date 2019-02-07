@@ -265,7 +265,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                             day: calendar[i].data[j]
                         });
 
-                        window.scroll({
+                        window.scrollTo({
                             behavior: 'smooth',
                             top: 415
                         });

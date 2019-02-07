@@ -1,11 +1,4 @@
-/**
- * Doughboy 1.0.0
- * Copyright (c) Emile Choghi 2019
- *
- */
-
 import './app/assets/scss/style.scss';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -13,8 +6,11 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import smoothscroll from 'smoothscroll-polyfill';
 import { theme } from './app/components/MaterialTheme';
 import thunk from 'redux-thunk';
+
+smoothscroll.polyfill();
 
 //Reducers
 import { adminState, notificationState } from './app/components/reducers';
