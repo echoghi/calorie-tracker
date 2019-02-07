@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    logOut: () => dispatch(logOut())
+    appLogOut: () => dispatch(logOut())
 });
 
 const Brand = styled(NavLink)`
@@ -70,10 +70,10 @@ const Nav = styled.div`
     }
 `;
 
-const NavBar = ({ userData, logOut }) => {
+const NavBar = ({ userData, appLogOut }) => {
     const logOutHandler = () => {
         auth.signOut().then(() => {
-            logOut();
+            appLogOut();
         });
     };
 

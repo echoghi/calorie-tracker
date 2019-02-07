@@ -4,6 +4,7 @@ declare module '*.json';
 declare module '*.svg';
 declare module 'the-platform';
 declare module 'lodash.isempty';
+declare module 'react-lottie';
 
 declare var NODE_ENV: string;
 declare var GA_ID: string;

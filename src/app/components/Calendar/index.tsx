@@ -267,7 +267,7 @@ const Calendar = ({ data, loading }: Calendar) => {
 
                         window.scroll({
                             behavior: 'smooth',
-                            top: 745
+                            top: 415
                         });
                     }
                 };

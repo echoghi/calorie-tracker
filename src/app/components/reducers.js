@@ -1,7 +1,6 @@
 export function adminState(
     state = {
         data: {},
-        userData: {},
         day: {
             day: {},
             todayButton: true,
@@ -10,10 +9,11 @@ export function adminState(
             dayRef: {},
             dayIndex: 0
         },
+        error: null,
+        userData: {},
         userLoading: true,
         loading: false,
-        success: null,
-        error: null
+        success: null
     },
     action
 ) {
@@ -60,7 +60,7 @@ export function adminState(
             });
 
         default:
-            return state || '';
+            return state;
     }
 }
 

@@ -14,9 +14,9 @@ const LoadingWrapper = styled.div`
 
 const Loading = () => {
     const options = {
-        loop: true,
-        autoplay: true,
         animationData: loadingAnimation,
+        autoplay: true,
+        loop: true,
         rendererSettings: {
             preserveAspectRatio: 'xMidYMid slice',
             progressiveLoad: true
