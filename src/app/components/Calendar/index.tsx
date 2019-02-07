@@ -42,7 +42,6 @@ interface Day {
         carbs: number;
         protein: number;
     };
-    notme: string;
     day: moment.Moment;
     notes?: Note[];
     fitness?: {
@@ -75,7 +74,10 @@ interface Calendar {
 
 const Calendar = ({ data, loading }: Calendar) => {
     let [time, setTime] = React.useState(moment());
-    const [dayDetails, toggleBreakdown] = React.useState({ active: false, day: moment() });
+    const [dayDetails, toggleBreakdown] = React.useState({
+        active: false,
+        day: null
+    });
     const [summary, setMobileSummary] = React.useState({ active: false, day: null });
     const { width } = useWindowSize();
 
@@ -250,7 +252,10 @@ const Calendar = ({ data, loading }: Calendar) => {
                 }
 
                 const openBreakdown = () => {
-                    toggleBreakdown({ active: true, day: calendar[i].days[j] });
+                    toggleBreakdown({
+                        active: true,
+                        day: calendar[i].data[j]
+                    });
                 };
 
                 const openMobileSummary = () => {
@@ -332,7 +337,7 @@ const Calendar = ({ data, loading }: Calendar) => {
 
     const lastMonth = () => changeMonth(false);
     const nextMonth = () => changeMonth(true);
-    const closeBreakdown = () => toggleBreakdown({ active: false, day: moment() });
+    const closeBreakdown = () => toggleBreakdown({ active: false, day: null });
 
     return (
         <React.Fragment>
@@ -366,12 +371,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                 </Wrapper>
             </Fade>
 
-            <DayDialog
-                open={active}
-                day={day.format('MMMM Do, YYYY')}
-                id={day.format('x')}
-                onClose={closeBreakdown}
-            />
+            <DayDialog open={active} day={day} onClose={closeBreakdown} />
         </React.Fragment>
     );
 };
