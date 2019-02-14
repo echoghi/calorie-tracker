@@ -39,24 +39,21 @@ function AppIndex({ fetchData, userData, data, loading, history, userLoading, sa
         }
     });
 
-    React.useEffect(
-        () => {
-            if (!isEmpty(userData) && !userLoading) {
-                fetchData(userData.uid);
-            } else if (isEmpty(userData) && !userLoading) {
-                history.push('/login');
-            }
-        },
-        [userData]
-    );
+    React.useEffect(() => {
+        if (!isEmpty(userData) && !userLoading) {
+            fetchData(userData.uid);
+        } else if (isEmpty(userData) && !userLoading) {
+            history.push('/login');
+        }
+    }, [userData]);
 
     return (
-        <Suspense fallback={<Loading />}>
+        <React.Fragment>
             <NavBar />
             <Notifications />
 
             {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) && (
-                <React.Fragment>
+                <Suspense fallback={<Loading />}>
                     <ErrorBoundary>
                         <Route exact path="/" component={Calendar} name="Overview" />
                     </ErrorBoundary>
@@ -66,9 +63,9 @@ function AppIndex({ fetchData, userData, data, loading, history, userLoading, sa
                     <ErrorBoundary>
                         <Route path="/nutrition" component={Nutrition} name="Nutrition" />
                     </ErrorBoundary>
-                </React.Fragment>
+                </Suspense>
             )}
-        </Suspense>
+        </React.Fragment>
     );
 }
 
