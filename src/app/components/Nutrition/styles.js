@@ -155,6 +155,12 @@ const BoxHeader = styled.div`
     margin: 20px auto;
 `;
 
+const InputWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+`;
+
 export {
     Overview,
     Box,
@@ -168,5 +174,6 @@ export {
     MealsHeader,
     BoxHeader,
     HeaderWrapper,
-    Note
+    Note,
+    InputWrapper
 };

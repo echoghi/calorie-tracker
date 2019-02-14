@@ -1,3 +1,4 @@
+// log in / sign up
 export function validateEmail(email) {
     if (!email) {
         return 'Required';
@@ -47,6 +48,34 @@ export function validateSignUp(values) {
             email: validateEmail(values.email),
             name: validateName(values.name),
             password: validatePassword(values.password)
+        };
+    } else {
+        return {};
+    }
+}
+
+// nutrition
+export function validateMealName(name) {
+    if (!name) {
+        return 'Required';
+    } else {
+        return false;
+    }
+}
+
+export function validateServings(servings) {
+    if (servings === 0) {
+        return 'Required';
+    } else {
+        return false;
+    }
+}
+
+export function validateMeal(values) {
+    if (validateMealName(values.name) || validateServings(values.servings)) {
+        return {
+            name: validateMealName(values.name),
+            servings: validateServings(values.servings)
         };
     } else {
         return {};

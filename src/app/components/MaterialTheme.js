@@ -68,7 +68,6 @@ export const styles = theme => ({
         fontSize: 16,
         padding: '10px 12px',
         boxSizing: 'border-box',
-        width: 'calc(100% - 24px)',
         transition: theme.transitions.create(['border-color', 'box-shadow']),
         fontFamily: [
             '-apple-system',

@@ -3,20 +3,22 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './MaterialTheme';
 
-function Input({ classes, multiline, ...props }) {
+function Input(props) {
     return (
         <TextField
             {...props}
             InputProps={{
                 disableUnderline: true,
                 classes: {
-                    root: classes.bootstrapRoot,
-                    input: multiline ? classes.bootstrapInputMulti : classes.bootstrapInput
+                    root: props.classes.bootstrapRoot,
+                    input: props.multiline
+                        ? props.classes.bootstrapInputMulti
+                        : props.classes.bootstrapInput
                 }
             }}
             InputLabelProps={{
                 shrink: true,
-                className: classes.bootstrapFormLabel
+                className: props.classes.bootstrapFormLabel
             }}
         />
     );
