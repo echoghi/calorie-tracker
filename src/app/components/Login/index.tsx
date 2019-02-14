@@ -164,7 +164,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                             disabled={isSubmitting}
                                             type="submit"
                                             color="primary"
-                                            variant="raised"
+                                            variant="contained"
                                         >
                                             Log In
                                         </Button>

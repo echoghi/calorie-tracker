@@ -28,6 +28,10 @@ const Wrapper = styled.div`
     background: #ffffff;
     border: 1px solid #e6eaee;
     align-self: center;
+
+    @media (max-width: 768px) {
+        width: 350px;
+    }
 `;
 
 const Form = styled.form`
