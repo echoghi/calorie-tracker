@@ -3,7 +3,7 @@ import Input from '../Input';
 import Button from '@material-ui/core/Button';
 import { MealForm as Form, MealsHeader } from './styles';
 import { connect } from 'react-redux';
-import { database } from '../firebase.js';
+import Firebase from '../firebase.js';
 import produce from 'immer';
 import { errorNotification, successNotification, warningNotification } from '../actions';
 
@@ -119,7 +119,7 @@ function MealForm({ day, index, userData, errorNotification, successNotification
                 });
             });
 
-            const dayRef = database
+            const dayRef = Firebase.db
                 .ref('users')
                 .child(userData.uid)
                 .child(`calendar/${index}`);
@@ -186,10 +186,8 @@ function MealForm({ day, index, userData, errorNotification, successNotification
                         value={name}
                         onChange={onChange}
                         error={validate('name')}
-                        style={{
-                            width: '45%'
-                        }}
                     />
+
                     <Input
                         name="servings"
                         id="servings"

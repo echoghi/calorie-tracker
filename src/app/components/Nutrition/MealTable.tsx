@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { database } from '../firebase.js';
+import Firebase from '../firebase.js';
 import produce from 'immer';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
@@ -106,7 +106,7 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
             );
         });
 
-        const dayRef = database
+        const dayRef = Firebase.db
             .ref('users')
             .child(userData.uid)
             .child(`calendar/${index}`);

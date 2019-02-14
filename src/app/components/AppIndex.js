@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import { auth } from './firebase.js';
+import Firebase from './firebase.js';
 import { connect } from 'react-redux';
 import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 function AppIndex({ fetchData, userData, data, loading, history, userLoading, saveUserData }) {
-    auth.onAuthStateChanged(user => {
+    Firebase.auth.onAuthStateChanged(user => {
         if (user) {
             saveUserData(user);
         } else {

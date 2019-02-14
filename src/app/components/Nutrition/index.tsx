@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import produce from 'immer';
 import Loading from '../Loading';
 import isEmpty from 'lodash.isempty';
@@ -14,29 +14,110 @@ import MealForm from './MealForm';
 import Notes from './Notes';
 import { HeaderWrapper, Overview, Box, BoxHeader } from './styles';
 
+interface ProgressProps {
+    color: string;
+    trailColor: string;
+    [index: string]: string;
+}
+
+interface ProgressBarConfig {
+    calories: ProgressProps;
+    carbs: ProgressProps;
+    fat: ProgressProps;
+    protein: ProgressProps;
+    [index: string]: ProgressProps;
+}
+
+const progressBarConfig: ProgressBarConfig = {
+    calories: {
+        color: '#ffab3e',
+        trailColor: '#FFE9C6'
+    },
+    carbs: {
+        color: '#5b6aee',
+        trailColor: '#D0D4FA'
+    },
+    fat: {
+        color: '#f08ec1',
+        trailColor: '#FCDFED'
+    },
+    protein: {
+        color: '#32c9d5',
+        trailColor: '#E6FDF3'
+    }
+};
+
 // Reusable validation constuctor for each input
 const inputObj = class {
-    constructor(required) {
+    required: boolean;
+    valid: boolean;
+    dirty: boolean;
+
+    constructor(required: boolean) {
         this.required = required;
         this.valid = !required;
         this.dirty = false;
     }
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
     data: state.adminState.data,
     loading: state.adminState.loading,
     userData: state.adminState.userData,
     userLoading: state.adminState.userLoading
 });
 
-const Nutrition = ({ data, history }) => {
+interface Note {
+    title: string;
+    time: string;
+    body: string;
+    edited: boolean;
+    [index: string]: string | boolean;
+}
+
+interface Day {
+    nutrition: {
+        fat: number;
+        calories: number;
+        carbs: number;
+        protein: number;
+        [index: string]: number;
+    };
+    day: moment.Moment;
+    notes?: Note[];
+    fitness?: {
+        calories: number;
+        activities: string[];
+        [index: string]: string[] | number;
+    };
+}
+
+interface Data {
+    user: {
+        goals: {
+            fat: number;
+            carbs: number;
+            calories: number;
+            protein: number;
+            [index: string]: number;
+        };
+    };
+    calendar: Day[];
+}
+
+interface NutritionProps extends RouteComponentProps {
+    data: Data;
+}
+
+const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
     const [state, setState] = React.useState({
         day: {
-            day: {},
-            fitness: {},
-            nutrition: {}
+            day: null,
+            nutrition: null
         },
+        dayIndex: 0,
+        requestedDate: null,
+        today: false,
         todayButton: false,
         validation: {
             calories: new inputObj(true),
@@ -62,20 +143,22 @@ const Nutrition = ({ data, history }) => {
 
     function loadDay() {
         const nextState = produce(state, draftState => {
-            let requestedDate = false;
+            let requestedDate: moment.Moment;
 
             if (location.search) {
                 const parsed = queryString.parse(location.search);
-                requestedDate = moment(parseInt(parsed.d));
+                requestedDate = moment(parseInt(parsed.d, 10));
 
                 draftState.todayButton = true;
             }
 
             if (requestedDate) {
-                for (let calendarDay of data.calendar) {
+                let index: number;
+                for (const calendarDay of data.calendar) {
+                    index++;
                     if (calendarDay.day.isSame(requestedDate)) {
                         draftState.day = calendarDay;
-                        draftState.dayIndex = day;
+                        draftState.dayIndex = index;
                     }
                 }
             } else {
@@ -90,48 +173,31 @@ const Nutrition = ({ data, history }) => {
         setState(nextState);
     }
 
-    function renderProgressBar(type) {
-        let color;
-        let progress;
-        let text;
-        let trailColor;
+    function renderProgressBar(type: string) {
+        const { trailColor, color } = progressBarConfig[type];
 
-        if (type === 'protein') {
-            color = '#32c9d5';
-            trailColor = '#E6FDF3';
-            progress = state.day.nutrition.protein / data.user.goals.protein;
-            text = state.day.nutrition.protein / data.user.goals.protein;
-        } else if (type === 'carbs') {
-            color = '#5b6aee';
-            trailColor = '#D0D4FA';
-            progress = state.day.nutrition.carbs / data.user.goals.carbs;
-            text = state.day.nutrition.carbs / data.user.goals.carbs;
-        } else {
-            color = '#f08ec1';
-            trailColor = '#FCDFED';
-            progress = state.day.nutrition.fat / data.user.goals.fat;
-            text = state.day.nutrition.fat / data.user.goals.fat;
-        }
-
-        text = `${Math.round(text * 100)}% of daily goal`;
+        const progress: number = day.nutrition[type] / data.user.goals[type];
+        const text: string = `${Math.round(
+            (day.nutrition[type] / data.user.goals[type]) * 100
+        )}% of daily goal`;
 
         const options = {
-            height: 25,
-            color,
-            trailColor,
-            containerStyle: {
-                width: '80%',
-                margin: '30px auto'
-            },
             className: '',
+            color,
+            containerStyle: {
+                margin: '30px auto',
+                width: '80%'
+            },
+            height: 25,
             text: {
-                value: text,
                 style: {
-                    fontSize: '1rem',
                     color: '#a2a7d9',
+                    fontSize: '1rem',
                     margin: '10px 0 0 0'
-                }
-            }
+                },
+                value: text
+            },
+            trailColor
         };
 
         return <Bar progress={progress} options={options} />;

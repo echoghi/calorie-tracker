@@ -18,6 +18,7 @@ import { adminState, notificationState } from './app/components/reducers';
 //components
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
+import Register from './app/components/Register';
 
 const adminApp = combineReducers({
     adminState,
@@ -41,11 +42,11 @@ if (enableReduxDevTools) {
             dispatch: true, // dispatch custom actions or action creators
             test: true // generate tests for the selected actions
         },
+        latency: 600,
+        maxAge: 10,
         serialize: {
             options: undefined
-        },
-        latency: 600,
-        maxAge: 10
+        }
     });
 } else {
     activeComposer = compose;
@@ -59,6 +60,7 @@ ReactDOM.render(
             <BrowserRouter>
                 <Switch>
                     <Route path="/login" component={Login} name="Login" />
+                    <Route path="/register" component={Register} name="Register" />
                     <Route path="/" component={AppIndex} />
                 </Switch>
             </BrowserRouter>

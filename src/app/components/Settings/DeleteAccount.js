@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { database, auth } from '../firebase.js';
+import Firebase from '../firebase.js';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -17,11 +17,11 @@ const DeleteAccount = ({ userData }) => {
     const [dialog, setDialog] = React.useState(false);
 
     function deleteAccount() {
-        const user = auth.currentUser;
+        const user = Firebase.auth.currentUser;
 
         user.delete()
             .then(() => {
-                const userRef = database.ref('users').child(userData.uid);
+                const userRef = Firebase.db.ref('users').child(userData.uid);
 
                 userRef.on('value', snapshot => {
                     snapshot.ref.remove();

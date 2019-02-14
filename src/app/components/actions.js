@@ -1,7 +1,7 @@
-import { database } from './firebase.js';
+import Firebase from './firebase.js';
 import moment from 'moment';
 
-const usersRef = database.ref('users');
+const usersRef = Firebase.db.ref('users');
 
 export function loadData(id) {
     return dispatch => {
@@ -138,7 +138,7 @@ export function createUser(id) {
         };
 
         // Save new entries to firebase and reload them into the app
-        database.ref().update(newUser, () => {
+        Firebase.db.ref().update(newUser, () => {
             dispatch(loadData(id));
         });
     };
@@ -192,7 +192,7 @@ export function fetchData(id) {
                     }
 
                     // Save new entries to firebase and reload them into the app
-                    database.ref().update(update, () => {
+                    Firebase.db.ref().update(update, () => {
                         dispatch(loadData(id));
                     });
                 } else {

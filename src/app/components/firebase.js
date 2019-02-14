@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-// Initialize Firebase
+
 const config = {
     apiKey: 'AIzaSyAvzipfoqp3pei3BvDt4fp4oBTffr9QqsE',
     authDomain: 'health-dashboard-e6394.firebaseapp.com',
@@ -8,9 +8,36 @@ const config = {
     projectId: 'health-dashboard-e6394',
     storageBucket: ''
 };
-firebase.initializeApp(config);
 
-export const provider = new firebase.auth.GoogleAuthProvider();
-export const auth = firebase.auth();
+class Firebase {
+    constructor() {
+        firebase.initializeApp(config);
+        this.auth = firebase.auth();
+        this.db = firebase.database();
+        this.provider = new firebase.auth.GoogleAuthProvider();
+    }
 
-export const database = firebase.database();
+    logIn(email, password) {
+        return this.auth.signInWithEmailAndPassword(email, password);
+    }
+
+    logInWithGoogle() {
+        return this.auth.signInWithPopup(this.provider);
+    }
+
+    logOut() {
+        return this.auth.signOut();
+    }
+
+    async register(name, email, password) {
+        // create new user
+        await this.auth.createUserWithEmailAndPassword(email, password);
+
+        // save name
+        return this.auth.currentUser.updateProfile({
+            displayName: name
+        });
+    }
+}
+
+export default new Firebase();

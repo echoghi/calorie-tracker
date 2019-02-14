@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { withRouter, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOut } from '../actions';
-import { auth } from '../firebase.js';
+import Firebase from '../firebase.js';
 import SubNav from './SubNav';
 
 const mapStateToProps = state => ({
@@ -72,7 +72,7 @@ const Nav = styled.div`
 
 const NavBar = ({ userData, appLogOut }) => {
     const logOutHandler = () => {
-        auth.signOut().then(() => {
+        Firebase.auth.signOut().then(() => {
             appLogOut();
         });
     };

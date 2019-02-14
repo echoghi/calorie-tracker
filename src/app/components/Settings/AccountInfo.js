@@ -1,5 +1,5 @@
 import React from 'react';
-import { database } from '../firebase.js';
+import Firebase from '../firebase.js';
 import { connect } from 'react-redux';
 import { errorNotification, successNotification } from '../actions';
 import Button from '@material-ui/core/Button';
@@ -104,7 +104,7 @@ const AccountInfo = ({ data, userData, errorNotification, successNotification })
         if (validateInputs()) {
             let user;
 
-            const queryRef = database
+            const queryRef = Firebase.db
                 .ref('users')
                 .child(userData.uid)
                 .child('user');

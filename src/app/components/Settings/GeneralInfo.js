@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { auth } from '../firebase.js';
+import Firebase from '../firebase.js';
 import { errorNotification, successNotification, warningNotification } from '../actions';
 import Button from '@material-ui/core/Button';
 import isEmpty from 'lodash.isempty';
@@ -103,7 +103,7 @@ const GeneralInfo = ({ userData, errorNotification, successNotification }) => {
         if (validateInputs()) {
             let error = false;
 
-            auth.currentUser
+            Firebase.auth.currentUser
                 .updateProfile({
                     displayName
                 })

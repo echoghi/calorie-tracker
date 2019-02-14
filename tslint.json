@@ -2,6 +2,7 @@
     "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
     "rules": {
         "max-line-length": false,
+        "no-console": false,
         "quotemark": false,
         "trailing-comma": [false],
         "arrow-parens": false,

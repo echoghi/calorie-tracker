@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { database } from '../firebase.js';
+import Firebase from '../firebase.js';
 import moment from 'moment';
 import {
     NoteActions,
@@ -133,7 +133,7 @@ function Notes({ day, index, userData, errorNotification, successNotification })
                 note.edited = true;
             });
 
-            const dayRef = database
+            const dayRef = Firebase.db
                 .ref('users')
                 .child(userData.uid)
                 .child(`calendar/${index}`);
@@ -175,7 +175,7 @@ function Notes({ day, index, userData, errorNotification, successNotification })
             };
         });
 
-        const dayRef = database
+        const dayRef = Firebase.db
             .ref('users')
             .child(userData.uid)
             .child(`calendar/${index}`);
@@ -250,7 +250,7 @@ function Notes({ day, index, userData, errorNotification, successNotification })
                 });
             });
 
-            const dayRef = database
+            const dayRef = Firebase.db
                 .ref('users')
                 .child(userData.uid)
                 .child(`calendar/${index}`);
