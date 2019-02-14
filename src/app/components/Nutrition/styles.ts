@@ -93,6 +93,7 @@ const Overview = styled.div`
 
     @media (max-width: 768px) {
         display: block;
+        margin: 20px 0;
     }
 `;
 
@@ -109,7 +110,7 @@ const Box = styled.div`
     @media (max-width: 768px) {
         width: 100%;
         display: block;
-        margin: 30px 0;
+        margin: 15px 0;
     }
 
     &.large {

@@ -55,13 +55,13 @@ function AppIndex({ fetchData, userData, data, loading, history, userLoading, sa
             {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) && (
                 <Suspense fallback={<Loading />}>
                     <ErrorBoundary>
-                        <Route exact path="/" component={Calendar} name="Overview" />
+                        <Route exact path="/" render={() => <Calendar />} name="Overview" />
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <Route path="/settings" component={Settings} name="Settings" />
+                        <Route path="/settings" render={() => <Settings />} name="Settings" />
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <Route path="/nutrition" component={Nutrition} name="Nutrition" />
+                        <Route path="/nutrition" render={() => <Nutrition />} name="Nutrition" />
                     </ErrorBoundary>
                 </Suspense>
             )}

@@ -77,6 +77,21 @@ const Image = styled.img`
     }
 `;
 
+const Backup = styled.div`
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px;
+
+    @media (max-width: 768px) {
+        height: 40px;
+    }
+`;
+
 class UserMenu extends Component {
     state = {
         open: false
@@ -115,7 +130,8 @@ class UserMenu extends Component {
                 }}
             >
                 <MenuWrapper onClick={this.handleMenu}>
-                    <Image src={userData.photoURL} />
+                    {userData.photoURL && <Image src={userData.photoURL} alt={userData.email} />}
+                    {!userData.photoURL && <Backup className="icon-user" />}
                     <Name>{userData.displayName}</Name>
                     <Icon className="icon-chevron-down" />
                 </MenuWrapper>

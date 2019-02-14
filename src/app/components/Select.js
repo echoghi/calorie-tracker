@@ -18,11 +18,10 @@ function Select({
     defaultValue
 }) {
     return (
-        <FormControl>
+        <FormControl error={error}>
             <InputLabel
                 disableAnimation
                 shrink
-                error={error}
                 classes={{ formControl: classes.selectLabel }}
                 htmlFor={id}
             >

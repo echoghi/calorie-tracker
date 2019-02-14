@@ -134,12 +134,9 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
     }, []);
 
     // fetch data when requested date changes
-    React.useEffect(
-        () => {
-            loadDay();
-        },
-        [location.search, data]
-    );
+    React.useEffect(() => {
+        loadDay();
+    }, [location.search, data]);
 
     function loadDay() {
         const nextState = produce(state, draftState => {

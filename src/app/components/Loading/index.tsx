@@ -1,7 +1,7 @@
 import React from 'react';
 import Lottie from 'react-lottie';
 import styled from 'styled-components';
-import * as loadingAnimation from '../assets/animations/loading.json';
+import * as loadingAnimation from '../../assets/animations/loading.json';
 
 const LoadingWrapper = styled.div`
     height: 100%;

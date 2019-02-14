@@ -88,7 +88,12 @@ export const tableStyle = {
     }
 };
 
-export function getSortedComponentClass(data: any[], id: string) {
+interface TableSort {
+    desc: boolean;
+    id: string;
+}
+
+export function getSortedComponentClass(data: TableSort[], id: string) {
     const sortInfo = data.filter(item => item.id === id);
 
     if (sortInfo.length) {
