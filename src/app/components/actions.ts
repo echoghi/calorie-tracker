@@ -1,28 +1,29 @@
 import Firebase from './firebase.js';
 import moment from 'moment';
+import { Dispatch } from 'redux';
 
 const usersRef = Firebase.db.ref('users');
 
-export function loadData(id) {
-    return dispatch => {
+export const loadData = (id: string) => {
+    return (dispatch: Dispatch<any>) => {
         usersRef.child(id).on('value', snapshot => {
-            let user = snapshot.val();
+            const user = snapshot.val();
 
-            for (let i = 0; i < user.calendar.length; i++) {
-                const day = user.calendar[i];
-                const { year, date, month } = day.day;
-                day.day = moment([year, month, date]);
+            for (const dayObj of user.calendar) {
+                const { year, date, month } = dayObj.day;
+                dayObj.day = moment([year, month, date]);
             }
             console.warn('DATA UPDATE', user);
             dispatch(receiveData(user));
         });
     };
-}
+};
 
-export function receiveData(data) {
+export function receiveData(data: any) {
+    console.log(data);
     return {
-        type: 'RECEIVE_DATA',
-        data
+        data,
+        type: 'RECEIVE_DATA'
     };
 }
 
@@ -38,24 +39,24 @@ export function closeSnackBar() {
     };
 }
 
-export function warningNotification(data) {
+export function warningNotification(data?: string) {
     return {
-        type: 'SNACKBAR_WARNING',
-        data
+        data,
+        type: 'SNACKBAR_WARNING'
     };
 }
 
-export function successNotification(data) {
+export function successNotification(data?: string) {
     return {
-        type: 'SNACKBAR_SUCCESS',
-        data
+        data,
+        type: 'SNACKBAR_SUCCESS'
     };
 }
 
-export function errorNotification(data) {
+export function errorNotification(data?: string) {
     return {
-        type: 'SNACKBAR_ERROR',
-        data
+        data,
+        type: 'SNACKBAR_ERROR'
     };
 }
 
@@ -77,10 +78,10 @@ export function resetError() {
     };
 }
 
-export function saveUserData(data) {
+export function saveUserData(data: string) {
     return {
-        type: 'SAVE_USER_DATA',
-        data
+        data,
+        type: 'SAVE_USER_DATA'
     };
 }
 
@@ -90,16 +91,23 @@ export function logOut() {
     };
 }
 
-export function saveDay(data) {
+export function saveDay(data: string) {
     return {
-        type: 'SAVE_DAY',
-        data
+        data,
+        type: 'SAVE_DAY'
     };
 }
 
-export function createUser(id) {
-    return dispatch => {
-        let newUser = {};
+interface UsersRef {
+    users?: {
+        [index: string]: any;
+    };
+    [index: string]: any;
+}
+
+export function createUser(id: string) {
+    return (dispatch: Dispatch<any>): any => {
+        const newUser: UsersRef = {};
         const now = moment();
 
         console.log('creating new user', id, now);
@@ -108,31 +116,27 @@ export function createUser(id) {
             calendar: [
                 {
                     day: {
-                        month: now.get('month'),
                         date: now.date(),
+                        month: now.get('month'),
                         year: now.get('year')
                     },
                     nutrition: {
                         calories: 0,
-                        fat: 0,
                         carbs: 0,
+                        fat: 0,
                         protein: 0
-                    },
-                    fitness: {
-                        calories: 0,
-                        exercise: 0
                     }
                 }
             ],
             user: {
-                newAccount: true,
                 goals: {
                     calories: 2000,
-                    protein: 100,
                     carbs: 100,
-                    fat: 100
+                    fat: 100,
+                    protein: 100
                 },
                 height: 70,
+                newAccount: true,
                 weight: 150
             }
         };
@@ -144,20 +148,20 @@ export function createUser(id) {
     };
 }
 
-export function fetchData(id) {
-    return dispatch => {
+export function fetchData(id: string) {
+    return (dispatch: Dispatch<any>) => {
         dispatch(loadingData());
 
         usersRef.child(id).once('value', snapshot => {
-            let user = snapshot.val();
+            const user = snapshot.val();
             let lastDay;
 
             if (user) {
                 // Convert days to moment objects
-                for (let i = 0; i < user.calendar.length; i++) {
-                    const { year, date, month } = user.calendar[i].day;
-                    user.calendar[i].day = moment([year, month, date]);
-                    lastDay = user.calendar[i].day;
+                for (const calendarDay of user.calendar) {
+                    const { year, date, month } = calendarDay.day;
+                    calendarDay.day = moment([year, month, date]);
+                    lastDay = calendarDay.day;
                 }
 
                 // If the calendar entries are not caught up to today,
@@ -165,26 +169,22 @@ export function fetchData(id) {
                 if (moment().isAfter(lastDay)) {
                     const daysToAdd = moment().diff(lastDay, 'days');
                     let dayKey = user.calendar.length;
-                    let update = {};
+                    const update: UsersRef = {};
 
                     for (let i = 0; i < daysToAdd; i++) {
                         lastDay.add(1, 'd');
 
                         update[`users/${id}/calendar/${dayKey}`] = {
                             day: {
-                                month: lastDay.get('month'),
                                 date: lastDay.date(),
+                                month: lastDay.get('month'),
                                 year: lastDay.get('year')
                             },
                             nutrition: {
                                 calories: 0,
-                                fat: 0,
                                 carbs: 0,
+                                fat: 0,
                                 protein: 0
-                            },
-                            fitness: {
-                                calories: 0,
-                                exercise: 0
                             }
                         };
 

@@ -4,7 +4,7 @@ import Firebase from './firebase.js';
 import { connect } from 'react-redux';
 import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './Error/ErrorBoundary';
 import Notifications from './Notifications';
 import NavBar from './Nav';
 import isEmpty from 'lodash.isempty';
@@ -26,14 +26,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchData: id => dispatch(fetchData(id)),
-    saveUserData: user => dispatch(saveUserData(user))
+    getData: id => dispatch(fetchData(id)),
+    saveUser: user => dispatch(saveUserData(user))
 });
 
-function AppIndex({ fetchData, userData, data, loading, history, userLoading, saveUserData }) {
+function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }) {
     Firebase.auth.onAuthStateChanged(user => {
         if (user) {
-            saveUserData(user);
+            saveUser(user);
         } else {
             history.push('/login');
         }
@@ -41,7 +41,7 @@ function AppIndex({ fetchData, userData, data, loading, history, userLoading, sa
 
     React.useEffect(() => {
         if (!isEmpty(userData) && !userLoading) {
-            fetchData(userData.uid);
+            getData(userData.uid);
         } else if (isEmpty(userData) && !userLoading) {
             history.push('/login');
         }

@@ -9,7 +9,8 @@
         "ordered-imports": false,
         "interface-name": [true, "never-prefix"],
         "no-submodule-imports": false,
-        "member-access": [true, "no-public"]
+        "member-access": [true, "no-public"],
+        "no-namespace": false
     },
     "jsRules": {
         "no-empty": true

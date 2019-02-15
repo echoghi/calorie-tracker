@@ -23,11 +23,6 @@ import {
     InfoIcon
 } from './styles';
 
-const mapStateToProps = (state: any) => ({
-    data: state.adminState.data,
-    loading: state.adminState.loading
-});
-
 interface Note {
     title: string;
     time: string;
@@ -71,6 +66,11 @@ interface Calendar {
     };
     loading: boolean;
 }
+
+const mapStateToProps = (state: any) => ({
+    data: state.adminState.data,
+    loading: state.adminState.loading
+});
 
 const Calendar = ({ data, loading }: Calendar) => {
     let [time, setTime] = React.useState(moment());

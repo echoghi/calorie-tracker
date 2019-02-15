@@ -13,6 +13,7 @@
     },
     "author": "Emile Choghi",
     "license": "MIT",
+    "typings": "index.d.ts",
     "dependencies": {
         "@material-ui/core": "3.9.2",
         "babel-polyfill": "^6.26.0",
@@ -60,6 +61,7 @@
         "@types/react-redux": "^7.0.1",
         "@types/react-router-dom": "^4.3.1",
         "@types/react-table": "^6.7.21",
+        "@types/redux-thunk": "^2.1.0",
         "@types/styled-components": "^4.1.8",
         "babel": "^6.23.0",
         "babel-core": "7.0.0-bridge.0",

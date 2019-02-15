@@ -38,8 +38,8 @@ function Select({
                     select: classes.select
                 }}
                 inputProps={{
-                    name,
-                    id
+                    id,
+                    name
                 }}
                 style={style}
                 disableUnderline
@@ -47,10 +47,10 @@ function Select({
                     <i
                         {...props}
                         style={{
+                            pointerEvents: 'none',
                             position: 'absolute',
                             right: 10,
-                            top: 'calc(50% - 7px)',
-                            pointerEvents: 'none'
+                            top: 'calc(50% - 7px)'
                         }}
                         className="icon-chevron-down"
                     />

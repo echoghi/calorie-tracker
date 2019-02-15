@@ -1,96 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
-
-const Menu = styled.ul`
-    position: absolute;
-    width: 200px;
-    font-family: 'Varela Round';
-    margin-top: 40px;
-    background: #fff;
-    list-style: none;
-    padding: 15px;
-    right: 0;
-    border: 1px solid #dbdbdb;
-    border-radius: 0 0 4px 4px;
-
-    @media (max-width: 768px) {
-        margin-top: 32px;
-    }
-`;
-
-const MenuItem = styled.li`
-    padding: 10px;
-    border-top: 1px solid rgb(242, 242, 242);
-
-    &:first-child {
-        border-top: 0;
-    }
-
-    &:hover {
-        opacity: 0.8;
-    }
-`;
-
-const Name = styled.div`
-    font-size: 12px;
-    font-weight: bold;
-    padding: 0 15px;
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
-const Icon = styled.i`
-    display: inline-block;
-    vertical-align: top;
-    padding: 20px 5px;
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
-const Greeting = styled.div`
-    float: right;
-    padding: 0 20px;
-    display: inline-flex;
-    height: 100%;
-    align-items: center;
-    cursor: pointer;
-`;
-
-const MenuWrapper = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
-const Image = styled.img`
-    height: 50px;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px;
-
-    @media (max-width: 768px) {
-        height: 40px;
-    }
-`;
-
-const Backup = styled.div`
-    height: 50px;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 25px;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px;
-
-    @media (max-width: 768px) {
-        height: 40px;
-    }
-`;
+import { Greeting, Menu, MenuItem, MenuWrapper, Image, Backup, UserName, Icon } from './styles';
 
 class UserMenu extends Component {
     state = {
@@ -132,7 +43,7 @@ class UserMenu extends Component {
                 <MenuWrapper onClick={this.handleMenu}>
                     {userData.photoURL && <Image src={userData.photoURL} alt={userData.email} />}
                     {!userData.photoURL && <Backup className="icon-user" />}
-                    <Name>{userData.displayName}</Name>
+                    <UserName>{userData.displayName}</UserName>
                     <Icon className="icon-chevron-down" />
                 </MenuWrapper>
 

@@ -15,8 +15,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    closeSnackBar: () => dispatch(closeSnackBar()),
-    processQueue: () => dispatch(processQueue())
+    close: () => dispatch(closeSnackBar()),
+    process: () => dispatch(processQueue())
 });
 
 const styles = theme => ({
@@ -29,13 +29,13 @@ function Transition(props) {
     return <Slide {...props} direction="right" />;
 }
 
-const Notifications = ({ message, type, open, duration, processQueue, closeSnackBar }) => {
+const Notifications = ({ message, type, open, duration, process, close }) => {
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
 
-        closeSnackBar();
+        close();
     };
 
     const origin = {
@@ -50,7 +50,7 @@ const Notifications = ({ message, type, open, duration, processQueue, closeSnack
             open={open}
             autoHideDuration={duration}
             onClose={handleClose}
-            onExited={processQueue}
+            onExited={process}
         >
             <Content onClose={handleClose} variant={type} message={message} />
         </Snackbar>

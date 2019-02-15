@@ -23,24 +23,24 @@ import {
 import { validateLogIn } from '../validation';
 import Firebase from '../firebase.js';
 
+interface LoginProps extends RouteComponentProps {
+    saveUser: (data: string) => void;
+    userData: {
+        uid: string;
+    };
+    getUser: (id: string) => void;
+    showError: (message: string) => void;
+}
+
 const mapStateToProps = (state: any) => ({
     userData: state.adminState.userData
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getUser: (id: number) => dispatch(fetchData(id)),
+    getUser: (id: string) => dispatch(fetchData(id)),
     saveUser: (data: string) => dispatch(saveUserData(data)),
     showError: (message: string) => dispatch(errorNotification(message))
 });
-
-interface LoginProps extends RouteComponentProps {
-    saveUser: (data: string) => void;
-    userData: {
-        uid: number;
-    };
-    getUser: (id: number) => void;
-    showError: (message: string) => void;
-}
 
 const validationConfig = (values: { email: string; password: string }) => {
     return validateLogIn(values);
