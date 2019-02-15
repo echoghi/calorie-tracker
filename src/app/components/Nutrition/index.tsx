@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import produce from 'immer';
 import Loading from '../Loading';
 import isEmpty from 'lodash.isempty';
 import moment from 'moment';
@@ -47,19 +46,6 @@ const progressBarConfig: ProgressBarConfig = {
     }
 };
 
-// Reusable validation constuctor for each input
-const inputObj = class {
-    required: boolean;
-    valid: boolean;
-    dirty: boolean;
-
-    constructor(required: boolean) {
-        this.required = required;
-        this.valid = !required;
-        this.dirty = false;
-    }
-};
-
 const mapStateToProps = (state: any) => ({
     data: state.adminState.data,
     loading: state.adminState.loading,
@@ -92,6 +78,16 @@ interface Day {
     };
 }
 
+const dayShape: Day = {
+    day: moment(),
+    nutrition: {
+        calories: 0,
+        carbs: 0,
+        fat: 0,
+        protein: 0
+    }
+};
+
 interface Data {
     user: {
         goals: {
@@ -110,24 +106,9 @@ interface NutritionProps extends RouteComponentProps {
 }
 
 const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
-    const [state, setState] = React.useState({
-        day: {
-            day: null,
-            nutrition: null
-        },
-        dayIndex: 0,
-        requestedDate: null,
-        today: false,
-        todayButton: false,
-        validation: {
-            calories: new inputObj(true),
-            carbs: new inputObj(true),
-            fat: new inputObj(true),
-            name: new inputObj(true),
-            protein: new inputObj(true),
-            servings: new inputObj(true)
-        }
-    });
+    const [day, setDay] = React.useState(dayShape);
+    const [dayIndex, setDayIndex] = React.useState(0);
+    const [today, setToday] = React.useState(true);
 
     React.useEffect(() => {
         loadDay();
@@ -139,35 +120,35 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
     }, [location.search, data]);
 
     function loadDay() {
-        const nextState = produce(state, draftState => {
-            let requestedDate: moment.Moment;
+        let date: moment.Moment;
 
-            if (location.search) {
-                const parsed = queryString.parse(location.search);
-                requestedDate = moment(parseInt(parsed.d, 10));
+        if (location.search) {
+            const parsed = queryString.parse(location.search);
+            date = moment(parseInt(parsed.d, 10));
 
-                draftState.todayButton = true;
-            }
+            setToday(false);
+        }
 
-            if (requestedDate) {
-                let index: number;
-                for (const calendarDay of data.calendar) {
-                    index++;
-                    if (calendarDay.day.isSame(requestedDate)) {
-                        draftState.day = calendarDay;
-                        draftState.dayIndex = index;
-                    }
+        if (date) {
+            let index: number;
+
+            for (const calendarDay of data.calendar) {
+                index++;
+                if (calendarDay.day.isSame(date)) {
+                    setDay(calendarDay);
+
+                    setDayIndex(index);
                 }
-            } else {
-                const lastIndex = Object.keys(data.calendar).length - 1;
-
-                draftState.dayIndex = lastIndex;
-
-                draftState.day = data.calendar[lastIndex];
             }
-        });
+        } else {
+            const lastIndex = Object.keys(data.calendar).length - 1;
 
-        setState(nextState);
+            setDayIndex(lastIndex);
+
+            const todayData = data.calendar[lastIndex];
+
+            setDay(todayData);
+        }
     }
 
     function renderProgressBar(type: string) {
@@ -201,23 +182,16 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
     }
 
     function goToToday() {
-        const nextState = produce(state, draftState => {
-            draftState.today = true;
-            draftState.todayButton = false;
-            draftState.requestedDate = null;
-        });
+        setToday(true);
 
         history.push({ pathname: '/nutrition', search: '' });
-
-        setState(nextState);
     }
 
-    if (isEmpty(state.day.day)) {
+    if (isEmpty(day)) {
         return <Loading />;
     }
 
-    const { day, dayIndex } = state;
-    const { protein, carbs, fat } = day.nutrition || 0;
+    const { protein, carbs, fat } = day.nutrition;
 
     return (
         <React.Fragment>
@@ -228,7 +202,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                         <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do YYYY') : ''}</h3>
                     </div>
                     <div>
-                        {state.todayButton && (
+                        {!today && (
                             <Button
                                 onClick={goToToday}
                                 color="primary"
