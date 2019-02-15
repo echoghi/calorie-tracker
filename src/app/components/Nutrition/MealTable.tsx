@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTable from 'react-table';
+import ReactTable, { SortingRule } from 'react-table';
 import Firebase from '../firebase.js';
 import produce from 'immer';
 import 'react-table/react-table.css';
@@ -8,7 +8,13 @@ import moment from 'moment';
 import ConfirmationDialog from './ConfirmationDialog';
 import IconButton from '@material-ui/core/IconButton';
 import { errorNotification, successNotification } from '../actions';
-import { tableStyle, getSortedComponentClass } from '../TableUtils';
+import {
+    trGroupProps,
+    theadThProps,
+    theadProps,
+    tableStyle,
+    getSortedComponentClass
+} from '../TableUtils';
 
 const mapStateToProps = (state: any) => ({
     userData: state.adminState.userData
@@ -125,6 +131,10 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
         });
     };
 
+    const onSortedChange = (sortedItems: SortingRule[]) => setSorted(sortedItems);
+    const removeSelectedMeal = () => removeMeal(mealToDelete);
+    const closeDialog = () => setDialog(false);
+
     return (
         <React.Fragment>
             <ReactTable
@@ -231,22 +241,10 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
                         style: tableStyle.cellCentered
                     }
                 ]}
-                getTheadProps={() => {
-                    return {
-                        style: tableStyle.header
-                    };
-                }}
-                getTheadThProps={() => {
-                    return {
-                        style: tableStyle.th
-                    };
-                }}
-                getTrGroupProps={() => {
-                    return {
-                        style: tableStyle.tbodyTr
-                    };
-                }}
-                onSortedChange={sortedItems => setSorted(sortedItems)}
+                getTheadProps={theadProps}
+                getTheadThProps={theadThProps}
+                getTrGroupProps={trGroupProps}
+                onSortedChange={onSortedChange}
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
@@ -254,8 +252,8 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
             {dialog && day.nutrition.meals && day.nutrition.meals.length && (
                 <ConfirmationDialog
                     open={dialog}
-                    action={() => removeMeal(mealToDelete)}
-                    onClose={() => setDialog(false)}
+                    action={removeSelectedMeal}
+                    onClose={closeDialog}
                     name={`"${day.nutrition.meals[mealToDelete].name}"`}
                 />
             )}

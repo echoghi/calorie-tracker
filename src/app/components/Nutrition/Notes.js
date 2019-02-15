@@ -9,6 +9,7 @@ import {
     NoteBody,
     NoteTitle,
     NotesHeader,
+    NoteBox,
     Note
 } from './styles';
 import Input from '../Input';
@@ -20,148 +21,48 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import produce from 'immer';
+import { Formik } from 'formik';
+import { validateNote } from '../validation';
 import { errorNotification, successNotification, warningNotification } from '../actions';
-
-const inputObj = class {
-    constructor() {
-        this.required = true;
-        this.valid = false;
-        this.dirty = false;
-    }
-};
+import { FormControl } from '@material-ui/core';
 
 const mapStateToProps = state => ({
     userData: state.adminState.userData
 });
 
 const mapDispatchToProps = dispatch => ({
-    errorNotification: message => dispatch(errorNotification(message)),
-    successNotification: message => dispatch(successNotification(message)),
-    warningNotification: message => dispatch(warningNotification(message))
+    errorMessage: message => dispatch(errorNotification(message)),
+    successMessage: message => dispatch(successNotification(message)),
+    warningMessage: message => dispatch(warningNotification(message))
 });
 
-function Notes({ day, index, userData, errorNotification, successNotification }) {
-    const [state, setState] = React.useState({
-        noteToEdit: 0,
-        noteToRemove: 0,
-        noteTitle: '',
-        noteBody: '',
-        activeNote: null,
-        addNote: false,
-        confirmationDialog: false,
-        editNote: false,
-        validation: {
-            noteTitle: new inputObj(),
-            noteBody: new inputObj()
-        }
-    });
+function Notes({ day, index, userData, errorMessage, successMessage }) {
+    const [activeNote, setActiveNote] = React.useState(null);
+    const [noteToEdit, setNoteToEdit] = React.useState(0);
+    const [noteToRemove, setNoteToRemove] = React.useState(0);
+    const [addNote, setAddNote] = React.useState(false);
+    const [editNote, setEditNote] = React.useState(false);
+    const [confirmationDialog, setConfirmationDialog] = React.useState(false);
 
-    const {
-        editNote,
-        noteToEdit,
-        confirmationDialog,
-        addNote,
-        noteToRemove,
-        validation,
-        activeNote
-    } = state;
-
-    const validateNote = name => validation[name].dirty && !validation[name].valid;
     let notes = [];
 
-    function openEditModal(index) {
-        const note = day.notes[index];
-        const nextState = produce(state, draftState => {
-            draftState.editNote = true;
-            draftState.noteToEdit = index;
-            draftState.noteBody = note.body;
-            draftState.noteTitle = note.title;
-        });
-
-        setState(nextState);
+    function openEditModal(editIndex) {
+        setNoteToEdit(editIndex);
+        setEditNote(true);
     }
 
-    function setActiveNote(note) {
-        const nextState = produce(state, draftState => {
-            draftState.activeNote = note;
-        });
-
-        setState(nextState);
-    }
-
-    function openConfirmationDialog(index) {
-        const nextState = produce(state, draftState => {
-            draftState.confirmationDialog = true;
-            draftState.noteToRemove = index;
-        });
-
-        setState(nextState);
+    function openConfirmationDialog(confirmIndex) {
+        setConfirmationDialog(true);
+        setNoteToRemove(confirmIndex);
     }
 
     function openAddNoteDialog() {
-        const nextState = produce(state, draftState => {
-            draftState.addNote = true;
-        });
-
-        setState(nextState);
+        setAddNote(true);
     }
 
     function closeConfirmationDialog() {
-        const nextState = produce(state, draftState => {
-            draftState.confirmationDialog = false;
-        });
-
-        setState(nextState);
+        setConfirmationDialog(false);
     }
-
-    const saveEditedNote = noteIndex => {
-        const { noteBody, noteTitle } = state;
-
-        if (noteBody && noteTitle) {
-            const noteData = produce(day, data => {
-                // convert moment object back to original format
-                data.day = {
-                    month: day.day.get('month'),
-                    date: day.day.date(),
-                    year: day.day.get('year')
-                };
-
-                const note = data.notes[noteIndex];
-                note.title = noteTitle;
-                note.body = noteBody;
-                note.time = moment().format('lll');
-                note.edited = true;
-            });
-
-            const dayRef = Firebase.db
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${index}`);
-
-            dayRef.set(noteData, error => {
-                if (error) {
-                    errorNotification();
-                } else {
-                    successNotification('Note Saved');
-
-                    const nextState = produce(state, draftState => {
-                        draftState.noteBody = '';
-                        draftState.noteTitle = '';
-                        draftState.editNote = false;
-
-                        // reset note validation
-                        for (let attr in draftState.validation) {
-                            if (draftState.validation[attr]) {
-                                draftState.validation[attr] = new inputObj(true);
-                            }
-                        }
-                    });
-
-                    setState(nextState);
-                }
-            });
-        }
-    };
 
     const removeNote = noteIndex => {
         const noteData = produce(day, data => {
@@ -169,8 +70,8 @@ function Notes({ day, index, userData, errorNotification, successNotification })
 
             // convert moment object back to original format
             data.day = {
-                month: day.day.get('month'),
                 date: day.day.date(),
+                month: day.day.get('month'),
                 year: day.day.get('year')
             };
         });
@@ -182,171 +83,57 @@ function Notes({ day, index, userData, errorNotification, successNotification })
 
         dayRef.set(noteData, error => {
             if (error) {
-                errorNotification();
+                errorMessage();
             } else {
-                successNotification('Note Removed');
+                successMessage('Note Removed');
 
-                const nextState = produce(state, draftState => {
-                    draftState.confirmationDialog = false;
-                });
-
-                setState(nextState);
+                setConfirmationDialog(false);
             }
         });
-    };
-
-    const onNoteChange = event => {
-        const { name, value } = event.target;
-
-        const nextState = produce(state, draftState => {
-            // Mark input as dirty (interacted with)
-            draftState.validation[name].dirty = true;
-            draftState[name] = value;
-
-            // If there is any value, mark it valid
-            if (value !== '') {
-                draftState.validation[name].valid = true;
-            } else {
-                draftState.validation[name].valid = false;
-            }
-        });
-
-        setState(nextState);
-    };
-
-    function validateNotes() {
-        const { validation } = state;
-
-        // Check for incompleted fields
-        for (let key in validation) {
-            if (!validation[key]['valid']) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    const saveNewNote = () => {
-        const { validation, noteTitle, noteBody } = state;
-
-        if (validateNotes()) {
-            const noteData = produce(day, payload => {
-                // convert moment object back to original format
-                payload.day = {
-                    month: day.day.get('month'),
-                    date: day.day.date(),
-                    year: day.day.get('year')
-                };
-
-                if (!payload.notes) {
-                    payload.notes = [];
-                }
-
-                payload.notes.push({
-                    title: noteTitle,
-                    body: noteBody,
-                    time: moment().format('lll')
-                });
-            });
-
-            const dayRef = Firebase.db
-                .ref('users')
-                .child(userData.uid)
-                .child(`calendar/${index}`);
-
-            dayRef.set(noteData, error => {
-                if (error) {
-                    errorNotification();
-                } else {
-                    successNotification('Note Added');
-
-                    const nextState = produce(state, draftState => {
-                        draftState.noteTitle = '';
-                        draftState.noteBody = '';
-                        draftState.addNote = false;
-
-                        // reset note validation
-                        for (let attr in draftState.validation) {
-                            if (draftState.validation[attr]) {
-                                draftState.validation[attr] = new inputObj();
-                            }
-                        }
-                    });
-
-                    setState(nextState);
-                }
-            });
-        } else {
-            // If there is an invalid input, mark all as dirty on submit to alert the user
-            for (let attr in validation) {
-                if (validation[attr]) {
-                    validation[attr].dirty = true;
-                }
-            }
-
-            const nextState = produce(state, draftState => {
-                draftState.validation = validation;
-            });
-
-            setState(nextState);
-            errorNotification('Fields must not be empty.');
-        }
     };
 
     function closeConfirmationDialog() {
-        const nextState = produce(state, draftState => {
-            draftState.confirmationDialog = false;
-            draftState.noteTitle = '';
-            draftState.noteBody = '';
-
-            // reset note validation
-            for (let attr in draftState.validation) {
-                if (draftState.validation[attr]) {
-                    draftState.validation[attr] = new inputObj();
-                }
-            }
-        });
-
-        setState(nextState);
+        setConfirmationDialog(false);
     }
 
     const maxNoteLength = window.innerWidth <= 768 ? 15 : 30;
 
     for (let i in day.notes) {
-        const note = day.notes[i];
+        if (day.notes[i]) {
+            const note = day.notes[i];
 
-        notes.push(
-            <Note key={i} onClick={() => setActiveNote(note)}>
-                <NoteTitle>{note.title}</NoteTitle>
-                <NoteBody>
-                    <span>
-                        {note.body.length > maxNoteLength
-                            ? `${note.body.substring(0, maxNoteLength)}...`
-                            : note.body}
-                    </span>
-                    <span>{note.edited ? `${note.time} (edited)` : note.time}</span>
-                </NoteBody>
-                <NoteActions>
-                    <IconButton
-                        onClick={e => {
-                            openEditModal(i);
-                            e.stopPropagation();
-                        }}
-                    >
-                        <i className="icon-edit" />
-                    </IconButton>
-                    <IconButton
-                        onClick={e => {
-                            openConfirmationDialog(i);
-                            e.stopPropagation();
-                        }}
-                    >
-                        <i className="icon-trash-2" />
-                    </IconButton>
-                </NoteActions>
-            </Note>
-        );
+            notes.push(
+                <Note key={i} onClick={() => setActiveNote(note)}>
+                    <NoteTitle>{note.title}</NoteTitle>
+                    <NoteBody>
+                        <span>
+                            {note.body.length > maxNoteLength
+                                ? `${note.body.substring(0, maxNoteLength)}...`
+                                : note.body}
+                        </span>
+                        <span>{note.edited ? `${note.time} (edited)` : note.time}</span>
+                    </NoteBody>
+                    <NoteActions>
+                        <IconButton
+                            onClick={e => {
+                                openEditModal(i);
+                                e.stopPropagation();
+                            }}
+                        >
+                            <i className="icon-edit" />
+                        </IconButton>
+                        <IconButton
+                            onClick={e => {
+                                openConfirmationDialog(i);
+                                e.stopPropagation();
+                            }}
+                        >
+                            <i className="icon-trash-2" />
+                        </IconButton>
+                    </NoteActions>
+                </Note>
+            );
+        }
     }
 
     if (!notes.length) {
@@ -358,45 +145,15 @@ function Notes({ day, index, userData, errorNotification, successNotification })
     }
 
     function closeEditDialog() {
-        const nextState = produce(state, draftState => {
-            draftState.editNote = false;
-            draftState.noteTitle = '';
-            draftState.noteBody = '';
-
-            // reset note validation
-            for (let attr in draftState.validation) {
-                if (draftState.validation[attr]) {
-                    draftState.validation[attr] = new inputObj(true);
-                }
-            }
-        });
-
-        setState(nextState);
+        setEditNote(false);
     }
 
     function closeAddNoteDialog() {
-        const nextState = produce(state, draftState => {
-            draftState.addNote = false;
-            draftState.noteTitle = '';
-            draftState.noteBody = '';
-
-            // reset note validation
-            for (let attr in draftState.validation) {
-                if (draftState.validation[attr]) {
-                    draftState.validation[attr] = new inputObj(true);
-                }
-            }
-        });
-
-        setState(nextState);
+        setAddNote(false);
     }
 
     function closeNoteDialog() {
-        const nextState = produce(state, draftState => {
-            draftState.activeNote = null;
-        });
-
-        setState(nextState);
+        setActiveNote(null);
     }
 
     return (
@@ -427,85 +184,183 @@ function Notes({ day, index, userData, errorNotification, successNotification })
             )}
 
             {editNote && (
-                <Dialog fullWidth maxWidth={'sm'} open={editNote} onClose={closeEditDialog}>
-                    <DialogTitle>Edit Note</DialogTitle>
-                    <DialogContent>
-                        <div style={{ margin: '10px 0' }}>
-                            <Input
-                                name="noteTitle"
-                                id="noteTitle"
-                                label="Title"
-                                fullWidth
-                                defaultValue={day.notes ? day.notes[noteToEdit].title : ''}
-                                onChange={onNoteChange}
-                            />
-                        </div>
-                        <div style={{ margin: '20px 0' }}>
-                            <Input
-                                name="noteBody"
-                                id="noteBody"
-                                label="Note"
-                                multiline
-                                fullWidth
-                                rows="6"
-                                defaultValue={day.notes ? day.notes[noteToEdit].body : ''}
-                                onChange={onNoteChange}
-                            />
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            onClick={() => saveEditedNote(noteToEdit)}
-                            color="primary"
-                            variant="raised"
-                        >
-                            Save
-                        </Button>
-                        <Button onClick={closeEditDialog} color="primary">
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Formik
+                    initialValues={{
+                        title: day.notes ? day.notes[noteToEdit].title : '',
+                        body: day.notes ? day.notes[noteToEdit].body : ''
+                    }}
+                    validate={validateNote}
+                    onSubmit={(values, actions) => {
+                        const { title, body } = values;
+
+                        if (title && body) {
+                            const noteData = produce(day, data => {
+                                // convert moment object back to original format
+                                data.day = {
+                                    date: day.day.date(),
+                                    month: day.day.get('month'),
+                                    year: day.day.get('year')
+                                };
+
+                                const note = data.notes[noteToEdit];
+                                note.title = title;
+                                note.body = body;
+                                note.time = moment().format('lll');
+                                note.edited = true;
+                            });
+
+                            const dayRef = Firebase.db
+                                .ref('users')
+                                .child(userData.uid)
+                                .child(`calendar/${index}`);
+
+                            dayRef.set(noteData, error => {
+                                if (error) {
+                                    errorMessage();
+                                } else {
+                                    successMessage('Note Saved');
+
+                                    setEditNote(false);
+                                }
+                            });
+                        }
+
+                        actions.setSubmitting(false);
+                        actions.resetForm();
+                    }}
+                >
+                    {({ values, errors, touched, handleChange, handleSubmit }) => (
+                        <Dialog fullWidth maxWidth={'sm'} open={editNote} onClose={closeEditDialog}>
+                            <DialogTitle>Edit Note</DialogTitle>
+
+                            <DialogContent>
+                                <form onSubmit={handleSubmit}>
+                                    <FormControl margin="normal" fullWidth>
+                                        <Input
+                                            name="title"
+                                            label="Title"
+                                            error={errors.title && touched.title}
+                                            value={values.title}
+                                            onChange={handleChange}
+                                        />
+                                    </FormControl>
+                                    <FormControl margin="normal" fullWidth>
+                                        <Input
+                                            name="body"
+                                            label="Note"
+                                            multiline
+                                            rows="6"
+                                            error={errors.body && touched.body}
+                                            value={values.body}
+                                            onChange={handleChange}
+                                        />
+                                    </FormControl>
+                                </form>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleSubmit} color="primary" variant="raised">
+                                    Save
+                                </Button>
+                                <Button onClick={closeEditDialog} color="primary">
+                                    Cancel
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    )}
+                </Formik>
             )}
 
             {addNote && (
-                <Dialog fullWidth maxWidth={'sm'} open={addNote} onClose={closeAddNoteDialog}>
-                    <DialogTitle>New Note</DialogTitle>
-                    <DialogContent>
-                        <div style={{ margin: '10px 0' }}>
-                            <Input
-                                name="noteTitle"
-                                id="noteTitle"
-                                label="Title"
-                                required
-                                fullWidth
-                                onChange={onNoteChange}
-                                error={validateNote('noteTitle')}
-                            />
-                        </div>
-                        <div style={{ margin: '20px 0' }}>
-                            <Input
-                                name="noteBody"
-                                id="noteBody"
-                                label="Note"
-                                multiline
-                                fullWidth
-                                required
-                                rows="6"
-                                onChange={onNoteChange}
-                                error={validateNote('noteBody')}
-                            />
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={saveNewNote} color="primary" variant="raised">
-                            Save
-                        </Button>
-                        <Button onClick={closeAddNoteDialog} color="primary">
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Formik
+                    initialValues={{
+                        title: day.notes ? day.notes[noteToEdit].title : '',
+                        body: day.notes ? day.notes[noteToEdit].body : ''
+                    }}
+                    validate={validateNote}
+                    onSubmit={(values, actions) => {
+                        const { title, body } = values;
+
+                        const noteData = produce(day, payload => {
+                            // convert moment object back to original format
+                            payload.day = {
+                                date: day.day.date(),
+                                month: day.day.get('month'),
+                                year: day.day.get('year')
+                            };
+
+                            if (!payload.notes) {
+                                payload.notes = [];
+                            }
+
+                            payload.notes.push({
+                                body: body,
+                                time: moment().format('lll'),
+                                title: title
+                            });
+                        });
+
+                        const dayRef = Firebase.db
+                            .ref('users')
+                            .child(userData.uid)
+                            .child(`calendar/${index}`);
+
+                        dayRef.set(noteData, error => {
+                            if (error) {
+                                errorMessage();
+                            } else {
+                                successMessage('Note Added');
+
+                                setAddNote(false);
+                            }
+                        });
+
+                        actions.setSubmitting(false);
+                        actions.resetForm();
+                    }}
+                >
+                    {({ values, errors, touched, handleChange, handleSubmit }) => (
+                        <Dialog
+                            fullWidth
+                            maxWidth={'sm'}
+                            open={addNote}
+                            onClose={closeAddNoteDialog}
+                        >
+                            <DialogTitle>New Note</DialogTitle>
+                            <DialogContent>
+                                <FormControl margin="normal" fullWidth>
+                                    <Input
+                                        name="title"
+                                        label="Title"
+                                        required
+                                        onChange={handleChange}
+                                        error={errors.title && touched.title}
+                                        value={values.title}
+                                    />
+                                </FormControl>
+                                <FormControl margin="normal" fullWidth>
+                                    <Input
+                                        name="body"
+                                        label="Note"
+                                        multiline
+                                        required
+                                        rows="6"
+                                        onChange={handleChange}
+                                        error={errors.body && touched.body}
+                                        value={values.body}
+                                    />
+                                </FormControl>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleSubmit} color="primary" variant="raised">
+                                    Save
+                                </Button>
+                                <Button onClick={closeAddNoteDialog} color="primary">
+                                    Cancel
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    )}
+                </Formik>
             )}
 
             {activeNote && (
@@ -522,7 +377,7 @@ function Notes({ day, index, userData, errorNotification, successNotification })
                 </Dialog>
             )}
 
-            <div className="nutrition__overview--calories">
+            <NoteBox>
                 <NotesHeader>
                     Notes{' '}
                     <Button
@@ -537,7 +392,7 @@ function Notes({ day, index, userData, errorNotification, successNotification })
                 </NotesHeader>
 
                 <NoteContainer>{notes}</NoteContainer>
-            </div>
+            </NoteBox>
         </React.Fragment>
     );
 }

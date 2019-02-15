@@ -1,10 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 export const theme = createMuiTheme({
-    palette: {
-        primary: { main: 'rgb(0, 132, 137)' },
-        secondary: { main: '#FF5A5F' }
-    },
     overrides: {
         MuiButton: {
             root: {
@@ -17,88 +13,94 @@ export const theme = createMuiTheme({
                 padding: '0 16px 16px 0'
             }
         }
+    },
+    palette: {
+        primary: { main: 'rgb(0, 132, 137)' },
+        secondary: { main: '#FF5A5F' }
     }
 });
 
-export const styles = theme => ({
+export const styles = theming => ({
+    bootstrapFormLabel: {
+        fontSize: 18
+    },
+    bootstrapInput: {
+        '&:focus': {
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+        },
+        backgroundColor: theming.palette.common.white,
+        border: '1px solid #ced4da',
+        borderRadius: 4,
+        boxSizing: 'border-box',
+        fontSize: 16,
+
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"'
+        ].join(','),
+        height: 40,
+        padding: '10px 12px',
+        transition: theming.transitions.create(['border-color', 'box-shadow'])
+    },
+    bootstrapInputMulti: {
+        backgroundColor: theming.palette.common.white,
+        border: '1px solid #ced4da',
+        borderRadius: 4,
+        boxSizing: 'border-box',
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"'
+        ].join(','),
+        fontSize: 16,
+        '&:focus': {
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+        },
+        padding: '10px 12px',
+        transition: theming.transitions.create(['border-color', 'box-shadow'])
+    },
+    bootstrapRoot: {
+        'label + &': {
+            marginTop: theming.spacing.unit * 3
+        },
+        padding: 0
+    },
     container: {
         display: 'flex',
         flexWrap: 'wrap'
     },
-    margin: {
-        margin: theme.spacing.unit
-    },
     cssFocused: {},
-    bootstrapRoot: {
-        padding: 0,
-        'label + &': {
-            marginTop: theme.spacing.unit * 3
-        }
-    },
-    bootstrapInput: {
-        borderRadius: 4,
-        backgroundColor: theme.palette.common.white,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        padding: '10px 12px',
-        height: 40,
-        boxSizing: 'border-box',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"'
-        ].join(','),
-        '&:focus': {
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
-        }
-    },
-    bootstrapInputMulti: {
-        borderRadius: 4,
-        backgroundColor: theme.palette.common.white,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        padding: '10px 12px',
-        boxSizing: 'border-box',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"'
-        ].join(','),
-        '&:focus': {
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
-        }
-    },
-    bootstrapFormLabel: {
-        fontSize: 18
+    margin: {
+        margin: theming.spacing.unit
     },
     select: {
-        borderRadius: 4,
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theming.palette.common.white,
         border: '1px solid #ced4da',
-        fontSize: 16,
-        padding: '10px 12px',
-        height: 40,
+        borderRadius: 4,
         boxSizing: 'border-box',
-        width: 200,
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        '&:focus': {
+            backgroundColor: 'white',
+            borderColor: '#80bdff',
+            borderRadius: 4,
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+        },
         fontFamily: [
             '-apple-system',
             'BlinkMacSystemFont',
@@ -111,12 +113,11 @@ export const styles = theme => ({
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"'
         ].join(','),
-        '&:focus': {
-            borderColor: '#80bdff',
-            borderRadius: 4,
-            backgroundColor: 'white',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
-        }
+        fontSize: 16,
+        height: 40,
+        padding: '10px 12px',
+        transition: theming.transitions.create(['border-color', 'box-shadow']),
+        width: 200
     },
     selectLabel: {
         fontSize: 18,

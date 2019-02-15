@@ -1,17 +1,17 @@
+export function defaultValidator(name) {
+    if (!name) {
+        return 'Required';
+    } else {
+        return false;
+    }
+}
+
 // log in / sign up
 export function validateEmail(email) {
     if (!email) {
         return 'Required';
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
         return 'Invalid email address';
-    } else {
-        return false;
-    }
-}
-
-export function validateName(name) {
-    if (!name) {
-        return 'Required';
     } else {
         return false;
     }
@@ -40,13 +40,13 @@ export function validateLogIn(values) {
 
 export function validateSignUp(values) {
     if (
-        validateName(values.name) ||
+        defaultValidator(values.name) ||
         validateEmail(values.email) ||
         validatePassword(values.password)
     ) {
         return {
             email: validateEmail(values.email),
-            name: validateName(values.name),
+            name: defaultValidator(values.name),
             password: validatePassword(values.password)
         };
     } else {
@@ -55,14 +55,6 @@ export function validateSignUp(values) {
 }
 
 // nutrition
-export function validateMealName(name) {
-    if (!name) {
-        return 'Required';
-    } else {
-        return false;
-    }
-}
-
 export function validateServings(servings) {
     if (servings === 0) {
         return 'Required';
@@ -72,10 +64,21 @@ export function validateServings(servings) {
 }
 
 export function validateMeal(values) {
-    if (validateMealName(values.name) || validateServings(values.servings)) {
+    if (defaultValidator(values.name) || validateServings(values.servings)) {
         return {
-            name: validateMealName(values.name),
+            name: defaultValidator(values.name),
             servings: validateServings(values.servings)
+        };
+    } else {
+        return {};
+    }
+}
+
+export function validateNote(values) {
+    if (defaultValidator(values.title) || defaultValidator(values.body)) {
+        return {
+            title: defaultValidator(values.title),
+            body: defaultValidator(values.body)
         };
     } else {
         return {};

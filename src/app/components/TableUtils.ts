@@ -102,3 +102,21 @@ export function getSortedComponentClass(data: TableSort[], id: string) {
         return 'icon-chevron-down table-sort';
     }
 }
+
+export const theadProps = () => {
+    return {
+        style: tableStyle.header
+    };
+};
+
+export const theadThProps = () => {
+    return {
+        style: tableStyle.th
+    };
+};
+
+export const trGroupProps = () => {
+    return {
+        style: tableStyle.tbodyTr
+    };
+};

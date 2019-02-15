@@ -20,7 +20,6 @@ export const loadData = (id: string) => {
 };
 
 export function receiveData(data: any) {
-    console.log(data);
     return {
         data,
         type: 'RECEIVE_DATA'

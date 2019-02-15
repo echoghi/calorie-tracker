@@ -65,6 +65,33 @@ const NoNotes = styled.div`
     }
 `;
 
+const NoteBox = styled.div`
+    position: relative;
+    display: inline-block;
+    height: 425px;
+    width: 48%;
+    border: 1px solid #e6eaee;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    background: #ffffff;
+    text-align: center;
+
+    h4 {
+        padding: 5px 30px 15px 30px;
+        color: #3d575d;
+        font-size: 25px;
+        text-align: left;
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        display: block;
+        margin: 30px 0;
+    }
+`;
+
 const NoteTitle = styled.div`
     width: 40.3%;
     text-align: left;
@@ -176,5 +203,6 @@ export {
     BoxHeader,
     HeaderWrapper,
     Note,
-    InputWrapper
+    InputWrapper,
+    NoteBox
 };
