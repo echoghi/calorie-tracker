@@ -3,9 +3,8 @@
     "version": "1.0",
     "description": "Doughboy Health Dashboard",
     "scripts": {
-        "dev": "yarn install --ignore-engines && nodemon --watch webpack.config.js --exec \"webpack-dev-server --env development\" --mode development",
-        "build": "rm -rf node_modules && rm -rf build && yarn install && webpack --env.prod=true --mode production",
-        "build-windows": "webpack --env.prod=true --mode production",
+        "dev": "yarn install --ignore-engines && nodemon --watch webpack.config.js --exec webpack-dev-server --mode development",
+        "build": "webpack --mode production",
         "server": "node app"
     },
     "repository": {

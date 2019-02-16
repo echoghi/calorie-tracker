@@ -10,14 +10,10 @@ import NavBar from './Nav';
 import isEmpty from 'lodash.isempty';
 import firebase from 'firebase';
 
-// no lambda
-const CalendarImport = () => import('./Calendar');
-const NutritionImport = () => import('./Nutrition');
-const SettingsImport = () => import('./Settings');
 // routes
-const Calendar = React.lazy(CalendarImport);
-const Nutrition = React.lazy(NutritionImport);
-const Settings = React.lazy(SettingsImport);
+const Calendar = React.lazy(() => import('./Calendar'));
+const Nutrition = React.lazy(() => import('./Nutrition'));
+const Settings = React.lazy(() => import('./Settings'));
 
 interface AdminState {
     data: {};
@@ -77,6 +73,10 @@ interface AppIndex extends RouteComponentProps {
     userLoading: boolean;
 }
 
+const SettingsImport = () => <Settings />;
+const CalendarImport = () => <Calendar />;
+const NutritonImport = () => <Nutrition />;
+
 function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }: AppIndex) {
     Firebase.auth.onAuthStateChanged(user => {
         if (user) {
@@ -102,17 +102,13 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
                     <Notifications />
                     <Suspense fallback={<Loading />}>
                         <ErrorBoundary>
-                            <Route exact path="/" render={() => <Calendar />} name="Overview" />
+                            <Route exact={true} path="/" render={CalendarImport} name="Overview" />
                         </ErrorBoundary>
                         <ErrorBoundary>
-                            <Route path="/settings" render={() => <Settings />} name="Settings" />
+                            <Route path="/settings" render={SettingsImport} name="Settings" />
                         </ErrorBoundary>
                         <ErrorBoundary>
-                            <Route
-                                path="/nutrition"
-                                render={() => <Nutrition />}
-                                name="Nutrition"
-                            />
+                            <Route path="/nutrition" render={NutritonImport} name="Nutrition" />
                         </ErrorBoundary>
                     </Suspense>
                 </React.Fragment>

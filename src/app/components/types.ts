@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { RouteComponentProps } from 'react-router';
 
 export interface AdminState {
     data: {};
@@ -58,4 +59,8 @@ export interface Day {
         calories: number;
         activities: string[];
     };
+}
+
+export interface Register extends RouteComponentProps {
+    errorMessage: (message?: string) => void;
 }
