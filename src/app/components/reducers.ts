@@ -1,27 +1,10 @@
 import produce from 'immer';
-import firebase from 'firebase';
+import { AdminState } from './types';
 
-interface ActionTypes {
+export interface ActionTypes {
     data: any;
     type: string;
     duration: number;
-}
-
-interface AdminState {
-    data: {};
-    day: {
-        day: {};
-        todayButton: boolean;
-        formattedDay: {};
-        requestedDate: boolean;
-        dayRef: {};
-        dayIndex: 0;
-    };
-    error: boolean;
-    userData: firebase.UserInfo | {};
-    userLoading: boolean;
-    loading: boolean;
-    success: boolean;
 }
 
 export function adminState(

@@ -47,7 +47,7 @@ const DeleteAccount = ({ userData }) => {
                 <Button
                     style={{ background: '#cb2431', display: 'block' }}
                     color="primary"
-                    variant="raised"
+                    variant="contained"
                     onClick={() => setDialog(true)}
                 >
                     Delete Account
@@ -67,7 +67,7 @@ const DeleteAccount = ({ userData }) => {
                     <Button
                         style={{ background: '#cb2431', color: '#FFFFFF' }}
                         onClick={deleteAccount}
-                        variant="raised"
+                        variant="contained"
                     >
                         Delete
                     </Button>

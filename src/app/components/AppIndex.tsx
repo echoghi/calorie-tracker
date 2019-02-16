@@ -78,13 +78,15 @@ const CalendarImport = () => <Calendar />;
 const NutritonImport = () => <Nutrition />;
 
 function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }: AppIndex) {
-    Firebase.auth.onAuthStateChanged(user => {
-        if (user) {
-            saveUser(user);
-        } else {
-            history.push('/login');
-        }
-    });
+    React.useEffect(() => {
+        Firebase.auth.onAuthStateChanged(user => {
+            if (user) {
+                saveUser(user);
+            } else {
+                history.push('/login');
+            }
+        });
+    }, []);
 
     React.useEffect(() => {
         if (!isEmpty(userData) && !userLoading) {

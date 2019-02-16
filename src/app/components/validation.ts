@@ -54,6 +54,14 @@ export function defaultValidator(name: string) {
     }
 }
 
+export function defaultNumberValidator(name: number) {
+    if (name === 0) {
+        return 'Required';
+    } else {
+        return false;
+    }
+}
+
 // log in / sign up
 export function validateEmail(email: string) {
     if (!email) {
@@ -103,19 +111,11 @@ export function validateSignUp(values: SignUpValues): SignUpValidator | {} {
 }
 
 // nutrition
-export function validateServings(servings: number) {
-    if (servings === 0) {
-        return 'Required';
-    } else {
-        return false;
-    }
-}
-
 export function validateMeal(values: MealValues): MealValidator | {} {
-    if (defaultValidator(values.name) || validateServings(+values.servings)) {
+    if (defaultValidator(values.name) || defaultNumberValidator(+values.servings)) {
         return {
             name: defaultValidator(values.name),
-            servings: validateServings(+values.servings)
+            servings: defaultNumberValidator(+values.servings)
         };
     } else {
         return {};
@@ -127,6 +127,40 @@ export function validateNote(values: NoteValues): NoteValidator | {} {
         return {
             body: defaultValidator(values.body),
             title: defaultValidator(values.title)
+        };
+    } else {
+        return {};
+    }
+}
+
+// Account Info
+
+export interface InfoValues {
+    age: number;
+    gender: string;
+    height: number;
+    weight: number;
+}
+
+export interface InfoValidator {
+    age: DefaultValidator;
+    gender: DefaultValidator;
+    height: DefaultValidator;
+    weight: DefaultValidator;
+}
+
+export function validateAccountInfo(values: InfoValues): InfoValidator | {} {
+    if (
+        defaultNumberValidator(+values.age) ||
+        defaultValidator(values.gender) ||
+        defaultNumberValidator(+values.height) ||
+        defaultNumberValidator(+values.weight)
+    ) {
+        return {
+            gender: defaultValidator(values.gender),
+            age: defaultNumberValidator(+values.age),
+            height: defaultNumberValidator(+values.height),
+            weight: defaultNumberValidator(+values.weight)
         };
     } else {
         return {};

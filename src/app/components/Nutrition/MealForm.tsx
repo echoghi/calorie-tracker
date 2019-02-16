@@ -156,7 +156,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                 onSubmit={saveMeal}
             >
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
-                    <Form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit} noValidate={true}>
                         <InputWrapper>
                             <Input
                                 name="name"

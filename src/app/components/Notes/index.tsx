@@ -24,7 +24,7 @@ import produce from 'immer';
 import { Formik, FormikActions } from 'formik';
 import { validateNote, NoteValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
-import { FormControl } from '@material-ui/core';
+import { FormControl, Fab } from '@material-ui/core';
 import { RootState } from '../types';
 import firebase from 'firebase';
 import { Dispatch } from 'redux';
@@ -232,7 +232,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={removeHandler} color="primary" variant="raised">
+                        <Button onClick={removeHandler} color="primary" variant="contained">
                             Delete
                         </Button>
                         <Button onClick={closeConfirmationDialog} color="primary" autoFocus={true}>
@@ -284,7 +284,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                     </FormControl>
 
                                     <DialogActions>
-                                        <Button type="submit" color="primary" variant="raised">
+                                        <Button type="submit" color="primary" variant="contained">
                                             Save
                                         </Button>
                                         <Button onClick={closeEditDialog} color="primary">
@@ -341,7 +341,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                     </FormControl>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button type="submit" color="primary" variant="raised">
+                                    <Button type="submit" color="primary" variant="contained">
                                         Save
                                     </Button>
                                     <Button onClick={closeAddNoteDialog} color="primary">
@@ -376,15 +376,14 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
             <NoteBox>
                 <NotesHeader>
                     Notes{' '}
-                    <Button
-                        variant="fab"
+                    <Fab
                         color="primary"
                         aria-label="add note"
                         onClick={openAddNoteDialog}
                         style={{ fontSize: 20 }}
                     >
                         <i className="icon-plus" />
-                    </Button>
+                    </Fab>
                 </NotesHeader>
 
                 <NoteContainer>

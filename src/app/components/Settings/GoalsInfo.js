@@ -210,7 +210,7 @@ const GoalsInfo = ({ data, userData, errorNotification, successNotification }) =
                         margin: '0 10px'
                     }}
                     color="primary"
-                    variant="raised"
+                    variant="contained"
                     onClick={onSubmit}
                 >
                     Update Goals

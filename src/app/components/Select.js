@@ -5,34 +5,19 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './theme';
 
-function Select({
-    classes,
-    label,
-    name,
-    id,
-    style,
-    options,
-    error,
-    onChange,
-    value,
-    defaultValue
-}) {
+function Select({ classes, label, name, id, options, error, ...props }) {
     return (
         <FormControl error={error}>
             <InputLabel
-                disableAnimation
-                shrink
+                disableAnimation={true}
+                shrink={true}
                 classes={{ formControl: classes.selectLabel }}
                 htmlFor={id}
             >
                 {label}
             </InputLabel>
             <NativeSelect
-                label={label}
-                id={id}
-                value={value}
-                defaultValue={defaultValue}
-                onChange={onChange}
+                {...props}
                 classes={{
                     root: classes.bootstrapRoot,
                     select: classes.select
@@ -41,8 +26,7 @@ function Select({
                     id,
                     name
                 }}
-                style={style}
-                disableUnderline
+                disableUnderline={true}
                 IconComponent={props => (
                     <i
                         {...props}

@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { Greeting, Menu, MenuItem, MenuWrapper, Image, Backup, UserName, Icon } from './styles';
 import { ClickAwayListener } from '@material-ui/core';
+import firebase from 'firebase';
 
 interface UserMenu {
-    userData: any;
+    userData: firebase.UserInfo | any;
     logOut: () => void;
 }
 
