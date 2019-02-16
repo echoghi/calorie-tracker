@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import smoothscroll from 'smoothscroll-polyfill';
-import { theme } from './app/components/MaterialTheme';
+import { theme } from './app/components/theme';
 import { store } from './store';
 
 smoothscroll.polyfill();

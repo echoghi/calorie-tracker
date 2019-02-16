@@ -1,11 +1,11 @@
 type DefaultValidator = 'Required' | false;
 
-interface NoteValues {
+export interface NoteValues {
     title: string;
     body: string;
 }
 
-interface MealValues {
+export interface MealValues {
     calories: string;
     carbs: string;
     fat: string;
@@ -14,33 +14,33 @@ interface MealValues {
     servings: string;
 }
 
-interface NoteValidator {
+export interface NoteValidator {
     title: DefaultValidator;
     body: DefaultValidator;
 }
 
-interface MealValidator {
+export interface MealValidator {
     name: DefaultValidator;
     servings: DefaultValidator;
 }
 
-interface LogInValues {
+export interface LogInValues {
     email: string;
     password: string;
 }
 
-interface LogInValidator {
+export interface LogInValidator {
     email: 'Required' | 'Invalid email address' | false;
     password: 'Required' | 'Password must be at least 6 characters long.' | false;
 }
 
-interface SignUpValues {
+export interface SignUpValues {
     name: string;
     email: string;
     password: string;
 }
 
-interface SignUpValidator {
+export interface SignUpValidator {
     name: DefaultValidator;
     email: 'Required' | 'Invalid email address' | false;
     password: 'Required' | 'Password must be at least 6 characters long.' | false;

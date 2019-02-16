@@ -7,10 +7,7 @@ import { logOut } from '../actions';
 import Firebase from '../firebase';
 import SubNav from './SubNav';
 import { Dispatch } from 'redux';
-
-interface UserProps {
-    uid: string;
-}
+import firebase from 'firebase';
 
 interface AdminState {
     data: {};
@@ -23,7 +20,7 @@ interface AdminState {
         dayIndex: 0;
     };
     error: boolean;
-    userData: UserProps | {};
+    userData: firebase.UserInfo | {};
     userLoading: boolean;
     loading: boolean;
     success: boolean;
@@ -46,7 +43,7 @@ interface NotificationState {
 
 interface NavBar extends RouteComponentProps {
     appLogOut: () => void;
-    userData: UserProps | {};
+    userData: firebase.UserInfo | {};
 }
 
 interface RootState {

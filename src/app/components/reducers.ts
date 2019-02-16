@@ -1,13 +1,10 @@
 import produce from 'immer';
+import firebase from 'firebase';
 
 interface ActionTypes {
     data: any;
     type: string;
     duration: number;
-}
-
-interface UserProps {
-    uid: string;
 }
 
 interface AdminState {
@@ -21,7 +18,7 @@ interface AdminState {
         dayIndex: 0;
     };
     error: boolean;
-    userData: UserProps | {};
+    userData: firebase.UserInfo | {};
     userLoading: boolean;
     loading: boolean;
     success: boolean;

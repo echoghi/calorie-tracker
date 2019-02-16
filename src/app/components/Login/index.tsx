@@ -22,9 +22,10 @@ import {
 } from './styles';
 import { validateLogIn } from '../validation';
 import Firebase from '../firebase';
+import firebase from 'firebase';
 
 interface LoginProps extends RouteComponentProps {
-    saveUser: (data: string) => void;
+    saveUser: (data: firebase.UserInfo) => void;
     userData: {
         uid: string;
     };
@@ -38,7 +39,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
     getUser: (id: string) => dispatch(fetchData(id)),
-    saveUser: (data: string) => dispatch(saveUserData(data)),
+    saveUser: (data: firebase.UserInfo) => dispatch(saveUserData(data)),
     showError: (message: string) => dispatch(errorNotification(message))
 });
 
@@ -131,7 +132,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                             isSubmitting
                         }) => (
                             <Fade in={true}>
-                                <Form onSubmit={handleSubmit}>
+                                <Form onSubmit={handleSubmit} noValidate={true}>
                                     <FormControl fullWidth={true}>
                                         <Input
                                             name="email"

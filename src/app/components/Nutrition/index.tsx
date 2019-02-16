@@ -10,7 +10,7 @@ import Bar from '../ProgressBar/Bar';
 import MealTable from './MealTable';
 import queryString from 'query-string';
 import MealForm from './MealForm';
-import Notes from './Notes';
+import Notes from '../Notes';
 import { HeaderWrapper, Overview, Box, BoxHeader } from './styles';
 
 interface ProgressProps {

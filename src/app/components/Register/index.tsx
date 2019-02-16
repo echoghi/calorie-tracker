@@ -5,19 +5,24 @@ import Paper from '@material-ui/core/Paper';
 import Firebase from '../firebase';
 import Notifications from '../Notifications';
 import Input from '../Input';
-import { Formik } from 'formik';
-import { validateSignUp } from '../validation';
-import { withRouter } from 'react-router-dom';
+import { Formik, FormikActions } from 'formik';
+import { validateSignUp, SignUpValues } from '../validation';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Header, Container, Form, Wrapper, ErrorMessage, BackToLogin } from '../Login/styles';
 import { connect } from 'react-redux';
 import { errorNotification } from '../actions';
+import { Dispatch } from 'redux';
 
-const mapDispatchToProps = dispatch => ({
-    errorNotification: message => dispatch(errorNotification(message))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    errorMessage: (message?: string) => dispatch(errorNotification(message))
 });
 
-const Register = ({ errorNotification, history }) => {
-    async function onRegister(name, email, password) {
+interface Register extends RouteComponentProps {
+    errorMessage: (message?: string) => void;
+}
+
+const Register = ({ errorMessage, history }: Register) => {
+    async function onRegister(name: string, email: string, password: string) {
         try {
             await Firebase.register(name, email, password);
 
@@ -25,9 +30,17 @@ const Register = ({ errorNotification, history }) => {
         } catch (err) {
             console.warn(err.message);
 
-            errorNotification(err.message);
+            errorMessage(err.message);
         }
     }
+
+    const submitHandler = (values: SignUpValues, actions: FormikActions<SignUpValues>) => {
+        const { name, email, password } = values;
+
+        onRegister(name, email, password);
+
+        actions.setSubmitting(false);
+    };
 
     return (
         <Container>
@@ -39,16 +52,8 @@ const Register = ({ errorNotification, history }) => {
 
                     <Formik
                         initialValues={{ name: '', email: '', password: '' }}
-                        validate={values => {
-                            return validateSignUp(values);
-                        }}
-                        onSubmit={(values, actions) => {
-                            const { name, email, password } = values;
-
-                            onRegister(name, email, password);
-
-                            actions.setSubmitting(false);
-                        }}
+                        validate={validateSignUp}
+                        onSubmit={submitHandler}
                     >
                         {({
                             values,
@@ -58,8 +63,8 @@ const Register = ({ errorNotification, history }) => {
                             handleSubmit,
                             isSubmitting
                         }) => (
-                            <Form onSubmit={handleSubmit}>
-                                <FormControl fullWidth>
+                            <Form onSubmit={handleSubmit} noValidate={true}>
+                                <FormControl fullWidth={true}>
                                     <Input
                                         name="name"
                                         label="Name"
@@ -72,7 +77,7 @@ const Register = ({ errorNotification, history }) => {
                                     </ErrorMessage>
                                 </FormControl>
 
-                                <FormControl fullWidth margin="normal">
+                                <FormControl fullWidth={true} margin="normal">
                                     <Input
                                         name="email"
                                         label="Email"
@@ -85,7 +90,7 @@ const Register = ({ errorNotification, history }) => {
                                     </ErrorMessage>
                                 </FormControl>
 
-                                <FormControl fullWidth margin="normal">
+                                <FormControl fullWidth={true} margin="normal">
                                     <Input
                                         name="password"
                                         label="Password"
@@ -99,7 +104,7 @@ const Register = ({ errorNotification, history }) => {
                                     </ErrorMessage>
                                 </FormControl>
 
-                                <FormControl fullWidth margin="normal">
+                                <FormControl fullWidth={true} margin="normal">
                                     <Button
                                         type="submit"
                                         color="primary"
@@ -110,7 +115,7 @@ const Register = ({ errorNotification, history }) => {
                                     </Button>
                                 </FormControl>
 
-                                <FormControl fullWidth margin="normal">
+                                <FormControl fullWidth={true} margin="normal">
                                     <BackToLogin to="/login">Back to Log In</BackToLogin>
                                 </FormControl>
                             </Form>

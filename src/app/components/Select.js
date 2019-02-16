@@ -3,7 +3,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from './MaterialTheme';
+import { styles } from './theme';
 
 function Select({
     classes,

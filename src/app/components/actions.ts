@@ -1,6 +1,7 @@
 import Firebase from './firebase';
 import moment from 'moment';
 import { Dispatch } from 'redux';
+import firebase from 'firebase';
 
 const usersRef = Firebase.db.ref('users');
 
@@ -77,7 +78,7 @@ export function resetError() {
     };
 }
 
-export function saveUserData(data: string) {
+export function saveUserData(data: firebase.UserInfo) {
     return {
         data,
         type: 'SAVE_USER_DATA'
@@ -148,7 +149,7 @@ export function createUser(id: string) {
 }
 
 export function fetchData(id: string) {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch<any>): any => {
         dispatch(loadingData());
 
         usersRef.child(id).once('value', snapshot => {

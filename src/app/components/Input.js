@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from './MaterialTheme';
+import { styles } from './theme';
 
 function Input(props) {
     return (

@@ -10,9 +10,9 @@ declare module 'query-string';
 declare var NODE_ENV: string;
 declare var GA_ID: string;
 
-declare module Types {
-    import moment from 'moment';
+import moment from 'moment';
 
+declare module Types {
     export interface RootState {
         readonly adminState: {
             data: any;
