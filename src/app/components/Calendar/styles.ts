@@ -211,7 +211,7 @@ const Wrapper = styled.div`
 
     @media (max-width: 768px) {
         background: #ffffff;
-        padding: 65px 0 0 0;
+        padding: 65px 0 150px 0;
         margin-bottom: 30px;
     }
 `;
