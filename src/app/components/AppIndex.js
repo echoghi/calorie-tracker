@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import Firebase from './firebase.js';
+import Firebase from './firebase';
 import { connect } from 'react-redux';
 import { fetchData, saveUserData } from './actions';
 import Loading from './Loading';
@@ -48,24 +48,29 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
     }, [userData]);
 
     return (
-        <React.Fragment>
-            <NavBar />
-            <Notifications />
-
-            {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) && (
-                <Suspense fallback={<Loading />}>
-                    <ErrorBoundary>
-                        <Route exact path="/" render={() => <Calendar />} name="Overview" />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route path="/settings" render={() => <Settings />} name="Settings" />
-                    </ErrorBoundary>
-                    <ErrorBoundary>
-                        <Route path="/nutrition" render={() => <Nutrition />} name="Nutrition" />
-                    </ErrorBoundary>
-                </Suspense>
-            )}
-        </React.Fragment>
+        <div>
+            {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) ? (
+                <React.Fragment>
+                    <NavBar />
+                    <Notifications />
+                    <Suspense fallback={<Loading />}>
+                        <ErrorBoundary>
+                            <Route exact path="/" render={() => <Calendar />} name="Overview" />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route path="/settings" render={() => <Settings />} name="Settings" />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route
+                                path="/nutrition"
+                                render={() => <Nutrition />}
+                                name="Nutrition"
+                            />
+                        </ErrorBoundary>
+                    </Suspense>
+                </React.Fragment>
+            ) : null}
+        </div>
     );
 }
 

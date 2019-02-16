@@ -20,7 +20,7 @@ export const theme = createMuiTheme({
     }
 });
 
-export const styles = theming => ({
+export const styles = (theming: any) => ({
     bootstrapFormLabel: {
         fontSize: 18
     },

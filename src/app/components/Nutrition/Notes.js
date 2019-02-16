@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import moment from 'moment';
 import {
     NoteActions,

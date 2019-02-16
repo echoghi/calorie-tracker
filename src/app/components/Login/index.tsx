@@ -21,7 +21,7 @@ import {
     SignUp
 } from './styles';
 import { validateLogIn } from '../validation';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 
 interface LoginProps extends RouteComponentProps {
     saveUser: (data: string) => void;

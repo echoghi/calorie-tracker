@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import Notifications from '../Notifications';
 import Input from '../Input';
 import { Formik } from 'formik';

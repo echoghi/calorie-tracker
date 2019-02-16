@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { Formik, FormikActions } from 'formik';
 import { MealForm as Form, MealsHeader, InputWrapper } from './styles';
 import { connect } from 'react-redux';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import produce from 'immer';
 import moment from 'moment';
 import { validateMeal } from '../validation';

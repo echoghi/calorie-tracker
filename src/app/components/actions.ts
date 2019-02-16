@@ -1,4 +1,4 @@
-import Firebase from './firebase.js';
+import Firebase from './firebase';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 
@@ -109,7 +109,7 @@ export function createUser(id: string) {
         const newUser: UsersRef = {};
         const now = moment();
 
-        console.log('creating new user', id, now);
+        console.warn('new user created', id, now);
 
         newUser[`users/${id}`] = {
             calendar: [

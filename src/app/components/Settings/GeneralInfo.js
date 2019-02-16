@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import { errorNotification, successNotification, warningNotification } from '../actions';
 import Button from '@material-ui/core/Button';
 import isEmpty from 'lodash.isempty';
@@ -36,19 +36,16 @@ const GeneralInfo = ({ userData, errorNotification, successNotification }) => {
 
     const { validation } = state;
 
-    React.useEffect(
-        () => {
-            if (!isEmpty(userData)) {
-                const nextState = produce(state, draftState => {
-                    draftState.displayName = userData.displayName;
-                    draftState.validation.displayName = new inputObj(true);
-                });
+    React.useEffect(() => {
+        if (!isEmpty(userData)) {
+            const nextState = produce(state, draftState => {
+                draftState.displayName = userData.displayName;
+                draftState.validation.displayName = new inputObj(true);
+            });
 
-                setState(nextState);
-            }
-        },
-        [userData]
-    );
+            setState(nextState);
+        }
+    }, [userData]);
 
     const onChange = event => {
         const nextState = produce(state, draftState => {

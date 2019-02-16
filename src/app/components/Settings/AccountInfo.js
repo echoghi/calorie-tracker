@@ -1,5 +1,5 @@
 import React from 'react';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import { connect } from 'react-redux';
 import { errorNotification, successNotification } from '../actions';
 import Button from '@material-ui/core/Button';
@@ -44,27 +44,24 @@ const AccountInfo = ({ data, userData, errorNotification, successNotification })
 
     const { age, gender, height, weight, validation } = state;
 
-    React.useEffect(
-        () => {
-            if (!isEmpty(data)) {
-                const nextState = produce(state, draftState => {
-                    const { height, weight, gender, age } = data.user;
+    React.useEffect(() => {
+        if (!isEmpty(data)) {
+            const nextState = produce(state, draftState => {
+                const { height, weight, gender, age } = data.user;
 
-                    draftState.height = height;
-                    draftState.weight = weight;
-                    draftState.gender = gender;
-                    draftState.age = age;
+                draftState.height = height;
+                draftState.weight = weight;
+                draftState.gender = gender;
+                draftState.age = age;
 
-                    for (let type in draftState.validation) {
-                        draftState.validation[type] = new inputObj(true);
-                    }
-                });
+                for (let type in draftState.validation) {
+                    draftState.validation[type] = new inputObj(true);
+                }
+            });
 
-                setState(nextState);
-            }
-        },
-        [data]
-    );
+            setState(nextState);
+        }
+    }, [data]);
 
     const onChange = event => {
         const nextState = produce(state, draftState => {

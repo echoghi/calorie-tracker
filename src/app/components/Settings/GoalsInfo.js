@@ -1,5 +1,5 @@
 import React from 'react';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import { connect } from 'react-redux';
 import { errorNotification, successNotification, warningNotification } from '../actions';
 import Button from '@material-ui/core/Button';
@@ -43,25 +43,22 @@ const GoalsInfo = ({ data, userData, errorNotification, successNotification }) =
 
     const { validation, calories, carbs, fat, protein } = state;
 
-    React.useEffect(
-        () => {
-            if (!isEmpty(data)) {
-                const nextState = produce(state, draftState => {
-                    draftState.calories = data.user.goals.calories;
-                    draftState.carbs = data.user.goals.carbs;
-                    draftState.fat = data.user.goals.fat;
-                    draftState.protein = data.user.goals.protein;
+    React.useEffect(() => {
+        if (!isEmpty(data)) {
+            const nextState = produce(state, draftState => {
+                draftState.calories = data.user.goals.calories;
+                draftState.carbs = data.user.goals.carbs;
+                draftState.fat = data.user.goals.fat;
+                draftState.protein = data.user.goals.protein;
 
-                    for (let type in draftState.validation) {
-                        draftState.validation[type] = new inputObj(true);
-                    }
-                });
+                for (let type in draftState.validation) {
+                    draftState.validation[type] = new inputObj(true);
+                }
+            });
 
-                setState(nextState);
-            }
-        },
-        [data]
-    );
+            setState(nextState);
+        }
+    }, [data]);
 
     const onChange = event => {
         const nextState = produce(state, draftState => {

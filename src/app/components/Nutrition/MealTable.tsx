@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTable, { SortingRule } from 'react-table';
-import Firebase from '../firebase.js';
+import Firebase from '../firebase';
 import produce from 'immer';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';

@@ -2,38 +2,46 @@ import React from 'react';
 import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 
-const styles = theme => ({
-    success: {
-        backgroundColor: 'rgb(0, 132, 137)'
-    },
+const styles = (theme: Theme) => ({
     error: {
         background: 'rgb(203, 36, 49)'
-    },
-    info: {
-        backgroundColor: '#d3d7d9'
-    },
-    warning: {
-        backgroundColor: '#FFF9ED'
     },
     icon: {
         fontSize: 20
     },
     iconVariant: {
-        opacity: 0.9,
-        marginRight: theme.spacing.unit
+        marginRight: theme.spacing.unit,
+        opacity: 0.9
+    },
+    info: {
+        backgroundColor: '#d3d7d9'
     },
     message: {
-        display: 'flex',
         alignItems: 'center',
-        fontSize: 14,
         color: '#ffffff',
+        display: 'flex',
+        fontSize: 14,
         letterSpacing: 0.6
+    },
+    success: {
+        backgroundColor: 'rgb(0, 132, 137)'
+    },
+    warning: {
+        backgroundColor: '#FFF9ED'
     }
 });
 
-const Content = ({ classes, className, message, onClose, variant }) => (
+interface Content {
+    onClose: (event: any) => void;
+    variant: string;
+    message: string;
+    className?: string;
+    classes: any;
+}
+
+const Content = ({ classes, className, message, onClose, variant }: Content) => (
     <SnackbarContent
         className={classNames(classes[variant], className)}
         aria-describedby="client-snackbar"
@@ -58,8 +66,8 @@ const Content = ({ classes, className, message, onClose, variant }) => (
             </IconButton>
         ]}
         style={{
-            flexWrap: 'inherit',
-            boxShadow: '0 1px 32px 0 rgba(0,0,0,0.1)'
+            boxShadow: '0 1px 32px 0 rgba(0,0,0,0.1)',
+            flexWrap: 'inherit'
         }}
     />
 );

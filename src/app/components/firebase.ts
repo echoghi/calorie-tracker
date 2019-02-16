@@ -10,6 +10,10 @@ const config = {
 };
 
 class Firebase {
+    auth: firebase.auth.Auth;
+    db: firebase.database.Database;
+    provider: firebase.auth.GoogleAuthProvider_Instance;
+
     constructor() {
         firebase.initializeApp(config);
         this.auth = firebase.auth();
@@ -17,7 +21,7 @@ class Firebase {
         this.provider = new firebase.auth.GoogleAuthProvider();
     }
 
-    logIn(email, password) {
+    logIn(email: string, password: string) {
         return this.auth.signInWithEmailAndPassword(email, password);
     }
 
@@ -29,13 +33,14 @@ class Firebase {
         return this.auth.signOut();
     }
 
-    async register(name, email, password) {
+    async register(name: string, email: string, password: string) {
         // create new user
         await this.auth.createUserWithEmailAndPassword(email, password);
 
         // save name
         return this.auth.currentUser.updateProfile({
-            displayName: name
+            displayName: name,
+            photoURL: this.auth.currentUser.photoURL
         });
     }
 }
