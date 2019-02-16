@@ -1,7 +1,7 @@
 {
     "name": "doughboy",
     "version": "1.0",
-    "description": "Doughboy Health Dashboard",
+    "description": "Doughboy Nutrition Tracker",
     "scripts": {
         "dev": "yarn install --ignore-engines && nodemon --watch webpack.config.js --exec webpack-dev-server --mode development",
         "build": "webpack --mode production",

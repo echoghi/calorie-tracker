@@ -18,9 +18,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const sourcePath = path.join(__dirname, './src');
 const publicPath = path.join(__dirname, './build');
 
-module.exports = function(env) {
-    const nodeEnv = env && env.prod ? 'production' : 'development';
-    const isProd = nodeEnv === 'production';
+module.exports = function(env, argv) {
+    const isProd = argv.mode === 'production';
+    const nodeEnv = isProd ? 'production' : 'development';
 
     return {
         devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
