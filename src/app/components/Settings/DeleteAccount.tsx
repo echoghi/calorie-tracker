@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
+import firebase from 'firebase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -8,12 +9,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
 import { DeleteAccountWrapper, SettingsHeader, SettingsSubHeader } from './styles';
+import { RootState } from '../types';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const DeleteAccount = ({ userData }) => {
+const DeleteAccount = ({ userData }: { userData: firebase.UserInfo }) => {
     const [dialog, setDialog] = React.useState(false);
 
     function deleteAccount() {

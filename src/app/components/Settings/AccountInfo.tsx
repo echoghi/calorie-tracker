@@ -79,8 +79,8 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
 
     React.useEffect(() => {
         if (!isEmpty(data)) {
-            console.log(data);
-            const { height, weight, gender, age } = data.user;
+            console.log(data.user);
+            const { age, height, gender, weight } = data.user;
 
             setAge(age);
             setHeight(height);
@@ -137,6 +137,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
             </SettingsSubHeader>
 
             <Formik
+                enableReinitialize={true}
                 initialValues={{
                     age,
                     gender,
@@ -154,18 +155,8 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             type="number"
                             error={errors.age && touched.age}
                             onChange={handleChange}
-                            style={{ paddingRight: 20 }}
+                            style={{ paddingRight: 10, width: 100 }}
                             value={values.age}
-                        />
-
-                        <Select
-                            name="gender"
-                            label="Gender"
-                            options={['Male', 'Female']}
-                            onChange={handleChange}
-                            error={errors.gender && touched.gender}
-                            style={{ paddingRight: 20 }}
-                            value={values.gender}
                         />
 
                         <Input
@@ -174,7 +165,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             type="number"
                             error={errors.height && touched.height}
                             onChange={handleChange}
-                            style={{ paddingRight: 20 }}
+                            style={{ paddingRight: 10, width: 100 }}
                             value={values.height}
                         />
 
@@ -185,7 +176,16 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             error={errors.weight && touched.weight}
                             onChange={handleChange}
                             value={values.weight}
-                            style={{ width: 100 }}
+                            style={{ paddingRight: 10, width: 100 }}
+                        />
+
+                        <Select
+                            name="gender"
+                            label="Gender"
+                            options={['Male', 'Female']}
+                            onChange={handleChange}
+                            error={errors.gender && touched.gender}
+                            value={values.gender}
                         />
 
                         <Button

@@ -4,10 +4,24 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './theme';
+import { Classes } from 'jss';
 
-function Select({ classes, label, name, id, options, error, ...props }) {
+interface Select {
+    classes: Classes;
+    label: string;
+    name: string;
+    id?: string;
+    options: string[];
+    error: boolean;
+    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    value: string;
+    type?: string;
+    style?: React.CSSProperties;
+}
+
+function Select({ classes, label, name, id, options, error, ...props }: Select) {
     return (
-        <FormControl error={error}>
+        <FormControl error={error} style={{ marginTop: 8 }}>
             <InputLabel
                 disableAnimation={true}
                 shrink={true}

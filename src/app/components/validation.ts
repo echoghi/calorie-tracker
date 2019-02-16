@@ -134,7 +134,6 @@ export function validateNote(values: NoteValues): NoteValidator | {} {
 }
 
 // Account Info
-
 export interface InfoValues {
     age: number;
     gender: string;
@@ -161,6 +160,58 @@ export function validateAccountInfo(values: InfoValues): InfoValidator | {} {
             age: defaultNumberValidator(+values.age),
             height: defaultNumberValidator(+values.height),
             weight: defaultNumberValidator(+values.weight)
+        };
+    } else {
+        return {};
+    }
+}
+
+// Goals Info
+export interface GoalsValues {
+    calories: number;
+    carbs: number;
+    fat: number;
+    protein: number;
+}
+
+export interface GoalsValidator {
+    calories: DefaultValidator;
+    carbs: DefaultValidator;
+    fat: DefaultValidator;
+    protein: DefaultValidator;
+}
+
+export function validateGoalsInfo(values: GoalsValues): GoalsValidator | {} {
+    if (
+        defaultNumberValidator(values.calories) ||
+        defaultNumberValidator(values.carbs) ||
+        defaultNumberValidator(values.fat) ||
+        defaultNumberValidator(values.protein)
+    ) {
+        return {
+            gender: defaultNumberValidator(values.calories),
+            age: defaultNumberValidator(values.carbs),
+            height: defaultNumberValidator(values.fat),
+            weight: defaultNumberValidator(values.protein)
+        };
+    } else {
+        return {};
+    }
+}
+
+// General Info
+export interface GeneralInfoValues {
+    name: string;
+}
+
+export interface GeneralInfoValidator {
+    name: DefaultValidator;
+}
+
+export function validateGeneralInfo(values: GeneralInfoValues): GeneralInfoValidator | {} {
+    if (defaultValidator(values.name)) {
+        return {
+            name: defaultValidator(values.name)
         };
     } else {
         return {};
