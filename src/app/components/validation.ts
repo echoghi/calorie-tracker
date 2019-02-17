@@ -156,8 +156,8 @@ export function validateAccountInfo(values: InfoValues): InfoValidator | {} {
         defaultNumberValidator(+values.weight)
     ) {
         return {
-            gender: defaultValidator(values.gender),
             age: defaultNumberValidator(+values.age),
+            gender: defaultValidator(values.gender),
             height: defaultNumberValidator(+values.height),
             weight: defaultNumberValidator(+values.weight)
         };
@@ -189,8 +189,8 @@ export function validateGoalsInfo(values: GoalsValues): GoalsValidator | {} {
         defaultNumberValidator(values.protein)
     ) {
         return {
-            gender: defaultNumberValidator(values.calories),
             age: defaultNumberValidator(values.carbs),
+            gender: defaultNumberValidator(values.calories),
             height: defaultNumberValidator(values.fat),
             weight: defaultNumberValidator(values.protein)
         };

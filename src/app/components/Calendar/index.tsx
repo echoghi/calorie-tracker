@@ -73,7 +73,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const Calendar = ({ data, loading }: Calendar) => {
-    let [time, setTime] = React.useState(moment());
+    const [time, setTime] = React.useState(moment());
     const [dayDetails, toggleBreakdown] = React.useState({
         active: false,
         day: null
@@ -105,16 +105,16 @@ const Calendar = ({ data, loading }: Calendar) => {
         }
     }
 
-    function renderIcons(data: Day, tooltipDay: moment.Moment) {
+    function renderIcons(dayData: Day, tooltipDay: moment.Moment) {
         if (width < 768) {
             return null;
         }
 
-        if (data && tooltipDay.month() === time.month() && data.notes) {
+        if (dayData && tooltipDay.month() === time.month() && dayData.notes) {
             return (
                 <Tooltip
                     id="tooltip-top"
-                    title={`You recorded ${data.notes.length} note(s)`}
+                    title={`You recorded ${dayData.notes.length} note(s)`}
                     placement="top"
                 >
                     <Icon className="icon-feather" />
@@ -123,14 +123,14 @@ const Calendar = ({ data, loading }: Calendar) => {
         }
     }
 
-    function handleIcon(day: moment.Moment) {
+    function handleIcon(dayMoment: moment.Moment) {
         for (const calendarDay of data.calendar) {
             if (
-                calendarDay.day.date() === day.date() &&
-                calendarDay.day.month() === day.month() &&
-                calendarDay.day.year() === day.year()
+                calendarDay.day.date() === dayMoment.date() &&
+                calendarDay.day.month() === dayMoment.month() &&
+                calendarDay.day.year() === dayMoment.year()
             ) {
-                if (moment().isSameOrAfter(day) && calendarDay) {
+                if (moment().isSameOrAfter(dayMoment) && calendarDay) {
                     return <InfoIcon className="icon-info" />;
                 }
             }
@@ -247,7 +247,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                         storeData.day.month() === calendarDay.month() &&
                         storeData.day.year() === calendarDay.year()
                     ) {
-                        calendar[i].data[j] = data.calendar[k];
+                        calendar[i].data[j] = storeData;
                     }
                 }
 
@@ -274,14 +274,12 @@ const Calendar = ({ data, loading }: Calendar) => {
 
                 calendarDays.push(
                     <Day
-                        {...handleDayProps(calendar[i].days[j])}
-                        key={`${calendar[i].days[j].date()}-${calendar[i].days[j].get(
-                            'month'
-                        )}-${Math.random()}`}
+                        {...handleDayProps(calendarDay)}
+                        key={`${calendarDay.date()}-${calendarDay.get('month')}-${Math.random()}`}
                     >
-                        <DayNumber>{calendar[i].days[j].date()}</DayNumber>
-                        {renderIcons(calendar[i].data[j], calendar[i].days[j])}
-                        {calendar[i].data[j] && moment().isSameOrAfter(calendar[i].days[j]) ? (
+                        <DayNumber>{calendarDay.date()}</DayNumber>
+                        {renderIcons(calendar[i].data[j], calendarDay)}
+                        {calendar[i].data[j] && moment().isSameOrAfter(calendarDay) ? (
                             <NutritionRings
                                 day={calendar[i].data[j]}
                                 data={data}
@@ -291,7 +289,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                         ) : (
                             <div className="day__overview" />
                         )}
-                        <a onClick={openBreakdown}>{handleIcon(calendar[i].days[j])}</a>
+                        <a onClick={openBreakdown}>{handleIcon(calendarDay)}</a>
                     </Day>
                 );
             }
@@ -304,21 +302,20 @@ const Calendar = ({ data, loading }: Calendar) => {
         if (increment) {
             // if its December, increment the year
             if (time.get('month') === 11) {
-                time = moment([time.get('year') + 1, 0, 1]);
+                setTime(moment([time.get('year') + 1, 0, 1]));
             } else {
-                time = moment([time.get('year'), time.get('month') + 1, 1]);
+                setTime(moment([time.get('year'), time.get('month') + 1, 1]));
             }
         } else {
             // if its January, decrement the year
             if (time.get('month') === 0) {
-                time = moment([time.get('year') - 1, 11, 1]);
+                setTime(moment([time.get('year') - 1, 11, 1]));
             } else {
-                time = moment([time.get('year'), time.get('month') - 1, 1]);
+                setTime(moment([time.get('year'), time.get('month') - 1, 1]));
             }
         }
 
         setMobileSummary({ active: false, day: moment() });
-        setTime(time);
     }
 
     const { active, day } = dayDetails;

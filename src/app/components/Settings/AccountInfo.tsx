@@ -15,8 +15,8 @@ import { validateAccountInfo, InfoValues } from '../validation';
 import { Formik, FormikActions } from 'formik';
 
 const mapStateToProps = (state: RootState) => ({
-    userData: state.adminState.userData,
-    data: state.adminState.data
+    data: state.adminState.data,
+    userData: state.adminState.userData
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -79,19 +79,14 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
 
     React.useEffect(() => {
         if (!isEmpty(data)) {
-            console.log(data.user);
-            const { age, height, gender, weight } = data.user;
-
-            setAge(age);
-            setHeight(height);
-            setWeight(weight);
-            setGender(gender);
+            setAge(data.user.age || 21);
+            setHeight(data.user.height);
+            setWeight(data.user.weight);
+            setGender(data.user.gender || 'Male');
         }
     }, [data]);
 
     const submitHandler = (values: InfoValues, actions: FormikActions<InfoValues>) => {
-        const { age, gender, height, weight } = values;
-
         let user = {
             age: 0,
             gender: '',
@@ -109,23 +104,25 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
         });
 
         const payload = produce(user, updatedUser => {
-            updatedUser.age = +age;
-            updatedUser.gender = gender;
-            updatedUser.height = +height;
-            updatedUser.weight = +weight;
+            updatedUser.age = +values.age;
+            updatedUser.gender = values.gender;
+            updatedUser.height = +values.height;
+            updatedUser.weight = +values.weight;
         });
 
         // update user's account info
         queryRef.update(payload, error => {
             if (error) {
                 errorMessage();
+
+                actions.setSubmitting(false);
             } else {
                 successMessage('Account Info Updated.');
+
+                actions.setSubmitting(false);
+                actions.resetForm();
             }
         });
-
-        actions.setSubmitting(false);
-        actions.resetForm();
     };
 
     return (
@@ -155,7 +152,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             type="number"
                             error={errors.age && touched.age}
                             onChange={handleChange}
-                            style={{ paddingRight: 10, width: 100 }}
+                            style={{ paddingRight: 20, width: 100 }}
                             value={values.age}
                         />
 
@@ -165,7 +162,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             type="number"
                             error={errors.height && touched.height}
                             onChange={handleChange}
-                            style={{ paddingRight: 10, width: 100 }}
+                            style={{ paddingRight: 20, width: 100 }}
                             value={values.height}
                         />
 
@@ -176,7 +173,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             error={errors.weight && touched.weight}
                             onChange={handleChange}
                             value={values.weight}
-                            style={{ paddingRight: 10, width: 100 }}
+                            style={{ paddingRight: 20, width: 100 }}
                         />
 
                         <Select
@@ -191,8 +188,8 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                         <Button
                             style={{
                                 display: 'inline-block',
-                                verticalAlign: 'bottom',
-                                margin: '0 10px'
+                                margin: '0 20px',
+                                verticalAlign: 'bottom'
                             }}
                             color="primary"
                             variant="contained"

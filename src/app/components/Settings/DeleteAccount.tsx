@@ -37,6 +37,9 @@ const DeleteAccount = ({ userData }: { userData: firebase.UserInfo }) => {
             });
     }
 
+    const openDialog = () => setDialog(true);
+    const closeDialog = () => setDialog(false);
+
     return (
         <React.Fragment>
             <DeleteAccountWrapper>
@@ -50,13 +53,13 @@ const DeleteAccount = ({ userData }: { userData: firebase.UserInfo }) => {
                     style={{ background: '#cb2431', display: 'block' }}
                     color="primary"
                     variant="contained"
-                    onClick={() => setDialog(true)}
+                    onClick={openDialog}
                 >
                     Delete Account
                 </Button>
             </DeleteAccountWrapper>
 
-            <Dialog open={dialog} onClose={() => setDialog(false)}>
+            <Dialog open={dialog} onClose={closeDialog}>
                 <DialogTitle>Delete Account?</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -73,7 +76,7 @@ const DeleteAccount = ({ userData }: { userData: firebase.UserInfo }) => {
                     >
                         Delete
                     </Button>
-                    <Button onClick={() => setDialog(false)} color="primary" autoFocus>
+                    <Button onClick={closeDialog} color="primary" autoFocus={true}>
                         Cancel
                     </Button>
                 </DialogActions>

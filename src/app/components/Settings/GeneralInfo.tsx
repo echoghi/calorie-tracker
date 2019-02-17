@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
-import { errorNotification, successNotification } from '../actions';
+import { errorNotification, successNotification, saveUserData } from '../actions';
 import Button from '@material-ui/core/Button';
 import isEmpty from 'lodash.isempty';
 import { FormikActions, Formik } from 'formik';
@@ -18,43 +18,51 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     errorMessage: (message?: string) => dispatch(errorNotification(message)),
+    saveUser: (userData: firebase.UserInfo) => dispatch(saveUserData(userData)),
     successMessage: (message?: string) => dispatch(successNotification(message))
 });
 
 interface GeneralInfo {
-    userData: firebase.UserInfo;
     errorMessage: (message?: string) => void;
+    saveUser: (userData: firebase.UserInfo) => void;
     successMessage: (message?: string) => void;
+    userData: firebase.UserInfo;
 }
 
-const GeneralInfo = ({ userData, errorMessage, successMessage }: GeneralInfo) => {
+const GeneralInfo = ({ userData, errorMessage, successMessage, saveUser }: GeneralInfo) => {
     const [name, setDisplayName] = React.useState('');
 
     React.useEffect(() => {
         if (!isEmpty(userData)) {
-            console.log(userData.displayName);
             setDisplayName(userData.displayName);
         }
-    }, [userData]);
+    });
 
     const submitHandler = (
         values: GeneralInfoValues,
         actions: FormikActions<GeneralInfoValues>
     ) => {
-        try {
-            Firebase.auth.currentUser.updateProfile({
+        Firebase.auth.currentUser
+            .updateProfile({
                 displayName: values.name,
                 photoURL: userData.photoURL
+            })
+            .then(() => {
+                successMessage('Display Name Updated.');
+
+                // reload new display name into redux
+                Firebase.auth.currentUser.reload().then(() => {
+                    saveUser(Firebase.auth.currentUser);
+                });
+
+                actions.setSubmitting(false);
+            })
+            .catch(err => {
+                console.error(err);
+                errorMessage();
+
+                actions.setSubmitting(false);
             });
-        } catch (err) {
-            console.warn(err);
-            errorMessage();
-        }
-
-        successMessage('Display Name Updated.');
-
-        actions.setSubmitting(false);
-        actions.resetForm();
     };
 
     return (
@@ -82,8 +90,8 @@ const GeneralInfo = ({ userData, errorMessage, successMessage }: GeneralInfo) =>
                         <Button
                             style={{
                                 display: 'inline-block',
-                                verticalAlign: 'bottom',
-                                margin: '0 10px'
+                                margin: '0 20px',
+                                verticalAlign: 'bottom'
                             }}
                             color="primary"
                             variant="contained"

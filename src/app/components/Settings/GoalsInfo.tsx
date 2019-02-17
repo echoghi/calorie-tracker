@@ -14,8 +14,8 @@ import firebase from 'firebase';
 import { GoalsValues, validateGoalsInfo } from '../validation';
 
 const mapStateToProps = (state: RootState) => ({
-    userData: state.adminState.userData,
-    data: state.adminState.data
+    data: state.adminState.data,
+    userData: state.adminState.userData
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -46,8 +46,6 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
     }, [data]);
 
     const submitHandler = (values: GoalsValues, actions: FormikActions<GoalsValues>) => {
-        const { calories, carbs, fat, protein } = values;
-
         let goals = {
             calories: 0,
             carbs: 0,
@@ -65,11 +63,10 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
         });
 
         const goalsUpdate = produce(goals, draftState => {
-            draftState.calories = calories;
-
-            draftState.carbs = carbs;
-            draftState.fat = fat;
-            draftState.protein = protein;
+            draftState.calories = values.calories;
+            draftState.carbs = values.carbs;
+            draftState.fat = values.fat;
+            draftState.protein = values.protein;
         });
 
         queryRef.update(goalsUpdate, error => {
@@ -154,8 +151,8 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                         <Button
                             style={{
                                 display: 'inline-block',
-                                verticalAlign: 'bottom',
-                                margin: '0 10px'
+                                margin: '0 20px',
+                                verticalAlign: 'bottom'
                             }}
                             color="primary"
                             variant="contained"

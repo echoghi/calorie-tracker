@@ -129,6 +129,8 @@ export function createUser(id: string) {
                 }
             ],
             user: {
+                age: 21,
+                gender: 'Male',
                 goals: {
                     calories: 2000,
                     carbs: 100,

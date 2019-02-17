@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { withStyles, Theme } from '@material-ui/core/styles';
@@ -37,13 +36,12 @@ interface Content {
     onClose: (event: any) => void;
     variant: string;
     message: string;
-    className?: string;
     classes: any;
 }
 
-const Content = ({ classes, className, message, onClose, variant }: Content) => (
+const Content = ({ classes, message, onClose, variant }: Content) => (
     <SnackbarContent
-        className={classNames(classes[variant], className)}
+        className={classes[variant]}
         aria-describedby="client-snackbar"
         message={
             <span

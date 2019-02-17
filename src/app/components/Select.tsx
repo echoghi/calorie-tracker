@@ -4,10 +4,10 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
 import { styles } from './theme';
-import { Classes } from 'jss';
+import { IconProps } from '@material-ui/core/Icon';
 
 interface Select {
-    classes: Classes;
+    classes: any;
     label: string;
     name: string;
     id?: string;
@@ -18,6 +18,19 @@ interface Select {
     type?: string;
     style?: React.CSSProperties;
 }
+
+const handleIcon = (iconProps: IconProps) => (
+    <i
+        {...iconProps}
+        style={{
+            pointerEvents: 'none',
+            position: 'absolute',
+            right: 10,
+            top: 'calc(50% - 7px)'
+        }}
+        className="icon-chevron-down"
+    />
+);
 
 function Select({ classes, label, name, id, options, error, ...props }: Select) {
     return (
@@ -41,18 +54,7 @@ function Select({ classes, label, name, id, options, error, ...props }: Select) 
                     name
                 }}
                 disableUnderline={true}
-                IconComponent={props => (
-                    <i
-                        {...props}
-                        style={{
-                            pointerEvents: 'none',
-                            position: 'absolute',
-                            right: 10,
-                            top: 'calc(50% - 7px)'
-                        }}
-                        className="icon-chevron-down"
-                    />
-                )}
+                IconComponent={handleIcon}
             >
                 <option key="0" value="">
                     Select a Gender

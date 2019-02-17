@@ -150,7 +150,7 @@ const DayDialog = ({
                     component={Link}
                     to={`/nutrition?d=${day.day.format('x')}`}
                     color="primary"
-                    variant="raised"
+                    variant="contained"
                     autoFocus={true}
                 >
                     Edit
