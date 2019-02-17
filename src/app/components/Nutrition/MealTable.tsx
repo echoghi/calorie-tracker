@@ -15,14 +15,17 @@ import {
     tableStyle,
     getSortedComponentClass
 } from '../TableUtils';
+import { RootState } from '../types';
+import { Dispatch } from 'redux';
+import firebase from 'firebase';
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-    errorNotification: (message: any) => dispatch(errorNotification(message)),
-    successNotification: (message: any) => dispatch(successNotification(message))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    errorMessage: (message?: string) => dispatch(errorNotification(message)),
+    successMessage: (message?: string) => dispatch(successNotification(message))
 });
 
 interface Note {
@@ -67,12 +70,16 @@ interface Day {
     [index: string]: any;
 }
 
-interface UserProps {
-    uid: string;
+interface MealTable {
+    userData: firebase.UserInfo;
+    day: Day;
+    index: number;
+    successMessage: (message?: string) => void;
+    errorMessage: (message?: string) => void;
 }
 
 /*eslint-disable */
-function MealTable({ day, userData, index }: { day: Day; userData: UserProps; index: number }) {
+function MealTable({ day, userData, index, successMessage, errorMessage }: MealTable) {
     const [sorted, setSorted] = React.useState([]);
     const [dialog, setDialog] = React.useState(false);
     const [mealToDelete, setMealToDelete] = React.useState(0);
@@ -119,10 +126,10 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
 
         dayRef.set(mealData, error => {
             if (error) {
-                errorNotification();
+                errorMessage();
             } else {
                 // trigger success notification
-                successNotification('Meal Removed');
+                successMessage('Meal Removed');
 
                 // close dialog
                 setDialog(false);
