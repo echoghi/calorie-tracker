@@ -79,8 +79,8 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
 
     function renderActions(rowIndex: number) {
         const clickHandler = () => {
-            setDialog(true);
             setMealToDelete(rowIndex);
+            setDialog(true);
         };
 
         return (
@@ -103,7 +103,7 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
             for (const name in draftState.nutrition) {
                 if (name !== 'meals') {
                     // prettier-ignore
-                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((parseInt(meal[name], 10) * parseFloat(meal.servings)).toFixed(2), 10);
+                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((+meal[name] * parseFloat(meal.servings)).toFixed(2), 10);
                 }
             }
 
@@ -249,7 +249,7 @@ function MealTable({ day, userData, index }: { day: Day; userData: UserProps; in
                 className="-striped -highlight"
             />
 
-            {dialog && day.nutrition.meals && day.nutrition.meals.length && (
+            {dialog && day.nutrition.meals && day.nutrition.meals[mealToDelete] && (
                 <ConfirmationDialog
                     open={dialog}
                     action={removeSelectedMeal}

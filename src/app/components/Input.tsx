@@ -6,7 +6,7 @@ import { styles } from './theme';
 interface Input {
     classes: any;
     multiline?: boolean;
-    rows?: string;
+    rows?: number;
     label: string;
     name: string;
     id?: string;
@@ -18,13 +18,13 @@ interface Input {
     style?: React.CSSProperties;
 }
 
-function Input({ classes, multiline, ...props }: Input) {
+function Input({ classes, ...props }: Input) {
     return (
         <TextField
             {...props}
             InputProps={{
                 classes: {
-                    input: multiline ? classes.bootstrapInputMulti : classes.bootstrapInput,
+                    input: props.multiline ? classes.bootstrapInputMulti : classes.bootstrapInput,
                     root: classes.bootstrapRoot
                 },
                 disableUnderline: true

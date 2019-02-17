@@ -24,7 +24,7 @@ const ConfirmationDialog = ({
                 <DialogContentText>Are you sure you want to remove this entry?</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={action} color="primary" variant="raised">
+                <Button onClick={action} color="primary" variant="contained">
                     Delete
                 </Button>
                 <Button onClick={onClose} color="primary" autoFocus={true}>

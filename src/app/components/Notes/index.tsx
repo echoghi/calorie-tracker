@@ -276,7 +276,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                             name="body"
                                             label="Note"
                                             multiline={true}
-                                            rows="6"
+                                            rows={6}
                                             error={errors.body && touched.body}
                                             value={values.body}
                                             onChange={handleChange}
@@ -333,7 +333,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                             label="Note"
                                             multiline={true}
                                             required={true}
-                                            rows="6"
+                                            rows={6}
                                             onChange={handleChange}
                                             error={errors.body && touched.body}
                                             value={values.body}

@@ -12,6 +12,7 @@ import queryString from 'query-string';
 import MealForm from './MealForm';
 import Notes from '../Notes';
 import { HeaderWrapper, Overview, Box, BoxHeader } from './styles';
+import { RootState } from '../types';
 
 interface ProgressProps {
     color: string;
@@ -46,7 +47,7 @@ const progressBarConfig: ProgressBarConfig = {
     }
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
     data: state.adminState.data,
     loading: state.adminState.loading,
     userData: state.adminState.userData,
@@ -130,14 +131,13 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
         }
 
         if (date) {
-            let index: number;
+            // save the queried day to state
+            for (let i = 0; i < data.calendar.length; i++) {
+                if (data.calendar[i].day.isSame(date)) {
+                    setDay(data.calendar[i]);
+                    setDayIndex(+i);
 
-            for (const calendarDay of data.calendar) {
-                index++;
-                if (calendarDay.day.isSame(date)) {
-                    setDay(calendarDay);
-
-                    setDayIndex(index);
+                    return;
                 }
             }
         } else {
