@@ -105,11 +105,15 @@ const InputWrapper = styled.div`
     margin: 20px;
 `;
 
+const InputControl = styled.div`
+    margin: 0 10px;
+`;
+
 const MealsContainer = styled.div`
     position: relative;
     display: inline-block;
     height: 425px;
-    width: 48%;
+    width: 31%;
     border: 1px solid #e6eaee;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     border-radius: 3px;
@@ -156,5 +160,6 @@ export {
     InputWrapper,
     Grams,
     MealsContainer,
-    Content
+    Content,
+    InputControl
 };

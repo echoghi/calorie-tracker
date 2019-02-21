@@ -2,7 +2,13 @@ import React from 'react';
 import Input from '../Input';
 import Button from '@material-ui/core/Button';
 import { Formik, FormikActions } from 'formik';
-import { MealForm as Form, MealsHeader, MealsContainer, InputWrapper } from './styles';
+import {
+    MealForm as Form,
+    MealsHeader,
+    MealsContainer,
+    InputWrapper,
+    InputControl
+} from './styles';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import produce from 'immer';
@@ -10,13 +16,15 @@ import moment from 'moment';
 import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import firebase from 'firebase';
+import { RootState } from '../types';
+import { Dispatch } from 'redux';
 
-const mapDispatchToProps = (dispatch: any) => ({
-    errorMessage: (message: string) => dispatch(errorNotification(message)),
-    successMessage: (message: string) => dispatch(successNotification(message))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    errorMessage: (message?: string) => dispatch(errorNotification(message)),
+    successMessage: (message?: string) => dispatch(successNotification(message))
 });
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
@@ -146,67 +154,76 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <Form onSubmit={handleSubmit} noValidate={true}>
                         <InputWrapper>
-                            <Input
-                                name="name"
-                                label="Name"
-                                required={true}
-                                value={values.name}
-                                onChange={handleChange}
-                                error={errors.name && touched.name}
-                            />
-
-                            <Input
-                                name="servings"
-                                label="Servings"
-                                required={true}
-                                value={values.servings}
-                                onChange={handleChange}
-                                error={errors.servings && touched.servings}
-                            />
+                            <InputControl>
+                                <Input
+                                    name="name"
+                                    label="Name"
+                                    required={true}
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    error={errors.name && touched.name}
+                                />
+                            </InputControl>
+                            <InputControl>
+                                <Input
+                                    name="servings"
+                                    label="Servings"
+                                    required={true}
+                                    value={values.servings}
+                                    onChange={handleChange}
+                                    error={errors.servings && touched.servings}
+                                />
+                            </InputControl>
                         </InputWrapper>
 
                         <InputWrapper>
-                            <Input
-                                name="calories"
-                                label="Calories"
-                                type="number"
-                                required={true}
-                                value={values.calories}
-                                onChange={handleChange}
-                                error={errors.calories && touched.calories}
-                            />
-
-                            <Input
-                                name="protein"
-                                label="Protein"
-                                type="number"
-                                required={true}
-                                value={values.protein}
-                                onChange={handleChange}
-                                error={errors.protein && touched.protein}
-                            />
+                            <InputControl>
+                                <Input
+                                    name="calories"
+                                    label="Calories"
+                                    type="number"
+                                    required={true}
+                                    value={values.calories}
+                                    onChange={handleChange}
+                                    error={errors.calories && touched.calories}
+                                />
+                            </InputControl>
+                            <InputControl>
+                                <Input
+                                    name="protein"
+                                    label="Protein"
+                                    type="number"
+                                    required={true}
+                                    value={values.protein}
+                                    onChange={handleChange}
+                                    error={errors.protein && touched.protein}
+                                />
+                            </InputControl>
                         </InputWrapper>
 
                         <InputWrapper>
-                            <Input
-                                name="carbs"
-                                label="Carbs"
-                                type="number"
-                                required={true}
-                                value={values.carbs}
-                                onChange={handleChange}
-                                error={errors.carbs && touched.carbs}
-                            />
-
-                            <Input
-                                name="fat"
-                                label="Fat"
-                                type="number"
-                                required={true}
-                                value={values.fat}
-                                onChange={handleChange}
-                                error={errors.fat && touched.fat}
-                            />
+                            <InputControl>
+                                <Input
+                                    name="carbs"
+                                    label="Carbs"
+                                    type="number"
+                                    required={true}
+                                    value={values.carbs}
+                                    onChange={handleChange}
+                                    error={errors.carbs && touched.carbs}
+                                />
+                            </InputControl>
+                            <InputControl>
+                                <Input
+                                    name="fat"
+                                    label="Fat"
+                                    type="number"
+                                    required={true}
+                                    value={values.fat}
+                                    onChange={handleChange}
+                                    error={errors.fat && touched.fat}
+                                />
+                            </InputControl>
                         </InputWrapper>
 
                         <Button

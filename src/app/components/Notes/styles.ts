@@ -48,7 +48,7 @@ export const NoteBox = styled.div`
     position: relative;
     display: inline-block;
     height: 425px;
-    width: 48%;
+    width: 65.5%;
     border: 1px solid #e6eaee;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     border-radius: 3px;
