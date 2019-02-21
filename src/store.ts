@@ -1,7 +1,6 @@
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-//Reducers
 import { adminState, notificationState } from './app/components/reducers';
 
 const adminApp = combineReducers({
@@ -28,9 +27,7 @@ if (enableReduxDevTools) {
         },
         latency: 600,
         maxAge: 10,
-        serialize: {
-            options: undefined
-        }
+        serialize: true
     });
 } else {
     activeComposer = compose;

@@ -9,11 +9,12 @@ const Text = styled.span`
     height: 15px;
     padding: 0;
     margin: 5px 0;
-`;
+    color: #a2a7d9;
 
-const Container = styled.div`
-    width: ${props => props.width};
-    margin: ${props => props.margin};
+    @media (max-width: 768px) {
+        font-size: 12px;
+        margin: 0;
+    }
 `;
 
 const BarWrapper = styled.div`
@@ -33,4 +34,4 @@ const Layer = styled.div`
     }
 `;
 
-export { CircleContainer, Container, Text, BarWrapper, Layer };
+export { CircleContainer, Text, BarWrapper, Layer };

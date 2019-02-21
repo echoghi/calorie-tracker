@@ -7,13 +7,11 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import smoothscroll from 'smoothscroll-polyfill';
 import { theme } from './app/components/theme';
 import { store } from './store';
-
-smoothscroll.polyfill();
-
-//components
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
 import Register from './app/components/Register';
+
+smoothscroll.polyfill();
 
 ReactDOM.render(
     <Provider store={store}>

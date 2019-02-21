@@ -4,6 +4,8 @@
     "description": "Doughboy Nutrition Tracker",
     "scripts": {
         "dev": "yarn install --ignore-engines && nodemon --watch webpack.config.js --exec webpack-dev-server --mode development",
+        "debug": "yarn install && nodemon --watch webpack.config.js --exec webpack-dev-server --mode development --debug ",
+        "debug:prod": "webpack --mode production --debug",
         "build": "webpack --mode production",
         "server": "node app"
     },

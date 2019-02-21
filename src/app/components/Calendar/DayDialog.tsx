@@ -113,14 +113,7 @@ const DayDialog = ({
                 width: '80%'
             },
             height: 15,
-            text: {
-                style: {
-                    color: '#a2a7d9',
-                    fontSize: '1rem',
-                    margin: '10px 0 0 0'
-                },
-                value: text
-            },
+            text,
             trailColor
         };
 

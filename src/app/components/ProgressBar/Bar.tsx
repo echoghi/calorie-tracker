@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, Container, BarWrapper, Layer } from './styles';
+import { Text, BarWrapper, Layer } from './styles';
+import styled from 'styled-components';
 
 interface Bar {
     progress: number;
@@ -7,10 +8,7 @@ interface Bar {
         height: number;
         trailColor: string;
         color: string;
-        text: {
-            value: string;
-            style: object;
-        };
+        text: string;
         containerStyle: React.CSSProperties;
     };
 }
@@ -26,27 +24,40 @@ const Bar = ({ options, progress }: Bar) => {
         }
     }
 
+    const Progress = styled(Layer)`
+        background: ${renderBarBackground()};
+        height: 100%;
+        margin-bottom: -${options.height}px;
+        width: ${progress > 1 ? '100%' : progress * 100}%;
+        z-index: 2;
+    `;
+
+    const Trail = styled(Layer)`
+        background: ${options.trailColor};
+        height: ${options.height}px;
+        width: 100%;
+
+        @media (max-width: 768px) {
+            height: 15px;
+        }
+    `;
+
+    const Container = styled.div`
+        width: ${options.containerStyle.width};
+        margin: ${options.containerStyle.margin};
+
+        @media (max-width: 768px) {
+            margin: 0 auto;
+        }
+    `;
+
     return (
-        <Container width={options.containerStyle.width} margin={options.containerStyle.margin}>
+        <Container>
             <BarWrapper height={options.height}>
-                <Layer
-                    style={{
-                        background: renderBarBackground(),
-                        height: '100%',
-                        marginBottom: `-${options.height}px`,
-                        width: progress > 1 ? '100%' : `${progress * 100}%`,
-                        zIndex: '2'
-                    }}
-                />
-                <Layer
-                    style={{
-                        background: options.trailColor,
-                        height: `${options.height}px`,
-                        width: '100%'
-                    }}
-                />
+                <Progress />
+                <Trail />
             </BarWrapper>
-            <Text style={options.text.style}>{options.text.value}</Text>
+            <Text>{options.text}</Text>
         </Container>
     );
 };

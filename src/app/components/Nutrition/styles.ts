@@ -27,8 +27,25 @@ const Overview = styled.div`
     justify-content: space-between;
 
     @media (max-width: 768px) {
-        display: block;
-        margin: 20px 0;
+        display: flex;
+        margin: 20px 0 0 0;
+    }
+`;
+
+const Content = styled(Overview)`
+    @media (max-width: 768px) {
+        flex-direction: column-reverse;
+    }
+`;
+
+const Grams = styled.span`
+    display: inline-block;
+    font-size: 50px;
+    padding-left: 5px;
+    color: #a2a7d9;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
     }
 `;
 
@@ -43,43 +60,43 @@ const Box = styled.div`
     text-align: center;
 
     @media (max-width: 768px) {
-        width: 100%;
-        display: block;
-        margin: 15px 0;
+        height: 100px;
+        margin: 0;
     }
 
-    &.large {
-        width: 100%;
-        display: block;
-    }
-
-    h1,
-    span {
+    h1 {
         display: inline-block;
-    }
-
-    span {
-        font-size: 50px;
-        padding-left: 5px;
-        color: #a2a7d9;
     }
 
     h1 {
         font-size: 100px;
         color: #5e639a;
         margin-bottom: 0;
+
+        @media (max-width: 768px) {
+            font-size: 25px;
+        }
     }
 
     h3 {
         font-size: 25px;
         text-transform: uppercase;
         color: #a2a7d9;
+
+        @media (max-width: 768px) {
+            font-size: 15px;
+            margin: 5px 0;
+        }
     }
 `;
 
 const BoxHeader = styled.div`
     width: 70%;
     margin: 20px auto;
+
+    @media (max-width: 768px) {
+        margin: 0 auto;
+    }
 `;
 
 const InputWrapper = styled.div`
@@ -88,4 +105,56 @@ const InputWrapper = styled.div`
     margin: 20px;
 `;
 
-export { Overview, Box, MealForm, MealsHeader, BoxHeader, HeaderWrapper, InputWrapper };
+const MealsContainer = styled.div`
+    position: relative;
+    display: inline-block;
+    height: 425px;
+    width: 48%;
+    border: 1px solid #e6eaee;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    background: #ffffff;
+    text-align: center;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        display: block;
+        margin: 0;
+    }
+
+    h3,
+    h4 {
+        padding: 5px 30px 15px 30px;
+        color: #3d575d;
+        font-size: 25px;
+        text-align: left;
+        margin-bottom: 0;
+        font-weight: normal;
+
+        @media (max-width: 768px) {
+            font-size: 20px;
+        }
+    }
+
+    span.subhead {
+        top: 270px;
+        position: absolute;
+        font-size: 20px;
+        color: #a2a7d9;
+        left: 0;
+        right: 0;
+    }
+`;
+
+export {
+    Overview,
+    Box,
+    MealForm,
+    MealsHeader,
+    BoxHeader,
+    HeaderWrapper,
+    InputWrapper,
+    Grams,
+    MealsContainer,
+    Content
+};

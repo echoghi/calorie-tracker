@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
+import { useWindowSize } from 'the-platform';
 import isEmpty from 'lodash.isempty';
 import moment from 'moment';
 // Components
@@ -11,7 +12,7 @@ import MealTable from './MealTable';
 import queryString from 'query-string';
 import MealForm from './MealForm';
 import Notes from '../Notes';
-import { HeaderWrapper, Overview, Box, BoxHeader } from './styles';
+import { HeaderWrapper, Overview, Box, BoxHeader, Grams, Content } from './styles';
 import { RootState } from '../types';
 
 interface ProgressProps {
@@ -110,6 +111,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
     const [day, setDay] = React.useState(dayShape);
     const [dayIndex, setDayIndex] = React.useState(0);
     const [today, setToday] = React.useState(true);
+    const { width } = useWindowSize();
 
     React.useEffect(() => {
         loadDay();
@@ -167,14 +169,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                 width: '80%'
             },
             height: 25,
-            text: {
-                style: {
-                    color: '#a2a7d9',
-                    fontSize: '1rem',
-                    margin: '10px 0 0 0'
-                },
-                value: text
-            },
+            text,
             trailColor
         };
 
@@ -219,7 +214,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                     <Box>
                         <BoxHeader>
                             <h1>{protein}</h1>
-                            <span>g</span>
+                            <Grams>g</Grams>
                             <h3>Protein</h3>
                         </BoxHeader>
                         {renderProgressBar('protein')}
@@ -228,8 +223,8 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                     <Box>
                         <BoxHeader>
                             <h1>{carbs}</h1>
-                            <span>g</span>
-                            <h3>Carbohydrates</h3>
+                            <Grams>g</Grams>
+                            <h3>{width < 768 ? 'Carbs' : 'Carbohydrates'}</h3>
                         </BoxHeader>
                         {renderProgressBar('carbs')}
                     </Box>
@@ -237,17 +232,17 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                     <Box>
                         <BoxHeader>
                             <h1>{fat}</h1>
-                            <span>g</span>
+                            <Grams>g</Grams>
                             <h3>Fat</h3>
                         </BoxHeader>
                         {renderProgressBar('fat')}
                     </Box>
                 </Overview>
 
-                <Overview>
+                <Content>
                     <Notes day={day} index={dayIndex} />
                     <MealForm day={day} index={dayIndex} />
-                </Overview>
+                </Content>
 
                 <MealTable day={day} index={dayIndex} />
             </div>

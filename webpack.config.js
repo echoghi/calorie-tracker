@@ -34,7 +34,7 @@ module.exports = function(env, argv) {
                 // JS
                 'babel-polyfill',
                 // app entry
-                'app.js'
+                'app.tsx'
             ].filter(Boolean)
         },
         output: {
@@ -124,6 +124,7 @@ module.exports = function(env, argv) {
                     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
                     loader: 'url-loader'
                 },
+
                 {
                     test: /\.(png|jpg)$/,
                     exclude: /node_modules/,
@@ -171,9 +172,11 @@ module.exports = function(env, argv) {
 
         plugins: [
             new webpack.NamedModulesPlugin(),
+            // remove moment js locales
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+            // analyze bundle sizes with the --debug flag
+            argv.debug && new BundleAnalyzerPlugin(),
             // Dev
-            //new BundleAnalyzerPlugin(),
             !isProd && new webpack.HotModuleReplacementPlugin(),
             !isProd &&
                 new BrowserSyncPlugin(
@@ -226,7 +229,7 @@ module.exports = function(env, argv) {
             isProd &&
                 new webpack.BannerPlugin({
                     banner:
-                        `Health Dashboard ` +
+                        `Doughboy ` +
                         `Version: ` +
                         PACKAGE.version +
                         ` Date: ` +

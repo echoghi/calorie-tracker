@@ -2,7 +2,7 @@ import React from 'react';
 import Input from '../Input';
 import Button from '@material-ui/core/Button';
 import { Formik, FormikActions } from 'formik';
-import { MealForm as Form, MealsHeader, InputWrapper } from './styles';
+import { MealForm as Form, MealsHeader, InputWrapper, MealsContainer } from './styles';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import produce from 'immer';
@@ -137,7 +137,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
     };
 
     return (
-        <div className="nutrition__overview--meals">
+        <MealsContainer>
             <MealsHeader>
                 <span>Meals</span>
                 <span>{`${day.nutrition.calories} cal`}</span>
@@ -240,7 +240,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                     </Form>
                 )}
             </Formik>
-        </div>
+        </MealsContainer>
     );
 }
 

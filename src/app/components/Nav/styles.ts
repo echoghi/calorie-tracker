@@ -196,4 +196,8 @@ export const PageIndicator = styled.span`
     top: 20px;
     font-size: 50px;
     color: #ff5a5f;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
