@@ -22,6 +22,11 @@ const BarWrapper = styled.div`
     margin: 0 auto;
     height: ${props => props.height}px;
     max-height: ${props => props.height}px;
+
+    @media (max-width: 768px) {
+        height: 15px;
+        max-height: 15px;
+    }
 `;
 
 const Layer = styled.div`

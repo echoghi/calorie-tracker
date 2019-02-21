@@ -30,6 +30,10 @@ const Bar = ({ options, progress }: Bar) => {
         margin-bottom: -${options.height}px;
         width: ${progress > 1 ? '100%' : progress * 100}%;
         z-index: 2;
+
+        @media (max-width: 768px) {
+            margin-bottom: -15px;
+        }
     `;
 
     const Trail = styled(Layer)`

@@ -2,13 +2,14 @@ import React from 'react';
 import Input from '../Input';
 import Button from '@material-ui/core/Button';
 import { Formik, FormikActions } from 'formik';
-import { MealForm as Form, MealsHeader, InputWrapper, MealsContainer } from './styles';
+import { MealForm as Form, MealsHeader, MealsContainer, InputWrapper } from './styles';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import produce from 'immer';
 import moment from 'moment';
-import { validateMeal } from '../validation';
+import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
+import firebase from 'firebase';
 
 const mapDispatchToProps = (dispatch: any) => ({
     errorMessage: (message: string) => dispatch(errorNotification(message)),
@@ -61,25 +62,12 @@ interface Day {
     [index: string]: any;
 }
 
-interface UserProps {
-    uid: string;
-}
-
 interface MealForm {
     index: number;
     day: Day;
-    userData: UserProps;
+    userData: firebase.UserInfo;
     errorMessage: (message?: string) => void;
     successMessage: (message?: string) => void;
-}
-
-interface MealValues {
-    name: string;
-    servings: string;
-    calories: string;
-    fat: string;
-    carbs: string;
-    protein: string;
 }
 
 function MealForm({ day, index, userData, errorMessage, successMessage }: MealForm) {
@@ -176,6 +164,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                 error={errors.servings && touched.servings}
                             />
                         </InputWrapper>
+
                         <InputWrapper>
                             <Input
                                 name="calories"
