@@ -25,32 +25,9 @@ import { Formik, FormikActions } from 'formik';
 import { validateNote, NoteValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import { FormControl, Fab } from '@material-ui/core';
-import { RootState } from '../types';
+import { RootState, Day, Note as NoteProps } from '../types';
 import firebase from 'firebase';
 import { Dispatch } from 'redux';
-
-export interface Note {
-    title: string;
-    time: string;
-    body: string;
-    edited?: boolean;
-    [index: string]: string | boolean;
-}
-
-export interface Day {
-    nutrition: {
-        fat: number;
-        calories: number;
-        carbs: number;
-        protein: number;
-    };
-    day: any;
-    notes?: Note[];
-    fitness?: {
-        calories: number;
-        activities: string[];
-    };
-}
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
@@ -97,7 +74,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
 
     const removeNote = (noteIndex: number) => {
         const noteData = produce(day, data => {
-            data.notes = data.notes.filter((note: Note) => note !== data.notes[noteIndex]);
+            data.notes = data.notes.filter((note: NoteProps) => note !== data.notes[noteIndex]);
 
             // convert moment object back to original format
             data.day = {
@@ -388,7 +365,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
 
                 <NoteContainer>
                     {day.notes &&
-                        day.notes.map((note: Note, i: number) => {
+                        day.notes.map((note: NoteProps, i: number) => {
                             const clickHandler = () => setActiveNote(note);
                             const editHandler = (
                                 event: React.MouseEvent<HTMLElement, MouseEvent>

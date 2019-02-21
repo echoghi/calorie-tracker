@@ -9,19 +9,33 @@ export interface Note {
     [index: string]: string | boolean;
 }
 
+export interface Meal {
+    name: string;
+    fat: number;
+    calories: number;
+    carbs: number;
+    protein: number;
+    servings: number;
+    [index: string]: string | number;
+}
+
 export interface Day {
     nutrition: {
         fat: number;
         calories: number;
         carbs: number;
         protein: number;
+        meals?: Meal[];
+        [index: string]: number | Meal[];
     };
     day: any;
     notes?: Note[];
     fitness?: {
         calories: number;
         activities: string[];
+        [index: string]: number | string[];
     };
+    [index: string]: any;
 }
 
 export interface UserData {
@@ -36,7 +50,9 @@ export interface UserData {
             carbs: number;
             calories: number;
             protein: number;
+            [index: string]: number;
         };
+        [index: string]: any;
     };
     calendar: Day[];
 }
@@ -80,4 +96,18 @@ export interface RootState {
 
 export interface Register extends RouteComponentProps {
     errorMessage: (message?: string) => void;
+}
+
+export interface ProgressProps {
+    color: string;
+    trailColor: string;
+    [index: string]: string;
+}
+
+export interface ProgressBarConfig {
+    calories: ProgressProps;
+    carbs: ProgressProps;
+    fat: ProgressProps;
+    protein: ProgressProps;
+    [index: string]: ProgressProps;
 }

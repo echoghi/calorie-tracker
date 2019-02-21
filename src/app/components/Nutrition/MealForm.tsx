@@ -12,11 +12,10 @@ import {
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import produce from 'immer';
-import moment from 'moment';
 import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import firebase from 'firebase';
-import { RootState } from '../types';
+import { RootState, Day } from '../types';
 import { Dispatch } from 'redux';
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -27,48 +26,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
-
-interface Note {
-    title: string;
-    time: string;
-    body: string;
-    edited: boolean;
-    [index: string]: boolean | string;
-}
-
-interface Meal {
-    name: string;
-    fat: number;
-    calories: number;
-    carbs: number;
-    protein: number;
-    servings: number;
-    [index: string]: any;
-}
-
-interface DayFormat {
-    date: number;
-    month: number;
-    year: number;
-}
-
-interface Day {
-    nutrition: {
-        fat: number;
-        calories: number;
-        carbs: number;
-        protein: number;
-        meals?: Meal[];
-        [index: string]: number | Meal[];
-    };
-    day: moment.Moment | DayFormat | any;
-    notes?: Note[];
-    fitness?: {
-        calories: number;
-        activities: string[];
-    };
-    [index: string]: any;
-}
 
 interface MealForm {
     index: number;

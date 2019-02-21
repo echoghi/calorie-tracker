@@ -13,21 +13,7 @@ import queryString from 'query-string';
 import MealForm from './MealForm';
 import Notes from '../Notes';
 import { HeaderWrapper, Overview, Box, BoxHeader, Grams, Content } from './styles';
-import { RootState } from '../types';
-
-interface ProgressProps {
-    color: string;
-    trailColor: string;
-    [index: string]: string;
-}
-
-interface ProgressBarConfig {
-    calories: ProgressProps;
-    carbs: ProgressProps;
-    fat: ProgressProps;
-    protein: ProgressProps;
-    [index: string]: ProgressProps;
-}
+import { RootState, ProgressBarConfig, Day, UserData } from '../types';
 
 const progressBarConfig: ProgressBarConfig = {
     calories: {
@@ -55,31 +41,6 @@ const mapStateToProps = (state: RootState) => ({
     userLoading: state.adminState.userLoading
 });
 
-interface Note {
-    title: string;
-    time: string;
-    body: string;
-    edited: boolean;
-    [index: string]: string | boolean;
-}
-
-interface Day {
-    nutrition: {
-        fat: number;
-        calories: number;
-        carbs: number;
-        protein: number;
-        [index: string]: number;
-    };
-    day: moment.Moment;
-    notes?: Note[];
-    fitness?: {
-        calories: number;
-        activities: string[];
-        [index: string]: string[] | number;
-    };
-}
-
 const dayShape: Day = {
     day: moment(),
     nutrition: {
@@ -90,21 +51,8 @@ const dayShape: Day = {
     }
 };
 
-interface Data {
-    user: {
-        goals: {
-            fat: number;
-            carbs: number;
-            calories: number;
-            protein: number;
-            [index: string]: number;
-        };
-    };
-    calendar: Day[];
-}
-
 interface NutritionProps extends RouteComponentProps {
-    data: Data;
+    data: UserData;
 }
 
 const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
@@ -153,7 +101,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
         }
     }
 
-    function renderProgressBar(type: string) {
+    function renderProgressBar(type: 'calories' | 'protein' | 'fat' | 'carbs') {
         const { trailColor, color } = progressBarConfig[type];
 
         const progress: number = day.nutrition[type] / data.user.goals[type];

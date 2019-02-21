@@ -4,7 +4,6 @@ import Firebase from '../firebase';
 import produce from 'immer';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import ConfirmationDialog from './ConfirmationDialog';
 import IconButton from '@material-ui/core/IconButton';
 import { errorNotification, successNotification } from '../actions';
@@ -15,7 +14,7 @@ import {
     tableStyle,
     getSortedComponentClass
 } from '../TableUtils';
-import { RootState } from '../types';
+import { RootState, Day } from '../types';
 import { Dispatch } from 'redux';
 import firebase from 'firebase';
 
@@ -27,48 +26,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     errorMessage: (message?: string) => dispatch(errorNotification(message)),
     successMessage: (message?: string) => dispatch(successNotification(message))
 });
-
-interface Note {
-    title: string;
-    time: string;
-    body: string;
-    edited: boolean;
-    [index: string]: boolean | string;
-}
-
-interface Meal {
-    name: string;
-    fat: number;
-    calories: number;
-    carbs: number;
-    protein: number;
-    servings: string;
-    [index: string]: any;
-}
-
-interface DayFormat {
-    date: number;
-    month: number;
-    year: number;
-}
-
-interface Day {
-    nutrition: {
-        fat: number;
-        calories: number;
-        carbs: number;
-        protein: number;
-        meals?: Meal[];
-        [index: string]: number | Meal[];
-    };
-    day: moment.Moment | DayFormat | any;
-    notes?: Note[];
-    fitness?: {
-        calories: number;
-        activities: string[];
-    };
-    [index: string]: any;
-}
 
 interface MealTable {
     userData: firebase.UserInfo;
@@ -110,7 +67,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
             for (const name in draftState.nutrition) {
                 if (name !== 'meals') {
                     // prettier-ignore
-                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((+meal[name] * parseFloat(meal.servings)).toFixed(2), 10);
+                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((+meal[name] * parseFloat(`${meal.servings}`)).toFixed(2), 10);
                 }
             }
 
