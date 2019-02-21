@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
+import { useWindowSize } from 'the-platform';
 import moment from 'moment';
 import {
     NoteActions,
@@ -47,6 +48,7 @@ interface Notes {
 }
 
 function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
+    const { width } = useWindowSize();
     const [activeNote, setActiveNote] = React.useState(null);
     const [noteToEdit, setNoteToEdit] = React.useState(0);
     const [noteToRemove, setNoteToRemove] = React.useState(0);
@@ -100,7 +102,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
         });
     };
 
-    const maxNoteLength = window.innerWidth <= 768 ? 15 : 30;
+    const maxNoteLength = width <= 768 ? 15 : 40;
 
     function closeEditDialog() {
         setEditNote(false);

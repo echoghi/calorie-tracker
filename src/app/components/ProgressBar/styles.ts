@@ -12,7 +12,7 @@ const Text = styled.span`
     color: #a2a7d9;
 
     @media (max-width: 768px) {
-        font-size: 12px;
+        font-size: 11px;
         margin: 0;
     }
 `;
@@ -29,14 +29,4 @@ const BarWrapper = styled.div`
     }
 `;
 
-const Layer = styled.div`
-    position: relative;
-    height: 100%;
-
-    &:first-child {
-        transition: 0.4s linear;
-        transition-property: width, background-color;
-    }
-`;
-
-export { CircleContainer, Text, BarWrapper, Layer };
+export { CircleContainer, Text, BarWrapper };

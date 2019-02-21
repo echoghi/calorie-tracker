@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, BarWrapper, Layer } from './styles';
+import { Text, BarWrapper } from './styles';
 import styled from 'styled-components';
 
 interface Bar {
@@ -24,11 +24,12 @@ const Bar = ({ options, progress }: Bar) => {
         }
     }
 
-    const Progress = styled(Layer)`
-        background: ${renderBarBackground()};
+    const Progress = styled.div`
+        position: relative;
+        transition: 0.4s linear;
+        transition-property: width, background-color;
+        margin-bottom: -${props => props.height}px;
         height: 100%;
-        margin-bottom: -${options.height}px;
-        width: ${progress > 1 ? '100%' : progress * 100}%;
         z-index: 2;
 
         @media (max-width: 768px) {
@@ -36,10 +37,13 @@ const Bar = ({ options, progress }: Bar) => {
         }
     `;
 
-    const Trail = styled(Layer)`
-        background: ${options.trailColor};
-        height: ${options.height}px;
+    const Trail = styled.div`
+        position: relative;
+        transition: 0.4s linear;
+        transition-property: width, background-color;
         width: 100%;
+        height: ${props => props.height}px;
+        background-color: ${props => props.color};
 
         @media (max-width: 768px) {
             height: 15px;
@@ -58,8 +62,14 @@ const Bar = ({ options, progress }: Bar) => {
     return (
         <Container>
             <BarWrapper height={options.height}>
-                <Progress />
-                <Trail />
+                <Progress
+                    height={options.height}
+                    style={{
+                        background: renderBarBackground(),
+                        width: progress > 1 ? '100%' : `${progress * 100}%`
+                    }}
+                />
+                <Trail height={options.height} color={options.trailColor} />
             </BarWrapper>
             <Text>{options.text}</Text>
         </Container>
