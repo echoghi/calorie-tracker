@@ -1,39 +1,7 @@
 import React from 'react';
 import Fade from '@material-ui/core/Fade';
 import { Summary, Meals, Meal, MealHeader } from './styles';
-import moment from 'moment';
-
-interface Note {
-    title: string;
-    time: string;
-    body: string;
-    edited: boolean;
-}
-
-interface Meal {
-    name: string;
-    calories: number;
-    servings: number;
-    protein: number;
-    carbs: number;
-    fat: number;
-}
-
-interface Day {
-    nutrition: {
-        fat: number;
-        calories: number;
-        carbs: number;
-        protein: number;
-        meals?: Meal[];
-    };
-    day: moment.Moment;
-    notes?: Note[];
-    fitness?: {
-        calories: number;
-        activities: string[];
-    };
-}
+import { Day } from '../types';
 
 const DaySummary = ({ day }: { day: Day }) => {
     function displayMealName(meal: string) {

@@ -10,6 +10,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const PACKAGE = require('./package.json');
@@ -116,8 +117,15 @@ module.exports = function(env, argv) {
 
                 {
                     test: /\.(ts|tsx)?$/,
-                    use: 'ts-loader',
-                    exclude: /node_modules/
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'ts-loader',
+                            options: {
+                                transpileOnly: true
+                            }
+                        }
+                    ]
                 },
 
                 {
@@ -177,6 +185,12 @@ module.exports = function(env, argv) {
             // analyze bundle sizes with the --debug flag
             argv.debug && new BundleAnalyzerPlugin(),
             // Dev
+            !isProd &&
+                new ForkTsCheckerWebpackPlugin({
+                    tslint: path.join(__dirname, './tslint.json'),
+                    tsconfig: path.join(__dirname, './tsconfig.json'),
+                    async: false
+                }),
             !isProd && new webpack.HotModuleReplacementPlugin(),
             !isProd &&
                 new BrowserSyncPlugin(

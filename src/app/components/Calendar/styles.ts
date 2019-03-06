@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const LegendWrapper = styled.div`
     display: inline-block;
     border: 1px solid #e6eaee;
-    height: 370px;
+    height: 295px;
     margin: 0 0 0 30px;
     min-width: 240px;
     background: #ffffff;
