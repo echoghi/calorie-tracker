@@ -55,8 +55,21 @@ module.exports = function(env, argv) {
                     }
                 },
 
+                // eslint for JS
                 {
-                    test: /\.(js|ts|tsx)$/,
+                    test: /\.(js|jsx)$/,
+                    enforce: 'pre',
+                    use: [
+                        {
+                            loader: 'eslint-loader',
+                            options: { fix: false }
+                        }
+                    ]
+                },
+
+                // tslint + eslint for TS
+                {
+                    test: /\.(ts|tsx)$/,
                     enforce: 'pre',
                     use: [
                         {
