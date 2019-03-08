@@ -105,6 +105,10 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
             protein: '0',
             servings: '0'
         });
+
+        const nameInput: any = document.getElementById('meal-input');
+
+        nameInput.value = '';
     };
 
     let items: DBMeal[] = [];
@@ -169,41 +173,50 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                         >
                                             <div>
                                                 <label
-                                                    {...getLabelProps()}
-                                                    style={{
-                                                        color: 'rgba(0, 0, 0, 0.54)',
-                                                        fontFamily: 'Roboto',
-                                                        fontSize: 14
-                                                    }}
+                                                    {...getLabelProps({
+                                                        style: {
+                                                            color: 'rgba(0, 0, 0, 0.54)',
+                                                            fontFamily: 'Roboto',
+                                                            fontSize: 14
+                                                        }
+                                                    })}
                                                 >
                                                     Name*
                                                     <input
-                                                        {...getInputProps()}
-                                                        style={{
-                                                            appearance: 'none',
-                                                            backgroundColor: 'white',
-                                                            border: '1px solid #CCCCCC',
-                                                            borderRadius: 3,
-                                                            boxSizing: 'border-box',
-                                                            color: 'rgb(49, 49, 49)',
-                                                            height: 40,
-                                                            marginTop: 3,
-                                                            outline: 'none',
-                                                            padding: '8px 12px',
-                                                            transition: 'border-color 0.2s'
-                                                        }}
+                                                        {...getInputProps({
+                                                            id: 'meal-input',
+                                                            name: 'mealName',
+                                                            // prettier-ignore
+                                                            placeholder:
+                                                                'e.g. McDonald\'s Quarter Pounder',
+                                                            style: {
+                                                                appearance: 'none',
+                                                                backgroundColor: 'white',
+                                                                border: '1px solid #CCCCCC',
+                                                                borderRadius: 3,
+                                                                boxSizing: 'border-box',
+                                                                color: 'rgb(49, 49, 49)',
+                                                                height: 40,
+                                                                marginTop: 3,
+                                                                outline: 'none',
+                                                                padding: '8px 12px',
+                                                                transition: 'border-color 0.2s'
+                                                            }
+                                                        })}
                                                     />
                                                 </label>
 
                                                 <ul
-                                                    {...getMenuProps()}
-                                                    style={{
-                                                        boxShadow: '0px 4px 15px rgba(0,0,0,.15)',
-                                                        margin: 0,
-                                                        padding: 0,
-                                                        position: 'absolute',
-                                                        width: '100%'
-                                                    }}
+                                                    {...getMenuProps({
+                                                        style: {
+                                                            boxShadow:
+                                                                '0px 4px 15px rgba(0,0,0,.15)',
+                                                            margin: 0,
+                                                            padding: 0,
+                                                            position: 'absolute',
+                                                            width: '100%'
+                                                        }
+                                                    })}
                                                 >
                                                     {isOpen &&
                                                         items &&

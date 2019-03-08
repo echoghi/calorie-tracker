@@ -154,6 +154,7 @@ function MealWizard({ successMessage, errorMessage }: MealWizardProps) {
                                                                 .toLowerCase()
                                                                 .includes(inputValue.toLowerCase())
                                                     )
+                                                    .slice(0, 7)
                                                     .map((item, index) => (
                                                         <li
                                                             key={item.value}
