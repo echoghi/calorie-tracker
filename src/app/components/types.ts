@@ -111,3 +111,17 @@ export interface ProgressBarConfig {
     protein: ProgressProps;
     [index: string]: ProgressProps;
 }
+
+export interface DBMeal {
+    info: {
+        name: string;
+        fat: number;
+        calories: number;
+        carbs: number;
+        protein: number;
+        servingSize: string;
+        [index: string]: string | number;
+    };
+    value: string;
+    [index: string]: any;
+}

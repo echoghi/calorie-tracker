@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
@@ -26,9 +26,7 @@ import firebase from 'firebase';
 
 interface LoginProps extends RouteComponentProps {
     saveUser: (data: firebase.UserInfo) => void;
-    userData: {
-        uid: string;
-    };
+    userData: firebase.UserInfo;
     getUser: (id: string) => void;
     showError: (message: string) => void;
 }
@@ -49,7 +47,7 @@ const validationConfig = (values: { email: string; password: string }) => {
 
 const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) => {
     // unmount
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             if (!isEmpty(userData)) {
                 getUser(userData.uid);

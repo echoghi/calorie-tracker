@@ -14,13 +14,21 @@ export interface MealValues {
     servings: string;
 }
 
+export interface DBMealValues {
+    calories: string;
+    carbs: string;
+    fat: string;
+    name: string;
+    protein: string;
+    servingSize: string;
+}
+
 export interface NoteValidator {
     title: DefaultValidator;
     body: DefaultValidator;
 }
 
 export interface MealValidator {
-    name: DefaultValidator;
     servings: DefaultValidator;
 }
 
@@ -112,10 +120,20 @@ export function validateSignUp(values: SignUpValues): SignUpValidator | {} {
 
 // nutrition
 export function validateMeal(values: MealValues): MealValidator | {} {
-    if (defaultValidator(values.name) || defaultNumberValidator(+values.servings)) {
+    if (defaultNumberValidator(+values.servings)) {
+        return {
+            servings: defaultNumberValidator(+values.servings)
+        };
+    } else {
+        return {};
+    }
+}
+
+export function validateNewMeal(values: DBMealValues): MealValidator | {} {
+    if (defaultValidator(values.name) || defaultValidator(values.servingSize)) {
         return {
             name: defaultValidator(values.name),
-            servings: defaultNumberValidator(+values.servings)
+            servings: defaultValidator(values.servingSize)
         };
     } else {
         return {};
