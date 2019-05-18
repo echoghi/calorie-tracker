@@ -253,20 +253,7 @@ module.exports = function(env, argv) {
             isProd && new webpack.optimize.AggressiveMergingPlugin(),
             isProd &&
                 new webpack.BannerPlugin({
-                    banner:
-                        `Doughboy ` +
-                        `Version: ` +
-                        PACKAGE.version +
-                        ` Date: ` +
-                        parseInt(new Date().getMonth() + 1) +
-                        `/` +
-                        new Date().getDate() +
-                        `/` +
-                        new Date().getFullYear() +
-                        ` @ ` +
-                        new Date().getHours() +
-                        `:` +
-                        new Date().getMinutes()
+                    banner: 'Doughboy Nutrition Tracker'
                 }),
             isProd && new MiniCssExtractPlugin('styles.css'),
             isProd &&
