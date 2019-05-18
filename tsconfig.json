@@ -26,6 +26,6 @@
         "src/netlify",
         "src/pwa",
         "src/static",
-        "src/registerServiceWorker.js"
+        "src/**"
     ]
 }

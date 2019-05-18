@@ -11,6 +11,7 @@ import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
 import Register from './app/components/Register';
 import MealWizard from './app/components/MealWizard';
+import '@babel/polyfill';
 
 smoothscroll.polyfill();
 
