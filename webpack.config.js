@@ -195,7 +195,7 @@ module.exports = function(env, argv) {
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             // analyze bundle sizes with the --debug flag
             argv.debug && new BundleAnalyzerPlugin(),
-            // Dev
+            // DEVELOPMENT
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({
                     tslint: path.resolve(__dirname, './tslint.json'),
@@ -234,7 +234,7 @@ module.exports = function(env, argv) {
                 new webpack.DefinePlugin({
                     NODE_ENV: JSON.stringify(nodeEnv)
                 }),
-            // Prod
+            // PRODUCTION
             isProd &&
                 new HtmlWebpackPlugin({
                     filename: 'index.html',

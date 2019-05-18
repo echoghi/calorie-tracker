@@ -129,6 +129,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                     required={true}
                                     value={values.name}
                                     onChange={handleChange}
+                                    placeholder="e.g. Turkey Sandwich"
                                     error={errors.name && touched.name}
                                 />
                             </InputControl>

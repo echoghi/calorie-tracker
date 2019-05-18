@@ -120,7 +120,7 @@ export function validateSignUp(values: SignUpValues): SignUpValidator | {} {
 
 // nutrition
 export function validateMeal(values: MealValues): MealValidator | {} {
-    if (defaultNumberValidator(+values.servings)) {
+    if (defaultValidator(values.name) || defaultNumberValidator(+values.servings)) {
         return {
             servings: defaultNumberValidator(+values.servings)
         };

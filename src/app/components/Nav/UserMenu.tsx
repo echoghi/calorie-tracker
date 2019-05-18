@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 import { Greeting, Menu, MenuItem, MenuWrapper, Image, Backup, UserName, Icon } from './styles';
@@ -22,15 +22,15 @@ const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    appLogOut: () => dispatch(logOut()),
-    saveUser: (userData: firebase.UserInfo) => dispatch(saveUserData(userData))
-});
+const mapDispatchToProps = {
+    appLogOut: () => logOut(),
+    saveUser: (userData: firebase.UserInfo) => saveUserData(userData)
+};
 
 function UserMenu({ userData, appLogOut, notification, saveUser }: UserMenu) {
-    const [open, setMenu] = React.useState(false);
+    const [open, setMenu] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (notification === 'Display Name Updated.') {
             // reload new display name into redux
             // when a display name update is successfully saved
@@ -38,7 +38,7 @@ function UserMenu({ userData, appLogOut, notification, saveUser }: UserMenu) {
                 saveUser(Firebase.auth.currentUser);
             });
         }
-    }, [notification]);
+    }, [notification, saveUser]);
 
     const closeMenu = () => {
         setMenu(false);
@@ -58,8 +58,14 @@ function UserMenu({ userData, appLogOut, notification, saveUser }: UserMenu) {
         <ClickAwayListener onClickAway={closeMenu}>
             <Greeting>
                 <MenuWrapper onClick={toggleMenu}>
-                    {userData.photoURL && <Image src={userData.photoURL} alt={userData.email} />}
-                    {!userData.photoURL && <Backup className="icon-user" />}
+                    {[
+                        // User Photo
+                        userData.photoURL && (
+                            <Image key={0} src={userData.photoURL} alt={userData.email} />
+                        ),
+                        // Default user icon
+                        !userData.photoURL && <Backup key={1} className="icon-user" />
+                    ].filter(Boolean)}
                     <UserName>{userData.displayName}</UserName>
                     <Icon className="icon-chevron-down" />
                 </MenuWrapper>

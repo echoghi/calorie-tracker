@@ -53,7 +53,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                 getUser(userData.uid);
             }
         };
-    }, []);
+    }, [getUser, userData]);
 
     async function logIn(email: string, password: string) {
         try {

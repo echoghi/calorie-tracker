@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, Fragment, useEffect } from 'react';
 import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 import Firebase from './firebase';
 import { connect } from 'react-redux';
@@ -75,10 +75,10 @@ interface AppIndex extends RouteComponentProps {
 
 const SettingsImport = () => <Settings />;
 const CalendarImport = () => <Calendar />;
-const NutritonImport = () => <Nutrition />;
+const NutritionImport = () => <Nutrition />;
 
 function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }: AppIndex) {
-    React.useEffect(() => {
+    useEffect(() => {
         Firebase.auth.onAuthStateChanged(user => {
             if (user) {
                 saveUser(user);
@@ -86,20 +86,20 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
                 history.push('/login');
             }
         });
-    }, []);
+    }, [history, saveUser]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!isEmpty(userData) && !userLoading) {
             getData(userData.uid);
         } else if (isEmpty(userData) && !userLoading) {
             history.push('/login');
         }
-    }, [userData]);
+    }, [userData, history, getData, userLoading]);
 
     return (
         <div>
             {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) ? (
-                <React.Fragment>
+                <Fragment>
                     <NavBar />
                     <Notifications />
                     <Suspense fallback={<Loading />}>
@@ -110,10 +110,10 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
                             <Route path="/settings" render={SettingsImport} name="Settings" />
                         </ErrorBoundary>
                         <ErrorBoundary>
-                            <Route path="/nutrition" render={NutritonImport} name="Nutrition" />
+                            <Route path="/nutrition" render={NutritionImport} name="Nutrition" />
                         </ErrorBoundary>
                     </Suspense>
-                </React.Fragment>
+                </Fragment>
             ) : (
                 <Loading />
             )}

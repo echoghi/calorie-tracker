@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import UserMenu from './UserMenu';
 import { Nav, Brand, Name } from './styles';
 import SubNav from './SubNav';
 
 const NavBar = () => {
     return (
-        <React.Fragment>
+        <Fragment>
             <Nav>
                 <Brand to="/">
                     <i className="icon-aperture" />
@@ -15,7 +15,7 @@ const NavBar = () => {
             </Nav>
 
             <SubNav />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

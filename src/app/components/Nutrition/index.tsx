@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, Fragment, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
@@ -55,20 +55,16 @@ interface NutritionProps extends RouteComponentProps {
     data: UserData;
 }
 
-const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
-    const [day, setDay] = React.useState(dayShape);
-    const [dayIndex, setDayIndex] = React.useState(0);
-    const [today, setToday] = React.useState(true);
+const Nutrition = ({ data, history }: NutritionProps) => {
+    const [day, setDay] = useState(dayShape);
+    const [dayIndex, setDayIndex] = useState(0);
+    const [today, setToday] = useState(true);
     const { width } = useWindowSize();
 
-    React.useEffect(() => {
-        loadDay();
-    }, []);
-
     // fetch data when requested date changes
-    React.useEffect(() => {
+    useCallback(() => {
         loadDay();
-    }, [location.search, data]);
+    }, [loadDay]);
 
     function loadDay() {
         let date: moment.Moment;
@@ -101,7 +97,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
         }
     }
 
-    function renderProgressBar(type: 'calories' | 'protein' | 'fat' | 'carbs') {
+    function ProgressBar({ type }: { type: 'calories' | 'protein' | 'fat' | 'carbs' }) {
         const { trailColor, color } = progressBarConfig[type];
 
         const progress: number = day.nutrition[type] / data.user.goals[type];
@@ -137,7 +133,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
     const { protein, carbs, fat } = day.nutrition;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <div className="nutrition">
                 <HeaderWrapper>
                     <div>
@@ -165,7 +161,8 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                             <Grams>g</Grams>
                             <h3>Protein</h3>
                         </BoxHeader>
-                        {renderProgressBar('protein')}
+
+                        <ProgressBar type="protein" />
                     </Box>
 
                     <Box>
@@ -174,7 +171,8 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                             <Grams>g</Grams>
                             <h3>{width < 768 ? 'Carbs' : 'Carbohydrates'}</h3>
                         </BoxHeader>
-                        {renderProgressBar('carbs')}
+
+                        <ProgressBar type="carbs" />
                     </Box>
 
                     <Box>
@@ -183,7 +181,8 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
                             <Grams>g</Grams>
                             <h3>Fat</h3>
                         </BoxHeader>
-                        {renderProgressBar('fat')}
+
+                        <ProgressBar type="fat" />
                     </Box>
                 </Overview>
 
@@ -194,7 +193,7 @@ const Nutrition: React.SFC<NutritionProps> = ({ data, history }) => {
 
                 <MealTable day={day} index={dayIndex} />
             </div>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

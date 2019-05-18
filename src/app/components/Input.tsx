@@ -16,6 +16,7 @@ interface Input {
     type?: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     style?: React.CSSProperties;
+    placeholder: string;
 }
 
 function Input({ classes, ...props }: Input) {

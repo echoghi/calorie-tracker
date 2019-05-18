@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import { errorNotification, successNotification, saveUserData } from '../actions';
@@ -16,11 +16,11 @@ const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message)),
-    saveUser: (userData: firebase.UserInfo) => dispatch(saveUserData(userData)),
-    successMessage: (message?: string) => dispatch(successNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message),
+    saveUser: (userData: firebase.UserInfo) => saveUserData(userData),
+    successMessage: (message?: string) => successNotification(message)
+};
 
 interface GeneralInfo {
     errorMessage: (message?: string) => void;
@@ -30,13 +30,13 @@ interface GeneralInfo {
 }
 
 const GeneralInfo = ({ userData, errorMessage, successMessage, saveUser }: GeneralInfo) => {
-    const [name, setDisplayName] = React.useState('');
+    const [name, setDisplayName] = useState('');
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!isEmpty(userData)) {
             setDisplayName(userData.displayName);
         }
-    });
+    }, [setDisplayName, userData]);
 
     const submitHandler = (
         values: GeneralInfoValues,

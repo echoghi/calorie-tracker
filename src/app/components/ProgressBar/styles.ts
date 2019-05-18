@@ -29,4 +29,30 @@ const BarWrapper = styled.div`
     }
 `;
 
-export { CircleContainer, Text, BarWrapper };
+const Progress = styled.div`
+    position: relative;
+    transition: 0.4s linear;
+    transition-property: width, background-color;
+    margin-bottom: -${props => props.height}px;
+    height: 100%;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+        margin-bottom: -15px;
+    }
+`;
+
+const Trail = styled.div`
+    position: relative;
+    transition: 0.4s linear;
+    transition-property: width, background-color;
+    width: 100%;
+    height: ${props => props.height}px;
+    background-color: ${props => props.color};
+
+    @media (max-width: 768px) {
+        height: 15px;
+    }
+`;
+
+export { CircleContainer, Text, BarWrapper, Progress, Trail };
