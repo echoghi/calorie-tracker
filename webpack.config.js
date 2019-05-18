@@ -207,6 +207,7 @@ module.exports = function(env, argv) {
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             // analyze bundle sizes with the --debug flag
             argv.debug && new BundleAnalyzerPlugin(),
+            // .env variables
             new webpack.DefinePlugin({
                 NODE_ENV: JSON.stringify(argv.mode),
                 AUTHDOMAIN: JSON.stringify(AUTHDOMAIN),
@@ -216,6 +217,13 @@ module.exports = function(env, argv) {
                 STORAGEBUCKET: JSON.stringify(STORAGEBUCKET),
                 FIREBASEKEY: JSON.stringify(FIREBASEKEY)
             }),
+            // generate index.html
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: 'netlify/index.html'
+            }),
+            // static assets
+            new CopyWebpackPlugin([{ from: 'netlify', ignore: ['*.html'] }]),
             // DEVELOPMENT
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({
@@ -256,12 +264,7 @@ module.exports = function(env, argv) {
                     NODE_ENV: JSON.stringify(nodeEnv)
                 }),
             // PRODUCTION
-            isProd &&
-                new HtmlWebpackPlugin({
-                    filename: 'index.html',
-                    template: 'netlify/index.html'
-                }),
-            isProd && new CopyWebpackPlugin([{ from: 'netlify' }]),
+
             isProd &&
                 new ManifestPlugin({
                     fileName: 'asset-manifest.json'
