@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useCallback } from 'react';
+import React, { useState, Fragment, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
@@ -62,7 +62,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     const { width } = useWindowSize();
 
     // fetch data when requested date changes
-    useCallback(() => {
+    useEffect(() => {
         loadDay();
     }, [loadDay]);
 
