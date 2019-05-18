@@ -5,7 +5,7 @@ A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Host
 
 ## 🚀 Quick start
 
-1.  **Create a .env file in the root directory of your project. That's where you'll add your own firebase config. For example:**
+1.  **Create a .env file in the root directory. That's where you'll add your own firebase config. For example:**
 
     ```sh
     FIREBASEKEY='############'
@@ -21,3 +21,7 @@ A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Host
     ```sh
     yarn dev
     ```
+
+3.  **Deploy**
+
+    [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/echoghi/doughboy)
