@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useCallback, useEffect } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
