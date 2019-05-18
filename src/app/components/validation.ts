@@ -122,6 +122,7 @@ export function validateSignUp(values: SignUpValues): SignUpValidator | {} {
 export function validateMeal(values: MealValues): MealValidator | {} {
     if (defaultValidator(values.name) || defaultNumberValidator(+values.servings)) {
         return {
+            name: defaultValidator(values.name),
             servings: defaultNumberValidator(+values.servings)
         };
     } else {

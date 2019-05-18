@@ -28,16 +28,15 @@ import { errorNotification, successNotification } from '../actions';
 import { FormControl, Fab } from '@material-ui/core';
 import { RootState, Day, Note as NoteProps } from '../types';
 import firebase from 'firebase';
-import { Dispatch } from 'redux';
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message)),
-    successMessage: (message?: string) => dispatch(successNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message),
+    successMessage: (message?: string) => successNotification(message)
+};
 
 interface Notes {
     day: Day;

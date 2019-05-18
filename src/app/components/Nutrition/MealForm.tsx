@@ -137,6 +137,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                 <Input
                                     name="servings"
                                     label="Servings"
+                                    type="number"
                                     required={true}
                                     value={values.servings}
                                     onChange={handleChange}
