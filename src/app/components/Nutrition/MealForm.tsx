@@ -15,7 +15,7 @@ import produce from 'immer';
 import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import firebase from 'firebase';
-import { RootState, Day, DBMeal } from '../types';
+import { RootState, Day } from '../types';
 
 const mapDispatchToProps = {
     errorMessage: (message?: string) => errorNotification(message),
@@ -105,30 +105,6 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
             servings: '0'
         });
     };
-
-    let items: DBMeal[] = [];
-    const mealsRef = Firebase.db.ref('meals');
-
-    mealsRef.once('value', snapshot => {
-        if (snapshot.val()) {
-            items = Object.values(snapshot.val());
-        }
-    });
-
-    const itemToString = (item: DBMeal) => (item ? item.value : '');
-
-    function onSelect(selection: DBMeal) {
-        const { calories, carbs, fat, protein, name } = selection.info;
-
-        setFormValues({
-            calories: `${calories}`,
-            carbs: `${carbs}`,
-            fat: `${fat}`,
-            name: `${name}`,
-            protein: `${protein}`,
-            servings: '0'
-        });
-    }
 
     return (
         <MealsContainer>
