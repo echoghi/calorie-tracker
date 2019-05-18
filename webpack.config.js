@@ -30,10 +30,9 @@ module.exports = function(env, argv) {
             js: [
                 // react-error-overlay
                 !isProd && 'react-dev-utils/webpackHotDevClient',
-                // fetch polyfill
-                isProd && 'whatwg-fetch',
-                // JS
-                'babel-polyfill',
+                // polyfills
+                'whatwg-fetch',
+                '@babel/polyfill',
                 // app entry
                 'app.tsx'
             ].filter(Boolean)

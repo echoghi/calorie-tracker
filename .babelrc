@@ -15,7 +15,8 @@
                     "browsers": "last 2 versions"
                 },
                 "loose": true,
-                "modules": false
+                "modules": false,
+                "useBuiltIns": "entry"
             }
         ]
     ],

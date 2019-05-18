@@ -16,13 +16,12 @@ import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import firebase from 'firebase';
 import { RootState, Day, DBMeal } from '../types';
-import { Dispatch } from 'redux';
 import Downshift from 'downshift';
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message)),
-    successMessage: (message?: string) => dispatch(successNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message),
+    successMessage: (message?: string) => successNotification(message)
+};
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
