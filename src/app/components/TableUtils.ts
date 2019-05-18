@@ -66,7 +66,7 @@ export const tableStyle = {
     tbodyTr: {
         borderBottom: 0,
         borderTop: '1px solid #e6eef0',
-        minHeight: 40
+        minHeight: 60
     },
     td: { minHeight: 60, padding: '10px 20px', color: '#6b6b6b', borderRight: '1px solid #d8d8d8' },
     tdActive: { minHeight: 60, padding: '10px 20px', color: '#6b6b6b', borderRight: 0 },
