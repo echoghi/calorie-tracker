@@ -12,6 +12,8 @@ import Login from './app/components/Login';
 import Register from './app/components/Register';
 // import MealWizard from './app/components/MealWizard';
 import '@babel/polyfill';
+// Service Worker
+import registerServiceWorker from './registerServiceWorker';
 
 smoothscroll.polyfill();
 
@@ -30,3 +32,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('app')
 );
+
+registerServiceWorker();

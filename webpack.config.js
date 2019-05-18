@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -223,7 +224,9 @@ module.exports = function(env, argv) {
                 template: 'netlify/index.html'
             }),
             // static assets
-            new CopyWebpackPlugin([{ from: 'netlify', ignore: ['*.html'] }]),
+            new CopyWebpackPlugin(
+                [{ from: 'netlify', ignore: ['*.html'] }, isProd && 'pwa'].filter(Boolean)
+            ),
             // DEVELOPMENT
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({
@@ -259,12 +262,7 @@ module.exports = function(env, argv) {
                 new StyleLintPlugin({
                     files: './app/assets/scss/*.scss'
                 }),
-            !isProd &&
-                new webpack.DefinePlugin({
-                    NODE_ENV: JSON.stringify(nodeEnv)
-                }),
             // PRODUCTION
-
             isProd &&
                 new ManifestPlugin({
                     fileName: 'asset-manifest.json'
@@ -279,7 +277,31 @@ module.exports = function(env, argv) {
                 new webpack.BannerPlugin({
                     banner: 'Doughboy Nutrition Tracker'
                 }),
-            isProd && new MiniCssExtractPlugin('styles.css')
+            isProd && new MiniCssExtractPlugin('styles.css'),
+            isProd &&
+                new SWPrecacheWebpackPlugin({
+                    // By default, a cache-busting query parameter is appended to requests
+                    // used to populate the caches, to ensure the responses are fresh.
+                    // If a URL is already hashed by Webpack, then there is no concern
+                    // about it being stale, and the cache-busting can be skipped.
+                    dontCacheBustUrlsMatching: /\.\w{8}\./,
+                    filename: 'service-worker.js',
+                    // staticFileGlobs: ['/vendor.bundle.js'],
+                    logger(message) {
+                        if (message.indexOf('Total precache size is') === 0) {
+                            // This message occurs for every build and is a bit too noisy.
+                            return;
+                        }
+                        console.log(message);
+                    },
+                    // minify and uglify the script
+                    minify: true,
+                    // For unknown URLs, fallback to the index page
+                    navigateFallback: '/index.html',
+                    // Don't precache sourcemaps, build asset manifest,
+                    // netlify redirects
+                    staticFileGlobsIgnorePatterns: [/\.map$/, /manifest.json$/]
+                })
         ].filter(Boolean),
 
         // split out vendor js into its own bundle
