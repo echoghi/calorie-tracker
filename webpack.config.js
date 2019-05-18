@@ -16,8 +16,8 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const PACKAGE = require('./package.json');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const sourcePath = path.join(__dirname, './src');
-const publicPath = path.join(__dirname, './build');
+const sourcePath = path.resolve(__dirname, 'src');
+const publicPath = path.resolve(__dirname, 'build');
 
 module.exports = function(env, argv) {
     const isProd = argv.mode === 'production';
@@ -58,6 +58,7 @@ module.exports = function(env, argv) {
                 // eslint for JS
                 {
                     test: /\.(js|jsx)$/,
+                    include: sourcePath,
                     enforce: 'pre',
                     use: [
                         {
@@ -70,6 +71,7 @@ module.exports = function(env, argv) {
                 // tslint + eslint for TS
                 {
                     test: /\.(ts|tsx)$/,
+                    include: sourcePath,
                     enforce: 'pre',
                     use: [
                         {
@@ -87,6 +89,7 @@ module.exports = function(env, argv) {
 
                 {
                     test: /\.json$/,
+                    include: path.resolve(__dirname, 'src/app/assets/animations'),
                     loader: 'json-loader',
                     type: 'javascript/auto'
                 },
@@ -119,9 +122,17 @@ module.exports = function(env, argv) {
                 },
 
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(t|j)sx?$/,
                     exclude: /node_modules/,
+                    include: sourcePath,
                     use: [
+                        'cache-loader',
+                        {
+                            loader: 'ts-loader',
+                            options: {
+                                transpileOnly: true
+                            }
+                        },
                         {
                             loader: 'babel-loader'
                         }
@@ -129,25 +140,14 @@ module.exports = function(env, argv) {
                 },
 
                 {
-                    test: /\.(ts|tsx)?$/,
-                    exclude: /node_modules/,
-                    use: [
-                        {
-                            loader: 'ts-loader',
-                            options: {
-                                transpileOnly: true
-                            }
-                        }
-                    ]
-                },
-
-                {
                     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
+                    include: path.resolve(__dirname, 'src/app/assets/fonts'),
                     loader: 'url-loader'
                 },
 
                 {
                     test: /\.(png|jpg)$/,
+                    include: path.resolve(__dirname, 'src/app/assets/images'),
                     exclude: /node_modules/,
                     use: [
                         {
@@ -200,8 +200,8 @@ module.exports = function(env, argv) {
             // Dev
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({
-                    tslint: path.join(__dirname, './tslint.json'),
-                    tsconfig: path.join(__dirname, './tsconfig.json'),
+                    tslint: path.resolve(__dirname, './tslint.json'),
+                    tsconfig: path.resolve(__dirname, './tsconfig.json'),
                     async: false
                 }),
             !isProd && new webpack.HotModuleReplacementPlugin(),

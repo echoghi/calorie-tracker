@@ -59,10 +59,10 @@ const mapStateToProps = (state: RootState) => ({
     userLoading: state.adminState.userLoading
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-    getData: (id: string) => dispatch(fetchData(id)),
-    saveUser: (user: firebase.UserInfo) => dispatch(saveUserData(user))
-});
+const mapDispatchToProps = {
+    getData: (id: string) => fetchData(id),
+    saveUser: (user: firebase.UserInfo) => saveUserData(user)
+};
 
 interface AppIndex extends RouteComponentProps {
     getData: (id: string) => void;
@@ -114,7 +114,9 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
                         </ErrorBoundary>
                     </Suspense>
                 </React.Fragment>
-            ) : null}
+            ) : (
+                <Loading />
+            )}
         </div>
     );
 }
