@@ -77,6 +77,7 @@
         "case-sensitive-paths-webpack-plugin": "^2.0.0",
         "copy-webpack-plugin": "^4.5.2",
         "css-loader": "0.28.8",
+        "dotenv": "6",
         "duplicate-package-checker-webpack-plugin": "^1.2.4",
         "eslint": "^5.16.0",
         "eslint-config-prettier": "^2.2.0",

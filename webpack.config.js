@@ -13,11 +13,23 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const PACKAGE = require('./package.json');
+// const PACKAGE = require('./package.json');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const sourcePath = path.resolve(__dirname, 'src');
 const publicPath = path.resolve(__dirname, 'build');
+const Settings = require('dotenv');
+// load .env settings
+Settings.load();
+
+const {
+    FIREBASEKEY,
+    AUTHDOMAIN,
+    DATABASEURL,
+    STORAGEBUCKET,
+    PROJECTID,
+    MESSAGINGSENDERID
+} = process.env;
 
 module.exports = function(env, argv) {
     const isProd = argv.mode === 'production';
@@ -195,6 +207,15 @@ module.exports = function(env, argv) {
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             // analyze bundle sizes with the --debug flag
             argv.debug && new BundleAnalyzerPlugin(),
+            new webpack.DefinePlugin({
+                NODE_ENV: JSON.stringify(argv.mode),
+                AUTHDOMAIN: JSON.stringify(AUTHDOMAIN),
+                DATABASEURL: JSON.stringify(DATABASEURL),
+                MESSAGINGSENDERID: JSON.stringify(MESSAGINGSENDERID),
+                PROJECTID: JSON.stringify(PROJECTID),
+                STORAGEBUCKET: JSON.stringify(STORAGEBUCKET),
+                FIREBASEKEY: JSON.stringify(FIREBASEKEY)
+            }),
             // DEVELOPMENT
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({
@@ -255,11 +276,7 @@ module.exports = function(env, argv) {
                 new webpack.BannerPlugin({
                     banner: 'Doughboy Nutrition Tracker'
                 }),
-            isProd && new MiniCssExtractPlugin('styles.css'),
-            isProd &&
-                new webpack.DefinePlugin({
-                    'process.env.NODE_ENV': JSON.stringify('production')
-                })
+            isProd && new MiniCssExtractPlugin('styles.css')
         ].filter(Boolean),
 
         // split out vendor js into its own bundle

@@ -1,12 +1,22 @@
-## Doughboy
+## [Doughboy](https://doughboy.io)
 
-A nutrition tracker built with React, TypeScript, and Firebase. Hosted on Netlify.
+A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Hosted on Netlify.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/c36116aa-05e1-4bc6-879c-25266d168115/deploy-status)](https://app.netlify.com/sites/health-dashboard/deploys)
 
 ## 🚀 Quick start
 
-1.  **Install Dependencies && Start the development server.**
+1.  **Create a .env file in the root directory of your project. That's where you'll add your own firebase config. For example:**
+
+    ```sh
+    FIREBASEKEY='############'
+    AUTHDOMAIN='hello-world-#####.firebaseapp.com'
+    DATABASEURL='https://hello-world-#####.firebaseio.com'
+    MESSAGINGSENDERID='############'
+    PROJECTID='hello-world-#####'
+    STORAGEBUCKET=''
+    ```
+
+2.  **Install dependencies and start the development server.**
 
     ```sh
     yarn dev
