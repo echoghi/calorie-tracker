@@ -48,6 +48,7 @@ const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRin
     return (
         <DayOverview onClick={onClick}>
             <Circle
+                key={`${day.day.utc}-0`}
                 progress={calories / data.user.goals.calories}
                 size={width < 768 ? 30 : 90}
                 animate={animate}
@@ -63,6 +64,7 @@ const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRin
                 }}
             />
             <Circle
+                key={`${day.day.utc}-1`}
                 progress={protein / data.user.goals.protein}
                 size={width < 768 ? 23 : 70}
                 animate={animate}
@@ -78,6 +80,7 @@ const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRin
                 }}
             />
             <Circle
+                key={`${day.day.utc}-3`}
                 progress={carbs / data.user.goals.carbs}
                 size={width < 768 ? 16 : 50}
                 animate={animate}
@@ -93,6 +96,7 @@ const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRin
                 }}
             />
             <Circle
+                key={`${day.day.utc}-4`}
                 progress={fat / data.user.goals.fat}
                 size={width < 768 ? 10 : 30}
                 animate={animate}

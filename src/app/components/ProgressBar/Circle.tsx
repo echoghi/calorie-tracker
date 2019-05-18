@@ -13,7 +13,7 @@ interface Circle {
 }
 
 const Circle = React.memo(
-    ({ progress, color, style, animate, size, strokeWidth, trailColor }: Circle) => {
+    ({ progress, color, style, animate, size, strokeWidth, trailColor, ...props }: Circle) => {
         progress = progress > 1 ? 1 : progress;
 
         const radius = size / 2 - strokeWidth / 2;
@@ -42,7 +42,7 @@ const Circle = React.memo(
             stroke-linecap: round;
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
-            animation: ${props => (props.animate ? animation : 'none')};
+            animation: ${cprops => (cprops.animate ? animation : 'none')};
             stroke-dashoffset: ${dashoffset};
             stroke: ${color};
             stroke-width: ${strokeWidth};
@@ -50,7 +50,7 @@ const Circle = React.memo(
         `;
 
         return (
-            <CircleContainer key={`${Math.random()}`}>
+            <CircleContainer {...props}>
                 <svg width={size} height={size} style={style} viewBox={`0 0 ${size} ${size}`}>
                     <circle
                         cx={center}
