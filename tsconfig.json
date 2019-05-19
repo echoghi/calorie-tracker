@@ -11,17 +11,8 @@
         "moduleResolution": "node",
         "rootDir": "./src/",
         "esModuleInterop": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "strict": true
     },
-    "exclude": [
-        "node_modules",
-        "build",
-        "webpack.config.js",
-        "functions",
-        "app.js",
-        "coverage",
-        "server.js",
-        "jest.setup.js",
-        "src/**"
-    ]
+    "exclude": ["node_modules", "build", "webpack.config.js", "src/**"]
 }

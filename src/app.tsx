@@ -13,7 +13,7 @@ import Register from './app/components/Register';
 // Service Worker
 import registerServiceWorker from './registerServiceWorker';
 // polyfills
-import '@babel/polyfill';
+import './polyfills';
 smoothscroll.polyfill();
 
 ReactDOM.render(
