@@ -32,6 +32,11 @@ export const NoteContainer = styled.div`
     height: 348px;
 `;
 
+export const EmptyContainer = styled.div`
+    display: block;
+    margin: 0 auto;
+`;
+
 export const NoNotes = styled.div`
     display: flex;
     align-items: center;

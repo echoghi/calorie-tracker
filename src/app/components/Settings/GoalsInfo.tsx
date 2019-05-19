@@ -97,9 +97,8 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
         <SettingsSection>
             <SettingsHeader>Goals</SettingsHeader>
             <SettingsSubHeader>
-                Already have goals in mind? Enter them here or your calorie goal will be based on
-                your TDEE, which is calculated with your height, weight, gender, and age. Otherwise,
-                your calorie goal will default to 2000.
+                Already have goals in mind? Enter them here or your calorie goal will default to
+                2000.
             </SettingsSubHeader>
 
             <Formik
@@ -123,7 +122,6 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                                 error={errors.calories && touched.calories}
                                 onChange={handleChange}
                                 value={values.calories}
-                                style={{ paddingRight: 10 }}
                             />
 
                             <CarbInput
@@ -133,7 +131,6 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                                 error={errors.carbs && touched.carbs}
                                 onChange={handleChange}
                                 value={values.carbs}
-                                style={{ paddingLeft: 10 }}
                             />
                         </GoalInputWrapper>
 
@@ -145,7 +142,6 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                                 error={errors.fat && touched.fat}
                                 onChange={handleChange}
                                 value={values.fat}
-                                style={{ paddingRight: 10 }}
                             />
 
                             <ProteinInput
@@ -155,7 +151,6 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                                 error={errors.protein && touched.protein}
                                 onChange={handleChange}
                                 value={values.protein}
-                                style={{ paddingLeft: 10 }}
                             />
                         </GoalInputWrapper>
 

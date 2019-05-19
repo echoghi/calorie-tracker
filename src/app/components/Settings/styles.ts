@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Input from '../Input';
-import Select from '../Select';
 
 const SettingsWrapper = styled.div`
     padding: 20px;

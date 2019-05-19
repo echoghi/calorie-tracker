@@ -10,6 +10,7 @@ import {
     NoteBody,
     NoteTitle,
     NotesHeader,
+    EmptyContainer,
     NoteBox,
     Note
 } from './styles';
@@ -28,6 +29,7 @@ import { errorNotification, successNotification } from '../actions';
 import { FormControl, Fab } from '@material-ui/core';
 import { RootState, Day, Note as NoteProps } from '../types';
 import firebase from 'firebase';
+import EmptyNoteIcon from '../Icons/EmptyNoteIcon';
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
@@ -408,7 +410,10 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
 
                     {!day.notes && (
                         <NoNotes>
-                            <h4>No Notes Found</h4>
+                            <EmptyContainer>
+                                <EmptyNoteIcon />
+                                <h4>No Notes Found</h4>
+                            </EmptyContainer>
                         </NoNotes>
                     )}
                 </NoteContainer>
