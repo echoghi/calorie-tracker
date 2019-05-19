@@ -10,11 +10,10 @@ import { store } from './store';
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
 import Register from './app/components/Register';
-// import MealWizard from './app/components/MealWizard';
-import '@babel/polyfill';
 // Service Worker
 import registerServiceWorker from './registerServiceWorker';
-
+// polyfills
+import '@babel/polyfill';
 smoothscroll.polyfill();
 
 ReactDOM.render(
@@ -24,7 +23,6 @@ ReactDOM.render(
                 <Switch>
                     <Route path="/login" component={Login} name="Login" />
                     <Route path="/register" component={Register} name="Register" />
-                    {/* <Route path="/admin" component={MealWizard} name="Admin" /> */}
                     <Route path="/" component={AppIndex} />
                 </Switch>
             </BrowserRouter>
