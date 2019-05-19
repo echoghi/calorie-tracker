@@ -89,13 +89,13 @@ module.exports = function(env, argv) {
                             loader: 'eslint-loader',
                             options: { fix: false }
                         },
-                        {
+                        isProd && {
                             loader: 'tslint-loader'
                         },
                         {
                             loader: 'source-map-loader'
                         }
-                    ]
+                    ].filter(Boolean)
                 },
 
                 {
@@ -290,11 +290,11 @@ module.exports = function(env, argv) {
                             urlPattern: new RegExp(
                                 '^https://fonts.(?:googleapis|gstatic).com/(.*)'
                             ),
-                            handler: 'cacheFirst'
+                            handler: 'CacheFirst'
                         },
                         {
                             urlPattern: /.*/,
-                            handler: 'networkFirst'
+                            handler: 'NetworkFirst'
                         }
                     ]
                 })
