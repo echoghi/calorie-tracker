@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
@@ -12,7 +12,15 @@ import MealTable from './MealTable';
 import queryString from 'query-string';
 import MealForm from './MealForm';
 import Notes from '../Notes';
-import { HeaderWrapper, Overview, Box, BoxHeader, Grams, Content } from './styles';
+import {
+    NutritionWrapper,
+    HeaderWrapper,
+    Overview,
+    Box,
+    BoxHeader,
+    Grams,
+    Content
+} from './styles';
 import { RootState, ProgressBarConfig, Day, UserData } from '../types';
 
 const progressBarConfig: ProgressBarConfig = {
@@ -133,67 +141,60 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     const { protein, carbs, fat } = day.nutrition;
 
     return (
-        <Fragment>
-            <div className="nutrition">
-                <HeaderWrapper>
-                    <div>
-                        <h1>Nutrition</h1>
-                        <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do YYYY') : ''}</h3>
-                    </div>
-                    <div>
-                        {!today && (
-                            <Button
-                                onClick={goToToday}
-                                color="primary"
-                                variant="outlined"
-                                size="large"
-                            >
-                                Go to Today
-                            </Button>
-                        )}
-                    </div>
-                </HeaderWrapper>
+        <NutritionWrapper>
+            <HeaderWrapper>
+                <div>
+                    <h1>Nutrition</h1>
+                    <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do YYYY') : ''}</h3>
+                </div>
+                <div>
+                    {!today && (
+                        <Button onClick={goToToday} color="primary" variant="outlined" size="large">
+                            Go to Today
+                        </Button>
+                    )}
+                </div>
+            </HeaderWrapper>
 
-                <Overview>
-                    <Box>
-                        <BoxHeader>
-                            <h1>{protein}</h1>
-                            <Grams>g</Grams>
-                            <h3>Protein</h3>
-                        </BoxHeader>
+            <Overview>
+                <Box>
+                    <BoxHeader>
+                        <h1>{protein}</h1>
+                        <Grams>g</Grams>
+                        <h3>Protein</h3>
+                    </BoxHeader>
 
-                        <ProgressBar type="protein" />
-                    </Box>
+                    <ProgressBar type="protein" />
+                </Box>
 
-                    <Box>
-                        <BoxHeader>
-                            <h1>{carbs}</h1>
-                            <Grams>g</Grams>
-                            <h3>{width < 768 ? 'Carbs' : 'Carbohydrates'}</h3>
-                        </BoxHeader>
+                <Box>
+                    <BoxHeader>
+                        <h1>{carbs}</h1>
+                        <Grams>g</Grams>
+                        <h3>{width < 768 ? 'Carbs' : 'Carbohydrates'}</h3>
+                    </BoxHeader>
 
-                        <ProgressBar type="carbs" />
-                    </Box>
+                    <ProgressBar type="carbs" />
+                </Box>
 
-                    <Box>
-                        <BoxHeader>
-                            <h1>{fat}</h1>
-                            <Grams>g</Grams>
-                            <h3>Fat</h3>
-                        </BoxHeader>
+                <Box>
+                    <BoxHeader>
+                        <h1>{fat}</h1>
+                        <Grams>g</Grams>
+                        <h3>Fat</h3>
+                    </BoxHeader>
 
-                        <ProgressBar type="fat" />
-                    </Box>
-                </Overview>
+                    <ProgressBar type="fat" />
+                </Box>
+            </Overview>
 
-                <Content>
-                    <Notes day={day} index={dayIndex} />
-                    <MealForm day={day} index={dayIndex} />
-                </Content>
+            <Content>
+                <Notes day={day} index={dayIndex} />
+                <MealForm day={day} index={dayIndex} />
+            </Content>
 
-                <MealTable day={day} index={dayIndex} />
-            </div>
-        </Fragment>
+            <MealTable day={day} index={dayIndex} />
+        </NutritionWrapper>
     );
 };
 

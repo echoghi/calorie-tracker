@@ -284,7 +284,7 @@ module.exports = function(env, argv) {
                     runtimeCaching: [
                         {
                             urlPattern: /images/,
-                            handler: 'cacheFirst'
+                            handler: 'CacheFirst'
                         },
                         {
                             urlPattern: new RegExp(

@@ -17,7 +17,6 @@ a {
 }
 
 .overview__container,
-.nutrition,
 .activity,
 .reports {
     padding: 200px 125px 30px 125px;
@@ -28,12 +27,6 @@ a {
 
     @include less-than-ipad {
         padding: 90px 15px 30px 15px;
-    }
-}
-
-.nutrition {
-    @include less-than-ipad {
-        padding: 90px 15px 120px 15px;
     }
 }
 

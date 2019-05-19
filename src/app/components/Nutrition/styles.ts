@@ -105,6 +105,24 @@ const InputWrapper = styled.div`
     margin: 20px;
 `;
 
+const NutritionWrapper = styled.div`
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 200px 0;
+
+    @media (min-width: 1500px) {
+        max-width: 1400px;
+    }
+
+    @media (min-width: 769px) and (max-width: 1199px) {
+        max-width: 768px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 90px 15px 120px 15px;
+    }
+`;
+
 const InputControl = styled.div`
     margin: 0 10px;
 `;
@@ -154,6 +172,7 @@ export {
     Overview,
     Box,
     MealForm,
+    NutritionWrapper,
     MealsHeader,
     BoxHeader,
     HeaderWrapper,
