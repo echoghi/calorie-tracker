@@ -224,9 +224,7 @@ module.exports = function(env, argv) {
                 template: 'netlify/index.html'
             }),
             // static assets
-            new CopyWebpackPlugin(
-                [{ from: 'netlify', ignore: ['*.html'] }, isProd && 'pwa'].filter(Boolean)
-            ),
+            new CopyWebpackPlugin([{ from: 'netlify', ignore: ['*.html'] }, 'pwa'].filter(Boolean)),
             // DEVELOPMENT
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({

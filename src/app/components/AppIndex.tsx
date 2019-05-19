@@ -1,4 +1,4 @@
-import React, { Suspense, Fragment, useEffect } from 'react';
+import React, { Suspense, Fragment, useEffect, lazy } from 'react';
 import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 import Firebase from './firebase';
 import { connect } from 'react-redux';
@@ -11,9 +11,9 @@ import isEmpty from 'lodash.isempty';
 import firebase from 'firebase';
 
 // routes
-const Calendar = React.lazy(() => import('./Calendar'));
-const Nutrition = React.lazy(() => import('./Nutrition'));
-const Settings = React.lazy(() => import('./Settings'));
+const Calendar = lazy(() => import('./Calendar'));
+const Nutrition = lazy(() => import('./Nutrition'));
+const Settings = lazy(() => import('./Settings'));
 
 interface AdminState {
     data: {};
