@@ -6,6 +6,7 @@ declare module 'the-platform';
 declare module 'lodash.isempty';
 declare module 'react-lottie';
 declare module 'query-string';
+declare module 'smoothscroll-polyfill';
 
 // .env variables
 declare var NODE_ENV: string;

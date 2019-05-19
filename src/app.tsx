@@ -31,4 +31,6 @@ ReactDOM.render(
     document.getElementById('app')
 );
 
-registerServiceWorker();
+if (NODE_ENV === 'production') {
+    registerServiceWorker();
+}
