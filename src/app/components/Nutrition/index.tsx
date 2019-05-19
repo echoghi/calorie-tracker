@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
@@ -69,7 +69,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     const [today, setToday] = useState(true);
     const { width } = useWindowSize();
 
-    const loadDay = useCallback(() => {
+    const loadDay = () => {
         let date: moment.Moment;
 
         if (location.search) {
@@ -98,7 +98,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
 
             setDay(todayData);
         }
-    }, [data.calendar]);
+    };
 
     // fetch data when requested date changes
     useEffect(() => {
