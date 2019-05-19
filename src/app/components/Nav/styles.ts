@@ -20,6 +20,14 @@ export const Brand = styled(NavLink)`
     }
 `;
 
+export const BrandImg = styled.img`
+    height: 50px;
+
+    @media (max-width: 768px) {
+        height: 35px;
+    }
+`;
+
 export const Name = styled.div`
     font-family: Oregano;
     cursor: pointer;
