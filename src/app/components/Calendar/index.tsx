@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { useWindowSize } from 'the-platform';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import Fade from '@material-ui/core/Fade';
 import isEmpty from 'lodash.isempty';
 import DayDialog from './DayDialog';
 import DaySummary from './DaySummary';
@@ -12,7 +11,7 @@ import Legend from './Legend';
 import NutritionRings from './NutritionRings';
 import {
     Icon,
-    Day,
+    Day as DayContainer,
     ToggleMonth,
     Wrapper,
     CalendarWrapper,
@@ -22,28 +21,7 @@ import {
     DayNumber,
     InfoIcon
 } from './styles';
-
-interface Note {
-    title: string;
-    time: string;
-    body: string;
-    edited: boolean;
-}
-
-interface Day {
-    nutrition: {
-        fat: number;
-        calories: number;
-        carbs: number;
-        protein: number;
-    };
-    day: moment.Moment;
-    notes?: Note[];
-    fitness?: {
-        calories: number;
-        activities: string[];
-    };
-}
+import { Day } from '../types';
 
 interface CalendarDay {
     week: number;
@@ -73,15 +51,15 @@ const mapStateToProps = (state: any) => ({
 });
 
 const Calendar = ({ data, loading }: Calendar) => {
-    const [time, setTime] = React.useState(moment());
-    const [dayDetails, toggleBreakdown] = React.useState({
+    const [time, setTime] = useState(moment());
+    const [dayDetails, toggleBreakdown] = useState({
         active: false,
         day: null
     });
-    const [summary, setMobileSummary] = React.useState({ active: false, day: null });
+    const [summary, setMobileSummary] = useState({ active: false, day: null });
     const { width } = useWindowSize();
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
@@ -105,25 +83,25 @@ const Calendar = ({ data, loading }: Calendar) => {
         }
     }
 
-    function renderIcons(dayData: Day, tooltipDay: moment.Moment) {
-        if (width < 768) {
+    // Calendary Day Icons
+    function DayIcons({ dayData, tooltipDay }: { dayData: Day; tooltipDay: moment.Moment }) {
+        if (width < 768 || !dayData || tooltipDay.month() !== time.month() || !dayData.notes) {
             return null;
         }
 
-        if (dayData && tooltipDay.month() === time.month() && dayData.notes) {
-            return (
-                <Tooltip
-                    id="tooltip-top"
-                    title={`You recorded ${dayData.notes.length} note(s)`}
-                    placement="top"
-                >
-                    <Icon className="icon-feather" />
-                </Tooltip>
-            );
-        }
+        return (
+            <Tooltip
+                id="tooltip-top"
+                title={`You recorded ${dayData.notes.length} note(s)`}
+                placement="top"
+            >
+                <Icon className="icon-feather" />
+            </Tooltip>
+        );
     }
 
-    function handleIcon(dayMoment: moment.Moment) {
+    // Day Breakdown Icon
+    function DayBreakdownIcon({ dayMoment }: { dayMoment: moment.Moment }) {
         for (const calendarDay of data.calendar) {
             if (
                 calendarDay.day.date() === dayMoment.date() &&
@@ -135,6 +113,8 @@ const Calendar = ({ data, loading }: Calendar) => {
                 }
             }
         }
+
+        return null;
     }
 
     function renderDays() {
@@ -235,26 +215,26 @@ const Calendar = ({ data, loading }: Calendar) => {
             }
         }
 
-        for (let i = 0; i < calendar.length; i++) {
-            for (let j = 0; j < calendar[i].days.length; j++) {
-                const calendarDay = calendar[i].days[j];
+        for (const week of calendar) {
+            for (let j = 0; j < week.days.length; j++) {
+                const calendarDay = week.days[j];
                 // Map data to calendar day
-                for (let k = 0; k < data.calendar.length; k++) {
-                    const storeData = data.calendar[k];
+                for (const weekData of data.calendar) {
+                    const storeData = weekData;
 
                     if (
                         storeData.day.date() === calendarDay.date() &&
                         storeData.day.month() === calendarDay.month() &&
                         storeData.day.year() === calendarDay.year()
                     ) {
-                        calendar[i].data[j] = storeData;
+                        week.data[j] = storeData;
                     }
                 }
 
                 const openBreakdown = () => {
                     toggleBreakdown({
                         active: true,
-                        day: calendar[i].data[j]
+                        day: week.data[j]
                     });
                 };
 
@@ -262,7 +242,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     if (width < 768) {
                         setMobileSummary({
                             active: true,
-                            day: calendar[i].data[j]
+                            day: week.data[j]
                         });
 
                         window.scrollTo({
@@ -273,15 +253,16 @@ const Calendar = ({ data, loading }: Calendar) => {
                 };
 
                 calendarDays.push(
-                    <Day
+                    <DayContainer
                         {...handleDayProps(calendarDay)}
                         key={`${calendarDay.date()}-${calendarDay.get('month')}-${Math.random()}`}
                     >
                         <DayNumber>{calendarDay.date()}</DayNumber>
-                        {renderIcons(calendar[i].data[j], calendarDay)}
-                        {calendar[i].data[j] && moment().isSameOrAfter(calendarDay) ? (
+                        <DayIcons dayData={week.data[j]} tooltipDay={calendarDay} />
+
+                        {week.data[j] && moment().isSameOrAfter(calendarDay) ? (
                             <NutritionRings
-                                day={calendar[i].data[j]}
+                                day={week.data[j]}
                                 data={data}
                                 context={time}
                                 onClick={openMobileSummary}
@@ -289,8 +270,11 @@ const Calendar = ({ data, loading }: Calendar) => {
                         ) : (
                             <div className="day__overview" />
                         )}
-                        <a onClick={openBreakdown}>{handleIcon(calendarDay)}</a>
-                    </Day>
+
+                        <a onClick={openBreakdown}>
+                            <DayBreakdownIcon dayMoment={calendarDay} />
+                        </a>
+                    </DayContainer>
                 );
             }
         }
@@ -337,39 +321,39 @@ const Calendar = ({ data, loading }: Calendar) => {
     const closeBreakdown = () => toggleBreakdown({ active: false, day: null });
 
     return (
-        <React.Fragment>
-            <Fade in={true}>
-                <Wrapper>
-                    <ToggleMonth>
-                        <IconButton aria-label="Last Month" component="div" onClick={lastMonth}>
-                            <i className="icon-chevron-left" />
-                        </IconButton>
+        <Fragment>
+            <Wrapper>
+                <ToggleMonth>
+                    <IconButton aria-label="Last Month" component="div" onClick={lastMonth}>
+                        <i className="icon-chevron-left" />
+                    </IconButton>
 
-                        <h2>
-                            {width < 768
-                                ? `${time.format('MMMM')} ${time.format('YYYY')}`
-                                : time.format('MMMM')}
-                        </h2>
-                        <IconButton aria-label="Next Month" component="div" onClick={nextMonth}>
-                            <i className="icon-chevron-right" />
-                        </IconButton>
-                    </ToggleMonth>
+                    <h2>
+                        {width < 768
+                            ? `${time.format('MMMM')} ${time.format('YYYY')}`
+                            : time.format('MMMM')}
+                    </h2>
+                    <IconButton aria-label="Next Month" component="div" onClick={nextMonth}>
+                        <i className="icon-chevron-right" />
+                    </IconButton>
+                </ToggleMonth>
 
-                    {/* Desktop Year Header */}
-                    <YearHeader>{time.format('YYYY')}</YearHeader>
-                    <CalendarWrapper>
-                        <CalendarContainer>
-                            <Header />
-                            {!isEmpty(data) && !loading && renderDays()}
-                        </CalendarContainer>
-                        <Legend />
-                    </CalendarWrapper>
-                    {summary.active && <DaySummary day={summary.day} />}
-                </Wrapper>
-            </Fade>
+                {/* Desktop Year Header */}
+                <YearHeader>{time.format('YYYY')}</YearHeader>
+                <CalendarWrapper>
+                    <CalendarContainer>
+                        <Header />
+                        {!isEmpty(data) && !loading && renderDays()}
+                    </CalendarContainer>
+                    <Legend />
+                </CalendarWrapper>
+
+                {/* Day Summary Modal */}
+                {summary.active && <DaySummary day={summary.day} />}
+            </Wrapper>
 
             <DayDialog open={active} day={day} onClose={closeBreakdown} />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

@@ -7,8 +7,15 @@ declare module 'lodash.isempty';
 declare module 'react-lottie';
 declare module 'query-string';
 
+// .env variables
 declare var NODE_ENV: string;
 declare var GA_ID: string;
+declare var FIREBASEKEY: string;
+declare var AUTHDOMAIN: string;
+declare var DATABASEURL: string;
+declare var MESSAGINGSENDERID: string;
+declare var PROJECTID: string;
+declare var STORAGEBUCKET: string;
 
 import moment from 'moment';
 
