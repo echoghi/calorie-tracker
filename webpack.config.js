@@ -40,7 +40,7 @@ module.exports = function(env, argv) {
         devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
         context: sourcePath,
         entry: {
-            js: [
+            main: [
                 // react-error-overlay
                 !isProd && 'react-dev-utils/webpackHotDevClient',
                 // polyfills
@@ -51,7 +51,7 @@ module.exports = function(env, argv) {
         },
         output: {
             path: publicPath,
-            filename: '[name].bundle.js',
+            filename: '[name].js',
             devtoolModuleFilenameTemplate: isProd
                 ? info => path.relative(sourcePath, info.absoluteResourcePath).replace(/\\/g, '/')
                 : info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
@@ -300,14 +300,27 @@ module.exports = function(env, argv) {
                 })
         ].filter(Boolean),
 
-        // split out vendor js into its own bundle
+        // split out each module
+        // https://hackernoon.com/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
         optimization: {
+            runtimeChunk: 'single',
             splitChunks: {
+                chunks: 'all',
+                maxInitialRequests: Infinity,
+                minSize: 0,
                 cacheGroups: {
-                    commons: {
+                    vendor: {
                         test: /[\\/]node_modules[\\/]/,
-                        name: 'vendor',
-                        chunks: 'initial'
+                        name(module) {
+                            // get the name. E.g. node_modules/packageName/not/this/part.js
+                            // or node_modules/packageName
+                            const packageName = module.context.match(
+                                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                            )[1];
+
+                            // npm package names are URL-safe, but some servers don't like @ symbols
+                            return `npm.${packageName.replace('@', '')}`;
+                        }
                     }
                 }
             }
