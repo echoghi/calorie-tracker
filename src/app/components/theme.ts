@@ -121,7 +121,7 @@ export const styles = (theming: Theme) =>
             height: 40,
             padding: '10px 12px',
             transition: theming.transitions.create(['border-color', 'box-shadow']),
-            width: 200
+            width: '100%'
         },
         selectLabel: {
             fontSize: 18,

@@ -16,6 +16,7 @@ interface Select {
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     value: string;
     type?: string;
+    fullWidth?: boolean;
     style?: React.CSSProperties;
 }
 
@@ -32,9 +33,9 @@ const handleIcon = (iconProps: IconProps) => (
     />
 );
 
-function Select({ classes, label, name, id, options, error, ...props }: Select) {
+function Select({ classes, label, name, id, options, error, fullWidth, ...props }: Select) {
     return (
-        <FormControl error={error} style={{ marginTop: 8 }}>
+        <FormControl error={error} fullWidth={fullWidth} style={{ marginTop: 8 }}>
             <InputLabel
                 disableAnimation={true}
                 shrink={true}

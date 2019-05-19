@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import { errorNotification, successNotification, saveUserData } from '../actions';
-import Button from '@material-ui/core/Button';
 import isEmpty from 'lodash.isempty';
 import { FormikActions, Formik } from 'formik';
-import Input from '../Input';
-import { SettingsHeader, SettingsSubHeader, SettingsSection } from './styles';
+import {
+    SettingsHeader,
+    SettingsSubHeader,
+    SettingsSection,
+    FormButton,
+    DisplayNameInput
+} from './styles';
 import { RootState } from '../types';
-import { Dispatch } from 'redux';
 import firebase from 'firebase';
 import { GeneralInfoValues, validateGeneralInfo } from '../validation';
 
@@ -80,26 +83,21 @@ const GeneralInfo = ({ userData, errorMessage, successMessage, saveUser }: Gener
             >
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <form onSubmit={handleSubmit} noValidate={true}>
-                        <Input
+                        <DisplayNameInput
                             name="name"
                             label="Display Name"
                             error={errors.name && touched.name}
                             onChange={handleChange}
                             value={values.name}
                         />
-                        <Button
-                            style={{
-                                display: 'inline-block',
-                                margin: '0 20px',
-                                verticalAlign: 'bottom'
-                            }}
+                        <FormButton
                             color="primary"
                             variant="contained"
                             disabled={isSubmitting}
                             type="submit"
                         >
                             Change Display Name
-                        </Button>
+                        </FormButton>
                     </form>
                 )}
             </Formik>

@@ -11,11 +11,10 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Header, Container, Form, Wrapper, ErrorMessage, BackToLogin } from '../Login/styles';
 import { connect } from 'react-redux';
 import { errorNotification } from '../actions';
-import { Dispatch } from 'redux';
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message)
+};
 
 interface Register extends RouteComponentProps {
     errorMessage: (message?: string) => void;

@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Firebase from '../firebase';
 import { connect } from 'react-redux';
 import { errorNotification, successNotification } from '../actions';
-import Button from '@material-ui/core/Button';
 import produce from 'immer';
-import Input from '../Input';
 import { Formik, FormikActions } from 'formik';
 import isEmpty from 'lodash.isempty';
-import { SettingsHeader, SettingsSubHeader, SettingsSection } from './styles';
+import {
+    SettingsHeader,
+    SettingsSubHeader,
+    GoalInputWrapper,
+    SettingsSection,
+    FormButton,
+    CalorieInput,
+    FatInput,
+    ProteinInput,
+    CarbInput
+} from './styles';
 import { RootState, UserData } from '../types';
-import { Dispatch } from 'redux';
 import firebase from 'firebase';
 import { GoalsValues, validateGoalsInfo } from '../validation';
 
@@ -18,10 +25,10 @@ const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message)),
-    successMessage: (message?: string) => dispatch(successNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message),
+    successMessage: (message?: string) => successNotification(message)
+};
 
 interface GoalsInfo {
     errorMessage: (message?: string) => void;
@@ -31,12 +38,12 @@ interface GoalsInfo {
 }
 
 const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) => {
-    const [calories, setCalories] = React.useState(0);
-    const [carbs, setCarbs] = React.useState(0);
-    const [fat, setFat] = React.useState(0);
-    const [protein, setProtein] = React.useState(0);
+    const [calories, setCalories] = useState(0);
+    const [carbs, setCarbs] = useState(0);
+    const [fat, setFat] = useState(0);
+    const [protein, setProtein] = useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!isEmpty(data)) {
             setCalories(data.user.goals.calories);
             setCarbs(data.user.goals.carbs);
@@ -108,59 +115,58 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
             >
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <form onSubmit={handleSubmit} noValidate={true}>
-                        <Input
-                            name="calories"
-                            label="Calories (kcal)"
-                            type="number"
-                            error={errors.calories && touched.calories}
-                            onChange={handleChange}
-                            style={{ paddingRight: 20, width: 100 }}
-                            value={values.calories}
-                        />
+                        <GoalInputWrapper>
+                            <CalorieInput
+                                name="calories"
+                                label="Calories (kcal)"
+                                type="number"
+                                error={errors.calories && touched.calories}
+                                onChange={handleChange}
+                                value={values.calories}
+                                style={{ paddingRight: 10 }}
+                            />
 
-                        <Input
-                            name="carbs"
-                            label="Carbs (g)"
-                            type="number"
-                            error={errors.carbs && touched.carbs}
-                            onChange={handleChange}
-                            style={{ paddingRight: 20, width: 100 }}
-                            value={values.carbs}
-                        />
+                            <CarbInput
+                                name="carbs"
+                                label="Carbs (g)"
+                                type="number"
+                                error={errors.carbs && touched.carbs}
+                                onChange={handleChange}
+                                value={values.carbs}
+                                style={{ paddingLeft: 10 }}
+                            />
+                        </GoalInputWrapper>
 
-                        <Input
-                            name="fat"
-                            label="Fat (g)"
-                            type="number"
-                            error={errors.fat && touched.fat}
-                            onChange={handleChange}
-                            style={{ paddingRight: 20, width: 100 }}
-                            value={values.fat}
-                        />
+                        <GoalInputWrapper>
+                            <FatInput
+                                name="fat"
+                                label="Fat (g)"
+                                type="number"
+                                error={errors.fat && touched.fat}
+                                onChange={handleChange}
+                                value={values.fat}
+                                style={{ paddingRight: 10 }}
+                            />
 
-                        <Input
-                            name="protein"
-                            label="Protein (g)"
-                            type="number"
-                            error={errors.protein && touched.protein}
-                            onChange={handleChange}
-                            value={values.protein}
-                            style={{ width: 100 }}
-                        />
+                            <ProteinInput
+                                name="protein"
+                                label="Protein (g)"
+                                type="number"
+                                error={errors.protein && touched.protein}
+                                onChange={handleChange}
+                                value={values.protein}
+                                style={{ paddingLeft: 10 }}
+                            />
+                        </GoalInputWrapper>
 
-                        <Button
-                            style={{
-                                display: 'inline-block',
-                                margin: '0 20px',
-                                verticalAlign: 'bottom'
-                            }}
+                        <FormButton
                             color="primary"
                             variant="contained"
                             type="submit"
                             disabled={isSubmitting}
                         >
                             Update Goals
-                        </Button>
+                        </FormButton>
                     </form>
                 )}
             </Formik>

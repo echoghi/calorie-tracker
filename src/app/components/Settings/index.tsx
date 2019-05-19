@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AccountInfo from './AccountInfo';
 import GeneralInfo from './GeneralInfo';
 import GoalsInfo from './GoalsInfo';
@@ -6,7 +6,7 @@ import DeleteAccount from './DeleteAccount';
 import { SettingsWrapper, Container } from './styles';
 
 const Settings = () => {
-    React.useEffect(() => {
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
