@@ -145,7 +145,10 @@ module.exports = function(env, argv) {
                             }
                         },
                         {
-                            loader: 'babel-loader'
+                            loader: 'babel-loader',
+                            options: {
+                                configFile: './.babelrc'
+                            }
                         }
                     ]
                 },
