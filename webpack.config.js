@@ -280,6 +280,7 @@ module.exports = function(env, argv) {
             isProd && new MiniCssExtractPlugin('styles.css'),
             isProd &&
                 new GenerateSW({
+                    exclude: ['_redirects', /\.map$/],
                     runtimeCaching: [
                         {
                             urlPattern: /images/,
