@@ -14,7 +14,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-// const PACKAGE = require('./package.json');
+const PACKAGE = require('./package.json');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const sourcePath = path.resolve(__dirname, 'src');
@@ -144,12 +144,7 @@ module.exports = function(env, argv) {
                                 transpileOnly: true
                             }
                         },
-                        {
-                            loader: 'babel-loader',
-                            options: {
-                                configFile: './.babelrc'
-                            }
-                        }
+                        'babel-loader'
                     ]
                 },
 
@@ -228,7 +223,8 @@ module.exports = function(env, argv) {
             }),
             // static assets
             new CopyWebpackPlugin([{ from: 'netlify', ignore: ['*.html'] }, 'pwa'].filter(Boolean)),
-            // DEVELOPMENT
+            // ***** DEVELOPMENT *****
+            // Handle type checking on a separate thread
             !isProd &&
                 new ForkTsCheckerWebpackPlugin({
                     tslint: path.resolve(__dirname, './tslint.json'),
@@ -247,7 +243,7 @@ module.exports = function(env, argv) {
                         // (which should be serving on http://localhost:8080/)
                         // through BrowserSync
                         proxy: 'http://localhost:8080/',
-                        logPrefix: 'Health Dashboard'
+                        logPrefix: `Doughboy v${PACKAGE.version}`
                     },
                     // plugin options
                     {
@@ -263,7 +259,7 @@ module.exports = function(env, argv) {
                 new StyleLintPlugin({
                     files: './app/assets/scss/*.scss'
                 }),
-            // PRODUCTION
+            // ***** PRODUCTION *****
             isProd &&
                 new ManifestPlugin({
                     fileName: 'asset-manifest.json'
@@ -276,7 +272,7 @@ module.exports = function(env, argv) {
             isProd && new webpack.optimize.AggressiveMergingPlugin(),
             isProd &&
                 new webpack.BannerPlugin({
-                    banner: 'Doughboy Nutrition Tracker'
+                    banner: `Doughboy Nutrition Tracker v${PACKAGE.version}`
                 }),
             isProd && new MiniCssExtractPlugin('styles.css'),
             isProd &&
