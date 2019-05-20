@@ -76,7 +76,7 @@ const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRin
                     transform:
                         width < 768
                             ? 'translateY(-32.5px) translateX(-.5px)'
-                            : 'translateY(-87px) translateX(1px)'
+                            : 'translateY(-86px) translateX(1px)'
                 }}
             />
             <Circle
