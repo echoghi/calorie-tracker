@@ -153,7 +153,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                     name="calories"
                                     label="Calories"
                                     type="number"
-                                    required={true}
+                                    required={false}
                                     value={values.calories}
                                     onChange={handleChange}
                                     error={errors.calories && touched.calories}
@@ -164,7 +164,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                     name="protein"
                                     label="Protein"
                                     type="number"
-                                    required={true}
+                                    required={false}
                                     value={values.protein}
                                     onChange={handleChange}
                                     error={errors.protein && touched.protein}
@@ -178,7 +178,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                     name="carbs"
                                     label="Carbs"
                                     type="number"
-                                    required={true}
+                                    required={false}
                                     value={values.carbs}
                                     onChange={handleChange}
                                     error={errors.carbs && touched.carbs}
@@ -189,7 +189,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                                     name="fat"
                                     label="Fat"
                                     type="number"
-                                    required={true}
+                                    required={false}
                                     value={values.fat}
                                     onChange={handleChange}
                                     error={errors.fat && touched.fat}
