@@ -55,7 +55,6 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
     const [addNote, setAddNote] = useState(false);
     const [editNote, setEditNote] = useState(false);
     const [confirmationDialog, setConfirmationDialog] = useState(false);
-    const [open, setNoteMenu] = useState(false);
 
     function openEditModal(editIndex: number) {
         setNoteToEdit(editIndex);
