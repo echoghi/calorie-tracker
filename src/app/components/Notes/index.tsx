@@ -392,7 +392,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                             return (
                                 <Note key={i} onClick={clickHandler}>
                                     <NoteTitle>
-                                        <Typography variant="h6" noWrap={true}>
+                                        <Typography variant="body1" noWrap={true}>
                                             {note.title}
                                         </Typography>
                                     </NoteTitle>

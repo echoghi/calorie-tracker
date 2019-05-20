@@ -25,6 +25,7 @@ export const theme = createMuiTheme({
     },
     typography: {
         fontFamily: [
+            'Varela Round',
             'Source Sans Pro',
             '-apple-system',
             'BlinkMacSystemFont',
