@@ -379,7 +379,6 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                             const editHandler = (
                                 event: React.MouseEvent<HTMLElement, MouseEvent>
                             ) => {
-                                console.log('her');
                                 event.stopPropagation();
                                 openEditModal(i);
                             };
