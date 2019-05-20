@@ -7,6 +7,10 @@ export const NotesHeader = styled.div`
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e6eaee;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
 
 export const Note = styled.div`
@@ -77,16 +81,16 @@ export const NoteBox = styled.div`
 `;
 
 export const NoteTitle = styled.div`
-    width: 40.3%;
+    width: 20%;
     text-align: left;
 
     @media (max-width: 768px) {
-        width: 20%;
+        width: 25%;
     }
 `;
 
 export const NoteBody = styled.div`
-    width: 39.3%;
+    width: 50%;
     text-align: left;
 
     span {
@@ -98,10 +102,36 @@ export const NoteBody = styled.div`
 `;
 
 export const NoteActions = styled.div`
-    width: 20.3%;
+    width: 60px;
     text-align: right;
+`;
 
-    @media (max-width: 768px) {
-        width: 35%;
+export const Menu = styled.div`
+    font-family: 'Varela Round';
+    padding: 20px 15px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    background: #fff;
+    position: absolute;
+    width: 100px;
+    right: 10px;
+    z-index: 99;
+`;
+
+export const MenuItem = styled.div`
+    display: flex;
+    justify-content: space-between;
+    transition: opacity ease-in 0.3s;
+    border-top: 1px solid rgb(242, 242, 242);
+    background: #fff;
+    padding: 10px 0;
+    text-align: left;
+
+    &:first-child {
+        border-top: 0;
+    }
+
+    &:hover {
+        opacity: 0.8;
     }
 `;

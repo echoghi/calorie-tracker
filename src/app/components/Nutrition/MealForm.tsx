@@ -7,7 +7,8 @@ import {
     MealsHeader,
     MealsContainer,
     InputWrapper,
-    InputControl
+    InputControl,
+    MealFormButton
 } from './styles';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
@@ -196,15 +197,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                             </InputControl>
                         </InputWrapper>
 
-                        <Button
-                            style={{
-                                borderRadius: 0,
-                                bottom: 0,
-                                fontSize: 16,
-                                height: 65,
-                                left: 0,
-                                position: 'absolute'
-                            }}
+                        <MealFormButton
                             fullWidth={true}
                             disabled={isSubmitting}
                             type="submit"
@@ -212,7 +205,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                             variant="contained"
                         >
                             Add Meal
-                        </Button>
+                        </MealFormButton>
                     </Form>
                 )}
             </Formik>

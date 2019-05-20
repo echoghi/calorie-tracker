@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
 
 const HeaderWrapper = styled.div`
     display: flex;
@@ -15,6 +16,11 @@ const MealsHeader = styled.div`
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e6eaee;
+
+    @media (max-width: 768px) {
+        height: 60px;
+        font-size: 20px;
+    }
 `;
 
 const MealForm = styled.form`
@@ -28,7 +34,7 @@ const Overview = styled.div`
 
     @media (max-width: 768px) {
         display: flex;
-        margin: 20px 0 0 0;
+        margin: 10px 0 0 0;
     }
 `;
 
@@ -119,7 +125,20 @@ const NutritionWrapper = styled.div`
     }
 
     @media (max-width: 768px) {
-        padding: 90px 15px 120px 15px;
+        padding: 80px 15px 120px 15px;
+    }
+`;
+
+const MealFormButton = styled(Button)`
+    border-radius: 0 0 3px 3px !important;
+    bottom: 0 !important;
+    font-size: 16px !important;
+    height: 65px !important;
+    left: 0 !important;
+    position: absolute !important;
+
+    @media (max-width: 768px) {
+        height: 60px !important;
     }
 `;
 
@@ -141,6 +160,7 @@ const MealsContainer = styled.div`
     @media (max-width: 768px) {
         width: 100%;
         display: block;
+        height: 400px;
         margin: 0;
     }
 
@@ -177,6 +197,7 @@ export {
     BoxHeader,
     HeaderWrapper,
     InputWrapper,
+    MealFormButton,
     Grams,
     MealsContainer,
     Content,

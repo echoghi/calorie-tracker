@@ -15,10 +15,29 @@ export const theme = createMuiTheme({
         }
     },
     palette: {
+        error: { main: 'rgb(203, 36, 49)' },
         primary: { main: 'rgb(0, 132, 137)' },
-        secondary: { main: '#FF5A5F' }
+        secondary: { main: '#FF5A5F' },
+        text: {
+            primary: '#3d575d',
+            secondary: 'rgb(38, 122, 167)'
+        }
     },
     typography: {
+        fontFamily: [
+            'Source Sans Pro',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"'
+        ].join(','),
+        fontSize: 16,
         useNextVariants: true
     }
 });
@@ -26,6 +45,7 @@ export const theme = createMuiTheme({
 export const styles = (theming: Theme) =>
     createStyles({
         bootstrapFormLabel: {
+            color: '#3d575d',
             fontSize: 18
         },
         bootstrapInput: {
@@ -37,8 +57,6 @@ export const styles = (theming: Theme) =>
             border: '1px solid #ced4da',
             borderRadius: 4,
             boxSizing: 'border-box',
-            fontSize: 16,
-
             fontFamily: [
                 '-apple-system',
                 'BlinkMacSystemFont',
@@ -51,6 +69,7 @@ export const styles = (theming: Theme) =>
                 '"Segoe UI Emoji"',
                 '"Segoe UI Symbol"'
             ].join(','),
+            fontSize: 16,
             height: 40,
             padding: '10px 12px',
             transition: theming.transitions.create(['border-color', 'box-shadow'])

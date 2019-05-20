@@ -8,7 +8,6 @@ import Firebase from '../firebase';
 import { connect } from 'react-redux';
 import { RootState } from '../types';
 import { logOut, saveUserData } from '../actions';
-import { Dispatch } from 'redux';
 
 interface UserMenu {
     userData: firebase.UserInfo;

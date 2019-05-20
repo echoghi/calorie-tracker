@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
-import { useWindowSize } from 'the-platform';
 import moment from 'moment';
 import {
     NoteActions,
@@ -15,13 +14,13 @@ import {
     Note
 } from './styles';
 import Input from '../Input';
+import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import produce from 'immer';
 import { Formik, FormikActions } from 'formik';
 import { validateNote, NoteValues } from '../validation';
@@ -30,6 +29,7 @@ import { FormControl, Fab } from '@material-ui/core';
 import { RootState, Day, Note as NoteProps } from '../types';
 import firebase from 'firebase';
 import EmptyNoteIcon from '../Icons/EmptyNoteIcon';
+import NoteMenu from './NoteMenu';
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
@@ -49,13 +49,13 @@ interface Notes {
 }
 
 function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
-    const { width } = useWindowSize();
-    const [activeNote, setActiveNote] = React.useState(null);
-    const [noteToEdit, setNoteToEdit] = React.useState(0);
-    const [noteToRemove, setNoteToRemove] = React.useState(0);
-    const [addNote, setAddNote] = React.useState(false);
-    const [editNote, setEditNote] = React.useState(false);
-    const [confirmationDialog, setConfirmationDialog] = React.useState(false);
+    const [activeNote, setActiveNote] = useState(null);
+    const [noteToEdit, setNoteToEdit] = useState(0);
+    const [noteToRemove, setNoteToRemove] = useState(0);
+    const [addNote, setAddNote] = useState(false);
+    const [editNote, setEditNote] = useState(false);
+    const [confirmationDialog, setConfirmationDialog] = useState(false);
+    const [open, setNoteMenu] = useState(false);
 
     function openEditModal(editIndex: number) {
         setNoteToEdit(editIndex);
@@ -102,8 +102,6 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
             }
         });
     };
-
-    const maxNoteLength = width <= 768 ? 15 : 40;
 
     function closeEditDialog() {
         setEditNote(false);
@@ -208,7 +206,9 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                     }"`}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Are you sure you want to remove this note?
+                            <Typography variant="subtitle1">
+                                Are you sure you want to remove this note?
+                            </Typography>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -337,13 +337,19 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
             {activeNote && (
                 <Dialog
                     fullWidth={true}
-                    maxWidth={'sm'}
+                    maxWidth="sm"
                     open={!!activeNote}
                     onClose={closeNoteDialog}
                 >
-                    <DialogTitle>{`${activeNote.title} - ${activeNote.time}`}</DialogTitle>
+                    <DialogTitle>
+                        {`${activeNote.title}`}
+                        <DialogContentText>{activeNote.time}</DialogContentText>
+                    </DialogTitle>
+
                     <DialogContent>
-                        <DialogContentText>{activeNote.body}</DialogContentText>
+                        <DialogContentText>
+                            <Typography variant="subtitle1">{activeNote.body}</Typography>
+                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={closeNoteDialog} color="primary">
@@ -385,24 +391,26 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
 
                             return (
                                 <Note key={i} onClick={clickHandler}>
-                                    <NoteTitle>{note.title}</NoteTitle>
+                                    <NoteTitle>
+                                        <Typography variant="h6" noWrap={true}>
+                                            {note.title}
+                                        </Typography>
+                                    </NoteTitle>
                                     <NoteBody>
-                                        <span>
-                                            {note.body.length > maxNoteLength
-                                                ? `${note.body.substring(0, maxNoteLength)}...`
-                                                : note.body}
-                                        </span>
-                                        <span>
+                                        <Typography variant="subtitle1" noWrap={true}>
+                                            {note.body}
+                                        </Typography>
+
+                                        <Typography
+                                            variant="subtitle2"
+                                            noWrap={true}
+                                            color="textSecondary"
+                                        >
                                             {note.edited ? `${note.time} (edited)` : note.time}
-                                        </span>
+                                        </Typography>
                                     </NoteBody>
                                     <NoteActions>
-                                        <IconButton onClick={editHandler}>
-                                            <i className="icon-edit" />
-                                        </IconButton>
-                                        <IconButton onClick={confirmHandler}>
-                                            <i className="icon-trash-2" />
-                                        </IconButton>
+                                        <NoteMenu remove={confirmHandler} edit={editHandler} />
                                     </NoteActions>
                                 </Note>
                             );

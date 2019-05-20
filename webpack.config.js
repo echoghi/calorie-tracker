@@ -34,7 +34,6 @@ const {
 
 module.exports = function(env, argv) {
     const isProd = argv.mode === 'production';
-    const nodeEnv = isProd ? 'production' : 'development';
 
     return {
         devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
