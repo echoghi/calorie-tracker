@@ -379,14 +379,15 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                             const editHandler = (
                                 event: React.MouseEvent<HTMLElement, MouseEvent>
                             ) => {
-                                openEditModal(i);
+                                console.log('her');
                                 event.stopPropagation();
+                                openEditModal(i);
                             };
                             const confirmHandler = (
                                 event: React.MouseEvent<HTMLElement, MouseEvent>
                             ): void => {
-                                openConfirmationDialog(i);
                                 event.stopPropagation();
+                                openConfirmationDialog(i);
                             };
 
                             return (

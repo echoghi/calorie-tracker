@@ -4,6 +4,7 @@ export const theme = createMuiTheme({
     overrides: {
         MuiButton: {
             root: {
+                fontFamily: 'Roboto',
                 fontSize: 14,
                 height: 40
             }

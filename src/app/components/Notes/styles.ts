@@ -121,6 +121,7 @@ export const Menu = styled.div`
 export const MenuItem = styled.div`
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
     transition: opacity ease-in 0.3s;
     border-top: 1px solid rgb(242, 242, 242);
     background: #fff;

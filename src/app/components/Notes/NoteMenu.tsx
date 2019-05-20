@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import OptionsIcon from '../Icons/OptionsIcons';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import IconButton from '@material-ui/core/IconButton';
@@ -15,11 +15,15 @@ export default function NoteMenu({ remove, edit }: NoteMenu) {
         event.stopPropagation();
         handleMenu(!open);
     };
-    const closeMenu = () => handleMenu(false);
+    const closeMenu = () => {
+        if (open) {
+            handleMenu(false);
+        }
+    };
 
     return (
-        <Fragment>
-            <ClickAwayListener onClickAway={closeMenu}>
+        <ClickAwayListener onClickAway={closeMenu}>
+            <div>
                 <IconButton onClick={toggleMenu}>
                     <OptionsIcon />
                 </IconButton>
@@ -33,7 +37,7 @@ export default function NoteMenu({ remove, edit }: NoteMenu) {
                         </MenuItem>
                     </Menu>
                 )}
-            </ClickAwayListener>
-        </Fragment>
+            </div>
+        </ClickAwayListener>
     );
 }
