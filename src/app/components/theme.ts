@@ -59,18 +59,6 @@ export const styles = (theming: Theme) =>
             border: '1px solid #ced4da',
             borderRadius: 4,
             boxSizing: 'border-box',
-            fontFamily: [
-                '-apple-system',
-                'BlinkMacSystemFont',
-                '"Segoe UI"',
-                'Roboto',
-                '"Helvetica Neue"',
-                'Arial',
-                'sans-serif',
-                '"Apple Color Emoji"',
-                '"Segoe UI Emoji"',
-                '"Segoe UI Symbol"'
-            ].join(','),
             fontSize: 16,
             height: 40,
             padding: '10px 12px',
@@ -85,18 +73,6 @@ export const styles = (theming: Theme) =>
             border: '1px solid #ced4da',
             borderRadius: 4,
             boxSizing: 'border-box',
-            fontFamily: [
-                '-apple-system',
-                'BlinkMacSystemFont',
-                '"Segoe UI"',
-                'Roboto',
-                '"Helvetica Neue"',
-                'Arial',
-                'sans-serif',
-                '"Apple Color Emoji"',
-                '"Segoe UI Emoji"',
-                '"Segoe UI Symbol"'
-            ].join(','),
             fontSize: 16,
             padding: '10px 12px',
             transition: theming.transitions.create(['border-color', 'box-shadow'])
@@ -126,18 +102,6 @@ export const styles = (theming: Theme) =>
             border: '1px solid #ced4da',
             borderRadius: 4,
             boxSizing: 'border-box',
-            fontFamily: [
-                '-apple-system',
-                'BlinkMacSystemFont',
-                '"Segoe UI"',
-                'Roboto',
-                '"Helvetica Neue"',
-                'Arial',
-                'sans-serif',
-                '"Apple Color Emoji"',
-                '"Segoe UI Emoji"',
-                '"Segoe UI Symbol"'
-            ].join(','),
             fontSize: 16,
             height: 40,
             padding: '10px 12px',
@@ -145,6 +109,7 @@ export const styles = (theming: Theme) =>
             width: '100%'
         },
         selectLabel: {
+            color: '#3d575d',
             fontSize: 18,
             top: '-8px'
         }

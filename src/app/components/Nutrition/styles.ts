@@ -120,8 +120,12 @@ const NutritionWrapper = styled.div`
         max-width: 1400px;
     }
 
-    @media (min-width: 769px) and (max-width: 1199px) {
-        max-width: 768px;
+    @media (min-width: 1024px) and (max-width: 1199px) {
+        padding: 80px 40px 120px;
+    }
+
+    @media (max-width: 1023px) {
+        padding: 80px 40px 120px;
     }
 
     @media (max-width: 768px) {
