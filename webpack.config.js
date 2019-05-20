@@ -278,15 +278,15 @@ module.exports = function(env, argv) {
                 new GenerateSW({
                     exclude: ['_redirects', /\.map$/],
                     runtimeCaching: [
+                        // Cache the underlying font files
                         {
-                            urlPattern: /images/,
+                            urlPattern: new RegExp(/^https:\/\/fonts\.gstatic\.com/),
                             handler: 'CacheFirst'
                         },
+                        // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
                         {
-                            urlPattern: new RegExp(
-                                '^https://fonts.(?:googleapis|gstatic).com/(.*)'
-                            ),
-                            handler: 'CacheFirst'
+                            urlPattern: new RegExp(/^https:\/\/fonts\.googleapis\.com/),
+                            handler: 'StaleWhileRevalidate'
                         },
                         {
                             urlPattern: /.*/,
