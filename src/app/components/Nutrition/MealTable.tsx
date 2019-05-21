@@ -1,31 +1,23 @@
-import React from 'react';
-import ReactTable, { SortingRule } from 'react-table';
+import React, { Fragment, useState } from 'react';
+import { SortingRule, CellInfo } from 'react-table';
 import Firebase from '../firebase';
 import produce from 'immer';
-import 'react-table/react-table.css';
 import { connect } from 'react-redux';
 import ConfirmationDialog from './ConfirmationDialog';
 import IconButton from '@material-ui/core/IconButton';
 import { errorNotification, successNotification } from '../actions';
-import {
-    trGroupProps,
-    theadThProps,
-    theadProps,
-    tableStyle,
-    getSortedComponentClass
-} from '../TableUtils';
+import Table, { tableStyle, getSortedComponentClass } from '../Table';
 import { RootState, Day } from '../types';
-import { Dispatch } from 'redux';
 import firebase from 'firebase';
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message)),
-    successMessage: (message?: string) => dispatch(successNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message),
+    successMessage: (message?: string) => successNotification(message)
+};
 
 interface MealTable {
     userData: firebase.UserInfo;
@@ -37,13 +29,13 @@ interface MealTable {
 
 /*eslint-disable */
 function MealTable({ day, userData, index, successMessage, errorMessage }: MealTable) {
-    const [sorted, setSorted] = React.useState([]);
-    const [dialog, setDialog] = React.useState(false);
-    const [mealToDelete, setMealToDelete] = React.useState(0);
+    const [sorted, setSorted] = useState([]);
+    const [dialog, setDialog] = useState(false);
+    const [mealToDelete, setMealToDelete] = useState(0);
 
-    function renderActions(rowIndex: number) {
+    function renderActions(row: CellInfo) {
         const clickHandler = () => {
-            setMealToDelete(rowIndex);
+            setMealToDelete(row.index);
             setDialog(true);
         };
 
@@ -100,14 +92,13 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
     const closeDialog = () => setDialog(false);
 
     return (
-        <React.Fragment>
-            <ReactTable
-                style={tableStyle.table}
-                data={day.nutrition.meals || []}
+        <Fragment>
+            <Table
+                data={day.nutrition.meals}
                 noDataText="No Meals Found"
                 columns={[
                     {
-                        Header: props => {
+                        Header: (props: any) => {
                             return (
                                 <span style={tableStyle.thead}>
                                     Meal
@@ -122,7 +113,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                         style: tableStyle.cell
                     },
                     {
-                        Header: props => {
+                        Header: (props: any) => {
                             return (
                                 <span style={tableStyle.thead}>
                                     Calories
@@ -137,7 +128,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                         style: tableStyle.cell
                     },
                     {
-                        Header: props => {
+                        Header: (props: any) => {
                             return (
                                 <span style={tableStyle.thead}>
                                     Protein
@@ -152,7 +143,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                         style: tableStyle.cell
                     },
                     {
-                        Header: props => {
+                        Header: (props: any) => {
                             return (
                                 <span style={tableStyle.thead}>
                                     Carbs
@@ -167,7 +158,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                         style: tableStyle.cell
                     },
                     {
-                        Header: props => {
+                        Header: (props: any) => {
                             return (
                                 <span style={tableStyle.thead}>
                                     Fat
@@ -182,8 +173,8 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                         style: tableStyle.cell
                     },
                     {
-                        Cell: row => row.original.servings || '---',
-                        Header: props => {
+                        Cell: (row: CellInfo) => row.original.servings || '---',
+                        Header: (props: any) => {
                             return (
                                 <span style={tableStyle.thead}>
                                     Servings
@@ -198,19 +189,14 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                         style: tableStyle.cell
                     },
                     {
-                        Cell: row => renderActions(row.index),
+                        Cell: renderActions,
                         Header: 'Modify',
                         accessor: 'fat',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cellCentered
                     }
                 ]}
-                getTheadProps={theadProps}
-                getTheadThProps={theadThProps}
-                getTrGroupProps={trGroupProps}
                 onSortedChange={onSortedChange}
-                defaultPageSize={10}
-                className="-striped -highlight"
             />
 
             {dialog && day.nutrition.meals && day.nutrition.meals[mealToDelete] && (
@@ -221,7 +207,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                     name={`"${day.nutrition.meals[mealToDelete].name}"`}
                 />
             )}
-        </React.Fragment>
+        </Fragment>
     );
 }
 

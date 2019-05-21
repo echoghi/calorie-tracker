@@ -204,11 +204,9 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                         day.notes && day.notes[noteToRemove] ? day.notes[noteToRemove].title : ''
                     }"`}</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                            <Typography variant="subtitle1">
-                                Are you sure you want to remove this note?
-                            </Typography>
-                        </DialogContentText>
+                        <Typography variant="subtitle1">
+                            Are you sure you want to remove this note?
+                        </Typography>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={removeHandler} color="primary" variant="contained">
@@ -346,9 +344,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                     </DialogTitle>
 
                     <DialogContent>
-                        <DialogContentText>
-                            <Typography variant="subtitle1">{activeNote.body}</Typography>
-                        </DialogContentText>
+                        <Typography variant="subtitle1">{activeNote.body}</Typography>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={closeNoteDialog} color="primary">

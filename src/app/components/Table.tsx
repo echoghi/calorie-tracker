@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+
 export const tableStyle = {
     cell: {
         alignItems: 'center',
@@ -120,3 +124,20 @@ export const trGroupProps = () => {
         style: tableStyle.tbodyTr
     };
 };
+
+export default function Table({ noDataText, columns, data, onSortedChange }: any) {
+    return (
+        <ReactTable
+            style={tableStyle.table}
+            data={data || []}
+            noDataText={noDataText}
+            columns={columns}
+            getTheadProps={theadProps}
+            getTheadThProps={theadThProps}
+            getTrGroupProps={trGroupProps}
+            onSortedChange={onSortedChange}
+            defaultPageSize={10}
+            className="-striped -highlight"
+        />
+    );
+}

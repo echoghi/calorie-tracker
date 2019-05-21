@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -22,11 +21,9 @@ const ConfirmationDialog = ({
         <Dialog fullWidth={true} maxWidth={'sm'} open={open} onClose={onClose}>
             <DialogTitle>{`Remove ${name}?`}</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    <Typography variant="subtitle1">
-                        Are you sure you want to remove this entry?
-                    </Typography>
-                </DialogContentText>
+                <Typography variant="subtitle1">
+                    Are you sure you want to remove this entry?
+                </Typography>
             </DialogContent>
             <DialogActions>
                 <Button onClick={action} color="primary" variant="contained">
