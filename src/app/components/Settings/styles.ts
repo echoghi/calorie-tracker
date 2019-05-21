@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import Input from '../Input';
+import Input from '../Inputs/Input';
 
 const SettingsWrapper = styled.div`
     padding: 20px;
@@ -33,7 +33,9 @@ const DeleteAccountWrapper = styled.div`
 `;
 
 const Container = styled.div`
-    padding: 215px 125px 30px 125px;
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 215px 0 30px;
 
     @media (max-width: 768px) {
         padding: 80px 0 90px 0;
@@ -57,38 +59,55 @@ const DisplayNameInput = styled(Input)`
     }
 `;
 
+const InfoInput = styled(Input)`
+    padding: 0 5px !important;
+    width: 90px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+`;
+
 const CalorieInput = styled(Input)`
+    width: 120px;
     margin: 0 5px !important;
     padding: 0 !important;
 
     @media (max-width: 768px) {
+        width: 100%;
         margin: 0 10px 0 0;
     }
 `;
 
 const FatInput = styled(Input)`
+    width: 120px;
     margin: 0 5px !important;
     padding: 0 !important;
 
     @media (max-width: 768px) {
+        width: 100%;
         margin: 0 10px 0 0;
     }
 `;
 
 const CarbInput = styled(Input)`
+    width: 120px;
     margin: 0 5px !important;
     padding: 0 !important;
 
     @media (max-width: 768px) {
+        width: 100%;
         margin: 0 0 0 10px;
     }
 `;
 
 const ProteinInput = styled(Input)`
+    width: 120px;
     margin: 0 5px !important;
     padding: 0 !important;
 
     @media (max-width: 768px) {
+        width: 100%;
         margin: 0 0 0 10px;
     }
 `;
@@ -128,6 +147,7 @@ export {
     SettingsWrapper,
     SettingsHeader,
     SettingsSubHeader,
+    InfoInput,
     SettingsSection,
     DeleteAccountWrapper,
     AccountInfoWrapper,

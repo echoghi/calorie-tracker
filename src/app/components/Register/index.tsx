@@ -4,7 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Paper from '@material-ui/core/Paper';
 import Firebase from '../firebase';
 import Notifications from '../Notifications';
-import Input from '../Input';
+import Input from '../Inputs/Input';
 import { Formik, FormikActions } from 'formik';
 import { validateSignUp, SignUpValues } from '../validation';
 import { withRouter, RouteComponentProps } from 'react-router-dom';

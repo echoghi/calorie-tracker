@@ -13,7 +13,7 @@ import {
     NoteBox,
     Note
 } from './styles';
-import Input from '../Input';
+import Input from '../Inputs/Input';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';

@@ -5,7 +5,7 @@ import GoalsInfo from './GoalsInfo';
 import DeleteAccount from './DeleteAccount';
 import { SettingsWrapper, Container } from './styles';
 
-const Settings = () => {
+export default function Settings() {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -20,6 +20,4 @@ const Settings = () => {
             </SettingsWrapper>
         </Container>
     );
-};
-
-export default Settings;
+}

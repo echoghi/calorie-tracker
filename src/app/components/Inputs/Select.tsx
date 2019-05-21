@@ -3,8 +3,8 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from './theme';
 import { IconProps } from '@material-ui/core/Icon';
+import { styles } from '../theme';
 
 interface Select {
     classes: any;

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Input from '../Input';
-import Button from '@material-ui/core/Button';
+import Input from '../Inputs/Input';
 import { Formik, FormikActions } from 'formik';
 import {
     MealForm as Form,

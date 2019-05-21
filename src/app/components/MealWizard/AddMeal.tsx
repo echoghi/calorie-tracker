@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../Input';
+import Input from '../Inputs/Input';
 import Button from '@material-ui/core/Button';
 import { Formik, FormikActions } from 'formik';
 import { MealForm as Form, InputWrapper, InputControl } from '../Nutrition/styles';
@@ -7,13 +7,12 @@ import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import { DBMealValues, validateNewMeal } from '../validation';
 import { errorNotification, successNotification } from '../actions';
-import { Dispatch } from 'redux';
 import { MealFormContainer } from './styles';
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    errorMessage: (message?: string) => dispatch(errorNotification(message)),
-    successMessage: (message?: string) => dispatch(successNotification(message))
-});
+const mapDispatchToProps = {
+    errorMessage: (message?: string) => errorNotification(message),
+    successMessage: (message?: string) => successNotification(message)
+};
 
 interface AddMealProps {
     errorMessage: (message?: string) => void;

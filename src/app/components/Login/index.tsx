@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Fade from '@material-ui/core/Fade';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
-import Input from '../Input';
+import Input from '../Inputs/Input';
 import Notifications from '../Notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { saveUserData, fetchData, errorNotification } from '../actions';
@@ -23,6 +23,7 @@ import {
 import { validateLogIn } from '../validation';
 import Firebase from '../firebase';
 import firebase from 'firebase';
+import { RootState } from '../types';
 
 interface LoginProps extends RouteComponentProps {
     saveUser: (data: firebase.UserInfo) => void;
@@ -31,15 +32,15 @@ interface LoginProps extends RouteComponentProps {
     showError: (message: string) => void;
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-    getUser: (id: string) => dispatch(fetchData(id)),
-    saveUser: (data: firebase.UserInfo) => dispatch(saveUserData(data)),
-    showError: (message: string) => dispatch(errorNotification(message))
-});
+const mapDispatchToProps = {
+    getUser: (id: string) => fetchData(id),
+    saveUser: (data: firebase.UserInfo) => saveUserData(data),
+    showError: (message: string) => errorNotification(message)
+};
 
 const validationConfig = (values: { email: string; password: string }) => {
     return validateLogIn(values);

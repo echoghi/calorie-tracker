@@ -3,21 +3,21 @@ import Firebase from '../firebase';
 import { connect } from 'react-redux';
 import { errorNotification, successNotification } from '../actions';
 import produce from 'immer';
-import Input from '../Input';
 import {
     SettingsHeader,
     SettingsSubHeader,
     SettingsSection,
     GenderSelectWrapper,
     FormButton,
-    AccountInfoWrapper
+    AccountInfoWrapper,
+    InfoInput
 } from './styles';
 import { RootState, UserData } from '../types';
 import firebase from 'firebase';
 import isEmpty from 'lodash.isempty';
 import { validateAccountInfo, InfoValues } from '../validation';
 import { Formik, FormikActions } from 'formik';
-import Select from '../Select';
+import Select from '../Inputs/Select';
 
 const mapStateToProps = (state: RootState) => ({
     data: state.adminState.data,
@@ -35,8 +35,6 @@ interface AccountInfo {
     successMessage: (message?: string) => void;
     errorMessage: (message?: string) => void;
 }
-
-const inputStyle = { padding: '0 5px' };
 
 const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountInfo) => {
     const [age, setAge] = useState(21);
@@ -114,34 +112,31 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <form onSubmit={handleSubmit} noValidate={true}>
                         <AccountInfoWrapper>
-                            <Input
+                            <InfoInput
                                 name="age"
                                 label="Age"
                                 type="number"
                                 error={errors.age && touched.age}
                                 onChange={handleChange}
-                                style={inputStyle}
                                 value={values.age}
                             />
 
-                            <Input
+                            <InfoInput
                                 name="height"
                                 label="Height (in)"
                                 type="number"
                                 error={errors.height && touched.height}
                                 onChange={handleChange}
-                                style={inputStyle}
                                 value={values.height}
                             />
 
-                            <Input
+                            <InfoInput
                                 name="weight"
                                 label="Weight (lb)"
                                 type="number"
                                 error={errors.weight && touched.weight}
                                 onChange={handleChange}
                                 value={values.weight}
-                                style={inputStyle}
                             />
                         </AccountInfoWrapper>
 
