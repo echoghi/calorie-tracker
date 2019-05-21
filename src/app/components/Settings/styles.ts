@@ -33,9 +33,13 @@ const DeleteAccountWrapper = styled.div`
 `;
 
 const Container = styled.div`
-    max-width: 768px;
+    max-width: 1024px;
     margin: 0 auto;
     padding: 215px 0 30px;
+
+    @media (max-width: 1024px) {
+        max-width: 768px;
+    }
 
     @media (max-width: 768px) {
         padding: 80px 0 90px 0;
