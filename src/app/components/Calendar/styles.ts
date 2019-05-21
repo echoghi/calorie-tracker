@@ -93,24 +93,19 @@ const LegendSubhead = styled.div`
 
 const Icon = styled.i`
     position: absolute;
-    height: 22px;
-    width: 22px;
+    height: 16px;
+    width: 16px;
     box-sizing: border-box;
     padding: 1px 4px;
     top: 15px;
     right: 10px;
     font-size: 14px;
     text-align: center;
-    border-radius: 50%;
+    border-radius: 3px;
 
-    &.icon-feather {
+    &.notes {
         background: #ece7fe;
         color: #6031e1;
-    }
-
-    &.icon-star-full {
-        color: #ffba00;
-        background: #ffefe7;
     }
 
     &.legend {

@@ -1,4 +1,5 @@
 import { createMuiTheme, Theme, createStyles } from '@material-ui/core/styles';
+import config from '../../config';
 
 export const theme = createMuiTheme({
     overrides: {
@@ -16,29 +17,16 @@ export const theme = createMuiTheme({
         }
     },
     palette: {
-        error: { main: 'rgb(203, 36, 49)' },
-        primary: { main: 'rgb(0, 132, 137)' },
-        secondary: { main: '#FF5A5F' },
+        error: { main: config.palette.error },
+        primary: { main: config.palette.primary },
+        secondary: { main: config.palette.secondary },
         text: {
-            primary: '#3d575d',
-            secondary: 'rgb(38, 122, 167)'
+            primary: config.palette.text.primary,
+            secondary: config.palette.text.secondary
         }
     },
     typography: {
-        fontFamily: [
-            'Varela Round',
-            'Source Sans Pro',
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"'
-        ].join(','),
+        fontFamily: config.typography.fontFamily.join(','),
         fontSize: 16,
         useNextVariants: true
     }
@@ -47,7 +35,7 @@ export const theme = createMuiTheme({
 export const styles = (theming: Theme) =>
     createStyles({
         bootstrapFormLabel: {
-            color: '#3d575d',
+            color: config.palette.text.primary,
             fontSize: 18
         },
         bootstrapInput: {
@@ -109,7 +97,7 @@ export const styles = (theming: Theme) =>
             width: '100%'
         },
         selectLabel: {
-            color: '#3d575d',
+            color: config.palette.text.primary,
             fontSize: 18,
             top: '-8px'
         }

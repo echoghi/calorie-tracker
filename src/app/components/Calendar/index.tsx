@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { useWindowSize } from 'the-platform';
-import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import isEmpty from 'lodash.isempty';
 import DayDialog from './DayDialog';
@@ -22,6 +21,7 @@ import {
     InfoIcon
 } from './styles';
 import { Day } from '../types';
+import ReactTooltip from 'react-tooltip';
 
 interface CalendarDay {
     week: number;
@@ -89,14 +89,16 @@ const Calendar = ({ data, loading }: Calendar) => {
             return null;
         }
 
+        const text =
+            dayData.notes.length === 1
+                ? 'You recorded a note'
+                : `You recorded ${dayData.notes.length} notes`;
+
         return (
-            <Tooltip
-                id="tooltip-top"
-                title={`You recorded ${dayData.notes.length} note(s)`}
-                placement="top"
-            >
-                <Icon className="icon-feather" />
-            </Tooltip>
+            <Fragment>
+                <ReactTooltip effect="solid">{text}</ReactTooltip>
+                <Icon className="notes" data-tip={`${tooltipDay.utc}`} />
+            </Fragment>
         );
     }
 

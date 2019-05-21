@@ -37,7 +37,7 @@ const Legend = () => (
                 <LegendSubhead>Icons</LegendSubhead>
             </LegendItem>
             <LegendItem>
-                <Icon className="icon-feather legend" />
+                <Icon className="notes legend" />
                 <LegendName>Notes Recorded</LegendName>
             </LegendItem>
             <LegendItem>
