@@ -52,6 +52,7 @@ function Select({ classes, label, name, id, options, error, fullWidth, ...props 
                 }}
                 inputProps={{
                     id,
+                    label: name,
                     name
                 }}
                 disableUnderline={true}

@@ -19,7 +19,7 @@ interface Input {
     placeholder?: string;
 }
 
-function Input({ classes, ...props }: Input) {
+function Input({ classes, name, ...props }: Input) {
     return (
         <TextField
             {...props}
@@ -28,7 +28,8 @@ function Input({ classes, ...props }: Input) {
                     input: props.multiline ? classes.bootstrapInputMulti : classes.bootstrapInput,
                     root: classes.bootstrapRoot
                 },
-                disableUnderline: true
+                disableUnderline: true,
+                label: name
             }}
             InputLabelProps={{
                 className: classes.bootstrapFormLabel,
