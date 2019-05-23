@@ -150,7 +150,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
                 <div>
                     {!today && (
                         <Button onClick={goToToday} color="primary" variant="outlined" size="large">
-                            Go to Today
+                            Today
                         </Button>
                     )}
                 </div>

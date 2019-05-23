@@ -25,7 +25,7 @@ interface NutritionRings {
         day: moment.Moment;
     };
     context: moment.Moment;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRings) => {

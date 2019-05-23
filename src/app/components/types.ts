@@ -38,6 +38,11 @@ export interface Day {
     [index: string]: any;
 }
 
+export interface DefaultAction {
+    data: any;
+    type: string;
+}
+
 export interface UserData {
     user: {
         age: number;

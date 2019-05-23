@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useReducer } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { useWindowSize } from 'the-platform';
 import IconButton from '@material-ui/core/IconButton';
 import isEmpty from 'lodash.isempty';
 import DayDialog from './DayDialog';
@@ -20,7 +19,7 @@ import {
     DayNumber,
     InfoIcon
 } from './styles';
-import { Day } from '../types';
+import { Day, RootState, DefaultAction } from '../types';
 import ReactTooltip from 'react-tooltip';
 
 interface CalendarDay {
@@ -45,19 +44,45 @@ interface Calendar {
     loading: boolean;
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
     data: state.adminState.data,
     loading: state.adminState.loading
 });
 
-const Calendar = ({ data, loading }: Calendar) => {
-    const [time, setTime] = useState(moment());
-    const [dayDetails, toggleBreakdown] = useState({
+const calendarState = {
+    dayDetails: {
         active: false,
-        day: null
-    });
-    const [summary, setMobileSummary] = useState({ active: false, day: null });
-    const { width } = useWindowSize();
+        day: false
+    },
+    summary: { active: false, day: false },
+    time: moment()
+};
+
+interface CalendarState {
+    dayDetails: {
+        active: boolean;
+        day: any;
+    };
+    summary: { active: boolean; day: any };
+    time: moment.Moment;
+}
+
+function reducer(state: CalendarState, action: DefaultAction) {
+    switch (action.type) {
+        case 'SET_TIME':
+            return { ...state, time: action.data };
+        case 'SET_BREAKDOWN_STATUS':
+            return { ...state, dayDetails: action.data };
+
+        case 'SET_SUMMARY':
+            return { ...state, summary: action.data };
+        default:
+            return state;
+    }
+}
+
+const Calendar = ({ data, loading }: Calendar) => {
+    const [state, dispatch] = useReducer(reducer, calendarState);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -71,12 +96,12 @@ const Calendar = ({ data, loading }: Calendar) => {
             now.month() === dayMoment.month() &&
             now.year() === dayMoment.year()
         ) {
-            if (dayMoment.month() !== time.month()) {
+            if (dayMoment.month() !== state.time.month()) {
                 return { today: true, inactive: true };
             } else {
                 return { today: true, inactive: false };
             }
-        } else if (dayMoment.month() !== time.month()) {
+        } else if (dayMoment.month() !== state.time.month()) {
             return { today: false, inactive: true };
         } else {
             return { today: false, inactive: false };
@@ -85,7 +110,7 @@ const Calendar = ({ data, loading }: Calendar) => {
 
     // Calendary Day Icons
     function DayIcons({ dayData, tooltipDay }: { dayData: Day; tooltipDay: moment.Moment }) {
-        if (width < 768 || !dayData || tooltipDay.month() !== time.month() || !dayData.notes) {
+        if (!dayData || tooltipDay.month() !== state.time.month() || !dayData.notes) {
             return null;
         }
 
@@ -122,11 +147,11 @@ const Calendar = ({ data, loading }: Calendar) => {
     function renderDays() {
         const calendarDays: React.ReactNode[] = [];
         let calendar: CalendarDay[] = [];
-        const startWeek = time
+        const startWeek = state.time
             .clone()
             .startOf('month')
             .week();
-        const endWeek = time
+        const endWeek = state.time
             .clone()
             .endOf('month')
             .week();
@@ -138,7 +163,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
-                            time
+                            state.time
                                 .week(48)
                                 .startOf('week')
                                 .clone()
@@ -151,7 +176,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
-                            time
+                            state.time
                                 .week(49)
                                 .startOf('week')
                                 .clone()
@@ -164,7 +189,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
-                            time
+                            state.time
                                 .week(50)
                                 .startOf('week')
                                 .clone()
@@ -177,7 +202,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
-                            time
+                            state.time
                                 .week(51)
                                 .startOf('week')
                                 .clone()
@@ -190,7 +215,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     days: Array(14)
                         .fill(0)
                         .map((n, i) =>
-                            time
+                            state.time
                                 .week(52)
                                 .startOf('week')
                                 .clone()
@@ -206,7 +231,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     days: Array(7)
                         .fill(0)
                         .map((n, i) =>
-                            time
+                            state.time
                                 .week(week)
                                 .startOf('week')
                                 .clone()
@@ -234,24 +259,13 @@ const Calendar = ({ data, loading }: Calendar) => {
                 }
 
                 const openBreakdown = () => {
-                    toggleBreakdown({
-                        active: true,
-                        day: week.data[j]
-                    });
-                };
-
-                const openMobileSummary = () => {
-                    if (width < 768) {
-                        setMobileSummary({
+                    dispatch({
+                        data: {
                             active: true,
                             day: week.data[j]
-                        });
-
-                        window.scrollTo({
-                            behavior: 'smooth',
-                            top: 415
-                        });
-                    }
+                        },
+                        type: 'SET_BREAKDOWN_STATUS'
+                    });
                 };
 
                 calendarDays.push(
@@ -263,12 +277,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                         <DayIcons dayData={week.data[j]} tooltipDay={calendarDay} />
 
                         {week.data[j] && moment().isSameOrAfter(calendarDay) ? (
-                            <NutritionRings
-                                day={week.data[j]}
-                                data={data}
-                                context={time}
-                                onClick={openMobileSummary}
-                            />
+                            <NutritionRings day={week.data[j]} data={data} context={state.time} />
                         ) : (
                             <div className="day__overview" />
                         )}
@@ -287,24 +296,33 @@ const Calendar = ({ data, loading }: Calendar) => {
     function changeMonth(increment: boolean) {
         if (increment) {
             // if its December, increment the year
-            if (time.get('month') === 11) {
-                setTime(moment([time.get('year') + 1, 0, 1]));
+            if (state.time.get('month') === 11) {
+                dispatch({ type: 'SET_TIME', data: moment([state.time.get('year') + 1, 0, 1]) });
             } else {
-                setTime(moment([time.get('year'), time.get('month') + 1, 1]));
+                dispatch({
+                    data: moment([state.time.get('year'), state.time.get('month') + 1, 1]),
+                    type: 'SET_TIME'
+                });
             }
         } else {
             // if its January, decrement the year
-            if (time.get('month') === 0) {
-                setTime(moment([time.get('year') - 1, 11, 1]));
+            if (state.time.get('month') === 0) {
+                dispatch({ type: 'SET_TIME', data: moment([state.time.get('year') - 1, 11, 1]) });
             } else {
-                setTime(moment([time.get('year'), time.get('month') - 1, 1]));
+                dispatch({
+                    data: moment([state.time.get('year'), state.time.get('month') - 1, 1]),
+                    type: 'SET_TIME'
+                });
             }
         }
 
-        setMobileSummary({ active: false, day: moment() });
+        dispatch({
+            data: { active: false, day: moment() },
+            type: 'SET_SUMMARY'
+        });
     }
 
-    const { active, day } = dayDetails;
+    const { active, day } = state.dayDetails;
 
     const Header = () => (
         <CalendarHeader>
@@ -320,7 +338,11 @@ const Calendar = ({ data, loading }: Calendar) => {
 
     const lastMonth = () => changeMonth(false);
     const nextMonth = () => changeMonth(true);
-    const closeBreakdown = () => toggleBreakdown({ active: false, day: null });
+    const closeBreakdown = () =>
+        dispatch({
+            data: { active: false, day: null },
+            type: 'SET_BREAKDOWN_STATUS'
+        });
 
     return (
         <Fragment>
@@ -330,18 +352,14 @@ const Calendar = ({ data, loading }: Calendar) => {
                         <i className="icon-chevron-left" />
                     </IconButton>
 
-                    <h2>
-                        {width < 768
-                            ? `${time.format('MMMM')} ${time.format('YYYY')}`
-                            : time.format('MMMM')}
-                    </h2>
+                    <h2>{state.time.format('MMMM')}</h2>
                     <IconButton aria-label="Next Month" component="div" onClick={nextMonth}>
                         <i className="icon-chevron-right" />
                     </IconButton>
                 </ToggleMonth>
 
                 {/* Desktop Year Header */}
-                <YearHeader>{time.format('YYYY')}</YearHeader>
+                <YearHeader>{state.time.format('YYYY')}</YearHeader>
                 <CalendarWrapper>
                     <CalendarContainer>
                         <Header />
@@ -351,7 +369,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                 </CalendarWrapper>
 
                 {/* Day Summary Modal */}
-                {summary.active && <DaySummary day={summary.day} />}
+                {state.summary.active && <DaySummary day={state.summary.day} />}
             </Wrapper>
 
             <DayDialog open={active} day={day} onClose={closeBreakdown} />
