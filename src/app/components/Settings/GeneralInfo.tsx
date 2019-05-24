@@ -84,6 +84,7 @@ const GeneralInfo = ({ userData, errorMessage, successMessage, saveUser }: Gener
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <form onSubmit={handleSubmit} noValidate={true}>
                         <DisplayNameInput
+                            id="name"
                             name="name"
                             label="Display Name"
                             error={errors.name && touched.name}

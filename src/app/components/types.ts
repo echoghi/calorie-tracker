@@ -39,7 +39,7 @@ export interface Day {
 }
 
 export interface DefaultAction {
-    data: any;
+    data?: any;
     type: string;
 }
 

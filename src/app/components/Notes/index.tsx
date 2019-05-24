@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment, useReducer } from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import moment from 'moment';
@@ -26,7 +26,7 @@ import { Formik, FormikActions } from 'formik';
 import { validateNote, NoteValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import { FormControl, Fab } from '@material-ui/core';
-import { RootState, Day, Note as NoteProps } from '../types';
+import { RootState, Day, Note as NoteProps, DefaultAction } from '../types';
 import firebase from 'firebase';
 import EmptyNoteIcon from '../Icons/EmptyNoteIcon';
 import NoteMenu from './NoteMenu';
@@ -48,30 +48,72 @@ interface Notes {
     successMessage: (message?: string) => void;
 }
 
+const noteState: NoteState = {
+    activeNote: null,
+    noteToRemove: 0,
+    noteToEdit: 0,
+    editNote: false,
+    addNote: false,
+    confirmationDialog: false
+};
+
+interface NoteState {
+    activeNote: number | null;
+    editNote: boolean;
+    addNote: boolean;
+    confirmationDialog: boolean;
+    noteToRemove: number;
+    noteToEdit: number;
+}
+
+function reducer(state: NoteState, action: DefaultAction) {
+    switch (action.type) {
+        case 'SET_ACTIVE_NOTE':
+            return { ...state, activeNote: action.data };
+
+        case 'SET_NOTE_REMOVE':
+            return { ...state, noteToRemove: action.data };
+
+        case 'CLEAR_ACTIVE_NOTE':
+            return { ...state, activeNote: null };
+
+        case 'TOGGLE_EDIT':
+            return { ...state, editNote: !state.editNote };
+
+        case 'TOGGLE_ADD':
+            return { ...state, addNote: !state.addNote };
+
+        case 'TOGGLE_CONFIRM':
+            return { ...state, confirmationDialog: !state.confirmationDialog };
+
+        case 'OPEN_CONFIRM_DIALOG':
+            return { ...state, confirmationDialog: true, noteToRemove: action.data };
+
+        case 'OPEN_EDIT_DIALOG':
+            return { ...state, editNote: true, noteToEdit: action.data };
+
+        default:
+            return state;
+    }
+}
+
 function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
-    const [activeNote, setActiveNote] = useState(null);
-    const [noteToEdit, setNoteToEdit] = useState(0);
-    const [noteToRemove, setNoteToRemove] = useState(0);
-    const [addNote, setAddNote] = useState(false);
-    const [editNote, setEditNote] = useState(false);
-    const [confirmationDialog, setConfirmationDialog] = useState(false);
+    const [state, dispatch] = useReducer(reducer, noteState);
 
     function openEditModal(editIndex: number) {
-        setNoteToEdit(editIndex);
-        setEditNote(true);
+        dispatch({ type: 'OPEN_EDIT_DIALOG', data: editIndex });
     }
 
     function openConfirmationDialog(confirmIndex: number) {
-        setConfirmationDialog(true);
-        setNoteToRemove(confirmIndex);
+        dispatch({ type: 'OPEN_CONFIRM_DIALOG', data: confirmIndex });
     }
 
     function openAddNoteDialog() {
-        setAddNote(true);
+        dispatch({ type: 'TOGGLE_ADD' });
     }
 
     function closeConfirmationDialog() {
-        setConfirmationDialog(false);
+        dispatch({ type: 'TOGGLE_CONFIRM' });
     }
 
     const removeNote = (noteIndex: number) => {
@@ -97,24 +139,24 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
             } else {
                 successMessage('Note Removed');
 
-                setConfirmationDialog(false);
+                dispatch({ type: 'TOGGLE_CONFIRM' });
             }
         });
     };
 
     function closeEditDialog() {
-        setEditNote(false);
+        dispatch({ type: 'TOGGLE_EDIT' });
     }
 
     function closeAddNoteDialog() {
-        setAddNote(false);
+        dispatch({ type: 'TOGGLE_ADD' });
     }
 
     function closeNoteDialog() {
-        setActiveNote(null);
+        dispatch({ type: 'CLEAR_ACTIVE_NOTE' });
     }
 
-    const removeHandler = () => removeNote(noteToRemove);
+    const removeHandler = () => removeNote(state.noteToRemove);
 
     const submitHandler = (values: NoteValues, actions: FormikActions<NoteValues>) => {
         const { title, body } = values;
@@ -149,7 +191,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
             } else {
                 successMessage('Note Added');
 
-                setAddNote(false);
+                dispatch({ type: 'TOGGLE_ADD' });
             }
         });
 
@@ -169,7 +211,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                     year: day.day.get('year')
                 };
 
-                const note = data.notes[noteToEdit];
+                const note = data.notes[state.noteToEdit];
                 note.title = title;
                 note.body = body;
                 note.time = moment().format('lll');
@@ -187,7 +229,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                 } else {
                     successMessage('Note Saved');
 
-                    setEditNote(false);
+                    dispatch({ type: 'TOGGLE_EDIT' });
                 }
             });
         }
@@ -197,11 +239,17 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
     };
 
     return (
-        <React.Fragment>
-            {confirmationDialog && (
-                <Dialog maxWidth={'md'} open={confirmationDialog} onClose={closeConfirmationDialog}>
+        <Fragment>
+            {state.confirmationDialog && (
+                <Dialog
+                    maxWidth={'md'}
+                    open={state.confirmationDialog}
+                    onClose={closeConfirmationDialog}
+                >
                     <DialogTitle>{`Remove "${
-                        day.notes && day.notes[noteToRemove] ? day.notes[noteToRemove].title : ''
+                        day.notes && day.notes[state.noteToRemove]
+                            ? day.notes[state.noteToRemove].title
+                            : ''
                     }"`}</DialogTitle>
                     <DialogContent>
                         <Typography variant="subtitle1">
@@ -219,11 +267,11 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                 </Dialog>
             )}
 
-            {editNote && (
+            {state.editNote && (
                 <Formik
                     initialValues={{
-                        body: day.notes ? day.notes[noteToEdit].body : '',
-                        title: day.notes ? day.notes[noteToEdit].title : ''
+                        body: day.notes ? day.notes[state.noteToEdit].body : '',
+                        title: day.notes ? day.notes[state.noteToEdit].title : ''
                     }}
                     validate={validateNote}
                     onSubmit={editNoteHandler}
@@ -232,7 +280,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                         <Dialog
                             fullWidth={true}
                             maxWidth={'sm'}
-                            open={editNote}
+                            open={state.editNote}
                             onClose={closeEditDialog}
                         >
                             <DialogTitle>Edit Note</DialogTitle>
@@ -241,6 +289,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                 <DialogContent>
                                     <FormControl margin="normal" fullWidth={true}>
                                         <Input
+                                            id="title"
                                             name="title"
                                             label="Title"
                                             error={errors.title && touched.title}
@@ -250,6 +299,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                     </FormControl>
                                     <FormControl margin="normal" fullWidth={true}>
                                         <Input
+                                            id="body"
                                             name="body"
                                             label="Note"
                                             multiline={true}
@@ -275,7 +325,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                 </Formik>
             )}
 
-            {addNote && (
+            {state.addNote && (
                 <Formik
                     initialValues={{
                         body: '',
@@ -288,7 +338,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                         <Dialog
                             fullWidth={true}
                             maxWidth={'sm'}
-                            open={addNote}
+                            open={state.addNote}
                             onClose={closeAddNoteDialog}
                         >
                             <DialogTitle>New Note</DialogTitle>
@@ -296,6 +346,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                 <DialogContent>
                                     <FormControl margin="normal" fullWidth={true}>
                                         <Input
+                                            id="title"
                                             name="title"
                                             label="Title"
                                             required={true}
@@ -306,6 +357,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                                     </FormControl>
                                     <FormControl margin="normal" fullWidth={true}>
                                         <Input
+                                            id="body"
                                             name="body"
                                             label="Note"
                                             multiline={true}
@@ -331,20 +383,20 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                 </Formik>
             )}
 
-            {activeNote && (
+            {state.activeNote && (
                 <Dialog
                     fullWidth={true}
                     maxWidth="sm"
-                    open={!!activeNote}
+                    open={!!state.activeNote}
                     onClose={closeNoteDialog}
                 >
                     <DialogTitle>
-                        {`${activeNote.title}`}
-                        <DialogContentText>{activeNote.time}</DialogContentText>
+                        {`${state.activeNote.title}`}
+                        <DialogContentText>{state.activeNote.time}</DialogContentText>
                     </DialogTitle>
 
                     <DialogContent>
-                        <Typography variant="subtitle1">{activeNote.body}</Typography>
+                        <Typography variant="subtitle1">{state.activeNote.body}</Typography>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={closeNoteDialog} color="primary">
@@ -370,7 +422,8 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                 <NoteContainer>
                     {day.notes &&
                         day.notes.map((note: NoteProps, i: number) => {
-                            const clickHandler = () => setActiveNote(note);
+                            const clickHandler = () =>
+                                dispatch({ data: note, type: 'SET_ACTIVE_NOTE' });
                             const editHandler = (
                                 event: React.MouseEvent<HTMLElement, MouseEvent>
                             ) => {
@@ -421,7 +474,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
                     )}
                 </NoteContainer>
             </NoteBox>
-        </React.Fragment>
+        </Fragment>
     );
 }
 

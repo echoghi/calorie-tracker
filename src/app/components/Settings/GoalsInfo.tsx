@@ -116,6 +116,7 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                     <form onSubmit={handleSubmit} noValidate={true}>
                         <GoalInputWrapper>
                             <CalorieInput
+                                id="calories"
                                 name="calories"
                                 label="Calories (kcal)"
                                 type="number"
@@ -125,6 +126,7 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                             />
 
                             <CarbInput
+                                id="carbs"
                                 name="carbs"
                                 label="Carbs (g)"
                                 type="number"
@@ -136,6 +138,7 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
 
                         <GoalInputWrapper>
                             <FatInput
+                                id="fat"
                                 name="fat"
                                 label="Fat (g)"
                                 type="number"
@@ -145,6 +148,7 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                             />
 
                             <ProteinInput
+                                id="protein"
                                 name="protein"
                                 label="Protein (g)"
                                 type="number"

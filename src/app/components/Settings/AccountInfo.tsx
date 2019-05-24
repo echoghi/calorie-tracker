@@ -113,6 +113,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                     <form onSubmit={handleSubmit} noValidate={true}>
                         <AccountInfoWrapper>
                             <InfoInput
+                                id="age"
                                 name="age"
                                 label="Age"
                                 type="number"
@@ -122,6 +123,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             />
 
                             <InfoInput
+                                id="height"
                                 name="height"
                                 label="Height (in)"
                                 type="number"
@@ -131,6 +133,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                             />
 
                             <InfoInput
+                                id="weight"
                                 name="weight"
                                 label="Weight (lb)"
                                 type="number"
@@ -142,6 +145,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
 
                         <GenderSelectWrapper>
                             <Select
+                                id="gender"
                                 name="gender"
                                 label="Gender"
                                 options={['Male', 'Female', 'Non-Binary']}
