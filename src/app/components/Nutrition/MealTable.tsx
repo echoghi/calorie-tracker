@@ -4,11 +4,11 @@ import Firebase from '../firebase';
 import produce from 'immer';
 import { connect } from 'react-redux';
 import ConfirmationDialog from './ConfirmationDialog';
-import IconButton from '@material-ui/core/IconButton';
 import { errorNotification, successNotification } from '../actions';
 import Table, { tableStyle, getSortedComponentClass } from '../Table';
 import { RootState, Day } from '../types';
 import firebase from 'firebase';
+import MealMenu from './MealMenu';
 
 const mapStateToProps = (state: RootState) => ({
     userData: state.adminState.userData
@@ -34,16 +34,13 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
     const [mealToDelete, setMealToDelete] = useState(0);
 
     function renderActions(row: CellInfo) {
-        const clickHandler = () => {
+        const confirmHandler = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+            event.stopPropagation();
             setMealToDelete(row.index);
             setDialog(true);
         };
 
-        return (
-            <IconButton onClick={clickHandler}>
-                <i className="icon-trash-2" />
-            </IconButton>
-        );
+        return <MealMenu remove={confirmHandler} />;
     }
 
     const removeMeal = (mealIndex: number) => {

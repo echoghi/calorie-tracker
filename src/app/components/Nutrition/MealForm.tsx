@@ -124,6 +124,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                         <InputWrapper>
                             <InputControl>
                                 <Input
+                                    id="name"
                                     name="name"
                                     label="Name"
                                     required={true}
@@ -135,6 +136,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                             </InputControl>
                             <InputControl>
                                 <Input
+                                    id="servings"
                                     name="servings"
                                     label="Servings"
                                     type="number"
@@ -149,6 +151,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                         <InputWrapper>
                             <InputControl>
                                 <Input
+                                    id="calories"
                                     name="calories"
                                     label="Calories"
                                     type="number"
@@ -160,6 +163,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                             </InputControl>
                             <InputControl>
                                 <Input
+                                    id="protein"
                                     name="protein"
                                     label="Protein"
                                     type="number"
@@ -174,6 +178,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                         <InputWrapper>
                             <InputControl>
                                 <Input
+                                    id="carbs"
                                     name="carbs"
                                     label="Carbs"
                                     type="number"
@@ -185,6 +190,7 @@ function MealForm({ day, index, userData, errorMessage, successMessage }: MealFo
                             </InputControl>
                             <InputControl>
                                 <Input
+                                    id="fat"
                                     name="fat"
                                     label="Fat"
                                     type="number"

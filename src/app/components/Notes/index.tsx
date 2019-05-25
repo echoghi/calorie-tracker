@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useReducer } from 'react';
+import React, { memo, Fragment, useReducer } from 'react';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import moment from 'moment';
@@ -478,7 +478,9 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
     );
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Notes);
+export default memo(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Notes)
+);

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import { Menu } from '../Notes/styles';
 
 const HeaderWrapper = styled.div`
     display: flex;
@@ -192,6 +193,12 @@ const MealsContainer = styled.div`
     }
 `;
 
+const MealMenuWrapper = styled(Menu)`
+    right: 50px;
+    width: 120px;
+    font-size: 16px;
+`;
+
 export {
     Overview,
     Box,
@@ -205,5 +212,6 @@ export {
     Grams,
     MealsContainer,
     Content,
+    MealMenuWrapper,
     InputControl
 };
