@@ -106,6 +106,10 @@ const Icon = styled.i`
     &.notes {
         background: #ece7fe;
         color: #6031e1;
+
+        @media (max-width: 768px) {
+            display: none;
+        }
     }
 
     &.legend {
