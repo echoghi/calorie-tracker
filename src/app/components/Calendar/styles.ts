@@ -6,7 +6,7 @@ const LegendWrapper = styled.div`
     border: 1px solid #e6eaee;
     height: 295px;
     margin: 0 0 0 30px;
-    min-width: 240px;
+    min-width: 200px;
     background: #ffffff;
     vertical-align: top;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
@@ -21,7 +21,6 @@ const LegendHeader = styled.div`
     font-size: 17px;
     font-weight: bold;
     border-bottom: 1px solid #e6eaee;
-    background-image: linear-gradient(to top, #f8fafc, #ffffff);
 `;
 
 const LegendBody = styled.div`
