@@ -65,6 +65,7 @@ const Register = ({ errorMessage, history }: Register) => {
                             <Form onSubmit={handleSubmit} noValidate={true}>
                                 <FormControl fullWidth={true}>
                                     <Input
+                                        id="name"
                                         name="name"
                                         label="Name"
                                         value={values.name}
@@ -78,6 +79,7 @@ const Register = ({ errorMessage, history }: Register) => {
 
                                 <FormControl fullWidth={true} margin="normal">
                                     <Input
+                                        id="email"
                                         name="email"
                                         label="Email"
                                         value={values.email}
@@ -91,6 +93,7 @@ const Register = ({ errorMessage, history }: Register) => {
 
                                 <FormControl fullWidth={true} margin="normal">
                                     <Input
+                                        id="password"
                                         name="password"
                                         label="Password"
                                         value={values.password}

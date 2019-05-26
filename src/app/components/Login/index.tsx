@@ -134,6 +134,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                 <Form onSubmit={handleSubmit} noValidate={true}>
                                     <FormControl fullWidth={true}>
                                         <Input
+                                            id="email"
                                             name="email"
                                             label="Email"
                                             value={values.email}
@@ -147,6 +148,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
 
                                     <FormControl fullWidth={true} margin="normal">
                                         <Input
+                                            id="password"
                                             name="password"
                                             label="Password"
                                             value={values.password}
