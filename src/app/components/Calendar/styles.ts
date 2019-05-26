@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Circle from '../ProgressBar/Circle';
 
 const LegendWrapper = styled.div`
     display: inline-block;
@@ -134,8 +135,7 @@ const DayOverview = styled.div`
     overflow: hidden;
 
     @media (max-width: 768px) {
-        margin: auto;
-        height: 30px;
+        display: none;
     }
 `;
 
@@ -310,6 +310,26 @@ const Day = styled.div`
     }
 `;
 
+const CalorieCircle = styled(Circle)`
+    position: relative;
+    transform: translateY(0) translateX(0);
+`;
+
+const ProteinCircle = styled(Circle)`
+    position: relative;
+    transform: translateY(-86px) translateX(1px);
+`;
+
+const CarbCircle = styled(Circle)`
+    position: relative;
+    transform: translateY(-153px) translateX(1px);
+`;
+
+const FatCircle = styled(Circle)`
+    position: relative;
+    transform: translateY(-199px) translateX(1px);
+`;
+
 export {
     Icon,
     Day,
@@ -335,5 +355,9 @@ export {
     LegendProtein,
     LegendCarbs,
     LegendFat,
-    LegendName
+    LegendName,
+    CalorieCircle,
+    ProteinCircle,
+    CarbCircle,
+    FatCircle
 };

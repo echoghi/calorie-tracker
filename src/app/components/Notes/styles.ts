@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const NotesHeader = styled.div`
+const NotesHeader = styled.div`
     padding: 10px 20px;
     font-size: 25px;
     display: flex;
@@ -13,7 +13,7 @@ export const NotesHeader = styled.div`
     }
 `;
 
-export const Note = styled.div`
+const Note = styled.div`
     padding: 15px;
     font-size: 16px;
     display: flex;
@@ -31,17 +31,17 @@ export const Note = styled.div`
     }
 `;
 
-export const NoteContainer = styled.div`
+const NoteContainer = styled.div`
     overflow: auto;
     height: 348px;
 `;
 
-export const EmptyContainer = styled.div`
+const EmptyContainer = styled.div`
     display: block;
     margin: 0 auto;
 `;
 
-export const NoNotes = styled.div`
+const NoNotes = styled.div`
     display: flex;
     align-items: center;
     height: 100%;
@@ -53,7 +53,7 @@ export const NoNotes = styled.div`
     }
 `;
 
-export const NoteBox = styled.div`
+const NoteBox = styled.div`
     position: relative;
     display: inline-block;
     height: 425px;
@@ -80,7 +80,7 @@ export const NoteBox = styled.div`
     }
 `;
 
-export const NoteTitle = styled.div`
+const NoteTitle = styled.div`
     width: 20%;
     text-align: left;
 
@@ -89,7 +89,7 @@ export const NoteTitle = styled.div`
     }
 `;
 
-export const NoteBody = styled.div`
+const NoteBody = styled.div`
     width: 50%;
     text-align: left;
 
@@ -101,12 +101,12 @@ export const NoteBody = styled.div`
     }
 `;
 
-export const NoteActions = styled.div`
+const NoteActions = styled.div`
     width: 60px;
     text-align: right;
 `;
 
-export const Menu = styled.div`
+const Menu = styled.div`
     font-family: 'Varela Round';
     padding: 20px 15px;
     border: 1px solid #dbdbdb;
@@ -118,7 +118,7 @@ export const Menu = styled.div`
     z-index: 99;
 `;
 
-export const MenuItem = styled.div`
+const MenuItem = styled.div`
     display: flex;
     justify-content: space-between;
     cursor: pointer;
@@ -136,3 +136,22 @@ export const MenuItem = styled.div`
         opacity: 0.8;
     }
 `;
+
+const iconStyle = {
+    fontSize: 20
+};
+
+export {
+    iconStyle,
+    NoteActions,
+    MenuItem,
+    Menu,
+    NoNotes,
+    NoteContainer,
+    NoteBody,
+    NoteTitle,
+    NotesHeader,
+    EmptyContainer,
+    NoteBox,
+    Note
+};

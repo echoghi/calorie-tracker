@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { withStyles, Theme } from '@material-ui/core/styles';
@@ -32,6 +32,15 @@ const styles = (theme: Theme) => ({
     }
 });
 
+const mainStyles: React.CSSProperties = {
+    boxShadow: '0 1px 32px 0 rgba(0,0,0,0.1)',
+    flexWrap: 'inherit'
+};
+
+const iconStyles = {
+    color: '#ffffff'
+};
+
 interface Content {
     onClose: (event: any) => void;
     variant: string;
@@ -60,14 +69,11 @@ const Content = ({ classes, message, onClose, variant }: Content) => (
                 className={classes.close}
                 onClick={onClose}
             >
-                <i className="icon-x2" style={{ color: '#ffffff' }} />
+                <i className="icon-x2" style={iconStyles} />
             </IconButton>
         ]}
-        style={{
-            boxShadow: '0 1px 32px 0 rgba(0,0,0,0.1)',
-            flexWrap: 'inherit'
-        }}
+        style={mainStyles}
     />
 );
 
-export default withStyles(styles)(Content);
+export default memo(withStyles(styles)(Content));

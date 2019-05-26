@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import moment from 'moment';
-import Circle from '../ProgressBar/Circle';
-import { DayOverview } from './styles';
-import { useWindowSize } from 'the-platform';
+import { DayOverview, CalorieCircle, ProteinCircle, CarbCircle, FatCircle } from './styles';
 
 interface NutritionRings {
     data: {
@@ -28,8 +26,7 @@ interface NutritionRings {
     onClick?: () => void;
 }
 
-const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRings) => {
-    const { width } = useWindowSize();
+const NutritionRings = ({ data, day, context, onClick }: NutritionRings) => {
     const { calories, protein, carbs, fat } = day.nutrition;
     const now = moment();
     let animate = false;
@@ -47,72 +44,44 @@ const NutritionRings = React.memo(({ data, day, context, onClick }: NutritionRin
 
     return (
         <DayOverview onClick={onClick}>
-            <Circle
+            <CalorieCircle
                 key={`${day.day.utc}-0`}
                 progress={calories / data.user.goals.calories}
-                size={width < 768 ? 30 : 90}
+                size={90}
                 animate={animate}
-                strokeWidth={width < 768 ? 2 : 6}
+                strokeWidth={6}
                 color="#FFAB3E"
                 trailColor="#FFE9C6"
-                style={{
-                    position: 'relative',
-                    transform:
-                        width < 768
-                            ? 'translateY(0px) translateX(-0.5px)'
-                            : 'translateY(0) translateX(0)'
-                }}
             />
-            <Circle
+            <ProteinCircle
                 key={`${day.day.utc}-1`}
                 progress={protein / data.user.goals.protein}
-                size={width < 768 ? 23 : 70}
+                size={70}
                 animate={animate}
-                strokeWidth={width < 768 ? 2 : 6}
+                strokeWidth={6}
                 color="#32C9D5"
                 trailColor="#E6FDF3"
-                style={{
-                    position: 'relative',
-                    transform:
-                        width < 768
-                            ? 'translateY(-32.5px) translateX(-.5px)'
-                            : 'translateY(-86px) translateX(1px)'
-                }}
             />
-            <Circle
-                key={`${day.day.utc}-3`}
+            <CarbCircle
+                key={`${day.day.utc}-2`}
                 progress={carbs / data.user.goals.carbs}
-                size={width < 768 ? 16 : 50}
+                size={50}
                 animate={animate}
-                strokeWidth={width < 768 ? 1 : 5}
+                strokeWidth={5}
                 color="#5B6AEE"
                 trailColor="#D0D4FA"
-                style={{
-                    position: 'relative',
-                    transform:
-                        width < 768
-                            ? 'translateY(-58px) translateX(0px)'
-                            : 'translateY(-153px) translateX(1px)'
-                }}
             />
-            <Circle
-                key={`${day.day.utc}-4`}
+            <FatCircle
+                key={`${day.day.utc}-3`}
                 progress={fat / data.user.goals.fat}
-                size={width < 768 ? 10 : 30}
+                size={30}
                 animate={animate}
-                strokeWidth={width < 768 ? 1 : 5}
+                strokeWidth={5}
                 color="#F08EC1"
                 trailColor="#FCDFED"
-                style={{
-                    position: 'relative',
-                    transform:
-                        width < 768
-                            ? 'translateY(-82px) translateX(0px)'
-                            : 'translateY(-199px) translateX(1px)'
-                }}
             />
         </DayOverview>
     );
-});
+};
 
-export default NutritionRings;
+export default memo(NutritionRings);

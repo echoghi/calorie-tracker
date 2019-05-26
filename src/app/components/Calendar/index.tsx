@@ -21,13 +21,7 @@ import {
 } from './styles';
 import { Day, RootState, DefaultAction } from '../types';
 import ReactTooltip from 'react-tooltip';
-
-interface CalendarDay {
-    week: number;
-    days: moment.Moment[];
-    data: Day[];
-    [index: number]: any;
-}
+import { makeCalendarDays } from './utils';
 
 interface Calendar {
     data: {
@@ -91,11 +85,7 @@ const Calendar = ({ data, loading }: Calendar) => {
     function handleDayProps(dayMoment: moment.Moment) {
         const now = moment();
 
-        if (
-            now.date() === dayMoment.date() &&
-            now.month() === dayMoment.month() &&
-            now.year() === dayMoment.year()
-        ) {
+        if (now.isSame(dayMoment)) {
             if (dayMoment.month() !== state.time.month()) {
                 return { today: true, inactive: true };
             } else {
@@ -127,134 +117,18 @@ const Calendar = ({ data, loading }: Calendar) => {
         );
     }
 
-    // Day Breakdown Icon
-    function DayBreakdownIcon({ dayMoment }: { dayMoment: moment.Moment }) {
-        for (const calendarDay of data.calendar) {
-            if (
-                calendarDay.day.date() === dayMoment.date() &&
-                calendarDay.day.month() === dayMoment.month() &&
-                calendarDay.day.year() === dayMoment.year()
-            ) {
-                if (moment().isSameOrAfter(dayMoment) && calendarDay) {
-                    return <InfoIcon className="icon-info" />;
-                }
-            }
-        }
-
-        return null;
-    }
-
     function renderDays() {
         const calendarDays: React.ReactNode[] = [];
-        let calendar: CalendarDay[] = [];
-        const startWeek = state.time
-            .clone()
-            .startOf('month')
-            .week();
-        const endWeek = state.time
-            .clone()
-            .endOf('month')
-            .week();
-
-        if (startWeek > endWeek) {
-            calendar = [
-                {
-                    data: [],
-                    days: Array(7)
-                        .fill(0)
-                        .map((n, i) =>
-                            state.time
-                                .week(48)
-                                .startOf('week')
-                                .clone()
-                                .add(n + i, 'day')
-                        ),
-                    week: 48
-                },
-                {
-                    data: [],
-                    days: Array(7)
-                        .fill(0)
-                        .map((n, i) =>
-                            state.time
-                                .week(49)
-                                .startOf('week')
-                                .clone()
-                                .add(n + i, 'day')
-                        ),
-                    week: 49
-                },
-                {
-                    data: [],
-                    days: Array(7)
-                        .fill(0)
-                        .map((n, i) =>
-                            state.time
-                                .week(50)
-                                .startOf('week')
-                                .clone()
-                                .add(n + i, 'day')
-                        ),
-                    week: 50
-                },
-                {
-                    data: [],
-                    days: Array(7)
-                        .fill(0)
-                        .map((n, i) =>
-                            state.time
-                                .week(51)
-                                .startOf('week')
-                                .clone()
-                                .add(n + i, 'day')
-                        ),
-                    week: 51
-                },
-                {
-                    data: [],
-                    days: Array(14)
-                        .fill(0)
-                        .map((n, i) =>
-                            state.time
-                                .week(52)
-                                .startOf('week')
-                                .clone()
-                                .add(n + i, 'day')
-                        ),
-                    week: 52
-                }
-            ];
-        } else {
-            for (let week = startWeek; week <= endWeek; week++) {
-                calendar.push({
-                    data: [],
-                    days: Array(7)
-                        .fill(0)
-                        .map((n, i) =>
-                            state.time
-                                .week(week)
-                                .startOf('week')
-                                .clone()
-                                .add(n + i, 'day')
-                        ),
-                    week
-                });
-            }
-        }
+        const calendar = makeCalendarDays(state.time);
 
         for (const week of calendar) {
             for (let j = 0; j < week.days.length; j++) {
                 const calendarDay = week.days[j];
-                // Map data to calendar day
-                for (const weekData of data.calendar) {
-                    const storeData = weekData;
 
-                    if (
-                        storeData.day.date() === calendarDay.date() &&
-                        storeData.day.month() === calendarDay.month() &&
-                        storeData.day.year() === calendarDay.year()
-                    ) {
-                        week.data[j] = storeData;
+                for (const weekData of data.calendar) {
+                    // Map data to calendar day
+                    if (weekData.day.isSame(calendarDay)) {
+                        week.data[j] = weekData;
                     }
                 }
 
@@ -276,15 +150,26 @@ const Calendar = ({ data, loading }: Calendar) => {
                         <DayNumber>{calendarDay.date()}</DayNumber>
                         <DayIcons dayData={week.data[j]} tooltipDay={calendarDay} />
 
-                        {week.data[j] && moment().isSameOrAfter(calendarDay) ? (
-                            <NutritionRings day={week.data[j]} data={data} context={state.time} />
-                        ) : (
-                            <div className="day__overview" />
-                        )}
+                        {[
+                            // Nutrition Rings
+                            week.data[j] && moment().isSameOrAfter(calendarDay) ? (
+                                <NutritionRings
+                                    key="nutrition-rings"
+                                    day={week.data[j]}
+                                    data={data}
+                                    context={state.time}
+                                />
+                            ) : (
+                                <div className="day__overview" key="empty-calendar-day" />
+                            ),
 
-                        <a onClick={openBreakdown}>
-                            <DayBreakdownIcon dayMoment={calendarDay} />
-                        </a>
+                            // Day breakdown icon
+                            moment().isSameOrAfter(calendarDay) && (
+                                <a onClick={openBreakdown} key="day-breakdown-icon">
+                                    <InfoIcon className="icon-info" />
+                                </a>
+                            )
+                        ]}
                     </DayContainer>
                 );
             }
@@ -358,7 +243,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     </IconButton>
                 </ToggleMonth>
 
-                {/* Desktop Year Header */}
+                {/* Year Header */}
                 <YearHeader>{state.time.format('YYYY')}</YearHeader>
                 <CalendarWrapper>
                     <CalendarContainer>

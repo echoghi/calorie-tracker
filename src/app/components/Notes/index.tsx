@@ -11,7 +11,8 @@ import {
     NotesHeader,
     EmptyContainer,
     NoteBox,
-    Note
+    Note,
+    iconStyle
 } from './styles';
 import Input from '../Inputs/Input';
 import Typography from '@material-ui/core/Typography';
@@ -50,11 +51,11 @@ interface Notes {
 
 const noteState: NoteState = {
     activeNote: null,
-    noteToRemove: 0,
-    noteToEdit: 0,
-    editNote: false,
     addNote: false,
-    confirmationDialog: false
+    confirmationDialog: false,
+    editNote: false,
+    noteToEdit: 0,
+    noteToRemove: 0
 };
 
 interface NoteState {
@@ -240,180 +241,198 @@ function Notes({ day, index, userData, errorMessage, successMessage }: Notes) {
 
     return (
         <Fragment>
-            {state.confirmationDialog && (
-                <Dialog
-                    maxWidth={'md'}
-                    open={state.confirmationDialog}
-                    onClose={closeConfirmationDialog}
-                >
-                    <DialogTitle>{`Remove "${
-                        day.notes && day.notes[state.noteToRemove]
-                            ? day.notes[state.noteToRemove].title
-                            : ''
-                    }"`}</DialogTitle>
-                    <DialogContent>
-                        <Typography variant="subtitle1">
-                            Are you sure you want to remove this note?
-                        </Typography>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={removeHandler} color="primary" variant="contained">
-                            Delete
-                        </Button>
-                        <Button onClick={closeConfirmationDialog} color="primary" autoFocus={true}>
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            )}
+            {[
+                // Delete confirmation dialog
+                state.confirmationDialog && (
+                    <Dialog
+                        key={0}
+                        maxWidth={'md'}
+                        open={state.confirmationDialog}
+                        onClose={closeConfirmationDialog}
+                    >
+                        <DialogTitle>{`Remove "${
+                            day.notes && day.notes[state.noteToRemove]
+                                ? day.notes[state.noteToRemove].title
+                                : ''
+                        }"`}</DialogTitle>
+                        <DialogContent>
+                            <Typography variant="subtitle1">
+                                Are you sure you want to remove this note?
+                            </Typography>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={removeHandler} color="primary" variant="contained">
+                                Delete
+                            </Button>
+                            <Button
+                                onClick={closeConfirmationDialog}
+                                color="primary"
+                                autoFocus={true}
+                            >
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                ),
 
-            {state.editNote && (
-                <Formik
-                    initialValues={{
-                        body: day.notes ? day.notes[state.noteToEdit].body : '',
-                        title: day.notes ? day.notes[state.noteToEdit].title : ''
-                    }}
-                    validate={validateNote}
-                    onSubmit={editNoteHandler}
-                >
-                    {({ values, errors, touched, handleChange, handleSubmit }) => (
-                        <Dialog
-                            fullWidth={true}
-                            maxWidth={'sm'}
-                            open={state.editNote}
-                            onClose={closeEditDialog}
-                        >
-                            <DialogTitle>Edit Note</DialogTitle>
+                // Edit note dialog
+                state.editNote && (
+                    <Formik
+                        key={1}
+                        initialValues={{
+                            body: day.notes ? day.notes[state.noteToEdit].body : '',
+                            title: day.notes ? day.notes[state.noteToEdit].title : ''
+                        }}
+                        validate={validateNote}
+                        onSubmit={editNoteHandler}
+                    >
+                        {({ values, errors, touched, handleChange, handleSubmit }) => (
+                            <Dialog
+                                fullWidth={true}
+                                maxWidth={'sm'}
+                                open={state.editNote}
+                                onClose={closeEditDialog}
+                            >
+                                <DialogTitle>Edit Note</DialogTitle>
 
-                            <form onSubmit={handleSubmit} noValidate={true}>
-                                <DialogContent>
-                                    <FormControl margin="normal" fullWidth={true}>
-                                        <Input
-                                            id="title"
-                                            name="title"
-                                            label="Title"
-                                            error={errors.title && touched.title}
-                                            value={values.title}
-                                            onChange={handleChange}
-                                        />
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth={true}>
-                                        <Input
-                                            id="body"
-                                            name="body"
-                                            label="Note"
-                                            multiline={true}
-                                            rows={6}
-                                            error={errors.body && touched.body}
-                                            value={values.body}
-                                            onChange={handleChange}
-                                        />
-                                    </FormControl>
+                                <form onSubmit={handleSubmit} noValidate={true}>
+                                    <DialogContent>
+                                        <FormControl margin="normal" fullWidth={true}>
+                                            <Input
+                                                id="title"
+                                                name="title"
+                                                label="Title"
+                                                error={errors.title && touched.title}
+                                                value={values.title}
+                                                onChange={handleChange}
+                                            />
+                                        </FormControl>
+                                        <FormControl margin="normal" fullWidth={true}>
+                                            <Input
+                                                id="body"
+                                                name="body"
+                                                label="Note"
+                                                multiline={true}
+                                                rows={6}
+                                                error={errors.body && touched.body}
+                                                value={values.body}
+                                                onChange={handleChange}
+                                            />
+                                        </FormControl>
 
+                                        <DialogActions>
+                                            <Button
+                                                type="submit"
+                                                color="primary"
+                                                variant="contained"
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button onClick={closeEditDialog} color="primary">
+                                                Cancel
+                                            </Button>
+                                        </DialogActions>
+                                    </DialogContent>
+                                </form>
+                            </Dialog>
+                        )}
+                    </Formik>
+                ),
+
+                // Add note dialog
+                state.addNote && (
+                    <Formik
+                        key={2}
+                        initialValues={{
+                            body: '',
+                            title: ''
+                        }}
+                        validate={validateNote}
+                        onSubmit={submitHandler}
+                    >
+                        {({ values, errors, touched, handleChange, handleSubmit }) => (
+                            <Dialog
+                                fullWidth={true}
+                                maxWidth={'sm'}
+                                open={state.addNote}
+                                onClose={closeAddNoteDialog}
+                            >
+                                <DialogTitle>New Note</DialogTitle>
+                                <form onSubmit={handleSubmit} noValidate={true}>
+                                    <DialogContent>
+                                        <FormControl margin="normal" fullWidth={true}>
+                                            <Input
+                                                id="title"
+                                                name="title"
+                                                label="Title"
+                                                required={true}
+                                                onChange={handleChange}
+                                                error={errors.title && touched.title}
+                                                value={values.title}
+                                            />
+                                        </FormControl>
+                                        <FormControl margin="normal" fullWidth={true}>
+                                            <Input
+                                                id="body"
+                                                name="body"
+                                                label="Note"
+                                                multiline={true}
+                                                required={true}
+                                                rows={6}
+                                                onChange={handleChange}
+                                                error={errors.body && touched.body}
+                                                value={values.body}
+                                            />
+                                        </FormControl>
+                                    </DialogContent>
                                     <DialogActions>
                                         <Button type="submit" color="primary" variant="contained">
                                             Save
                                         </Button>
-                                        <Button onClick={closeEditDialog} color="primary">
+                                        <Button onClick={closeAddNoteDialog} color="primary">
                                             Cancel
                                         </Button>
                                     </DialogActions>
-                                </DialogContent>
-                            </form>
-                        </Dialog>
-                    )}
-                </Formik>
-            )}
+                                </form>
+                            </Dialog>
+                        )}
+                    </Formik>
+                ),
 
-            {state.addNote && (
-                <Formik
-                    initialValues={{
-                        body: '',
-                        title: ''
-                    }}
-                    validate={validateNote}
-                    onSubmit={submitHandler}
-                >
-                    {({ values, errors, touched, handleChange, handleSubmit }) => (
-                        <Dialog
-                            fullWidth={true}
-                            maxWidth={'sm'}
-                            open={state.addNote}
-                            onClose={closeAddNoteDialog}
-                        >
-                            <DialogTitle>New Note</DialogTitle>
-                            <form onSubmit={handleSubmit} noValidate={true}>
-                                <DialogContent>
-                                    <FormControl margin="normal" fullWidth={true}>
-                                        <Input
-                                            id="title"
-                                            name="title"
-                                            label="Title"
-                                            required={true}
-                                            onChange={handleChange}
-                                            error={errors.title && touched.title}
-                                            value={values.title}
-                                        />
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth={true}>
-                                        <Input
-                                            id="body"
-                                            name="body"
-                                            label="Note"
-                                            multiline={true}
-                                            required={true}
-                                            rows={6}
-                                            onChange={handleChange}
-                                            error={errors.body && touched.body}
-                                            value={values.body}
-                                        />
-                                    </FormControl>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button type="submit" color="primary" variant="contained">
-                                        Save
-                                    </Button>
-                                    <Button onClick={closeAddNoteDialog} color="primary">
-                                        Cancel
-                                    </Button>
-                                </DialogActions>
-                            </form>
-                        </Dialog>
-                    )}
-                </Formik>
-            )}
+                // View note dialog
+                state.activeNote && (
+                    <Dialog
+                        key={3}
+                        fullWidth={true}
+                        maxWidth="sm"
+                        open={!!state.activeNote}
+                        onClose={closeNoteDialog}
+                    >
+                        <DialogTitle>
+                            {`${state.activeNote.title}`}
+                            <DialogContentText>{state.activeNote.time}</DialogContentText>
+                        </DialogTitle>
 
-            {state.activeNote && (
-                <Dialog
-                    fullWidth={true}
-                    maxWidth="sm"
-                    open={!!state.activeNote}
-                    onClose={closeNoteDialog}
-                >
-                    <DialogTitle>
-                        {`${state.activeNote.title}`}
-                        <DialogContentText>{state.activeNote.time}</DialogContentText>
-                    </DialogTitle>
-
-                    <DialogContent>
-                        <Typography variant="subtitle1">{state.activeNote.body}</Typography>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={closeNoteDialog} color="primary">
-                            Close
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            )}
+                        <DialogContent>
+                            <Typography variant="subtitle1">{state.activeNote.body}</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={closeNoteDialog} color="primary">
+                                Close
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                )
+            ].filter(Boolean)}
 
             <NoteBox>
                 <NotesHeader>
-                    Notes{' '}
+                    Notes
                     <Fab
                         color="primary"
                         aria-label="add note"
                         onClick={openAddNoteDialog}
-                        style={{ fontSize: 20 }}
+                        style={iconStyle}
                     >
                         <i className="icon-plus" />
                     </Fab>
