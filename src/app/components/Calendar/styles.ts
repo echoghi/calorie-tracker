@@ -68,26 +68,20 @@ const LegendCarbs = styled.div`
 `;
 
 const LegendItem = styled.div`
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 5px 0;
-
-    .icon-info {
-        display: inline-block;
-        font-size: 20px;
-        color: #3d575d;
-    }
 
     img {
         height: 20px;
         width: 20px;
-        vertical-align: text-bottom;
     }
 `;
 
 const LegendSubhead = styled.div`
     margin: 10px 0;
-    color: #7f8fa4;
-    font-size: 15px;
+    font-size: 14px;
     text-transform: uppercase;
     font-weight: 600;
 `;
@@ -216,6 +210,10 @@ const Wrapper = styled.div`
 
     @media (min-width: 1024px) and (max-width: 1199px) {
         padding: 200px 30px 30px 30px;
+    }
+
+    @media (max-width: 1024px) {
+        padding: 200px 0 30px;
     }
 
     @media (max-width: 768px) {
