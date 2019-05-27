@@ -69,8 +69,7 @@ const NutritionRings = ({ day, goals, ...props }: NutritionRings) => {
                 stroke-dasharray: ${circumference};
             }
         `;
-
-        // animations
+        // animation
         const animation = css`
             ${dash} 1s ease forwards;
         `;
