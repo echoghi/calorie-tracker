@@ -76,7 +76,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
             const parsed = queryString.parse(location.search);
             date = moment(parseInt(parsed.d, 10));
 
-            setToday(false);
+            setToday(moment().isSame(date, 'day'));
         }
 
         if (date) {
