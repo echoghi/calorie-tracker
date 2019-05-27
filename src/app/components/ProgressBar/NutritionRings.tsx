@@ -26,14 +26,14 @@ const dashOffSet = (circumference: number, progressVal: number) =>
     circumference * (1 - progressVal);
 const calcCircumference = (r: number) => 2 * Math.PI * r;
 const calcKeyframes = (circumference: number, dashOffSetVal: number) => keyframes`
-from {
-    stroke-dashoffset: 1000;
-    stroke-dasharray: 1000;
-}
-to {
-    stroke-dashoffset: ${dashOffSetVal};
-    stroke-dasharray: ${circumference};
-}
+    from {
+        stroke-dashoffset: 1000;
+        stroke-dasharray: 1000;
+    }
+    to {
+        stroke-dashoffset: ${dashOffSetVal};
+        stroke-dasharray: ${circumference};
+    }
 `;
 
 const calcAnimation = (keyframe: any) =>
@@ -43,18 +43,14 @@ const calcAnimation = (keyframe: any) =>
 
 const NutritionRings = ({ day, goals, ...props }: NutritionRings) => {
     const { calories, protein, carbs, fat } = day.nutrition;
+    // animate today's rings only
+    const animate = moment().isSame(day.day, 'day');
+
+    // progress
     const calorieProgress = progress(calories, goals.calories);
     const proteinProgress = progress(protein, goals.protein);
     const carbProgress = progress(carbs, goals.carbs);
     const fatProgress = progress(fat, goals.fat);
-
-    const now = moment();
-    let animate = false;
-
-    // Only animate today's calendar box
-    if (now.isSame(day.day, 'day')) {
-        animate = true;
-    }
 
     // circumference
     const calorieCircumference = calcCircumference(42);
