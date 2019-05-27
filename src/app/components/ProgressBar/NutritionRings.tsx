@@ -98,7 +98,7 @@ const NutritionRings = ({ day, goals, ...props }: NutritionRings) => {
     };
 
     return (
-        <NutritionRingContainer {...props} key={`${day.day.utc}`}>
+        <NutritionRingContainer {...props} key={`${day.day.utc}`} id="nutrition-ring-container">
             <svg width={90} height={90} viewBox="0 0 90 90">
                 {/* Calories */}
                 <NutritionRing

@@ -213,8 +213,8 @@ const Wrapper = styled.div`
 
     @media (max-width: 768px) {
         background: #ffffff;
-        padding: 65px 0 150px 0;
-        margin-bottom: 30px;
+        padding: 65px 0;
+        height: 100vh;
     }
 `;
 
@@ -294,7 +294,10 @@ const DayNumber = styled.div`
     left: 15px;
 
     @media (max-width: 768px) {
-        display: none;
+        left: 0;
+        top: 0;
+        right: 0;
+        text-align: center;
     }
 `;
 
@@ -308,7 +311,14 @@ const Day = styled.div`
     color: ${props => (props.today ? '#ed5454' : 'inherit')};
 
     @media (max-width: 768px) {
-        height: 60px;
+        height: 80px;
+        border: 0;
+
+        #nutrition-ring-container {
+            display: ${props => (props.inactive ? 'none' : 'flex')};
+        }
+
+        background: #ffffff;
     }
 `;
 
