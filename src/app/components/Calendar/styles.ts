@@ -103,6 +103,11 @@ const Icon = styled.i`
     font-size: 14px;
     text-align: center;
     border-radius: 3px;
+    pointer-events: auto;
+
+    &:active {
+        pointer-events: none;
+    }
 
     &.notes {
         background: #ece7fe;
