@@ -162,12 +162,14 @@ const ToggleMonth = styled.div`
     }
 
     h2 {
+        min-width: 125px;
         display: inline-block;
         vertical-align: middle;
         padding: 10px;
         margin: 0;
 
         @media (max-width: 1024px) {
+            min-width: auto;
             display: flex;
             align-items: center;
         }
