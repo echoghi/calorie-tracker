@@ -69,14 +69,9 @@ const LegendCarbs = styled.div`
 
 const LegendItem = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin: 5px 0;
-
-    img {
-        height: 20px;
-        width: 20px;
-    }
 `;
 
 const LegendSubhead = styled.div`
