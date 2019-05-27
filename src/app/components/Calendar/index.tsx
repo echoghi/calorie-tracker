@@ -50,6 +50,14 @@ interface CalendarState {
     time: moment.Moment;
 }
 
+interface DayProps {
+    today: boolean;
+    inactive: boolean;
+    onClick: () => void;
+    last: boolean;
+    first: boolean;
+}
+
 function reducer(state: CalendarState, action: DefaultAction) {
     switch (action.type) {
         case 'SET_TIME':
@@ -67,21 +75,43 @@ const Calendar = ({ data, loading, history }: Calendar) => {
         window.scrollTo(0, 0);
     }, []);
 
-    function handleDayProps(dayMoment: moment.Moment) {
+    function handleDayProps(week: moment.Moment[], dayIndex: number) {
+        const result: DayProps = {
+            first: false,
+            inactive: false,
+            last: false,
+            onClick: () => null,
+            today: false
+        };
+        const dayMoment = week[dayIndex];
         const now = moment();
         const onClick = () => history.push(`/nutrition?d=${dayMoment.format('x')}`);
 
         if (now.isSame(dayMoment)) {
             if (dayMoment.month() !== state.time.month()) {
-                return { today: true, inactive: true };
+                result.today = true;
+                result.inactive = true;
             } else {
-                return { today: true, inactive: false, onClick };
+                result.today = true;
+                result.onClick = onClick;
             }
         } else if (dayMoment.month() !== state.time.month()) {
-            return { today: false, inactive: true };
+            result.inactive = true;
         } else {
-            return { today: false, inactive: false, onClick };
+            result.onClick = onClick;
         }
+
+        // rightmost day element
+        if (dayIndex + 1 === week.length) {
+            result.last = true;
+        }
+
+        // leftmost day element
+        if (dayIndex === 0) {
+            result.first = true;
+        }
+
+        return result;
     }
 
     // Calendary Day Icons
@@ -120,7 +150,7 @@ const Calendar = ({ data, loading, history }: Calendar) => {
 
                 calendarDays.push(
                     <DayContainer
-                        {...handleDayProps(calendarDay)}
+                        {...handleDayProps(week.days, j)}
                         key={`${calendarDay.date()}-${calendarDay.get('month')}-${Math.random()}`}
                     >
                         <DayNumber>{calendarDay.date()}</DayNumber>

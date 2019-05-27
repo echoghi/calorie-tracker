@@ -270,8 +270,7 @@ const CalendarHeader = styled.div`
     grid-area: 1/1/1/8;
     display: flex;
     justify-content: space-around;
-    border: 1px solid #e6eaee;
-    border-bottom: none;
+    border-bottom: 0.5px solid #e6edef;
     background: #ffffff;
 
     span {
@@ -279,6 +278,11 @@ const CalendarHeader = styled.div`
         text-align: center;
         font-weight: bold;
         padding: 15px 0;
+    }
+
+    @media (max-width: 768px) {
+        border-top: 1px solid rgb(219, 219, 219);
+        border-bottom: 0;
     }
 `;
 
@@ -310,7 +314,9 @@ const DayNumber = styled.div`
 
 const Day = styled.div`
     position: relative;
-    border: 1px solid #e6edef;
+    border: 0.5px solid #e6edef;
+    border-right: ${props => (props.last ? 0 : '0.5px solid #e6edef')};
+    border-left: ${props => (props.first ? 0 : '0.5px solid #e6edef')};
     pointer-events: none;
     box-sizing: border-box;
     height: 150px;
