@@ -12,16 +12,24 @@ interface Circle {
     trailColor?: string;
 }
 
-const Circle = React.memo(
-    ({ progress, color, style, animate, size, strokeWidth, trailColor, ...props }: Circle) => {
-        progress = progress > 1 ? 1 : progress;
+const Circle = ({
+    progress,
+    color,
+    style,
+    animate,
+    size,
+    strokeWidth,
+    trailColor,
+    ...props
+}: Circle) => {
+    progress = progress > 1 ? 1 : progress;
 
-        const radius = size / 2 - strokeWidth / 2;
-        const center = size / 2;
-        const circumference = 2 * Math.PI * radius;
-        const dashoffset = circumference * (1 - progress);
+    const radius = size / 2 - strokeWidth / 2;
+    const center = size / 2;
+    const circumference = 2 * Math.PI * radius;
+    const dashoffset = circumference * (1 - progress);
 
-        const dash = keyframes`
+    const dash = keyframes`
         from {
             stroke-dashoffset: 1000;
             stroke-dasharray: 1000;
@@ -32,39 +40,38 @@ const Circle = React.memo(
         }
     `;
 
-        const animation = () =>
-            css`
-                ${dash} 1s ease forwards;
-            `;
-
-        const ProgressCircle = styled.circle`
-            stroke-dasharray: ${circumference};
-            stroke-linecap: round;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            animation: ${cprops => (cprops.animate ? animation : 'none')};
-            stroke-dashoffset: ${dashoffset};
-            stroke: ${color};
-            stroke-width: ${strokeWidth};
-            fill: none;
+    const animation = () =>
+        css`
+            ${dash} 1s ease forwards;
         `;
 
-        return (
-            <CircleContainer {...props}>
-                <svg width={size} height={size} style={style} viewBox={`0 0 ${size} ${size}`}>
-                    <circle
-                        cx={center}
-                        cy={center}
-                        r={radius}
-                        fill="none"
-                        stroke={trailColor || '#f4f4f4'}
-                        strokeWidth={strokeWidth}
-                    />
-                    <ProgressCircle cx={center} cy={center} r={radius} animate={animate} />
-                </svg>
-            </CircleContainer>
-        );
-    }
-);
+    const ProgressCircle = styled.circle`
+        stroke-dasharray: ${circumference};
+        stroke-linecap: round;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+        animation: ${cprops => (cprops.animate ? animation : 'none')};
+        stroke-dashoffset: ${dashoffset};
+        stroke: ${color};
+        stroke-width: ${strokeWidth};
+        fill: none;
+    `;
+
+    return (
+        <CircleContainer {...props}>
+            <svg width={size} height={size} style={style} viewBox={`0 0 ${size} ${size}`}>
+                <circle
+                    cx={center}
+                    cy={center}
+                    r={radius}
+                    fill="none"
+                    stroke={trailColor || '#f4f4f4'}
+                    strokeWidth={strokeWidth}
+                />
+                <ProgressCircle cx={center} cy={center} r={radius} animate={animate} />
+            </svg>
+        </CircleContainer>
+    );
+};
 
 export default Circle;

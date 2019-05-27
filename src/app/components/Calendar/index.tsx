@@ -137,7 +137,8 @@ const Calendar = ({ data, loading }: Calendar) => {
                             ),
 
                             // Day action menu - appears on active month only
-                            calendarDay.isSame(state.time, 'month') &&
+                            week.data[j] &&
+                                calendarDay.isSame(state.time, 'month') &&
                                 moment().isSameOrAfter(calendarDay) && (
                                     <DayMenu day={week.data[j]} />
                                 )
