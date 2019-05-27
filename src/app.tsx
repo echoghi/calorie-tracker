@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { theme } from './app/components/theme';
+import { theme, GlobalStyle } from './app/components/theme';
 import { store } from './store';
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
@@ -18,6 +18,7 @@ import registerServiceWorker from './registerServiceWorker';
 ReactDOM.render(
     <Provider store={store}>
         <MuiThemeProvider theme={theme}>
+            <GlobalStyle />
             <BrowserRouter>
                 <Switch>
                     <Route path="/login" component={Login} name="Login" />

@@ -127,6 +127,8 @@ const Icon = styled.i`
         margin: 0;
         border: none;
         margin-left: -2px;
+        vertical-align: top;
+        display: inline-block;
     }
 
     &:before {

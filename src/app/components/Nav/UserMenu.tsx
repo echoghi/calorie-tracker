@@ -72,7 +72,7 @@ function UserMenu({ userData, appLogOut, notification, saveUser }: UserMenu) {
                 {open && (
                     <div>
                         <Fade in={open}>
-                            <Menu className="logout__button" onClose={closeMenu}>
+                            <Menu onClose={closeMenu}>
                                 <MenuItem>
                                     <Link onClick={closeMenu} to="settings">
                                         Account Settings

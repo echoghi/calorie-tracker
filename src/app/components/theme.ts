@@ -1,5 +1,6 @@
 import { createMuiTheme, Theme, createStyles } from '@material-ui/core/styles';
 import config from '../../config';
+import { createGlobalStyle } from 'styled-components';
 
 export const theme = createMuiTheme({
     overrides: {
@@ -102,3 +103,35 @@ export const styles = (theming: Theme) =>
             top: '-8px'
         }
     });
+
+export const GlobalStyle = createGlobalStyle`
+    html,
+    body {
+        position: relative;
+        font: normal 14px/21px Open Sans,sans-serif;
+        font-family: Source Sans Pro,serif;
+        background: #f9f9f9;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        color: ${config.palette.text.primary};
+        overflow-x: hidden;
+    }
+    
+    a {
+        text-decoration: none;
+        color: ${config.palette.text.primary};
+    }
+
+    .clearfix:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+    
+    .table-sort {
+        font-size: 15px;
+        margin: 0 5px;
+        vertical-align: text-bottom;
+    }
+  `;
