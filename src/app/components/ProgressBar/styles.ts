@@ -4,6 +4,17 @@ const CircleContainer = styled.div`
     position: relative;
 `;
 
+const NutritionRingContainer = styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+`;
+
 const Text = styled.span`
     font-size: 1rem;
     height: 15px;
@@ -55,4 +66,4 @@ const Trail = styled.div`
     }
 `;
 
-export { CircleContainer, Text, BarWrapper, Progress, Trail };
+export { CircleContainer, Text, BarWrapper, Progress, Trail, NutritionRingContainer };

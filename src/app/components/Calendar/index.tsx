@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import isEmpty from 'lodash.isempty';
-import DayDialog from './DayDialog';
-import DaySummary from './DaySummary';
 import Legend from './Legend';
-import NutritionRings from './NutritionRings';
+import NutritionRings from '../ProgressBar/NutritionRings';
 import {
     Icon,
     Day as DayContainer,
@@ -16,12 +14,12 @@ import {
     CalendarContainer,
     YearHeader,
     CalendarHeader,
-    DayNumber,
-    InfoIcon
+    DayNumber
 } from './styles';
 import { Day, RootState, DefaultAction } from '../types';
 import ReactTooltip from 'react-tooltip';
 import { makeCalendarDays } from './utils';
+import DayMenu from './DayMenu';
 
 interface Calendar {
     data: {
@@ -44,20 +42,10 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const calendarState = {
-    dayDetails: {
-        active: false,
-        day: false
-    },
-    summary: { active: false, day: false },
     time: moment()
 };
 
 interface CalendarState {
-    dayDetails: {
-        active: boolean;
-        day: any;
-    };
-    summary: { active: boolean; day: any };
     time: moment.Moment;
 }
 
@@ -65,11 +53,7 @@ function reducer(state: CalendarState, action: DefaultAction) {
     switch (action.type) {
         case 'SET_TIME':
             return { ...state, time: action.data };
-        case 'SET_BREAKDOWN_STATUS':
-            return { ...state, dayDetails: action.data };
 
-        case 'SET_SUMMARY':
-            return { ...state, summary: action.data };
         default:
             return state;
     }
@@ -132,16 +116,6 @@ const Calendar = ({ data, loading }: Calendar) => {
                     }
                 }
 
-                const openBreakdown = () => {
-                    dispatch({
-                        data: {
-                            active: true,
-                            day: week.data[j]
-                        },
-                        type: 'SET_BREAKDOWN_STATUS'
-                    });
-                };
-
                 calendarDays.push(
                     <DayContainer
                         {...handleDayProps(calendarDay)}
@@ -156,19 +130,17 @@ const Calendar = ({ data, loading }: Calendar) => {
                                 <NutritionRings
                                     key="nutrition-rings"
                                     day={week.data[j]}
-                                    data={data}
-                                    context={state.time}
+                                    goals={data.user.goals}
                                 />
                             ) : (
                                 <div className="day__overview" key="empty-calendar-day" />
                             ),
 
-                            // Day breakdown icon
-                            moment().isSameOrAfter(calendarDay) && (
-                                <a onClick={openBreakdown} key="day-breakdown-icon">
-                                    <InfoIcon className="icon-info" />
-                                </a>
-                            )
+                            // Day action menu - appears on active month only
+                            calendarDay.isSame(state.time, 'month') &&
+                                moment().isSameOrAfter(calendarDay) && (
+                                    <DayMenu day={week.data[j]} />
+                                )
                         ]}
                     </DayContainer>
                 );
@@ -200,14 +172,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                 });
             }
         }
-
-        dispatch({
-            data: { active: false, day: moment() },
-            type: 'SET_SUMMARY'
-        });
     }
-
-    const { active, day } = state.dayDetails;
 
     const Header = () => (
         <CalendarHeader>
@@ -223,11 +188,6 @@ const Calendar = ({ data, loading }: Calendar) => {
 
     const lastMonth = () => changeMonth(false);
     const nextMonth = () => changeMonth(true);
-    const closeBreakdown = () =>
-        dispatch({
-            data: { active: false, day: null },
-            type: 'SET_BREAKDOWN_STATUS'
-        });
 
     return (
         <Fragment>
@@ -252,12 +212,7 @@ const Calendar = ({ data, loading }: Calendar) => {
                     </CalendarContainer>
                     <Legend />
                 </CalendarWrapper>
-
-                {/* Day Summary Modal */}
-                {state.summary.active && <DaySummary day={state.summary.day} />}
             </Wrapper>
-
-            <DayDialog open={active} day={day} onClose={closeBreakdown} />
         </Fragment>
     );
 };

@@ -110,7 +110,7 @@ const Register = ({ errorMessage, history }: Register) => {
                                     <Button
                                         type="submit"
                                         color="primary"
-                                        variant="raised"
+                                        variant="contained"
                                         disabled={isSubmitting}
                                     >
                                         Sign Up

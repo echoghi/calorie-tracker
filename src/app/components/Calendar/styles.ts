@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import Circle from '../ProgressBar/Circle';
+import { Menu } from '../Notes/styles';
+import { Link } from 'react-router-dom';
 
 const LegendWrapper = styled.div`
     display: inline-block;
@@ -283,21 +284,20 @@ const Meal = styled.div`
 `;
 
 const DayNumber = styled.div`
-    padding: 15px;
-    opacity: 0.8;
     font-weight: bold;
     box-sizing: border-box;
+    position: absolute;
+    top: 15px;
+    left: 15px;
 
     @media (max-width: 768px) {
-        padding: 0;
-        text-align: center;
+        display: none;
     }
 `;
 
 const Day = styled.div`
     position: relative;
     border: 1px solid #e6edef;
-    display: inline-block;
     box-sizing: border-box;
     height: 150px;
     background: ${props => (props.inactive ? '#f6fafd' : '#ffffff')};
@@ -309,24 +309,40 @@ const Day = styled.div`
     }
 `;
 
-const CalorieCircle = styled(Circle)`
-    position: relative;
-    transform: translateY(0) translateX(0);
+const DayMenuContainer = styled.div`
+    position: absolute;
+    display: flex;
+    bottom: 5px;
+    right: 5px;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
-const ProteinCircle = styled(Circle)`
-    position: relative;
-    transform: translateY(-86px) translateX(1px);
+const CalendarMenuLink = styled(Link)`
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: opacity ease-in 0.3s;
+    border-top: 1px solid rgb(242, 242, 242);
+    background: #fff;
+    padding: 10px 0;
+    text-align: left;
+
+    &:first-child {
+        border-top: 0;
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
-const CarbCircle = styled(Circle)`
-    position: relative;
-    transform: translateY(-153px) translateX(1px);
-`;
-
-const FatCircle = styled(Circle)`
-    position: relative;
-    transform: translateY(-199px) translateX(1px);
+const CalendarMenu = styled(Menu)`
+    padding: 10px 15px;
+    right: 0;
+    top: 40px;
 `;
 
 export {
@@ -345,6 +361,9 @@ export {
     CalendarWrapper,
     CalendarHeader,
     CalendarContainer,
+    DayMenuContainer,
+    CalendarMenuLink,
+    CalendarMenu,
     LegendHeader,
     LegendWrapper,
     LegendBody,
@@ -354,9 +373,5 @@ export {
     LegendProtein,
     LegendCarbs,
     LegendFat,
-    LegendName,
-    CalorieCircle,
-    ProteinCircle,
-    CarbCircle,
-    FatCircle
+    LegendName
 };

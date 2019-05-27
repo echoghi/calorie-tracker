@@ -12,6 +12,7 @@ import {
     LegendFat,
     LegendName
 } from './styles';
+import OptionsIcon from '../Icons/OptionsIcons';
 
 const Legend = () => (
     <LegendWrapper>
@@ -41,8 +42,8 @@ const Legend = () => (
                 <LegendName>Notes Recorded</LegendName>
             </LegendItem>
             <LegendItem>
-                <i className="icon-info" />
-                <LegendName>Day Breakdown</LegendName>
+                <OptionsIcon height={16} width={16} />
+                <LegendName>Day Options</LegendName>
             </LegendItem>
         </LegendBody>
     </LegendWrapper>
