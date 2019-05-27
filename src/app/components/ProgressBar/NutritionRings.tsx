@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { NutritionRingContainer } from './styles';
 import moment from 'moment';
@@ -21,123 +21,117 @@ interface NutritionRings {
     };
 }
 
-const progress = (val: number, total: number) => (val / total > 1 ? 1 : val / total);
-const dashOffSet = (circumference: number, progressVal: number) =>
-    circumference * (1 - progressVal);
-const calcCircumference = (r: number) => 2 * Math.PI * r;
-const calcKeyframes = (circumference: number, dashOffSetVal: number) => keyframes`
-    from {
-        stroke-dashoffset: 1000;
-        stroke-dasharray: 1000;
-    }
-    to {
-        stroke-dashoffset: ${dashOffSetVal};
-        stroke-dasharray: ${circumference};
-    }
+interface RingProps {
+    value: number;
+    color: string;
+    trailColor: string;
+    radius: number;
+}
+
+const Ring = styled.circle`
+    stroke-dasharray: ${props => props.circumference};
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    animation: ${props => (props.animate ? props.animation : 'none')};
+    stroke-dashoffset: ${props => props.dashoffset};
+    stroke: ${props => props.color}
+    stroke-width: 6;
+    fill: none;
 `;
 
-const calcAnimation = (keyframe: any) =>
-    css`
-        ${keyframe} 1s ease forwards;
-    `;
+const progress = (val: number, total: number) => (val / total > 1 ? 1 : val / total);
 
 const NutritionRings = ({ day, goals, ...props }: NutritionRings) => {
     const { calories, protein, carbs, fat } = day.nutrition;
-    // animate today's rings only
-    const animate = moment().isSame(day.day, 'day');
-
     // progress
     const calorieProgress = progress(calories, goals.calories);
     const proteinProgress = progress(protein, goals.protein);
     const carbProgress = progress(carbs, goals.carbs);
     const fatProgress = progress(fat, goals.fat);
+    // animate today's rings only
+    const animate = moment().isSame(day.day, 'day');
 
-    // circumference
-    const calorieCircumference = calcCircumference(42);
-    const proteinCircumference = calcCircumference(32);
-    const carbCircumference = calcCircumference(22.5);
-    const fatCircumference = calcCircumference(12.5);
+    // circle progress component
+    const NutritionRing = ({ value, color, trailColor, radius }: RingProps) => {
+        // circumference
+        const circumference = 2 * Math.PI * radius;
+        // stroke-dashoffset
+        const dashoffset = circumference * (1 - value);
+        // keyframes
+        const dash = keyframes`
+            from {
+                stroke-dashoffset: 1000;
+                stroke-dasharray: 1000;
+            }
+            to {
+                stroke-dashoffset: ${dashoffset};
+                stroke-dasharray: ${circumference};
+            }
+        `;
 
-    // stroke-dashoffset
-    const calorieDashoffset = dashOffSet(calorieCircumference, calorieProgress);
-    const proteinDashoffset = dashOffSet(proteinCircumference, proteinProgress);
-    const carbDashoffset = dashOffSet(carbCircumference, carbProgress);
-    const fatDashoffset = dashOffSet(fatCircumference, fatProgress);
+        // animations
+        const animation = css`
+            ${dash} 1s ease forwards;
+        `;
 
-    // keyframes
-    const calorieDash = calcKeyframes(calorieCircumference, calorieDashoffset);
-    const proteinDash = calcKeyframes(proteinCircumference, proteinDashoffset);
-    const carbDash = calcKeyframes(carbCircumference, carbDashoffset);
-    const fatDash = calcKeyframes(fatCircumference, fatDashoffset);
+        const ringProps = {
+            animate,
+            animation,
+            circumference,
+            color,
+            dashoffset
+        };
 
-    // animations
-    const calorieAnimation = calcAnimation(calorieDash);
-    const proteinAnimation = calcAnimation(proteinDash);
-    const carbAnimation = calcAnimation(carbDash);
-    const fatAnimation = calcAnimation(fatDash);
-
-    const CalorieCircle = styled.circle`
-        stroke-dasharray: ${calorieCircumference};
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        animation: ${cprops => (cprops.animate ? calorieAnimation : 'none')};
-        stroke-dashoffset: ${calorieDashoffset};
-        stroke: #ffab3e;
-        stroke-width: 6;
-        fill: none;
-    `;
-
-    const ProteinCircle = styled.circle`
-        stroke-dasharray: ${proteinCircumference};
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        animation: ${cprops => (cprops.animate ? proteinAnimation : 'none')};
-        stroke-dashoffset: ${proteinDashoffset};
-        stroke: #32c9d5;
-        stroke-width: 6;
-        fill: none;
-    `;
-
-    const CarbCircle = styled.circle`
-        stroke-dasharray: ${carbCircumference};
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        animation: ${cprops => (cprops.animate ? carbAnimation : 'none')};
-        stroke-dashoffset: ${carbDashoffset};
-        stroke: #5b6aee;
-        stroke-width: 6;
-        fill: none;
-    `;
-
-    const FatCircle = styled.circle`
-        stroke-dasharray: ${fatCircumference};
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-        animation: ${cprops => (cprops.animate ? fatAnimation : 'none')};
-        stroke-dashoffset: ${fatDashoffset};
-        stroke: #f08ec1;
-        stroke-width: 6;
-        fill: none;
-    `;
+        return (
+            <Fragment>
+                <circle
+                    cx={45}
+                    cy={45}
+                    r={radius}
+                    fill="none"
+                    stroke={trailColor}
+                    strokeWidth={6}
+                />
+                <Ring cx={45} cy={45} r={radius} {...ringProps} />
+            </Fragment>
+        );
+    };
 
     return (
         <NutritionRingContainer {...props} key={`${day.day.utc}`}>
             <svg width={90} height={90} viewBox="0 0 90 90">
-                <circle cx={45} cy={45} r={42} fill="none" stroke="#FFE9C6" strokeWidth={6} />
-                <CalorieCircle cx={45} cy={45} r={42} animate={animate} />
+                {/* Calories */}
+                <NutritionRing
+                    color="#ffab3e"
+                    trailColor="#FFE9C6"
+                    radius={42}
+                    value={calorieProgress}
+                />
 
-                <circle cx={45} cy={45} r={32} fill="none" stroke="#E6FDF3" strokeWidth={6} />
-                <ProteinCircle cx={45} cy={45} r={32} animate={animate} />
+                {/* Protein */}
+                <NutritionRing
+                    color="#32c9d5"
+                    trailColor="#E6FDF3"
+                    radius={32}
+                    value={proteinProgress}
+                />
 
-                <circle cx={45} cy={45} r={22.5} fill="none" stroke="#D0D4FA" strokeWidth={6} />
-                <CarbCircle cx={45} cy={45} r={22.5} animate={animate} />
+                {/* Carbs */}
+                <NutritionRing
+                    color="#5b6aee"
+                    trailColor="#D0D4FA"
+                    radius={22.5}
+                    value={carbProgress}
+                />
 
-                <circle cx={45} cy={45} r={12.5} fill="none" stroke="#FCDFED" strokeWidth={6} />
-                <FatCircle cx={45} cy={45} r={12.5} animate={animate} />
+                {/* Fat */}
+                <NutritionRing
+                    color="#f08ec1"
+                    trailColor="#FCDFED"
+                    radius={12.5}
+                    value={fatProgress}
+                />
             </svg>
         </NutritionRingContainer>
     );

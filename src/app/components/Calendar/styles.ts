@@ -107,6 +107,7 @@ const Icon = styled.i`
     &.notes {
         background: #ece7fe;
         color: #6031e1;
+        z-index: 99;
 
         @media (max-width: 768px) {
             display: none;
@@ -329,6 +330,7 @@ const CalendarMenuLink = styled(Link)`
     transition: opacity ease-in 0.3s;
     border-top: 1px solid rgb(242, 242, 242);
     background: #fff;
+    font-size: 16px;
     padding: 10px 0;
     text-align: left;
 
