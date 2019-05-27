@@ -20,8 +20,9 @@ import { Day, RootState, DefaultAction } from '../types';
 import ReactTooltip from 'react-tooltip';
 import { makeCalendarDays } from './utils';
 import DayMenu from './DayMenu';
+import { RouteChildrenProps } from 'react-router';
 
-interface Calendar {
+interface Calendar extends RouteChildrenProps {
     data: {
         user: {
             goals: {
@@ -59,7 +60,7 @@ function reducer(state: CalendarState, action: DefaultAction) {
     }
 }
 
-const Calendar = ({ data, loading }: Calendar) => {
+const Calendar = ({ data, loading, history }: Calendar) => {
     const [state, dispatch] = useReducer(reducer, calendarState);
 
     useEffect(() => {
@@ -68,17 +69,18 @@ const Calendar = ({ data, loading }: Calendar) => {
 
     function handleDayProps(dayMoment: moment.Moment) {
         const now = moment();
+        const onClick = () => history.push(`/nutrition?d=${dayMoment.format('x')}`);
 
         if (now.isSame(dayMoment)) {
             if (dayMoment.month() !== state.time.month()) {
                 return { today: true, inactive: true };
             } else {
-                return { today: true, inactive: false };
+                return { today: true, inactive: false, onClick };
             }
         } else if (dayMoment.month() !== state.time.month()) {
             return { today: false, inactive: true };
         } else {
-            return { today: false, inactive: false };
+            return { today: false, inactive: false, onClick };
         }
     }
 

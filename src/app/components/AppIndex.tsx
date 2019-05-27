@@ -74,7 +74,7 @@ interface AppIndex extends RouteComponentProps {
 }
 
 const SettingsImport = () => <Settings />;
-const CalendarImport = () => <Calendar />;
+const CalendarImport = (props: RouteComponentProps) => <Calendar {...props} />;
 const NutritionImport = () => <Nutrition />;
 
 function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }: AppIndex) {

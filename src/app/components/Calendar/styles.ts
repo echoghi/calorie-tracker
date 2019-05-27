@@ -304,6 +304,7 @@ const DayNumber = styled.div`
 const Day = styled.div`
     position: relative;
     border: 1px solid #e6edef;
+    pointer-events: none;
     box-sizing: border-box;
     height: 150px;
     background: ${props => (props.inactive ? '#f6fafd' : '#ffffff')};
@@ -311,6 +312,7 @@ const Day = styled.div`
     color: ${props => (props.today ? '#ed5454' : 'inherit')};
 
     @media (max-width: 768px) {
+        pointer-events: auto;
         height: 80px;
         border: 0;
 
@@ -324,6 +326,7 @@ const Day = styled.div`
 
 const DayMenuContainer = styled.div`
     position: absolute;
+    pointer-events: auto;
     display: flex;
     bottom: 5px;
     right: 5px;

@@ -115,7 +115,7 @@ const Menu = styled.div`
     position: absolute;
     width: 100px;
     right: 10px;
-    z-index: 99;
+    z-index: 999;
 `;
 
 const MenuItem = styled.div`
