@@ -83,14 +83,14 @@ const LegendSubhead = styled.div`
 
 const Icon = styled.i`
     position: absolute;
-    height: 16px;
-    width: 16px;
+    height: 15px;
+    width: 15px;
     box-sizing: border-box;
-    top: 15px;
-    right: 10px;
+    top: 18px;
+    right: 18px;
     font-size: 14px;
     text-align: center;
-    border-radius: 3px;
+    border-radius: 50%;
     pointer-events: auto;
 
     &:active {
@@ -102,7 +102,6 @@ const Icon = styled.i`
         z-index: 99;
 
         @media (max-width: 768px) {
-            border-radius: 50%;
             height: 8px;
             width: 8px;
             right: 4px;
