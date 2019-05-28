@@ -127,8 +127,10 @@ const Calendar = ({ data, loading, history }: Calendar) => {
 
         return (
             <Fragment>
-                <ReactTooltip effect="solid">{text}</ReactTooltip>
-                <Icon className="notes" data-tip={`${tooltipDay.utc}`} />
+                <ReactTooltip id={`${tooltipDay.utc()}`} effect="solid">
+                    {text}
+                </ReactTooltip>
+                <Icon className="notes" data-tip={true} data-for={`${tooltipDay.utc()}`} />
             </Fragment>
         );
     }

@@ -86,7 +86,6 @@ const Icon = styled.i`
     height: 16px;
     width: 16px;
     box-sizing: border-box;
-    padding: 1px 4px;
     top: 15px;
     right: 10px;
     font-size: 14px;
@@ -99,12 +98,14 @@ const Icon = styled.i`
     }
 
     &.notes {
-        background: #ece7fe;
-        color: #6031e1;
+        background: #99ff74;
         z-index: 99;
 
         @media (max-width: 768px) {
-            display: none;
+            border-radius: 50%;
+            height: 8px;
+            width: 8px;
+            right: 4px;
         }
     }
 
