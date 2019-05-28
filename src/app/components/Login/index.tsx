@@ -18,7 +18,8 @@ import {
     ErrorMessage,
     SignUpLink,
     SignUpText,
-    SignUp
+    SignUp,
+    LoginFooter
 } from './styles';
 import { validateLogIn } from '../validation';
 import Firebase from '../firebase';
@@ -182,10 +183,18 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                         </Button>
                                     </FormControl>
 
-                                    <SignUp>
-                                        <SignUpText>New User?</SignUpText>
-                                        <SignUpLink to="/register">Sign Up</SignUpLink>
-                                    </SignUp>
+                                    <LoginFooter>
+                                        <SignUp>
+                                            <SignUpText>New User?</SignUpText>
+                                            <SignUpLink to="/register">Sign Up</SignUpLink>
+                                        </SignUp>
+
+                                        <SignUp>
+                                            <SignUpLink to="/reset-password">
+                                                Forgot your password?
+                                            </SignUpLink>
+                                        </SignUp>
+                                    </LoginFooter>
                                 </Form>
                             </Fade>
                         )}

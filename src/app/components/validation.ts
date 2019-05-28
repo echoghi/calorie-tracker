@@ -54,6 +54,14 @@ export interface SignUpValidator {
     password: 'Required' | 'Password must be at least 6 characters long.' | false;
 }
 
+export interface ResetPasswordValues {
+    email: string;
+}
+
+export interface ResetPasswordValidator {
+    email: 'Required' | false;
+}
+
 export function defaultValidator(name: string) {
     if (!name) {
         return 'Required';
@@ -112,6 +120,16 @@ export function validateSignUp(values: SignUpValues): SignUpValidator | {} {
             email: validateEmail(values.email),
             name: defaultValidator(values.name),
             password: validatePassword(values.password)
+        };
+    } else {
+        return {};
+    }
+}
+
+export function validateResetPassword(values: ResetPasswordValues): ResetPasswordValidator | {} {
+    if (validateEmail(values.email)) {
+        return {
+            email: validateEmail(values.email)
         };
     } else {
         return {};

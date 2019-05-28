@@ -22,6 +22,13 @@ const Header = styled.div`
     color: rgb(0, 132, 137);
 `;
 
+const SubHeader = styled.p`
+    font-size: 14px;
+    font-weight: normal;
+    padding: 15px 25px 0;
+    margin: 0;
+`;
+
 const Wrapper = styled.div`
     width: 450px;
     border-radius: 4px 4px 0 0;
@@ -60,6 +67,11 @@ const SignUp = styled.div`
     margin-top: 25px;
 `;
 
+const LoginFooter = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
 export {
     Header,
     Container,
@@ -69,5 +81,7 @@ export {
     SignUpLink,
     SignUpText,
     SignUp,
-    BackToLogin
+    BackToLogin,
+    LoginFooter,
+    SubHeader
 };

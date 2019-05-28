@@ -12,6 +12,7 @@ import { store } from './store';
 import AppIndex from './app/components/AppIndex';
 import Login from './app/components/Login';
 import Register from './app/components/Register';
+import ResetPassword from './app/components/ResetPassword';
 // Service Worker
 import registerServiceWorker from './registerServiceWorker';
 
@@ -23,6 +24,7 @@ ReactDOM.render(
                 <Switch>
                     <Route path="/login" component={Login} name="Login" />
                     <Route path="/register" component={Register} name="Register" />
+                    <Route path="/reset-password" component={ResetPassword} name="Reset Password" />
                     <Route path="/" component={AppIndex} />
                 </Switch>
             </BrowserRouter>
