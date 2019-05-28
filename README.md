@@ -2,6 +2,12 @@
 
 A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Hosted on Netlify.
 
+## Features
+- Fully functional offline PWA built with [Workbox](https://developers.google.com/web/tools/workbox/)
+- Custom [Material-UI](https://material-ui.com/) theming.
+- Forms built with [Formik](https://jaredpalmer.com/formik/).
+- Nutrition calendar component build with CSS grid.
+- react-error-overlay, TypeScript, and eslint/tslint powered Webpack dev environment.
 
 ## 🚀 Quick start
 
