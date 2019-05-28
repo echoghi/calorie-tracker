@@ -7,7 +7,7 @@ A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Host
 - Custom [Material-UI](https://material-ui.com/) theming.
 - Forms built with [Formik](https://jaredpalmer.com/formik/).
 - Nutrition calendar component build with CSS grid.
-- react-error-overlay, TypeScript, and eslint/tslint powered Webpack dev environment.
+- TypeScript, react-error-overlay, and eslint/tslint powered Webpack dev environment.
 
 ## 🚀 Quick start
 
