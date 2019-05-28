@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import Firebase from '../firebase';
 import Notifications from '../Notifications';
@@ -75,36 +76,38 @@ const ResetPassword = ({ errorMessage }: ResetPassword) => {
                             handleSubmit,
                             isSubmitting
                         }) => (
-                            <Form onSubmit={handleSubmit} noValidate={true}>
-                                <FormControl fullWidth={true} margin="normal">
-                                    <Input
-                                        id="email"
-                                        name="email"
-                                        label="Email"
-                                        value={values.email}
-                                        onChange={handleChange}
-                                        error={errors.email && touched.email}
-                                    />
-                                    <ErrorMessage>
-                                        {errors.email && touched.email && errors.email}
-                                    </ErrorMessage>
-                                </FormControl>
+                            <Fade in={true}>
+                                <Form onSubmit={handleSubmit} noValidate={true}>
+                                    <FormControl fullWidth={true} margin="normal">
+                                        <Input
+                                            id="email"
+                                            name="email"
+                                            label="Email"
+                                            value={values.email}
+                                            onChange={handleChange}
+                                            error={errors.email && touched.email}
+                                        />
+                                        <ErrorMessage>
+                                            {errors.email && touched.email && errors.email}
+                                        </ErrorMessage>
+                                    </FormControl>
 
-                                <FormControl fullWidth={true} margin="normal">
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        variant="contained"
-                                        disabled={isSubmitting}
-                                    >
-                                        Reset Password
-                                    </Button>
-                                </FormControl>
+                                    <FormControl fullWidth={true} margin="normal">
+                                        <Button
+                                            type="submit"
+                                            color="primary"
+                                            variant="contained"
+                                            disabled={isSubmitting}
+                                        >
+                                            Reset Password
+                                        </Button>
+                                    </FormControl>
 
-                                <FormControl fullWidth={true} margin="normal">
-                                    <BackToLogin to="/login">Back to Log In</BackToLogin>
-                                </FormControl>
-                            </Form>
+                                    <FormControl fullWidth={true} margin="normal">
+                                        <BackToLogin to="/login">Back to Log In</BackToLogin>
+                                    </FormControl>
+                                </Form>
+                            </Fade>
                         )}
                     </Formik>
                 </Wrapper>
