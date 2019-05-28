@@ -40,7 +40,7 @@ export const Name = styled.div`
     font-style: italic;
 
     @media (max-width: 768px) {
-        display: none;
+        font-size: 25px;
     }
 `;
 
