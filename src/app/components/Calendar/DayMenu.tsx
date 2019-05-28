@@ -25,7 +25,7 @@ export default function DayMenu({ day }: DayMenu) {
         <ClickAwayListener onClickAway={closeMenu}>
             <DayMenuContainer>
                 <IconButton onClick={toggleMenu}>
-                    <OptionsIcon height={16} width={16} />
+                    <OptionsIcon height={16} width={16} orientation="vertical" />
                 </IconButton>
                 {open && (
                     <CalendarMenu>
