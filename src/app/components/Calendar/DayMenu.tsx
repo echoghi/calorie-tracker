@@ -5,11 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { DayMenuContainer, CalendarMenu, CalendarMenuLink } from './styles';
 import { Day } from '../types';
 
-interface DayMenu {
-    day: Day;
-}
-
-export default function DayMenu({ day }: DayMenu) {
+export default function DayMenu({ day }: { day: Day }) {
     const [open, handleMenu] = useState(false);
     const toggleMenu = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation();
@@ -20,6 +16,7 @@ export default function DayMenu({ day }: DayMenu) {
             handleMenu(false);
         }
     };
+    const editLink = `/nutrition?d=${day.day.format('x')}`;
 
     return (
         <ClickAwayListener onClickAway={closeMenu}>
@@ -29,7 +26,7 @@ export default function DayMenu({ day }: DayMenu) {
                 </IconButton>
                 {open && (
                     <CalendarMenu>
-                        <CalendarMenuLink to={`/nutrition?d=${day.day.format('x')}`}>
+                        <CalendarMenuLink to={editLink}>
                             Edit <i className="icon-edit" />
                         </CalendarMenuLink>
                     </CalendarMenu>

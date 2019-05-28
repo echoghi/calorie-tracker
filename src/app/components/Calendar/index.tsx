@@ -151,10 +151,7 @@ const Calendar = ({ data, loading, history }: Calendar) => {
                 }
 
                 calendarDays.push(
-                    <DayContainer
-                        {...handleDayProps(week.days, j)}
-                        key={`${calendarDay.date()}-${calendarDay.get('month')}-${Math.random()}`}
-                    >
+                    <DayContainer {...handleDayProps(week.days, j)} key={`${calendarDay.utc()}`}>
                         <DayNumber>{calendarDay.date()}</DayNumber>
                         <DayIcons dayData={week.data[j]} tooltipDay={calendarDay} />
 
@@ -174,7 +171,7 @@ const Calendar = ({ data, loading, history }: Calendar) => {
                             week.data[j] &&
                                 calendarDay.isSame(state.time, 'month') &&
                                 moment().isSameOrAfter(calendarDay) && (
-                                    <DayMenu day={week.data[j]} />
+                                    <DayMenu day={week.data[j]} key="day-menu" />
                                 )
                         ]}
                     </DayContainer>
