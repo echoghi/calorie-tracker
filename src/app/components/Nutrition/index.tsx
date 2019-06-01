@@ -69,6 +69,10 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     const [today, setToday] = useState(true);
     const { width } = useWindowSize();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const loadDay = () => {
         let date: moment.Moment;
 
