@@ -5,38 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Slide from '@material-ui/core/Slide';
 import { closeSnackBar, processQueue } from '../actions';
 import Content from './Content';
+import { RootState } from '../types';
 
-interface UserProps {
-    uid: string;
-}
-
-interface State {
-    adminState: {
-        data: {};
-        day: {
-            day: {};
-            todayButton: boolean;
-            formattedDay: {};
-            requestedDate: boolean;
-            dayRef: {};
-            dayIndex: 0;
-        };
-        error: boolean;
-        userData: UserProps;
-        userLoading: true;
-        loading: boolean;
-        success: boolean;
-    };
-    notificationState: {
-        open: boolean;
-        message: string;
-        type: string;
-        queue: any[];
-        duration: number;
-    };
-}
-
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: RootState) => ({
     duration: state.notificationState.duration,
     message: state.notificationState.message,
     open: state.notificationState.open,
@@ -44,10 +15,10 @@ const mapStateToProps = (state: State) => ({
     type: state.notificationState.type
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-    close: () => dispatch(closeSnackBar()),
-    process: () => dispatch(processQueue())
-});
+const mapDispatchToProps = {
+    close: () => closeSnackBar(),
+    process: () => processQueue()
+};
 
 const styles = (theme: any) => ({
     margin: {
