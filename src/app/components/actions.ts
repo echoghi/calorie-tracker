@@ -2,6 +2,7 @@ import Firebase from './firebase';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 import firebase from 'firebase';
+import { Meal } from './types';
 
 const usersRef = Firebase.db.ref('users');
 
@@ -30,6 +31,13 @@ export function receiveData<T>(data: T) {
 export function loadingData() {
     return {
         type: 'LOADING_DATA'
+    };
+}
+
+export function copyMeal(data: Meal) {
+    return {
+        data,
+        type: 'COPY_MEAL'
     };
 }
 

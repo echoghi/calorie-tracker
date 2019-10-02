@@ -79,6 +79,20 @@ export interface AdminState {
     success: boolean;
 }
 
+export interface MealFormState {
+    name: string;
+    fat: string;
+    calories: string;
+    carbs: string;
+    protein: string;
+    servings: string;
+    [index: string]: string;
+}
+
+export interface MealState {
+    meal: MealFormState;
+}
+
 export interface Queue {
     duration: number;
     key: number;
@@ -97,6 +111,7 @@ export interface NotificationState {
 export interface RootState {
     notificationState: NotificationState;
     adminState: AdminState;
+    mealState: MealState;
 }
 
 export interface Register extends RouteComponentProps {

@@ -40,7 +40,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
             setDialog(true);
         };
 
-        return <MealMenu remove={confirmHandler} />;
+        return <MealMenu remove={confirmHandler} data={row.original} />;
     }
 
     const removeMeal = (mealIndex: number) => {

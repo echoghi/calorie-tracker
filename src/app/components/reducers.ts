@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { AdminState } from './types';
+import { AdminState, MealState, NotificationState, Queue } from './types';
 
 export interface ActionTypes {
     data: any;
@@ -65,19 +65,27 @@ export function adminState(
     });
 }
 
-interface Queue {
-    duration: number;
-    key: number;
-    message: string;
-    type: string;
-}
+export function mealState(
+    state: MealState = {
+        meal: {
+            calories: '0',
+            carbs: '0',
+            fat: '0',
+            name: '',
+            protein: '0',
+            servings: '0'
+        }
+    },
+    action: ActionTypes
+) {
+    return produce(state, nextState => {
+        switch (action.type) {
+            case 'COPY_MEAL':
+                nextState.meal = action.data;
 
-interface NotificationState {
-    queue: Queue[];
-    open: boolean;
-    duration: number;
-    message: string;
-    type: string;
+                return;
+        }
+    });
 }
 
 export function notificationState(

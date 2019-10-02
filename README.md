@@ -31,7 +31,3 @@ A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Host
     # build for prod with bundle analyzer
     yarn build:debug
     ```
-
-3.  **Deploy your own Doughboy tracker**
-
-    [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/echoghi/doughboy)

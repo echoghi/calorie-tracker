@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from '../Inputs/Input';
 import { Formik, FormikActions } from 'formik';
 import {
@@ -15,7 +15,7 @@ import produce from 'immer';
 import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 import firebase from 'firebase';
-import { RootState, Day } from '../types';
+import { RootState, Day, MealFormState } from '../types';
 
 const mapDispatchToProps = {
     errorMessage: (message?: string) => errorNotification(message),
@@ -23,6 +23,7 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: RootState) => ({
+    meal: state.mealState.meal,
     userData: state.adminState.userData
 });
 
@@ -32,16 +33,24 @@ interface MealForm {
     userData: firebase.UserInfo;
     errorMessage: (message?: string) => void;
     successMessage: (message?: string) => void;
+    meal: MealFormState;
 }
 
-function MealForm({ day, index, userData, errorMessage, successMessage }: MealForm) {
+function MealForm({ day, index, userData, meal, errorMessage, successMessage }: MealForm) {
+    const { calories, carbs, fat, name, protein, servings } = meal;
+
+    // populate form on copy
+    useEffect(() => {
+        setFormValues(meal);
+    }, [meal]);
+
     const [formValues, setFormValues] = useState({
-        calories: '0',
-        carbs: '0',
-        fat: '0',
-        name: '',
-        protein: '0',
-        servings: '0'
+        calories,
+        carbs,
+        fat,
+        name,
+        protein,
+        servings
     });
 
     const saveMeal = (values: MealValues, actions: FormikActions<MealValues>) => {

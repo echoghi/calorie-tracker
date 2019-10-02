@@ -9,48 +9,12 @@ import Notifications from './Notifications';
 import NavBar from './Nav';
 import isEmpty from 'lodash.isempty';
 import firebase from 'firebase';
+import { RootState } from './types';
 
 // routes
 const Calendar = lazy(() => import('./Calendar'));
 const Nutrition = lazy(() => import('./Nutrition'));
 const Settings = lazy(() => import('./Settings'));
-
-interface AdminState {
-    data: {};
-    day: {
-        day: {};
-        todayButton: boolean;
-        formattedDay: {};
-        requestedDate: boolean;
-        dayRef: {};
-        dayIndex: 0;
-    };
-    error: boolean;
-    userData: firebase.UserInfo | {};
-    userLoading: boolean;
-    loading: boolean;
-    success: boolean;
-}
-
-interface Queue {
-    duration: number;
-    key: number;
-    message: string;
-    type: string;
-}
-
-interface NotificationState {
-    queue: Queue[];
-    open: boolean;
-    duration: number;
-    message: string;
-    type: string;
-}
-
-interface RootState {
-    notificationState: NotificationState;
-    adminState: AdminState;
-}
 
 const mapStateToProps = (state: RootState) => ({
     data: state.adminState.data,

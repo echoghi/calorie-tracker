@@ -108,7 +108,7 @@ const NoteActions = styled.div`
 
 const Menu = styled.div`
     font-family: 'Varela Round';
-    padding: 20px 15px;
+    padding: 10px 15px;
     border: 1px solid #dbdbdb;
     border-radius: 4px;
     background: #fff;

@@ -1,10 +1,11 @@
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { adminState, notificationState } from './app/components/reducers';
+import { adminState, mealState, notificationState } from './app/components/reducers';
 
 const adminApp = combineReducers({
     adminState,
+    mealState,
     notificationState
 });
 
