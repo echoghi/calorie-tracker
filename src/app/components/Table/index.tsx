@@ -125,6 +125,23 @@ export const trGroupProps = () => {
     };
 };
 
+export const Header = ({
+    name,
+    column,
+    sorted
+}: {
+    name: string;
+    column: any;
+    sorted: TableSort[];
+}) => {
+    return (
+        <span style={tableStyle.thead}>
+            {name}
+            <i className={getSortedComponentClass(sorted, column.id)} />
+        </span>
+    );
+};
+
 export default function Table({ noDataText, columns, data, onSortedChange }: any) {
     return (
         <ReactTable

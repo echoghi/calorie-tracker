@@ -5,7 +5,7 @@ import produce from 'immer';
 import { connect } from 'react-redux';
 import ConfirmationDialog from './ConfirmationDialog';
 import { errorNotification, successNotification } from '../actions';
-import Table, { tableStyle, getSortedComponentClass } from '../Table';
+import Table, { tableStyle, getSortedComponentClass, Header } from '../Table';
 import { RootState, Day } from '../types';
 import firebase from 'firebase';
 import MealMenu from './MealMenu';
@@ -41,13 +41,13 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
         };
 
         const editHandler = () => {
-            editMeal(row.index);
+            removeMeal(row.index, false);
         };
 
         return <MealMenu remove={confirmHandler} edit={editHandler} data={row.original} />;
     }
 
-    const removeMeal = (mealIndex: number) => {
+    const removeMeal = (mealIndex: number, notif: boolean) => {
         const mealData = produce(day, draftState => {
             const meal = draftState.nutrition.meals[mealIndex];
 
@@ -77,7 +77,7 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
         dayRef.set(mealData, error => {
             if (error) {
                 errorMessage();
-            } else {
+            } else if (notif) {
                 // trigger success notification
                 successMessage('Meal Removed');
 
@@ -88,42 +88,8 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
         });
     };
 
-    const editMeal = (mealIndex: number) => {
-        const mealData = produce(day, draftState => {
-            const meal = draftState.nutrition.meals[mealIndex];
-
-            draftState.day = {
-                date: day.day.date(),
-                month: day.day.get('month'),
-                year: day.day.get('year')
-            };
-
-            for (const name in draftState.nutrition) {
-                if (name !== 'meals') {
-                    // prettier-ignore
-                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((+meal[name] * parseFloat(`${meal.servings}`)).toFixed(2), 10);
-                }
-            }
-
-            draftState.nutrition.meals = draftState.nutrition.meals.filter(
-                mealRef => mealRef !== draftState.nutrition.meals[mealIndex]
-            );
-        });
-
-        const dayRef = Firebase.db
-            .ref('users')
-            .child(userData.uid)
-            .child(`calendar/${index}`);
-
-        dayRef.set(mealData, error => {
-            if (error) {
-                errorMessage();
-            }
-        });
-    };
-
     const onSortedChange = (sortedItems: SortingRule[]) => setSorted(sortedItems);
-    const removeSelectedMeal = () => removeMeal(mealToDelete);
+    const removeSelectedMeal = () => removeMeal(mealToDelete, true);
     const closeDialog = () => setDialog(false);
 
     return (
@@ -133,92 +99,44 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                 noDataText="No Meals Found"
                 columns={[
                     {
-                        Header: (props: any) => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    Meal
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
+                        Header: (props: any) => <Header name="Name" sorted={sorted} {...props} />,
                         accessor: 'name',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
                     },
                     {
-                        Header: (props: any) => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    Calories
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
+                        Header: (props: any) => (
+                            <Header name="Calories" sorted={sorted} {...props} />
+                        ),
                         accessor: 'calories',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
                     },
                     {
-                        Header: (props: any) => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    Protein
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
+                        Header: (props: any) => (
+                            <Header name="Protein" sorted={sorted} {...props} />
+                        ),
                         accessor: 'protein',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
                     },
                     {
-                        Header: (props: any) => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    Carbs
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
+                        Header: (props: any) => <Header name="Carbs" sorted={sorted} {...props} />,
                         accessor: 'carbs',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
                     },
                     {
-                        Header: (props: any) => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    Fat
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
+                        Header: (props: any) => <Header name="Fat" sorted={sorted} {...props} />,
                         accessor: 'fat',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
                     },
                     {
                         Cell: (row: CellInfo) => row.original.servings || '---',
-                        Header: (props: any) => {
-                            return (
-                                <span style={tableStyle.thead}>
-                                    Servings
-                                    <i
-                                        className={getSortedComponentClass(sorted, props.column.id)}
-                                    />
-                                </span>
-                            );
-                        },
+                        Header: (props: any) => (
+                            <Header name="Servings" sorted={sorted} {...props} />
+                        ),
                         accessor: 'servings',
                         headerStyle: tableStyle.theadTh,
                         style: tableStyle.cell
