@@ -8,22 +8,26 @@ import IconButton from '@material-ui/core/IconButton';
 import { MenuItem } from '../Notes/styles';
 import { MealMenuWrapper } from './styles';
 import { copyMeal, successNotification } from '../actions';
-import { Meal } from '../types';
+import { Meal, RootState } from '../types';
 
 const mapDispatchToProps = {
     copyMeal: (meal: Meal) => copyMeal(meal),
     successMessage: (message?: string) => successNotification(message)
 };
 
+const mapStateToProps = (state: RootState) => ({
+    userData: state.adminState.userData
+});
+
 interface MealMenu extends RouteComponentProps {
     copyMeal: (meal: Meal) => void;
     data: Meal;
     remove: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    edit?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    edit: () => void;
     successMessage: (message?: string) => void;
 }
 
-function MealMenu({ remove, edit, history, data, copyMeal, successMessage }: MealMenu) {
+function MealMenu({ remove, history, data, copyMeal, edit, successMessage }: MealMenu) {
     const [open, handleMenu] = useState(false);
     const toggleMenu = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation();
@@ -42,6 +46,13 @@ function MealMenu({ remove, edit, history, data, copyMeal, successMessage }: Mea
         }
     };
 
+    const editMeal = () => {
+        edit();
+        copyMeal(data);
+        closeMenu();
+        window.scrollTo(0, 200);
+    };
+
     const closeMenu = () => {
         if (open) {
             handleMenu(false);
@@ -56,14 +67,14 @@ function MealMenu({ remove, edit, history, data, copyMeal, successMessage }: Mea
                 </IconButton>
                 {open && (
                     <MealMenuWrapper>
-                        {edit && (
-                            <MenuItem onClick={edit}>
-                                Edit <i className="icon-edit" />
+                        <MenuItem onClick={editMeal}>
+                            Edit <i className="icon-edit" />
+                        </MenuItem>
+                        {history.location.search && (
+                            <MenuItem onClick={copy}>
+                                Copy <i className="icon-file-plus" />
                             </MenuItem>
                         )}
-                        <MenuItem onClick={copy}>
-                            Copy <i className="icon-file-plus" />
-                        </MenuItem>
                         <MenuItem onClick={remove}>
                             Delete <i className="icon-trash-2" />
                         </MenuItem>
@@ -76,7 +87,7 @@ function MealMenu({ remove, edit, history, data, copyMeal, successMessage }: Mea
 
 export default withRouter(
     connect(
-        null,
+        mapStateToProps,
         mapDispatchToProps
     )(MealMenu)
 );

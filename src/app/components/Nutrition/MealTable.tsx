@@ -40,7 +40,11 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
             setDialog(true);
         };
 
-        return <MealMenu remove={confirmHandler} data={row.original} />;
+        const editHandler = () => {
+            editMeal(row.index);
+        };
+
+        return <MealMenu remove={confirmHandler} edit={editHandler} data={row.original} />;
     }
 
     const removeMeal = (mealIndex: number) => {
@@ -80,6 +84,40 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
                 // close dialog
                 setDialog(false);
                 setMealToDelete(null);
+            }
+        });
+    };
+
+    const editMeal = (mealIndex: number) => {
+        const mealData = produce(day, draftState => {
+            const meal = draftState.nutrition.meals[mealIndex];
+
+            draftState.day = {
+                date: day.day.date(),
+                month: day.day.get('month'),
+                year: day.day.get('year')
+            };
+
+            for (const name in draftState.nutrition) {
+                if (name !== 'meals') {
+                    // prettier-ignore
+                    draftState.nutrition[name] = +draftState.nutrition[name] - parseInt((+meal[name] * parseFloat(`${meal.servings}`)).toFixed(2), 10);
+                }
+            }
+
+            draftState.nutrition.meals = draftState.nutrition.meals.filter(
+                mealRef => mealRef !== draftState.nutrition.meals[mealIndex]
+            );
+        });
+
+        const dayRef = Firebase.db
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${index}`);
+
+        dayRef.set(mealData, error => {
+            if (error) {
+                errorMessage();
             }
         });
     };
