@@ -152,9 +152,7 @@ export function createUser(id: string) {
         };
 
         // Save new entries to firebase and reload them into the app
-        Firebase.db.ref().update(newUser, () => {
-            dispatch(loadData(id));
-        });
+        Firebase.db.ref().update(newUser, () => dispatch(loadData(id)));
     };
 }
 

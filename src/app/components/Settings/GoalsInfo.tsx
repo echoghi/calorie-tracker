@@ -19,6 +19,8 @@ import {
 import { RootState, UserData } from '../types';
 import firebase from 'firebase';
 import { GoalsValues, validateGoalsInfo } from '../validation';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { IconLock } from './styles';
 
 const mapStateToProps = (state: RootState) => ({
     data: state.adminState.data,
@@ -42,6 +44,7 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);
     const [protein, setProtein] = useState(0);
+    const [locked, setLocked] = useState(false);
 
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -93,6 +96,48 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
         actions.resetForm();
     };
 
+    function Adornment() {
+        return (
+            <InputAdornment position="end">
+                <IconLock
+                    onClick={() => setLocked(!locked)}
+                    color={!locked ? '#d8d8d8' : undefined}
+                >
+                    <i className="icon-lock" />
+                </IconLock>
+            </InputAdornment>
+        );
+    }
+
+    function calcCalories(value: string, name: string) {
+        if (locked && value) {
+            let fatCal = fat * 9;
+            let carbCal = carbs * 4;
+            let proteinCal = protein * 4;
+
+            switch (name) {
+                case 'carbs':
+                    carbCal = parseInt(value) * 4;
+                    setCarbs(parseInt(value));
+                    break;
+                case 'fat':
+                    fatCal = parseInt(value) * 9;
+                    setFat(parseInt(value));
+                    break;
+                case 'protein':
+                    proteinCal = parseInt(value) * 4;
+                    setProtein(parseInt(value));
+                    break;
+                default:
+                    break;
+            }
+
+            const updatedCalories = carbCal + fatCal + proteinCal;
+
+            setCalories(updatedCalories);
+        }
+    }
+
     return (
         <SettingsSection>
             <SettingsHeader>Goals</SettingsHeader>
@@ -118,20 +163,33 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                             <CalorieInput
                                 id="calories"
                                 name="calories"
-                                label="Calories (kcal)"
+                                label="Calories"
                                 type="number"
                                 error={errors.calories && touched.calories}
-                                onChange={handleChange}
+                                onChange={
+                                    locked
+                                        ? () => {}
+                                        : (e: any) => {
+                                              calcCalories(e.target.value, 'calories');
+
+                                              handleChange(e);
+                                          }
+                                }
                                 value={values.calories}
+                                adornment={<Adornment />}
                             />
 
                             <CarbInput
                                 id="carbs"
                                 name="carbs"
-                                label="Carbs (g)"
+                                label="Carbohydrates"
                                 type="number"
                                 error={errors.carbs && touched.carbs}
-                                onChange={handleChange}
+                                onChange={(e: any) => {
+                                    calcCalories(e.target.value, 'carbs');
+
+                                    handleChange(e);
+                                }}
                                 value={values.carbs}
                             />
                         </GoalInputWrapper>
@@ -140,20 +198,28 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
                             <FatInput
                                 id="fat"
                                 name="fat"
-                                label="Fat (g)"
+                                label="Fat"
                                 type="number"
                                 error={errors.fat && touched.fat}
-                                onChange={handleChange}
+                                onChange={(e: any) => {
+                                    calcCalories(e.target.value, 'fat');
+
+                                    handleChange(e);
+                                }}
                                 value={values.fat}
                             />
 
                             <ProteinInput
                                 id="protein"
                                 name="protein"
-                                label="Protein (g)"
+                                label="Protein"
                                 type="number"
                                 error={errors.protein && touched.protein}
-                                onChange={handleChange}
+                                onChange={(e: any) => {
+                                    calcCalories(e.target.value, 'protein');
+
+                                    handleChange(e);
+                                }}
                                 value={values.protein}
                             />
                         </GoalInputWrapper>
@@ -173,7 +239,4 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
     );
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(GoalsInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(GoalsInfo);

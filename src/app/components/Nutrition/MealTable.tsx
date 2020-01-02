@@ -5,7 +5,7 @@ import produce from 'immer';
 import { connect } from 'react-redux';
 import ConfirmationDialog from './ConfirmationDialog';
 import { errorNotification, successNotification } from '../actions';
-import Table, { tableStyle, getSortedComponentClass, Header } from '../Table';
+import Table, { tableStyle, Header } from '../Table';
 import { RootState, Day } from '../types';
 import firebase from 'firebase';
 import MealMenu from './MealMenu';

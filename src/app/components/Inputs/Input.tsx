@@ -9,6 +9,7 @@ interface Input {
     rows?: number;
     label: string;
     name: string;
+    adornment?: any;
     id?: string;
     error?: boolean;
     required?: boolean;
@@ -19,7 +20,7 @@ interface Input {
     placeholder?: string;
 }
 
-function Input({ classes, name, ...props }: Input) {
+function Input({ classes, adornment, name, ...props }: Input) {
     return (
         <TextField
             {...props}
@@ -29,6 +30,7 @@ function Input({ classes, name, ...props }: Input) {
                     root: classes.bootstrapRoot
                 },
                 disableUnderline: true,
+                endAdornment: adornment,
                 label: name
             }}
             InputLabelProps={{

@@ -72,6 +72,11 @@ const InfoInput = styled(Input)`
     }
 `;
 
+export const IconLock = styled.div`
+    cursor: pointer;
+    color: ${props => props.color};
+`;
+
 const CalorieInput = styled(Input)`
     width: 120px;
     margin: 0 5px !important;
