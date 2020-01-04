@@ -93,6 +93,8 @@ const Nutrition = ({ data, history }: NutritionProps) => {
             date = parseUrlDay();
 
             setToday(moment().isSame(date, 'day'));
+        } else {
+            setToday(true);
         }
 
         // save the queried day to state
