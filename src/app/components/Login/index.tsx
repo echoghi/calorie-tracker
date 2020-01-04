@@ -86,27 +86,26 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
         }
     }
 
-    const formHandler = (
+    async function formHandler(
         values: { email: string; password: string },
         actions: { setSubmitting: (isSubmitting: boolean) => void }
-    ) => {
+    ) {
         const { email, password } = values;
 
-        logIn(email, password);
+        await logIn(email, password);
 
         actions.setSubmitting(false);
-    };
+    }
 
-    function logInGoogle() {
+    async function logInGoogle() {
         try {
-            Firebase.logInWithGoogle().then(result => {
-                const user = result.user;
+            const result = await Firebase.logInWithGoogle();
+            const user = result.user;
 
-                if (user) {
-                    saveUser(user);
-                    history.push('/');
-                }
-            });
+            if (user) {
+                saveUser(user);
+                history.push('/');
+            }
         } catch (err) {
             console.warn(err);
         }

@@ -34,13 +34,13 @@ const Register = ({ errorMessage, history }: Register) => {
         }
     }
 
-    const submitHandler = (values: SignUpValues, actions: FormikActions<SignUpValues>) => {
+    async function submitHandler(values: SignUpValues, actions: FormikActions<SignUpValues>) {
         const { name, email, password } = values;
 
-        onRegister(name, email, password);
+        await onRegister(name, email, password);
 
         actions.setSubmitting(false);
-    };
+    }
 
     return (
         <Container>
@@ -132,9 +132,4 @@ const Register = ({ errorMessage, history }: Register) => {
     );
 };
 
-export default withRouter(
-    connect(
-        null,
-        mapDispatchToProps
-    )(Register)
-);
+export default withRouter(connect(null, mapDispatchToProps)(Register));
