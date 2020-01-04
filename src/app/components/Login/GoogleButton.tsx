@@ -45,13 +45,15 @@ export const Icon = () => {
 const GButton = withStyles({
     root: {
         background: '#4285F6',
+        border: 0,
         borderRadius: 3,
         color: 'white',
         height: 48,
         lineHeight: 1,
         padding: '12px 24px',
         '&:hover': {
-            background: '#3367D6'
+            background: '#3367D6',
+            border: 0
         }
     }
 })(Button);
