@@ -8,7 +8,6 @@ import moment from 'moment';
 // Components
 import Bar from '../ProgressBar/Bar';
 import MealTable from './MealTable';
-import queryString from 'query-string';
 import MealForm from './MealForm';
 import Notes from '../Notes';
 import {
@@ -23,6 +22,7 @@ import {
     Content
 } from './styles';
 import { RootState, ProgressBarConfig, Day, UserData } from '../types';
+import { parseUrlDay } from '../Calendar/utils';
 
 const progressBarConfig: ProgressBarConfig = {
     calories: {
@@ -75,16 +75,13 @@ const Nutrition = ({ data, history }: NutritionProps) => {
         let date = moment();
 
         if (location.search) {
-            const parsed = queryString.parse(location.search);
-            date = moment(parseInt(parsed.d, 10));
+            date = parseUrlDay();
 
             setToday(moment().isSame(date, 'day'));
         } else if (today) {
             setToday(true);
         }
     }
-
-    function saveDayToState() {}
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -93,9 +90,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
 
     const loadDay = (date: moment.Moment = moment()) => {
         if (location.search) {
-            const parsed = queryString.parse(location.search);
-
-            date = moment(parseInt(parsed.d, 10));
+            date = parseUrlDay();
 
             setToday(moment().isSame(date, 'day'));
         }
@@ -146,35 +141,23 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     }
 
     function navigateDayBack() {
-        let parsed: any;
-        let date: moment.Moment;
-
-        if (location.search) {
-            parsed = queryString.parse(location.search);
-            // set day to one previous
-            date = moment(parseInt(parsed.d, 10)).subtract(1, 'days');
-        } else {
-            // set day to today
-            date = moment().subtract(1, 'days');
-        }
+        const date = location.search
+            ? parseUrlDay().subtract(1, 'days')
+            : moment().subtract(1, 'days');
 
         history.push(`/nutrition?d=${date.format('x')}`);
     }
 
     function navigateDayForward() {
-        let parsed: any;
-        let date: moment.Moment;
-
         if (location.search) {
-            parsed = queryString.parse(location.search);
-            // set day to one previous
-            date = moment(parseInt(parsed.d, 10)).add(1, 'days');
-        } else {
-            // set day to today
-            date = moment().add(1, 'days');
-        }
+            const newDate = parseUrlDay().add(1, 'days');
 
-        history.push(`/nutrition?d=${date.format('x')}`);
+            if (newDate.isSame(moment(), 'day')) {
+                history.push({ pathname: '/nutrition', search: '' });
+            } else {
+                history.push(`/nutrition?d=${newDate.format('x')}`);
+            }
+        }
     }
 
     function rewind() {

@@ -9,6 +9,8 @@ import { MenuItem } from '../Notes/styles';
 import { MealMenuWrapper } from './styles';
 import { copyMeal, successNotification } from '../actions';
 import { Meal, RootState } from '../types';
+import { parseUrlDay } from '../Calendar/utils';
+import moment from 'moment';
 
 const mapDispatchToProps = {
     copyMeal: (meal: Meal) => copyMeal(meal),
@@ -39,7 +41,7 @@ function MealMenu({ remove, history, data, copyMeal, edit, successMessage }: Mea
         closeMenu();
         window.scrollTo(0, 200);
         // prettier-ignore
-        successMessage('Meal copied to today\'s form!');
+        successMessage('Meal copied!');
 
         if (history.location.search) {
             history.push({ pathname: '/nutrition', search: '' });
@@ -59,6 +61,8 @@ function MealMenu({ remove, history, data, copyMeal, edit, successMessage }: Mea
         }
     };
 
+    const date = parseUrlDay();
+
     return (
         <ClickAwayListener onClickAway={closeMenu}>
             <div>
@@ -70,7 +74,7 @@ function MealMenu({ remove, history, data, copyMeal, edit, successMessage }: Mea
                         <MenuItem onClick={editMeal}>
                             Edit <i className="icon-edit" />
                         </MenuItem>
-                        {history.location.search && (
+                        {history.location.search && !moment().isSame(date, 'day') && (
                             <MenuItem onClick={copy}>
                                 Copy <i className="icon-file-plus" />
                             </MenuItem>
@@ -85,9 +89,4 @@ function MealMenu({ remove, history, data, copyMeal, edit, successMessage }: Mea
     );
 }
 
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(MealMenu)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MealMenu));

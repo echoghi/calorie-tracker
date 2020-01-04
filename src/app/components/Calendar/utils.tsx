@@ -1,4 +1,5 @@
 import moment from 'moment';
+import queryString from 'query-string';
 import { Day } from '../types';
 
 interface Calendar {
@@ -8,7 +9,7 @@ interface Calendar {
     [index: number]: any;
 }
 
-const makeCalendarDays = (time: moment.Moment) => {
+function makeCalendarDays(time: moment.Moment) {
     let calendar: Calendar[] = [];
     const startWeek = time
         .clone()
@@ -106,6 +107,16 @@ const makeCalendarDays = (time: moment.Moment) => {
     }
 
     return calendar;
-};
+}
 
-export { makeCalendarDays };
+function parseUrlDay() {
+    if (location.search) {
+        const parsed = queryString.parse(location.search);
+
+        return moment(parseInt(parsed.d, 10));
+    } else {
+        return moment();
+    }
+}
+
+export { makeCalendarDays, parseUrlDay };
