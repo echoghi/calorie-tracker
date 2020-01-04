@@ -19,12 +19,14 @@ import {
     SignUpLink,
     SignUpText,
     SignUp,
+    Divider,
     LoginFooter
 } from './styles';
 import { validateLogIn } from '../validation';
 import Firebase from '../firebase';
 import firebase from 'firebase';
 import { RootState } from '../types';
+import GoogleButton, { Icon } from './GoogleButton';
 
 interface LoginProps extends RouteComponentProps {
     saveUser: (data: firebase.UserInfo) => void;
@@ -133,6 +135,21 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                         }) => (
                             <Fade in={true}>
                                 <Form onSubmit={handleSubmit} noValidate={true}>
+                                    <FormControl fullWidth={true} margin="normal">
+                                        <GoogleButton
+                                            onClick={logInGoogle}
+                                            color="primary"
+                                            variant="outlined"
+                                        >
+                                            <Icon />
+                                            Sign in with Google
+                                        </GoogleButton>
+                                    </FormControl>
+
+                                    <Divider>
+                                        <span>continue with email</span>
+                                    </Divider>
+
                                     <FormControl fullWidth={true}>
                                         <Input
                                             id="email"
@@ -169,17 +186,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                             color="primary"
                                             variant="contained"
                                         >
-                                            Log In
-                                        </Button>
-                                    </FormControl>
-
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <Button
-                                            onClick={logInGoogle}
-                                            color="primary"
-                                            variant="outlined"
-                                        >
-                                            Login via Google
+                                            Sign In
                                         </Button>
                                     </FormControl>
 
@@ -205,7 +212,4 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
     );
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

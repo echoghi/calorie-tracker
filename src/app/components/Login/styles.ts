@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { theme } from '../theme';
+import config from '../../../config';
 
 const Container = styled.div`
     background: #eff3f6;
@@ -18,7 +20,7 @@ const Header = styled.div`
     text-align: center;
     font-weight: bold;
     margin: 0 auto;
-    padding: 40px 25px 20px 25px;
+    padding: 40px 25px 0 25px;
     color: rgb(0, 132, 137);
 `;
 
@@ -29,8 +31,32 @@ const SubHeader = styled.p`
     margin: 0;
 `;
 
+const GButtonContent = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const GButtonIcon = styled.svg`
+    position: absolute;
+    top: 10px;
+    left: 10px;
+`;
+
+const Divider = styled.div`
+    margin: 20px 0;
+    text-align: center;
+    height: 1px;
+    background: ${config.palette.text.secondary};
+    line-height: 0;
+
+    span {
+        background: #fff;
+        padding: 5px;
+    }
+`;
+
 const Wrapper = styled.div`
-    width: 450px;
+    width: 400px;
     border-radius: 4px 4px 0 0;
     background: #ffffff;
     border: 1px solid #e6eaee;
@@ -79,7 +105,10 @@ export {
     Wrapper,
     ErrorMessage,
     SignUpLink,
+    GButtonContent,
+    GButtonIcon,
     SignUpText,
+    Divider,
     SignUp,
     BackToLogin,
     LoginFooter,

@@ -6,9 +6,14 @@ export const theme = createMuiTheme({
     overrides: {
         MuiButton: {
             root: {
+                border: 0,
+                boxShadow: 'none',
                 fontFamily: 'Roboto',
-                fontSize: 14,
-                height: 40
+                fontSize: 18,
+                fontWeight: 'bold',
+                height: 48,
+                letterSpacing: '-0.04ch',
+                textTransform: 'none'
             }
         },
         MuiDialogActions: {
