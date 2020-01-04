@@ -4,7 +4,7 @@ import { theme } from '../theme';
 import config from '../../../config';
 
 const Container = styled.div`
-    background: #eff3f6;
+    background: rgb(250, 250, 250);
     display: flex;
     height: 100vh;
     flex-direction: column;
@@ -42,11 +42,15 @@ const GButtonIcon = styled.svg`
     left: 10px;
 `;
 
+const Adornment = styled.div`
+    transform: translateX(-10px);
+`;
+
 const Divider = styled.div`
     margin: 20px 0;
     text-align: center;
     height: 1px;
-    background: ${config.palette.text.secondary};
+    background: ${config.palette.primary};
     line-height: 0;
 
     span {
@@ -59,7 +63,6 @@ const Wrapper = styled.div`
     width: 400px;
     border-radius: 4px 4px 0 0;
     background: #ffffff;
-    border: 1px solid #e6eaee;
     align-self: center;
 
     @media (max-width: 768px) {
@@ -104,6 +107,7 @@ export {
     Form,
     Wrapper,
     ErrorMessage,
+    Adornment,
     SignUpLink,
     GButtonContent,
     GButtonIcon,

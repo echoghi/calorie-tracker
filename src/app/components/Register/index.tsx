@@ -2,7 +2,6 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Fade from '@material-ui/core/Fade';
-import Paper from '@material-ui/core/Paper';
 import Firebase from '../firebase';
 import Notifications from '../Notifications';
 import Input from '../Inputs/Input';
@@ -46,88 +45,79 @@ const Register = ({ errorMessage, history }: Register) => {
         <Container>
             <Notifications />
 
-            <Paper elevation={3}>
-                <Wrapper>
-                    <Header>Create Account</Header>
+            <Wrapper>
+                <Header>Create Account</Header>
 
-                    <Formik
-                        initialValues={{ name: '', email: '', password: '' }}
-                        validate={validateSignUp}
-                        onSubmit={submitHandler}
-                    >
-                        {({
-                            values,
-                            errors,
-                            touched,
-                            handleChange,
-                            handleSubmit,
-                            isSubmitting
-                        }) => (
-                            <Fade in={true}>
-                                <Form onSubmit={handleSubmit} noValidate={true}>
-                                    <FormControl fullWidth={true}>
-                                        <Input
-                                            id="name"
-                                            name="name"
-                                            label="Name"
-                                            value={values.name}
-                                            onChange={handleChange}
-                                            error={errors.name && touched.name}
-                                        />
-                                        <ErrorMessage>
-                                            {errors.name && touched.name && errors.name}
-                                        </ErrorMessage>
-                                    </FormControl>
+                <Formik
+                    initialValues={{ name: '', email: '', password: '' }}
+                    validate={validateSignUp}
+                    onSubmit={submitHandler}
+                >
+                    {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
+                        <Fade in={true}>
+                            <Form onSubmit={handleSubmit} noValidate={true}>
+                                <FormControl fullWidth={true}>
+                                    <Input
+                                        id="name"
+                                        name="name"
+                                        label="Name"
+                                        value={values.name}
+                                        onChange={handleChange}
+                                        error={errors.name && touched.name}
+                                    />
+                                    <ErrorMessage>
+                                        {errors.name && touched.name && errors.name}
+                                    </ErrorMessage>
+                                </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            label="Email"
-                                            value={values.email}
-                                            onChange={handleChange}
-                                            error={errors.email && touched.email}
-                                        />
-                                        <ErrorMessage>
-                                            {errors.email && touched.email && errors.email}
-                                        </ErrorMessage>
-                                    </FormControl>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        error={errors.email && touched.email}
+                                    />
+                                    <ErrorMessage>
+                                        {errors.email && touched.email && errors.email}
+                                    </ErrorMessage>
+                                </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <Input
-                                            id="password"
-                                            name="password"
-                                            label="Password"
-                                            value={values.password}
-                                            type="password"
-                                            onChange={handleChange}
-                                            error={errors.password && touched.password}
-                                        />
-                                        <ErrorMessage>
-                                            {errors.password && touched.password && errors.password}
-                                        </ErrorMessage>
-                                    </FormControl>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        label="Password"
+                                        value={values.password}
+                                        type="password"
+                                        onChange={handleChange}
+                                        error={errors.password && touched.password}
+                                    />
+                                    <ErrorMessage>
+                                        {errors.password && touched.password && errors.password}
+                                    </ErrorMessage>
+                                </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <Button
-                                            type="submit"
-                                            color="primary"
-                                            variant="contained"
-                                            disabled={isSubmitting}
-                                        >
-                                            Sign Up
-                                        </Button>
-                                    </FormControl>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <Button
+                                        type="submit"
+                                        color="primary"
+                                        variant="contained"
+                                        disabled={isSubmitting}
+                                    >
+                                        Sign Up
+                                    </Button>
+                                </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <BackToLogin to="/login">Back to Log In</BackToLogin>
-                                    </FormControl>
-                                </Form>
-                            </Fade>
-                        )}
-                    </Formik>
-                </Wrapper>
-            </Paper>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <BackToLogin to="/login">Back to Log In</BackToLogin>
+                                </FormControl>
+                            </Form>
+                        </Fade>
+                    )}
+                </Formik>
+            </Wrapper>
         </Container>
     );
 };

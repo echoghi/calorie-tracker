@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import Paper from '@material-ui/core/Paper';
 import Fade from '@material-ui/core/Fade';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
@@ -18,6 +17,7 @@ import {
     ErrorMessage,
     SignUpLink,
     SignUpText,
+    Adornment,
     SignUp,
     Divider,
     LoginFooter
@@ -115,98 +115,89 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
         <Container>
             <Notifications />
 
-            <Paper elevation={3}>
-                <Wrapper>
-                    <Header>Doughboy</Header>
+            <Wrapper>
+                <Header>Doughboy</Header>
 
-                    <Formik
-                        initialValues={{ email: '', password: '' }}
-                        validate={validationConfig}
-                        onSubmit={formHandler}
-                    >
-                        {({
-                            values,
-                            errors,
-                            touched,
-                            handleChange,
-                            handleSubmit,
-                            isSubmitting
-                        }) => (
-                            <Fade in={true}>
-                                <Form onSubmit={handleSubmit} noValidate={true}>
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <GoogleButton
-                                            onClick={logInGoogle}
-                                            color="primary"
-                                            variant="outlined"
-                                        >
-                                            <Icon />
-                                            Sign in with Google
-                                        </GoogleButton>
-                                    </FormControl>
+                <Formik
+                    initialValues={{ email: '', password: '' }}
+                    validate={validationConfig}
+                    onSubmit={formHandler}
+                >
+                    {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
+                        <Fade in={true}>
+                            <Form onSubmit={handleSubmit} noValidate={true}>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <GoogleButton
+                                        onClick={logInGoogle}
+                                        color="primary"
+                                        variant="outlined"
+                                    >
+                                        <Icon />
+                                        Sign in with Google
+                                    </GoogleButton>
+                                </FormControl>
 
-                                    <Divider>
-                                        <span>continue with email</span>
-                                    </Divider>
+                                <Divider>
+                                    <span>continue with email</span>
+                                </Divider>
 
-                                    <FormControl fullWidth={true}>
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            label="Email"
-                                            value={values.email}
-                                            onChange={handleChange}
-                                            error={errors.email && touched.email}
-                                        />
-                                        <ErrorMessage>
-                                            {errors.email && touched.email && errors.email}
-                                        </ErrorMessage>
-                                    </FormControl>
+                                <FormControl fullWidth={true}>
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        error={errors.email && touched.email}
+                                    />
+                                    <ErrorMessage>
+                                        {errors.email && touched.email && errors.email}
+                                    </ErrorMessage>
+                                </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <Input
-                                            id="password"
-                                            name="password"
-                                            label="Password"
-                                            value={values.password}
-                                            type="password"
-                                            error={errors.password && touched.password}
-                                            onChange={handleChange}
-                                        />
-                                        <ErrorMessage>
-                                            {errors.password && touched.password && errors.password}
-                                        </ErrorMessage>
-                                    </FormControl>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        label="Password"
+                                        value={values.password}
+                                        type="password"
+                                        error={errors.password && touched.password}
+                                        onChange={handleChange}
+                                    />
+                                    <ErrorMessage>
+                                        {errors.password && touched.password && errors.password}
+                                    </ErrorMessage>
+                                </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
-                                        <Button
-                                            disabled={isSubmitting}
-                                            type="submit"
-                                            color="primary"
-                                            variant="contained"
-                                        >
-                                            Sign In
-                                        </Button>
-                                    </FormControl>
+                                <FormControl fullWidth={true} margin="normal">
+                                    <Button
+                                        disabled={isSubmitting}
+                                        type="submit"
+                                        color="primary"
+                                        variant="contained"
+                                    >
+                                        Sign In
+                                    </Button>
+                                </FormControl>
 
-                                    <LoginFooter>
-                                        <SignUp>
-                                            <SignUpText>New User?</SignUpText>
-                                            <SignUpLink to="/register">Sign Up</SignUpLink>
-                                        </SignUp>
+                                <LoginFooter>
+                                    <SignUp>
+                                        <SignUpText>New User?</SignUpText>
+                                        <SignUpLink to="/register">Sign Up</SignUpLink>
+                                    </SignUp>
 
-                                        <SignUp>
-                                            <SignUpLink to="/reset-password">
-                                                Forgot your password?
-                                            </SignUpLink>
-                                        </SignUp>
-                                    </LoginFooter>
-                                </Form>
-                            </Fade>
-                        )}
-                    </Formik>
-                </Wrapper>
-            </Paper>
+                                    <SignUp>
+                                        <SignUpLink to="/reset-password">
+                                            Forgot your password?
+                                        </SignUpLink>
+                                    </SignUp>
+                                </LoginFooter>
+                            </Form>
+                        </Fade>
+                    )}
+                </Formik>
+            </Wrapper>
         </Container>
     );
 };
