@@ -15,8 +15,7 @@ import {
     NutritionWrapper,
     HeaderWrapper,
     HeaderContent,
-    InnerNavIcon,
-    OuterNavIcon,
+    NavIcon,
     Overview,
     Box,
     BoxHeader,
@@ -196,27 +195,23 @@ const Nutrition = ({ data, history }: NutritionProps) => {
                     <h1>Nutrition</h1>
                 </HeaderContent>
                 <HeaderContent>
-                    <OuterNavIcon
+                    <NavIcon
                         className="icon-chevrons-left"
                         active={dayIndex !== 0}
                         onClick={rewind}
                     />
-                    <InnerNavIcon
+                    <NavIcon
                         className="icon-chevron-left"
                         onClick={navigateDayBack}
                         active={dayIndex !== 0}
                     />
-                    <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do YYYY') : ''}</h3>
-                    <InnerNavIcon
+                    <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do, YYYY') : ''}</h3>
+                    <NavIcon
                         className="icon-chevron-right"
                         active={!today}
                         onClick={navigateDayForward}
                     />
-                    <OuterNavIcon
-                        className="icon-chevrons-right"
-                        active={!today}
-                        onClick={goToToday}
-                    />
+                    <NavIcon className="icon-chevrons-right" active={!today} onClick={goToToday} />
                 </HeaderContent>
             </HeaderWrapper>
 

@@ -19,6 +19,15 @@ const HeaderContent = styled.div`
 
     @media (max-width: 768px) {
         justify-content: center;
+        text-align: center;
+
+        h1 {
+            display: none;
+        }
+
+        h3 {
+            font-size: 15px;
+        }
     }
 `;
 
@@ -27,13 +36,6 @@ const NavIcon = styled.i`
     color: ${props => (props.active ? 'inherit' : '#d1d4d3')};
     pointer-events: ${props => (props.active ? 'inherit' : 'none')};
     font-size: 25px;
-`;
-
-const InnerNavIcon = styled(NavIcon)`
-    margin: 0 7.5px;
-`;
-
-const OuterNavIcon = styled(NavIcon)`
     margin: 0 5px;
 `;
 
@@ -277,8 +279,7 @@ export {
     MealForm,
     NutritionWrapper,
     MealsHeader,
-    InnerNavIcon,
-    OuterNavIcon,
+    NavIcon,
     BoxHeader,
     HeaderWrapper,
     InputWrapper,
