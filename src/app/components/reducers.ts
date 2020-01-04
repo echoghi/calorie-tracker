@@ -84,6 +84,18 @@ export function mealState(
                 nextState.meal = action.data;
 
                 return;
+
+            case 'CLEAR_MEAL':
+                nextState.meal = {
+                    calories: '0',
+                    carbs: '0',
+                    fat: '0',
+                    name: '',
+                    protein: '0',
+                    servings: '0'
+                };
+
+                return;
         }
     });
 }

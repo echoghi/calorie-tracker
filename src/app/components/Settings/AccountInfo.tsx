@@ -171,7 +171,4 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
     );
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AccountInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

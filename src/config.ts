@@ -1,6 +1,24 @@
 const config = {
     palette: {
         error: 'rgb(203, 36, 49)',
+        macros: {
+            calorie: {
+                color: '#ffab3e',
+                trailColor: '#FFE9C6'
+            },
+            carbs: {
+                color: '#5b6aee',
+                trailColor: '#D0D4FA'
+            },
+            fat: {
+                color: '#f08ec1',
+                trailColor: '#FCDFED'
+            },
+            protein: {
+                color: '#32c9d5',
+                trailColor: '#E6FDF3'
+            }
+        },
         primary: 'rgb(0, 132, 137)',
         secondary: '#FF5A5F',
         text: {

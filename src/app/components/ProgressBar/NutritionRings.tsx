@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { NutritionRingContainer } from './styles';
 import moment from 'moment';
+import config from '../../../config';
 
 interface NutritionRings {
     goals: {
@@ -102,32 +103,32 @@ const NutritionRings = ({ day, goals, ...props }: NutritionRings) => {
             <svg width={90} height={90} viewBox="0 0 90 90">
                 {/* Calories */}
                 <NutritionRing
-                    color="#ffab3e"
-                    trailColor="#FFE9C6"
+                    color={config.palette.macros.calorie.color}
+                    trailColor={config.palette.macros.calorie.trailColor}
                     radius={42}
                     value={calorieProgress}
                 />
 
                 {/* Protein */}
                 <NutritionRing
-                    color="#32c9d5"
-                    trailColor="#E6FDF3"
+                    color={config.palette.macros.protein.color}
+                    trailColor={config.palette.macros.protein.trailColor}
                     radius={32}
                     value={proteinProgress}
                 />
 
                 {/* Carbs */}
                 <NutritionRing
-                    color="#5b6aee"
-                    trailColor="#D0D4FA"
+                    color={config.palette.macros.carbs.color}
+                    trailColor={config.palette.macros.carbs.trailColor}
                     radius={22.5}
                     value={carbProgress}
                 />
 
                 {/* Fat */}
                 <NutritionRing
-                    color="#f08ec1"
-                    trailColor="#FCDFED"
+                    color={config.palette.macros.fat.color}
+                    trailColor={config.palette.macros.fat.trailColor}
                     radius={12.5}
                     value={fatProgress}
                 />

@@ -6,6 +6,35 @@ const HeaderWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+`;
+
+const HeaderContent = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
+`;
+
+const NavIcon = styled.i`
+    cursor: ${props => (props.active ? 'pointer' : 'none')};
+    color: ${props => (props.active ? 'inherit' : '#d1d4d3')};
+    pointer-events: ${props => (props.active ? 'inherit' : 'none')};
+    font-size: 25px;
+`;
+
+const InnerNavIcon = styled(NavIcon)`
+    margin: 0 7.5px;
+`;
+
+const OuterNavIcon = styled(NavIcon)`
+    margin: 0 5px;
 `;
 
 const MealsHeader = styled.div`
@@ -151,6 +180,38 @@ const InputControl = styled.div`
     margin: 0 10px;
 `;
 
+const ChartBox = styled.div`
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    height: 425px;
+    width: 65.5%;
+    border: 1px solid #e6eaee;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+    background: #ffffff;
+    text-align: center;
+
+    h4 {
+        padding: 5px 30px 15px 30px;
+        color: #3d575d;
+        font-size: 25px;
+        text-align: left;
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        display: block;
+        margin: 30px 0;
+    }
+`;
+
+const ChartContainer = styled.div`
+    padding: 15px;
+`;
+
 const MealsContainer = styled.div`
     position: relative;
     display: inline-block;
@@ -199,15 +260,30 @@ const MealMenuWrapper = styled(Menu)`
     font-size: 16px;
 `;
 
+const Counter = styled.span`
+    color: ${props => props.color};
+`;
+
+const CounterContainer = styled.div`
+    font-size: 18px;
+`;
+
 export {
     Overview,
     Box,
+    Counter,
+    CounterContainer,
+    HeaderContent,
     MealForm,
     NutritionWrapper,
     MealsHeader,
+    InnerNavIcon,
+    OuterNavIcon,
     BoxHeader,
     HeaderWrapper,
     InputWrapper,
+    ChartContainer,
+    ChartBox,
     MealFormButton,
     Grams,
     MealsContainer,

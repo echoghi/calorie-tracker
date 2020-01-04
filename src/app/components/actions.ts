@@ -41,6 +41,12 @@ export function copyMeal(data: Meal) {
     };
 }
 
+export function clearMeal() {
+    return {
+        type: 'CLEAR_MEAL'
+    };
+}
+
 export function closeSnackBar() {
     return {
         type: 'CLOSE_SNACKBAR'

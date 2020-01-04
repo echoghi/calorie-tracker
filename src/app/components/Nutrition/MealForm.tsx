@@ -7,22 +7,26 @@ import {
     MealsContainer,
     InputWrapper,
     InputControl,
-    MealFormButton
+    MealFormButton,
+    Counter,
+    CounterContainer
 } from './styles';
 import { connect } from 'react-redux';
 import Firebase from '../firebase';
 import produce from 'immer';
 import { validateMeal, MealValues } from '../validation';
-import { errorNotification, successNotification } from '../actions';
+import { errorNotification, successNotification, clearMeal } from '../actions';
 import firebase from 'firebase';
-import { RootState, Day, MealFormState } from '../types';
+import { RootState, Day, MealFormState, UserData } from '../types';
 
 const mapDispatchToProps = {
+    clearMeal: () => clearMeal(),
     errorMessage: (message?: string) => errorNotification(message),
     successMessage: (message?: string) => successNotification(message)
 };
 
 const mapStateToProps = (state: RootState) => ({
+    data: state.adminState.data,
     meal: state.mealState.meal,
     userData: state.adminState.userData
 });
@@ -30,19 +34,37 @@ const mapStateToProps = (state: RootState) => ({
 interface MealForm {
     index: number;
     day: Day;
+    data: UserData;
     userData: firebase.UserInfo;
     errorMessage: (message?: string) => void;
     successMessage: (message?: string) => void;
+    clearMeal: () => void;
     meal: MealFormState;
 }
 
-function MealForm({ day, index, userData, meal, errorMessage, successMessage }: MealForm) {
+function MealForm({
+    clearMeal,
+    data,
+    day,
+    errorMessage,
+    index,
+    userData,
+    meal,
+    successMessage
+}: MealForm) {
     const { calories, carbs, fat, name, protein, servings } = meal;
 
     // populate form on copy
     useEffect(() => {
         setFormValues(meal);
     }, [meal]);
+
+    // clear meal on unmount
+    useEffect(() => {
+        return () => {
+            clearMeal();
+        };
+    }, []);
 
     const [formValues, setFormValues] = useState({
         calories,
@@ -104,7 +126,7 @@ function MealForm({ day, index, userData, meal, errorMessage, successMessage }: 
 
         actions.setSubmitting(false);
         actions.resetForm();
-
+        clearMeal();
         setFormValues({
             calories: '0',
             carbs: '0',
@@ -115,11 +137,26 @@ function MealForm({ day, index, userData, meal, errorMessage, successMessage }: 
         });
     };
 
+    function CalorieCount({ count, goal }: { count: number; goal: number }) {
+        let countColor;
+
+        if (count < goal / 2 || count > 1.25 * goal) {
+            countColor = 'rgb(183, 53, 63)';
+        }
+
+        return (
+            <CounterContainer>
+                <Counter color={countColor}>{`${count}`}</Counter>/<span>{`${goal} cal`}</span>
+            </CounterContainer>
+        );
+    }
+
     return (
         <MealsContainer>
             <MealsHeader>
                 <span>Meals</span>
-                <span>{`${day.nutrition.calories} cal`}</span>
+
+                <CalorieCount count={day.nutrition.calories} goal={data.user.goals.calories} />
             </MealsHeader>
 
             <Formik
@@ -227,7 +264,4 @@ function MealForm({ day, index, userData, meal, errorMessage, successMessage }: 
     );
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MealForm);
+export default connect(mapStateToProps, mapDispatchToProps)(MealForm);

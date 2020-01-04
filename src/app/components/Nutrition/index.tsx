@@ -6,7 +6,6 @@ import { useWindowSize } from 'the-platform';
 import isEmpty from 'lodash.isempty';
 import moment from 'moment';
 // Components
-import Button from '@material-ui/core/Button';
 import Bar from '../ProgressBar/Bar';
 import MealTable from './MealTable';
 import queryString from 'query-string';
@@ -15,6 +14,9 @@ import Notes from '../Notes';
 import {
     NutritionWrapper,
     HeaderWrapper,
+    HeaderContent,
+    InnerNavIcon,
+    OuterNavIcon,
     Overview,
     Box,
     BoxHeader,
@@ -69,45 +71,51 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     const [today, setToday] = useState(true);
     const { width } = useWindowSize();
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
-    const loadDay = () => {
-        let date: moment.Moment;
+    // will read the url and set today to true/false
+    function isToday() {
+        let date = moment();
 
         if (location.search) {
             const parsed = queryString.parse(location.search);
             date = moment(parseInt(parsed.d, 10));
 
             setToday(moment().isSame(date, 'day'));
+        } else if (today) {
+            setToday(true);
+        }
+    }
+
+    function saveDayToState() {}
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        isToday();
+    }, []);
+
+    const loadDay = (date: moment.Moment = moment()) => {
+        if (location.search) {
+            const parsed = queryString.parse(location.search);
+
+            date = moment(parseInt(parsed.d, 10));
+
+            setToday(moment().isSame(date, 'day'));
         }
 
-        if (date) {
-            // save the queried day to state
-            for (let i = 0; i < data.calendar.length; i++) {
-                if (data.calendar[i].day.isSame(date)) {
-                    setDay(data.calendar[i]);
-                    setDayIndex(+i);
+        // save the queried day to state
+        for (let i = 0; i < data.calendar.length; i++) {
+            if (data.calendar[i].day.isSame(date, 'day')) {
+                setDay(data.calendar[i]);
+                setDayIndex(+i);
 
-                    return;
-                }
+                return;
             }
-        } else {
-            const lastIndex = Object.keys(data.calendar).length - 1;
-
-            setDayIndex(lastIndex);
-
-            const todayData = data.calendar[lastIndex];
-
-            setDay(todayData);
         }
     };
 
     // fetch data when requested date changes
     useEffect(() => {
         loadDay();
-    }, [loadDay]);
+    });
 
     function ProgressBar({ type }: { type: 'calories' | 'protein' | 'fat' | 'carbs' }) {
         const { trailColor, color } = progressBarConfig[type];
@@ -138,6 +146,43 @@ const Nutrition = ({ data, history }: NutritionProps) => {
         history.push({ pathname: '/nutrition', search: '' });
     }
 
+    function navigateDayBack() {
+        let parsed: any;
+        let date: moment.Moment;
+
+        if (location.search) {
+            parsed = queryString.parse(location.search);
+            // set day to one previous
+            date = moment(parseInt(parsed.d, 10)).subtract(1, 'days');
+        } else {
+            // set day to today
+            date = moment().subtract(1, 'days');
+        }
+
+        history.push(`/nutrition?d=${date.format('x')}`);
+    }
+
+    function navigateDayForward() {
+        let parsed: any;
+        let date: moment.Moment;
+
+        if (location.search) {
+            parsed = queryString.parse(location.search);
+            // set day to one previous
+            date = moment(parseInt(parsed.d, 10)).add(1, 'days');
+        } else {
+            // set day to today
+            date = moment().add(1, 'days');
+        }
+
+        history.push(`/nutrition?d=${date.format('x')}`);
+    }
+
+    function rewind() {
+        setToday(false);
+        history.push(`/nutrition?d=${data.calendar[0].day.format('x')}`);
+    }
+
     if (isEmpty(day)) {
         return <Loading />;
     }
@@ -147,17 +192,32 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     return (
         <NutritionWrapper>
             <HeaderWrapper>
-                <div>
+                <HeaderContent>
                     <h1>Nutrition</h1>
+                </HeaderContent>
+                <HeaderContent>
+                    <OuterNavIcon
+                        className="icon-chevrons-left"
+                        active={dayIndex !== 0}
+                        onClick={rewind}
+                    />
+                    <InnerNavIcon
+                        className="icon-chevron-left"
+                        onClick={navigateDayBack}
+                        active={dayIndex !== 0}
+                    />
                     <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do YYYY') : ''}</h3>
-                </div>
-                <div>
-                    {!today && (
-                        <Button onClick={goToToday} color="primary" variant="outlined" size="large">
-                            Today
-                        </Button>
-                    )}
-                </div>
+                    <InnerNavIcon
+                        className="icon-chevron-right"
+                        active={!today}
+                        onClick={navigateDayForward}
+                    />
+                    <OuterNavIcon
+                        className="icon-chevrons-right"
+                        active={!today}
+                        onClick={goToToday}
+                    />
+                </HeaderContent>
             </HeaderWrapper>
 
             <Overview>
@@ -194,6 +254,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
 
             <Content>
                 <Notes day={day} index={dayIndex} />
+
                 <MealForm day={day} index={dayIndex} />
             </Content>
 
