@@ -56,8 +56,8 @@ const linkValidationConfig = (values: { password: string }) => {
 };
 
 const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) => {
-    const [authError, setAuthError] = useState('');
-    const [authEmail, setEmail] = useState('');
+    const [authError, setAuthError] = useState(null);
+
     // unmount
     useEffect(() => {
         return () => {
@@ -69,7 +69,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
 
     async function logIn(email: string, password: string) {
         try {
-            await Firebase.logIn(authEmail || email, password);
+            await Firebase.logIn(email, password);
             history.push('/');
         } catch (err) {
             console.warn(err.message);
@@ -96,20 +96,14 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
 
     async function linkAccount(password: string) {
         try {
-            // Get reference to the currently signed-in user
-            const prevUser = Firebase.auth.currentUser;
-            const linkCredentials = firebase.auth.EmailAuthProvider.credential(authEmail, password);
+            const linkCredentials = authError.credential;
 
             // Sign in with the newly linked credential
-            const currentUser = Firebase.logInWithCredential(linkCredentials);
-            console.log(currentUser);
-            // @ts-ignore
-            // await currentUser.delete();
+            const currentUser = await Firebase.logIn(authError.email, password);
 
             // Link the OAuth Credential to original account
-            prevUser.linkWithCredential(linkCredentials);
-            // Sign in with the newly linked credential
-            Firebase.logInWithCredential(linkCredentials);
+            currentUser.user.linkWithCredential(linkCredentials);
+
             // navigate home
             history.push('/');
         } catch (err) {
@@ -147,14 +141,13 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
         actions: { setSubmitting: (isSubmitting: boolean) => void }
     ) {
         const result = await linkAccount(values.password);
-        // link account
-        console.log(result);
 
         actions.setSubmitting(false);
     }
 
     async function logInGoogle() {
         try {
+            setAuthError(null);
             const result = await Firebase.logInWithGoogle();
             const user = result.user;
 
@@ -176,6 +169,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
 
     async function logInFacebook() {
         try {
+            setAuthError(null);
             const result = await Firebase.logInWithFacebook();
             const user = result.user;
 
@@ -187,10 +181,9 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
             console.warn(err);
 
             if (err.code === 'auth/account-exists-with-different-credential') {
-                setEmail(err.email);
-                setAuthError(
-                    'A Doughboy account with the same email already exists. Enter your password to link them.'
-                );
+                err.message =
+                    'A Doughboy account with the same email already exists. Enter your password to link them.';
+                setAuthError(err);
             } else if (err.code === 'auth/web-storage-unsupported') {
                 showError(
                     'Oops! This authentication method is not currently supported by this browser.',
@@ -256,10 +249,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                             onChange={handleChange}
                                         />
                                         <ErrorMessage>
-                                            {authError ||
-                                                (errors.password &&
-                                                    touched.password &&
-                                                    errors.password)}
+                                            {errors.password && touched.password && errors.password}
                                         </ErrorMessage>
                                     </FormControl>
                                     <FormControl fullWidth={true} margin="normal">
@@ -323,7 +313,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                             onChange={handleChange}
                                         />
                                         <ErrorMessage>
-                                            {authError ||
+                                            {authError.message ||
                                                 (errors.password &&
                                                     touched.password &&
                                                     errors.password)}
