@@ -1,7 +1,8 @@
-import Firebase from './firebase';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 import firebase from 'firebase';
+
+import Firebase from './firebase';
 import { Meal } from './types';
 
 const usersRef = Firebase.db.ref('users');
@@ -67,9 +68,10 @@ export function successNotification(data?: string) {
     };
 }
 
-export function errorNotification(data?: string) {
+export function errorNotification(data?: string, duration?: number) {
     return {
         data,
+        duration,
         type: 'SNACKBAR_ERROR'
     };
 }

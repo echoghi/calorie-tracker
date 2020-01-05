@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../Inputs/Input';
 import { Formik, FormikActions } from 'formik';
+import firebase from 'firebase';
+import { connect } from 'react-redux';
+import produce from 'immer';
+
 import {
     MealForm as Form,
     MealsHeader,
@@ -11,12 +15,9 @@ import {
     Counter,
     CounterContainer
 } from './styles';
-import { connect } from 'react-redux';
 import Firebase from '../firebase';
-import produce from 'immer';
 import { validateMeal, MealValues } from '../validation';
 import { errorNotification, successNotification, clearMeal } from '../actions';
-import firebase from 'firebase';
 import { RootState, Day, MealFormState, UserData } from '../types';
 
 const mapDispatchToProps = {

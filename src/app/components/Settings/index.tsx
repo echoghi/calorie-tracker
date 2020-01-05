@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+
 import AccountInfo from './AccountInfo';
 import GeneralInfo from './GeneralInfo';
 import GoalsInfo from './GoalsInfo';

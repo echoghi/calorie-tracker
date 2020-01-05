@@ -196,7 +196,11 @@ module.exports = function(env, argv) {
                 '.ts',
                 '.tsx'
             ],
-            modules: [path.resolve(__dirname, 'node_modules'), sourcePath]
+            modules: [path.resolve(__dirname, 'node_modules'), sourcePath],
+
+            alias: {
+                Config: path.resolve(__dirname, 'src/config')
+            }
         },
 
         plugins: [

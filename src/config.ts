@@ -1,4 +1,9 @@
 const config = {
+    app: {
+        name: 'Doughboy',
+        //Grüv
+        version: 1
+    },
     palette: {
         error: 'rgb(203, 36, 49)',
         macros: {

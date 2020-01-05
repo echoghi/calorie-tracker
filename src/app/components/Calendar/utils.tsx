@@ -1,5 +1,6 @@
 import moment from 'moment';
 import queryString from 'query-string';
+
 import { Day } from '../types';
 
 interface Calendar {

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes, css } from 'styled-components';
+
 import { CircleContainer } from './styles';
 
 interface Circle {

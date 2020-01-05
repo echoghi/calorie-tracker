@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import OptionsIcon from '../Icons/OptionsIcons';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import IconButton from '@material-ui/core/IconButton';
+
 import { DayMenuContainer, CalendarMenu, CalendarMenuLink } from './styles';
+import OptionsIcon from '../Icons/OptionsIcons';
 import { Day } from '../types';
 
 export default function DayMenu({ day }: { day: Day }) {

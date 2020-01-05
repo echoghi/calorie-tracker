@@ -2,14 +2,15 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Fade from '@material-ui/core/Fade';
+import { Formik, FormikActions } from 'formik';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import Firebase from '../firebase';
 import Notifications from '../Notifications';
 import Input from '../Inputs/Input';
-import { Formik, FormikActions } from 'formik';
 import { validateSignUp, SignUpValues } from '../validation';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Header, Container, Form, Wrapper, ErrorMessage, BackToLogin } from '../Login/styles';
-import { connect } from 'react-redux';
 import { errorNotification } from '../actions';
 
 const mapDispatchToProps = {

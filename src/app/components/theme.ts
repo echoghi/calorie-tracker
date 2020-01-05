@@ -1,6 +1,7 @@
 import { createMuiTheme, Theme, createStyles } from '@material-ui/core/styles';
-import config from '../../config';
 import { createGlobalStyle } from 'styled-components';
+
+import config from 'Config';
 
 export const theme = createMuiTheme({
     overrides: {

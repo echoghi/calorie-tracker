@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import OptionsIcon from '../Icons/OptionsIcons';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import IconButton from '@material-ui/core/IconButton';
+
+import OptionsIcon from '../Icons/OptionsIcons';
 import { Menu, MenuItem } from './styles';
 
 interface NoteMenu {

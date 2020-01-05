@@ -6,7 +6,7 @@ import { ChartContainer, ChartBox, MealsHeader } from './styles';
 import { Line } from 'react-chartjs-2';
 import { RootState } from '../types';
 import moment from 'moment';
-import config from '../../../config';
+import config from 'Config';
 
 const mapStateToProps = (state: RootState) => ({
     stateData: state.adminState.data,

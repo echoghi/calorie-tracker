@@ -58,6 +58,14 @@ export interface ResetPasswordValues {
     email: string;
 }
 
+export interface LinkAccountValues {
+    password: string;
+}
+
+export interface LinkAccountValidator {
+    password: 'Required' | false;
+}
+
 export interface ResetPasswordValidator {
     email: 'Required' | false;
 }
@@ -130,6 +138,16 @@ export function validateResetPassword(values: ResetPasswordValues): ResetPasswor
     if (validateEmail(values.email)) {
         return {
             email: validateEmail(values.email)
+        };
+    } else {
+        return {};
+    }
+}
+
+export function validateLinkAccount(values: LinkAccountValues): LinkAccountValidator | {} {
+    if (validatePassword(values.password)) {
+        return {
+            password: validatePassword(values.password)
         };
     } else {
         return {};

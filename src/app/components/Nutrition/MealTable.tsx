@@ -1,13 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import { SortingRule, CellInfo } from 'react-table';
-import Firebase from '../firebase';
 import produce from 'immer';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
+
+import Firebase from '../firebase';
 import ConfirmationDialog from './ConfirmationDialog';
 import { errorNotification, successNotification } from '../actions';
 import Table, { tableStyle, Header } from '../Table';
 import { RootState, Day } from '../types';
-import firebase from 'firebase';
 import MealMenu from './MealMenu';
 
 const mapStateToProps = (state: RootState) => ({
@@ -164,7 +165,4 @@ function MealTable({ day, userData, index, successMessage, errorMessage }: MealT
     );
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MealTable);
+export default connect(mapStateToProps, mapDispatchToProps)(MealTable);

@@ -1,14 +1,15 @@
 import React, { Suspense, Fragment, useEffect, lazy } from 'react';
 import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
-import Firebase from './firebase';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash.isempty';
+import firebase from 'firebase';
+
 import { fetchData, saveUserData } from './actions';
+import Firebase from './firebase';
 import Loading from './Loading';
 import ErrorBoundary from './Error/ErrorBoundary';
 import Notifications from './Notifications';
 import NavBar from './Nav';
-import isEmpty from 'lodash.isempty';
-import firebase from 'firebase';
 import { RootState } from './types';
 
 // routes
@@ -85,9 +86,4 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
     );
 }
 
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(AppIndex)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppIndex));

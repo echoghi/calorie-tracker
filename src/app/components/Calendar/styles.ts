@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { Menu } from '../Notes/styles';
 import { Link } from 'react-router-dom';
+
+import { Menu } from '../Notes/styles';
 
 const LegendWrapper = styled.div`
     display: inline-block;

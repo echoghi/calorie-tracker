@@ -6,9 +6,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
-import Bar from '../ProgressBar/Bar';
 import { connect } from 'react-redux';
 import moment from 'moment';
+
+import Bar from '../ProgressBar/Bar';
 
 const mapStateToProps = (state: any) => ({
     data: state.adminState.data

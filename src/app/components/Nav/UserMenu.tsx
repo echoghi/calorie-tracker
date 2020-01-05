@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
-import { Greeting, Menu, MenuItem, MenuWrapper, Image, Backup, UserName, Icon } from './styles';
 import { ClickAwayListener } from '@material-ui/core';
 import firebase from 'firebase';
-import Firebase from '../firebase';
 import { connect } from 'react-redux';
+
+import { Greeting, Menu, MenuItem, MenuWrapper, Image, Backup, UserName, Icon } from './styles';
+import Firebase from '../firebase';
 import { RootState } from '../types';
 import { logOut, saveUserData } from '../actions';
 
@@ -93,7 +94,4 @@ function UserMenu({ userData, appLogOut, notification, saveUser }: UserMenu) {
     );
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(UserMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);

@@ -1,7 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { GButtonContent, GButtonIcon } from './styles';
 import Button from '@material-ui/core/Button';
+
+import { GButtonContent, GButtonIcon } from './styles';
 
 export const Icon = () => {
     return (
@@ -50,6 +51,7 @@ const GButton = withStyles({
         color: 'white',
         height: 48,
         lineHeight: 1,
+        margin: '5px 0',
         padding: '12px 24px',
         '&:hover': {
             background: '#3367D6',

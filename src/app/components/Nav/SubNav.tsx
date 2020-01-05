@@ -1,7 +1,8 @@
 import React from 'react';
-import { SubNavMenu as Menu, SubNavIcon as Icon, PageIndicator } from './styles';
 import { NavLink } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
+
+import { SubNavMenu as Menu, SubNavIcon as Icon, PageIndicator } from './styles';
 
 const Indicator = ({ name = '' }: { name?: string }) =>
     window.location.pathname === `/${name}` && (

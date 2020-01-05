@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { NutritionRingContainer } from './styles';
 import moment from 'moment';
-import config from '../../../config';
+import config from 'Config';
 
 interface NutritionRings {
     goals: {

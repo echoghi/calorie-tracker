@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import config from 'Config';
+
 export const Brand = styled(NavLink)`
     position: relative;
     font-size: 50px;
@@ -11,6 +13,8 @@ export const Brand = styled(NavLink)`
     display: inline-block;
     padding: 15px 30px;
     cursor: pointer;
+    height: 100%;
+    width: 110px;
 
     @media (max-width: 768px) {
         font-size: 40px;
@@ -26,6 +30,10 @@ export const BrandImg = styled.img`
     @media (max-width: 768px) {
         height: 35px;
     }
+`;
+
+export const BrandIcon = styled.svg`
+    fill: ${config.palette.primary};
 `;
 
 export const Name = styled.div`
@@ -203,7 +211,7 @@ export const PageIndicator = styled.span`
     left: 50%;
     top: 20px;
     font-size: 50px;
-    color: #ff5a5f;
+    color: ${config.palette.secondary};
 
     @media (max-width: 768px) {
         display: none;

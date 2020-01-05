@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { theme } from '../theme';
-import config from '../../../config';
+
+import config from 'Config';
 
 const Container = styled.div`
     background: rgb(250, 250, 250);
@@ -27,7 +27,7 @@ const Header = styled.div`
 const SubHeader = styled.p`
     font-size: 14px;
     font-weight: normal;
-    padding: 15px 25px 0;
+    padding: 25px 25px 0;
     margin: 0;
 `;
 
@@ -40,6 +40,14 @@ const GButtonIcon = styled.svg`
     position: absolute;
     top: 10px;
     left: 10px;
+`;
+
+const FButtonIcon = styled.svg`
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgb(59, 89, 152);
+    fill: rgb(255, 255, 255);
 `;
 
 const Adornment = styled.div`
@@ -109,6 +117,7 @@ export {
     ErrorMessage,
     Adornment,
     SignUpLink,
+    FButtonIcon,
     GButtonContent,
     GButtonIcon,
     SignUpText,

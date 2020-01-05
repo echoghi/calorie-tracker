@@ -5,7 +5,7 @@ import Loading from '../Loading';
 import { useWindowSize } from 'the-platform';
 import isEmpty from 'lodash.isempty';
 import moment from 'moment';
-// Components
+
 import Bar from '../ProgressBar/Bar';
 import MealTable from './MealTable';
 import MealForm from './MealForm';

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, BarWrapper, Progress, Trail } from './styles';
 import styled from 'styled-components';
+
+import { Text, BarWrapper, Progress, Trail } from './styles';
 
 interface Bar {
     progress: number;
@@ -16,9 +17,7 @@ interface Bar {
 const Bar = ({ options, progress }: Bar) => {
     function renderBarBackground() {
         if (progress > 1) {
-            return `repeating-linear-gradient(135deg, ${options.color}, ${
-                options.color
-            } 10px, #5e639a 10px, #5e639a 20px`;
+            return `repeating-linear-gradient(135deg, ${options.color}, ${options.color} 10px, #5e639a 10px, #5e639a 20px`;
         } else {
             return options.color;
         }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import { withStyles } from '@material-ui/core/styles';
 import Slide from '@material-ui/core/Slide';
+
 import { closeSnackBar, processQueue } from '../actions';
 import Content from './Content';
 import { RootState } from '../types';
@@ -65,7 +66,4 @@ const Notifications = ({ message, type, open, duration, process, close }: Notifi
     );
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withStyles(styles)(Notifications));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Notifications));
