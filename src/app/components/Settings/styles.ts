@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+
 import Input from '../Inputs/Input';
 
 const SettingsWrapper = styled.div`
@@ -35,7 +37,7 @@ const DeleteAccountWrapper = styled.div`
 const Container = styled.div`
     max-width: 1024px;
     margin: 0 auto;
-    padding: 215px 0 30px;
+    padding: 200px 0 30px;
 
     @media (max-width: 1024px) {
         max-width: 768px;
@@ -46,16 +48,36 @@ const Container = styled.div`
     }
 `;
 
-const FormButton = styled(Button)`
-    display: inline-block !important;
-    margin: 0 20px !important;
-    vertical-align: bottom !important;
-
-    @media (max-width: 768px) {
-        width: 100%;
-        margin: 20px 0 !important;
+const FormButton = withStyles({
+    root: {
+        boxShadow: 'none',
+        display: 'inline-block',
+        fontSize: 16,
+        height: 40,
+        margin: '0 10px',
+        verticalAlign: 'bottom',
+        ['@media (max-width: 768px)']: {
+            margin: '20px 0',
+            width: '100%'
+        }
     }
-`;
+})(Button);
+
+const DeleteButton = withStyles({
+    root: {
+        background: '#cb2431',
+        boxShadow: 'none',
+        color: '#FFFFFF',
+        fontSize: 18,
+        height: 48,
+
+        padding: '0 15px',
+
+        '&:hover': {
+            background: 'rgb(173, 27, 38)'
+        }
+    }
+})(Button);
 
 const DisplayNameInput = styled(Input)`
     @media (max-width: 768px) {
@@ -161,6 +183,7 @@ export {
     DeleteAccountWrapper,
     AccountInfoWrapper,
     FormButton,
+    DeleteButton,
     GoalInputWrapper,
     CalorieInput,
     FatInput,

@@ -146,7 +146,7 @@ const InputWrapper = styled.div`
 const NutritionWrapper = styled.div`
     max-width: 1024px;
     margin: 0 auto;
-    padding: 200px 0;
+    padding: 170px 0;
 
     @media (min-width: 1500px) {
         max-width: 1400px;

@@ -140,7 +140,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
         values: { password: string },
         actions: { setSubmitting: (isSubmitting: boolean) => void }
     ) {
-        const result = await linkAccount(values.password);
+        await linkAccount(values.password);
 
         actions.setSubmitting(false);
     }

@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
-import { DeleteAccountWrapper, SettingsHeader, SettingsSubHeader } from './styles';
+import { DeleteAccountWrapper, SettingsHeader, SettingsSubHeader, DeleteButton } from './styles';
 import { RootState } from '../types';
 
 const mapStateToProps = (state: RootState) => ({
@@ -49,14 +49,7 @@ const DeleteAccount = ({ userData }: { userData: firebase.UserInfo }) => {
                     us.
                 </SettingsSubHeader>
 
-                <Button
-                    style={{ background: '#cb2431', display: 'block' }}
-                    color="primary"
-                    variant="contained"
-                    onClick={openDialog}
-                >
-                    Delete Account
-                </Button>
+                <DeleteButton onClick={openDialog}>Delete Account</DeleteButton>
             </DeleteAccountWrapper>
 
             <Dialog open={dialog} onClose={closeDialog}>
@@ -69,13 +62,9 @@ const DeleteAccount = ({ userData }: { userData: firebase.UserInfo }) => {
                 </DialogContent>
 
                 <DialogActions>
-                    <Button
-                        style={{ background: '#cb2431', color: '#FFFFFF' }}
-                        onClick={deleteAccount}
-                        variant="contained"
-                    >
+                    <DeleteButton onClick={deleteAccount} variant="contained">
                         Delete
-                    </Button>
+                    </DeleteButton>
                     <Button onClick={closeDialog} color="primary" autoFocus={true}>
                         Cancel
                     </Button>

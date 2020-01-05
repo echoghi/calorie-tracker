@@ -11,7 +11,6 @@ export const theme = createMuiTheme({
                 boxShadow: 'none',
                 fontFamily: 'Roboto',
                 fontSize: 18,
-                fontWeight: 'bold',
                 height: 48,
                 letterSpacing: '-0.04ch',
                 textTransform: 'none'

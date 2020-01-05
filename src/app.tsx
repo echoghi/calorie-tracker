@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+
 import { theme, GlobalStyle } from './app/components/theme';
 import { store } from './store';
 import AppIndex from './app/components/AppIndex';

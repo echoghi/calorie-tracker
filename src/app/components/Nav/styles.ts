@@ -160,7 +160,7 @@ export const Backup = styled.div`
 `;
 
 export const SubNavMenu = styled.div`
-    padding: 30px 0;
+    padding: 20px 0;
     width: 100%;
     position: fixed;
     top: 80px;
@@ -172,7 +172,7 @@ export const SubNavMenu = styled.div`
     z-index: 99;
 
     li {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: bold;
         display: inline-flex;
         list-style: none;
@@ -202,18 +202,6 @@ export const SubNavMenu = styled.div`
 
 export const SubNavIcon = styled.i`
     padding: 5px 10px;
-    font-size: 25px;
+    font-size: 17px;
     display: inline-flex;
-`;
-
-export const PageIndicator = styled.span`
-    position: absolute;
-    left: 50%;
-    top: 20px;
-    font-size: 50px;
-    color: ${config.palette.secondary};
-
-    @media (max-width: 768px) {
-        display: none;
-    }
 `;

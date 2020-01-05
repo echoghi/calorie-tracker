@@ -202,7 +202,7 @@ const InfoIcon = styled.span`
 `;
 
 const Wrapper = styled.div`
-    padding: 200px 50px 30px 50px;
+    padding: 170px 50px 30px 50px;
 
     @media (min-width: 1024px) and (max-width: 1199px) {
         padding: 200px 30px 30px 30px;

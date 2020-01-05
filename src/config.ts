@@ -1,7 +1,7 @@
 const config = {
     app: {
         name: 'Doughboy',
-        //Grüv
+        // Grüv
         version: 1
     },
     palette: {
