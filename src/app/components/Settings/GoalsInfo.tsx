@@ -117,16 +117,16 @@ const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) 
 
             switch (name) {
                 case 'carbs':
-                    carbCal = parseInt(value) * 4;
-                    setCarbs(parseInt(value));
+                    carbCal = +value * 4;
+                    setCarbs(+value);
                     break;
                 case 'fat':
-                    fatCal = parseInt(value) * 9;
-                    setFat(parseInt(value));
+                    fatCal = +value * 9;
+                    setFat(+value);
                     break;
                 case 'protein':
-                    proteinCal = parseInt(value) * 4;
-                    setProtein(parseInt(value));
+                    proteinCal = +value * 4;
+                    setProtein(+value);
                     break;
                 default:
                     break;

@@ -56,7 +56,7 @@ export const tableStyle = {
     },
     header: {
         borderBottom: '1px solid #d8d8d8',
-        boxShadow: '0 2px 6px 0 rgba(0, 0, 0, 0.3)',
+        boxShadow: 'none',
         zIndex: 2
     },
     rowAccordion: { cursor: 'pointer' },
@@ -64,7 +64,7 @@ export const tableStyle = {
     table: {
         border: '1px solid #d8d8d8',
         borderRadius: 3,
-        boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.11)',
+        boxShadow: 'none',
         marginTop: 30
     },
     tbodyTr: {
