@@ -158,12 +158,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
         } catch (err) {
             console.warn(err.message);
 
-            if (err.code === 'auth/web-storage-unsupported') {
-                showError(
-                    'Oops! This authentication method is not currently supported by this browser.',
-                    6000
-                );
-            }
+            initiateLinkMode(err);
         }
     }
 
@@ -180,16 +175,20 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
         } catch (err) {
             console.warn(err);
 
-            if (err.code === 'auth/account-exists-with-different-credential') {
-                err.message =
-                    'A Doughboy account with the same email already exists. Enter your password to link them.';
-                setAuthError(err);
-            } else if (err.code === 'auth/web-storage-unsupported') {
-                showError(
-                    'Oops! This authentication method is not currently supported by this browser.',
-                    6000
-                );
-            }
+            initiateLinkMode(err);
+        }
+    }
+
+    function initiateLinkMode(err: any) {
+        if (err.code === 'auth/account-exists-with-different-credential') {
+            err.message =
+                'A Doughboy account with the same email already exists. Enter your password to link them.';
+            setAuthError(err);
+        } else if (err.code === 'auth/web-storage-unsupported') {
+            showError(
+                'Oops! This authentication method is not currently supported by this browser.',
+                6000
+            );
         }
     }
 
