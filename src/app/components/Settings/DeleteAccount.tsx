@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Firebase from '../firebase';
 import firebase from 'firebase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,6 +7,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
+
+import Firebase from '../firebase';
 import { DeleteAccountWrapper, SettingsHeader, SettingsSubHeader, DeleteButton } from './styles';
 import { RootState } from '../types';
 

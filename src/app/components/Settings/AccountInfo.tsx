@@ -3,6 +3,7 @@ import Firebase from '../firebase';
 import { connect } from 'react-redux';
 import { errorNotification, successNotification } from '../actions';
 import produce from 'immer';
+import InputMask from 'react-input-mask';
 import {
     SettingsHeader,
     SettingsSubHeader,
@@ -10,7 +11,8 @@ import {
     GenderSelectWrapper,
     FormButton,
     AccountInfoWrapper,
-    InfoInput
+    InfoInput,
+    DobInput
 } from './styles';
 import { RootState, UserData } from '../types';
 import firebase from 'firebase';
@@ -37,14 +39,14 @@ interface AccountInfo {
 }
 
 const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountInfo) => {
-    const [age, setAge] = useState(21);
+    const [dob, setDob] = useState('');
     const [gender, setGender] = useState('Male');
     const [height, setHeight] = useState(70);
     const [weight, setWeight] = useState(150);
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            setAge(data.user.age || 21);
+            setDob(data.user.dob);
             setHeight(data.user.height);
             setWeight(data.user.weight);
             setGender(data.user.gender || 'Male');
@@ -53,7 +55,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
 
     const submitHandler = (values: InfoValues, actions: FormikActions<InfoValues>) => {
         let user = {
-            age: 0,
+            dob: '',
             gender: '',
             height: 0,
             weight: 0
@@ -69,7 +71,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
         });
 
         const payload = produce(user, updatedUser => {
-            updatedUser.age = +values.age;
+            updatedUser.dob = values.dob;
             updatedUser.gender = values.gender;
             updatedUser.height = +values.height;
             updatedUser.weight = +values.weight;
@@ -101,7 +103,7 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
             <Formik
                 enableReinitialize={true}
                 initialValues={{
-                    age,
+                    dob,
                     gender,
                     height,
                     weight
@@ -112,15 +114,20 @@ const AccountInfo = ({ data, userData, errorMessage, successMessage }: AccountIn
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <form onSubmit={handleSubmit} noValidate={true}>
                         <AccountInfoWrapper>
-                            <InfoInput
-                                id="age"
-                                name="age"
-                                label="Age"
-                                type="number"
-                                error={errors.age && touched.age}
-                                onChange={handleChange}
-                                value={values.age}
-                            />
+                            <InputMask mask="99/99/9999" onChange={handleChange} value={values.dob}>
+                                {(inputProps: any) => (
+                                    <DobInput
+                                        id="dob"
+                                        name="dob"
+                                        label="Birthday"
+                                        type="text"
+                                        error={errors.dob && touched.dob}
+                                        placeholder="05/15/1988"
+                                        onChange={handleChange}
+                                        value={values.dob}
+                                    />
+                                )}
+                            </InputMask>
 
                             <InfoInput
                                 id="height"

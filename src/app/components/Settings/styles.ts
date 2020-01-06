@@ -94,6 +94,10 @@ const InfoInput = styled(Input)`
     }
 `;
 
+const DobInput = styled(InfoInput)`
+    width: 130px;
+`;
+
 export const IconLock = styled.div`
     cursor: pointer;
     color: ${props => props.color};
@@ -179,6 +183,7 @@ export {
     SettingsHeader,
     SettingsSubHeader,
     InfoInput,
+    DobInput,
     SettingsSection,
     DeleteAccountWrapper,
     AccountInfoWrapper,

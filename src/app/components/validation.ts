@@ -1,3 +1,4 @@
+import moment from 'moment';
 type DefaultValidator = 'Required' | false;
 
 export interface NoteValues {
@@ -84,6 +85,34 @@ export function defaultNumberValidator(name: number) {
     } else {
         return false;
     }
+}
+
+export function validateBirthday(date: string) {
+    if (!date) {
+        return 'Required';
+    }
+
+    const month = date.substring(0, 2);
+    const day = date.substring(3, 5);
+    const year = date.substring(6, 10);
+
+    if (+month > 12) {
+        return 'Enter a valid month';
+    }
+
+    if (+day > 31) {
+        return 'Enter a valid day';
+    }
+
+    if (+year > +moment().format('YYYY')) {
+        return 'Enter a valid year';
+    }
+
+    if (+year < 1900) {
+        return 'Enter a valid year';
+    }
+
+    return false;
 }
 
 // log in / sign up
@@ -190,14 +219,14 @@ export function validateNote(values: NoteValues): NoteValidator | {} {
 
 // Account Info
 export interface InfoValues {
-    age: number;
+    dob: string;
     gender: string;
     height: number;
     weight: number;
 }
 
 export interface InfoValidator {
-    age: DefaultValidator;
+    dob: DefaultValidator;
     gender: DefaultValidator;
     height: DefaultValidator;
     weight: DefaultValidator;
@@ -205,13 +234,13 @@ export interface InfoValidator {
 
 export function validateAccountInfo(values: InfoValues): InfoValidator | {} {
     if (
-        defaultNumberValidator(+values.age) ||
+        validateBirthday(values.dob) ||
         defaultValidator(values.gender) ||
         defaultNumberValidator(+values.height) ||
         defaultNumberValidator(+values.weight)
     ) {
         return {
-            age: defaultNumberValidator(+values.age),
+            dob: validateBirthday(values.dob),
             gender: defaultValidator(values.gender),
             height: defaultNumberValidator(+values.height),
             weight: defaultNumberValidator(+values.weight)
