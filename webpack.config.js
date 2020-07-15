@@ -11,7 +11,6 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const SystemBellPlugin = require('system-bell-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const PACKAGE = require('./package.json');
@@ -29,10 +28,10 @@ const {
     DATABASEURL,
     STORAGEBUCKET,
     PROJECTID,
-    MESSAGINGSENDERID
+    MESSAGINGSENDERID,
 } = process.env;
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const isProd = argv.mode === 'production';
 
     return {
@@ -45,15 +44,15 @@ module.exports = function(env, argv) {
                 // polyfills
                 'whatwg-fetch',
                 // app entry
-                'app.tsx'
-            ].filter(Boolean)
+                'app.js',
+            ].filter(Boolean),
         },
         output: {
             path: publicPath,
             filename: '[name].js',
             devtoolModuleFilenameTemplate: isProd
-                ? info => path.relative(sourcePath, info.absoluteResourcePath).replace(/\\/g, '/')
-                : info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+                ? (info) => path.relative(sourcePath, info.absoluteResourcePath).replace(/\\/g, '/')
+                : (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
         },
         module: {
             rules: [
@@ -61,11 +60,10 @@ module.exports = function(env, argv) {
                     test: /\.html$/,
                     exclude: /node_modules/,
                     use: {
-                        loader: 'html-loader'
-                    }
+                        loader: 'html-loader',
+                    },
                 },
 
-                // eslint for JS
                 {
                     test: /\.(js|jsx)$/,
                     include: sourcePath,
@@ -73,84 +71,56 @@ module.exports = function(env, argv) {
                     use: [
                         {
                             loader: 'eslint-loader',
-                            options: { fix: false }
-                        }
-                    ]
-                },
-
-                // tslint + eslint for TS
-                {
-                    test: /\.(ts|tsx)$/,
-                    include: sourcePath,
-                    enforce: 'pre',
-                    use: [
-                        {
-                            loader: 'eslint-loader',
-                            options: { fix: false }
+                            options: { fix: false },
                         },
-                        isProd && {
-                            loader: 'tslint-loader'
-                        },
-                        {
-                            loader: 'source-map-loader'
-                        }
-                    ].filter(Boolean)
+                    ],
                 },
 
                 {
                     test: /\.json$/,
                     include: path.resolve(__dirname, 'src/app/assets/animations'),
                     loader: 'json-loader',
-                    type: 'javascript/auto'
+                    type: 'javascript/auto',
                 },
 
                 {
                     test: /\.(scss|css)$/,
                     use: [
                         isProd && {
-                            loader: MiniCssExtractPlugin.loader
+                            loader: MiniCssExtractPlugin.loader,
                         },
                         !isProd && {
                             loader: 'style-loader',
                             options: {
-                                sourceMap: false
-                            }
+                                sourceMap: false,
+                            },
                         },
                         {
                             loader: 'css-loader',
                             options: {
-                                sourceMap: true
-                            }
+                                sourceMap: true,
+                            },
                         },
                         {
                             loader: 'sass-loader',
                             options: {
-                                sourceMap: true
-                            }
-                        }
-                    ].filter(Boolean)
+                                sourceMap: true,
+                            },
+                        },
+                    ].filter(Boolean),
                 },
 
                 {
-                    test: /\.(t|j)sx?$/,
+                    test: /\.(j)sx?$/,
                     exclude: /node_modules/,
                     include: sourcePath,
-                    use: [
-                        'cache-loader',
-                        {
-                            loader: 'ts-loader',
-                            options: {
-                                transpileOnly: true
-                            }
-                        },
-                        'babel-loader'
-                    ]
+                    use: ['cache-loader', 'babel-loader'],
                 },
 
                 {
                     test: /\.(ttf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
                     include: path.resolve(__dirname, 'src/app/assets/fonts'),
-                    loader: 'url-loader'
+                    loader: 'url-loader',
                 },
 
                 {
@@ -162,45 +132,37 @@ module.exports = function(env, argv) {
                             loader: 'url-loader',
                             options: {
                                 query: {
-                                    name: 'app/assets/images/[name].[ext]'
-                                }
-                            }
+                                    name: 'app/assets/images/[name].[ext]',
+                                },
+                            },
                         },
                         {
                             loader: 'image-webpack-loader',
                             options: {
                                 query: {
                                     mozjpeg: {
-                                        progressive: true
+                                        progressive: true,
                                     },
                                     gifsicle: {
-                                        interlaced: true
+                                        interlaced: true,
                                     },
                                     optipng: {
-                                        optimizationLevel: 7
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+                                        optimizationLevel: 7,
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                },
+            ],
         },
         resolve: {
-            extensions: [
-                '.webpack-loader.js',
-                '.web-loader.js',
-                '.loader.js',
-                '.js',
-                '.jsx',
-                '.ts',
-                '.tsx'
-            ],
+            extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx'],
             modules: [path.resolve(__dirname, 'node_modules'), sourcePath],
 
             alias: {
-                Config: path.resolve(__dirname, 'src/config')
-            }
+                '@config': path.resolve(__dirname, 'src/config'),
+            },
         },
 
         plugins: [
@@ -217,23 +179,16 @@ module.exports = function(env, argv) {
                 MESSAGINGSENDERID: JSON.stringify(MESSAGINGSENDERID),
                 PROJECTID: JSON.stringify(PROJECTID),
                 STORAGEBUCKET: JSON.stringify(STORAGEBUCKET),
-                FIREBASEKEY: JSON.stringify(FIREBASEKEY)
+                FIREBASEKEY: JSON.stringify(FIREBASEKEY),
             }),
             // generate index.html
             new HtmlWebpackPlugin({
                 filename: 'index.html',
-                template: 'netlify/index.html'
+                template: 'netlify/index.html',
             }),
             // static assets
             new CopyWebpackPlugin([{ from: 'netlify', ignore: ['*.html'] }, 'pwa'].filter(Boolean)),
             // ***** DEVELOPMENT *****
-            // Handle type checking on a separate thread
-            !isProd &&
-                new ForkTsCheckerWebpackPlugin({
-                    tslint: path.resolve(__dirname, './tslint.json'),
-                    tsconfig: path.resolve(__dirname, './tsconfig.json'),
-                    async: false
-                }),
             !isProd && new webpack.HotModuleReplacementPlugin(),
             !isProd &&
                 new BrowserSyncPlugin(
@@ -246,11 +201,11 @@ module.exports = function(env, argv) {
                         // (which should be serving on http://localhost:8080/)
                         // through BrowserSync
                         proxy: 'http://localhost:8080/',
-                        logPrefix: `Doughboy v${PACKAGE.version}`
+                        logPrefix: `Doughboy v${PACKAGE.version}`,
                     },
                     // plugin options
                     {
-                        reload: false
+                        reload: false,
                     }
                 ),
             !isProd && new CaseSensitivePathsPlugin(),
@@ -260,22 +215,22 @@ module.exports = function(env, argv) {
             !isProd && new DuplicatePackageCheckerPlugin(),
             !isProd &&
                 new StyleLintPlugin({
-                    files: './app/assets/scss/*.scss'
+                    files: './app/assets/scss/*.scss',
                 }),
             // ***** PRODUCTION *****
             isProd &&
                 new ManifestPlugin({
-                    fileName: 'asset-manifest.json'
+                    fileName: 'asset-manifest.json',
                 }),
             isProd &&
                 new webpack.LoaderOptionsPlugin({
                     minimize: true,
-                    debug: false
+                    debug: false,
                 }),
             isProd && new webpack.optimize.AggressiveMergingPlugin(),
             isProd &&
                 new webpack.BannerPlugin({
-                    banner: `Doughboy Nutrition Tracker v${PACKAGE.version}`
+                    banner: `Doughboy Nutrition Tracker v${PACKAGE.version}`,
                 }),
             isProd && new MiniCssExtractPlugin('styles.css'),
             isProd &&
@@ -285,52 +240,52 @@ module.exports = function(env, argv) {
                         // Cache the underlying font files
                         {
                             urlPattern: new RegExp(/^https:\/\/fonts\.gstatic\.com/),
-                            handler: 'CacheFirst'
+                            handler: 'CacheFirst',
                         },
                         // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
                         {
                             urlPattern: new RegExp(/^https:\/\/fonts\.googleapis\.com/),
-                            handler: 'StaleWhileRevalidate'
+                            handler: 'StaleWhileRevalidate',
                         },
                         {
                             urlPattern: /.*/,
-                            handler: 'NetworkFirst'
-                        }
-                    ]
-                })
+                            handler: 'NetworkFirst',
+                        },
+                    ],
+                }),
         ].filter(Boolean),
 
         // split out vendor js into its own bundle
         optimization: {
             splitChunks: {
-                chunks: 'all'
-            }
+                chunks: 'all',
+            },
         },
 
         performance: isProd && {
             maxAssetSize: 600000,
             maxEntrypointSize: 600000,
-            hints: 'warning'
+            hints: 'warning',
         },
 
         stats: {
             colors: {
-                green: '\u001b[32m'
-            }
+                green: '\u001b[32m',
+            },
         },
 
         devServer: {
-            contentBase: './src',
+            contentBase: sourcePath,
             historyApiFallback: true,
             port: 8080,
             compress: isProd,
             inline: !isProd,
             hot: false,
             quiet: true,
-            before: function(app) {
+            before: function (app) {
                 // This lets us open files from the runtime error overlay.
                 app.use(errorOverlayMiddleware());
-            }
-        }
+            },
+        },
     };
 };
