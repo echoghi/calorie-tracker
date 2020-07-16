@@ -25,7 +25,6 @@ import {
 import { validateLogIn, validateLinkAccount } from '../validation';
 import Firebase from '../firebase';
 import firebase from 'firebase';
-import { RootState } from '../types';
 import GoogleButton from './GoogleButton';
 import FacebookButton from './FacebookButton';
 import config from '@config';

@@ -21,7 +21,6 @@ import {
     Grams,
     Content,
 } from './styles';
-import { ProgressBarConfig, Day, UserData } from '../types';
 import { parseUrlDay } from '../Calendar/utils';
 
 const progressBarConfig = {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Input from '../Inputs/Input';
-import { Formik, FormikActions } from 'formik';
-import firebase from 'firebase';
+import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import produce from 'immer';
 
@@ -16,9 +15,8 @@ import {
     CounterContainer
 } from './styles';
 import Firebase from '../firebase';
-import { validateMeal, MealValues } from '../validation';
+import { validateMeal } from '../validation';
 import { errorNotification, successNotification, clearMeal } from '../actions';
-import { RootState, Day, MealFormState, UserData } from '../types';
 
 const mapDispatchToProps = {
     clearMeal: () => clearMeal(),
@@ -127,7 +125,7 @@ function MealForm({
         });
     };
 
-    function CalorieCount({ count, goal }: { count; goal }) {
+    function CalorieCount({ count, goal }) {
         let countColor;
 
         if (count < goal / 2 || count > 1.25 * goal) {

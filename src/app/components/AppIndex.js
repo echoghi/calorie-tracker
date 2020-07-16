@@ -31,7 +31,7 @@ const SettingsImport = () => <Settings />;
 const CalendarImport = (props) => <Calendar {...props} />;
 const NutritionImport = () => <Nutrition />;
 
-function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }: AppIndex) {
+function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }) {
     useEffect(() => {
         Firebase.auth.onAuthStateChanged((user) => {
             if (user) {

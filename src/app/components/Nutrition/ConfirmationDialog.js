@@ -11,11 +11,6 @@ const ConfirmationDialog = ({
     onClose,
     name,
     action
-}: {
-    open: boolean;
-    onClose: () => void;
-    name: string;
-    action: () => void;
 }) => {
     return (
         <Dialog fullWidth={true} maxWidth={'sm'} open={open} onClose={onClose}>

@@ -30,7 +30,7 @@ const mapDispatchToProps = {
     successMessage: (message) => successNotification(message),
 };
 
-const GoalsInfo = ({ data, userData, errorMessage, successMessage }: GoalsInfo) => {
+const GoalsInfo = ({ data, userData, errorMessage, successMessage }) => {
     const [calories, setCalories] = useState(0);
     const [carbs, setCarbs] = useState(0);
     const [fat, setFat] = useState(0);

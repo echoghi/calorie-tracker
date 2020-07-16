@@ -1,8 +1,6 @@
 import React, { Fragment, useState } from 'react';
-import { SortingRule, CellInfo } from 'react-table';
 import produce from 'immer';
 import { connect } from 'react-redux';
-import firebase from 'firebase';
 
 import Firebase from '../firebase';
 import ConfirmationDialog from './ConfirmationDialog';

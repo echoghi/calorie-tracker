@@ -24,6 +24,7 @@
         "lodash.keys": "^4.2.0",
         "lodash.values": "^4.3.0",
         "moment": "^2.19.2",
+        "node-sass": "^4.14.1",
         "prop-types": "^15.6.1",
         "query-string": "5",
         "react": "16.8.4",
