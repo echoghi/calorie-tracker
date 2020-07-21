@@ -15,6 +15,11 @@ const SubNav = () => {
                 <li>Nutrition</li>
             </NavLink>
 
+            <NavLink to="/habits" activeClassName="active">
+                <Icon className="icon-shield" />
+                <li>Habits</li>
+            </NavLink>
+
             <NavLink to="/settings" activeClassName="active">
                 <Icon className="icon-settings" />
                 <li>Settings</li>

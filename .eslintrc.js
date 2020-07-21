@@ -4,7 +4,7 @@ module.exports = {
         commonjs: true,
         es6: true,
         node: true,
-        jest: true,
+        jest: true
     },
 
     extends: ['plugin:react/recommended', 'prettier'],
@@ -25,11 +25,17 @@ module.exports = {
         'react/no-deprecated': 0,
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
+        'react/display-name': 'off'
+    },
+
+    parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 8
     },
 
     settings: {
         react: {
-            version: '16.8.4',
-        },
-    },
+            version: '16.8.4'
+        }
+    }
 };

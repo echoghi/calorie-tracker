@@ -21,6 +21,7 @@ const Note = styled.div`
     justify-content: space-between;
     border-top: 1px solid #e6eaee;
     cursor: pointer;
+    transition: 0.2s transform ease;
 
     &:first-child {
         border-top: 0;

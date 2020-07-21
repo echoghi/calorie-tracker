@@ -9,39 +9,39 @@ export const tableStyle = {
         display: 'flex',
         fontSize: 12,
         letterSpacing: 0.5,
-        paddingLeft: 10,
+        paddingLeft: 10
     },
     cellCentered: {
         alignItems: 'center',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     expander: {
         border: 0,
         cursor: 'pointer',
         padding: '10px 0',
         textAlign: 'center',
-        userSelect: 'none',
+        userSelect: 'none'
     },
     filter: {
         background: '#f4f8f8',
-        padding: 10,
+        padding: 10
     },
     filterInput: {
         border: '1px solid #c9c9c9',
         fontSize: 12,
         height: 30,
-        width: '100%',
+        width: '100%'
     },
     filterInputDisabled: {
         background: '#f4f8f8',
         border: '1px solid #c9c9c9',
         fontSize: 12,
         height: 30,
-        width: '100%',
+        width: '100%'
     },
     filterTr: {
-        border: 0,
+        border: 0
     },
     firstTheadTh: {
         border: 0,
@@ -52,32 +52,46 @@ export const tableStyle = {
         letterSpacing: 0.5,
         lineHeight: 1.2,
         textTransform: 'uppercase',
-        transform: 'translateY(3px)',
+        transform: 'translateY(3px)'
     },
     header: {
         borderBottom: '1px solid #d8d8d8',
         boxShadow: 'none',
-        zIndex: 2,
+        zIndex: 2
     },
     rowAccordion: { cursor: 'pointer' },
-    rowActive: { borderLeft: '4px solid #008484', cursor: 'pointer', fontWeight: 'bold' },
+    rowActive: {
+        borderLeft: '4px solid #008484',
+        cursor: 'pointer',
+        fontWeight: 'bold'
+    },
     table: {
         border: '1px solid #d8d8d8',
         borderRadius: 3,
         boxShadow: 'none',
-        marginTop: 30,
+        marginTop: 30
     },
     tbodyTr: {
         borderBottom: 0,
         borderTop: '1px solid #e6eef0',
-        minHeight: 60,
+        minHeight: 60
     },
-    td: { minHeight: 60, padding: '10px 20px', color: '#6b6b6b', borderRight: '1px solid #d8d8d8' },
-    tdActive: { minHeight: 60, padding: '10px 20px', color: '#6b6b6b', borderRight: 0 },
+    td: {
+        minHeight: 60,
+        padding: '10px 20px',
+        color: '#6b6b6b',
+        borderRight: '1px solid #d8d8d8'
+    },
+    tdActive: {
+        minHeight: 60,
+        padding: '10px 20px',
+        color: '#6b6b6b',
+        borderRight: 0
+    },
     th: {
         background: '#fff',
         padding: 12.5,
-        textAlign: 'left',
+        textAlign: 'left'
     },
     thead: { display: 'block' },
     theadTh: {
@@ -88,15 +102,17 @@ export const tableStyle = {
         letterSpacing: 0.5,
         lineHeight: 1.2,
         textTransform: 'uppercase',
-        transform: 'translateY(3px)',
-    },
+        transform: 'translateY(3px)'
+    }
 };
 
 export function getSortedComponentClass(data, id) {
     const sortInfo = data.filter((item) => item.id === id);
 
     if (sortInfo.length) {
-        return sortInfo[0].desc ? 'icon-chevron-up table-sort' : 'icon-chevron-down table-sort';
+        return sortInfo[0].desc
+            ? 'icon-chevron-up table-sort'
+            : 'icon-chevron-down table-sort';
     } else {
         return 'icon-chevron-down table-sort';
     }
@@ -104,19 +120,19 @@ export function getSortedComponentClass(data, id) {
 
 export const theadProps = () => {
     return {
-        style: tableStyle.header,
+        style: tableStyle.header
     };
 };
 
 export const theadThProps = () => {
     return {
-        style: tableStyle.th,
+        style: tableStyle.th
     };
 };
 
 export const trGroupProps = () => {
     return {
-        style: tableStyle.tbodyTr,
+        style: tableStyle.tbodyTr
     };
 };
 

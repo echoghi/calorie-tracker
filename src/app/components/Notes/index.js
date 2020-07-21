@@ -22,22 +22,22 @@ import {
     EmptyContainer,
     NoteBox,
     Note,
-    iconStyle,
+    iconStyle
 } from './styles';
 import Input from '../Inputs/Input';
 import Firebase from '../firebase';
 import EmptyNoteIcon from '../Icons/EmptyNoteIcon';
 import NoteMenu from './NoteMenu';
-import { validateNote, NoteValues } from '../validation';
+import { validateNote } from '../validation';
 import { errorNotification, successNotification } from '../actions';
 
 const mapStateToProps = (state) => ({
-    userData: state.adminState.userData,
+    userData: state.adminState.userData
 });
 
 const mapDispatchToProps = {
     errorMessage: (message) => errorNotification(message),
-    successMessage: (message) => successNotification(message),
+    successMessage: (message) => successNotification(message)
 };
 
 const noteState = {
@@ -46,7 +46,7 @@ const noteState = {
     confirmationDialog: false,
     editNote: false,
     noteToEdit: 0,
-    noteToRemove: 0,
+    noteToRemove: 0
 };
 
 function reducer(state, action) {
@@ -70,7 +70,11 @@ function reducer(state, action) {
             return { ...state, confirmationDialog: !state.confirmationDialog };
 
         case 'OPEN_CONFIRM_DIALOG':
-            return { ...state, confirmationDialog: true, noteToRemove: action.data };
+            return {
+                ...state,
+                confirmationDialog: true,
+                noteToRemove: action.data
+            };
 
         case 'OPEN_EDIT_DIALOG':
             return { ...state, editNote: true, noteToEdit: action.data };
@@ -101,17 +105,22 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
 
     const removeNote = (noteIndex) => {
         const noteData = produce(day, (data) => {
-            data.notes = data.notes.filter((note) => note !== data.notes[noteIndex]);
+            data.notes = data.notes.filter(
+                (note) => note !== data.notes[noteIndex]
+            );
 
             // convert moment object back to original format
             data.day = {
                 date: day.day.date(),
                 month: day.day.get('month'),
-                year: day.day.get('year'),
+                year: day.day.get('year')
             };
         });
 
-        const dayRef = Firebase.db.ref('users').child(userData.uid).child(`calendar/${index}`);
+        const dayRef = Firebase.db
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${index}`);
 
         dayRef.set(noteData, (error) => {
             if (error) {
@@ -146,7 +155,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
             payload.day = {
                 date: day.day.date(),
                 month: day.day.get('month'),
-                year: day.day.get('year'),
+                year: day.day.get('year')
             };
 
             if (!payload.notes) {
@@ -156,11 +165,14 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
             payload.notes.push({
                 body,
                 time: moment().format('lll'),
-                title,
+                title
             });
         });
 
-        const dayRef = Firebase.db.ref('users').child(userData.uid).child(`calendar/${index}`);
+        const dayRef = Firebase.db
+            .ref('users')
+            .child(userData.uid)
+            .child(`calendar/${index}`);
 
         dayRef.set(noteData, (error) => {
             if (error) {
@@ -185,7 +197,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                 data.day = {
                     date: day.day.date(),
                     month: day.day.get('month'),
-                    year: day.day.get('year'),
+                    year: day.day.get('year')
                 };
 
                 const note = data.notes[state.noteToEdit];
@@ -195,7 +207,10 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                 note.edited = true;
             });
 
-            const dayRef = Firebase.db.ref('users').child(userData.uid).child(`calendar/${index}`);
+            const dayRef = Firebase.db
+                .ref('users')
+                .child(userData.uid)
+                .child(`calendar/${index}`);
 
             dayRef.set(noteData, (error) => {
                 if (error) {
@@ -234,7 +249,11 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                             </Typography>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={removeHandler} color="primary" variant="contained">
+                            <Button
+                                onClick={removeHandler}
+                                color="primary"
+                                variant="contained"
+                            >
                                 Delete
                             </Button>
                             <Button
@@ -253,13 +272,23 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                     <Formik
                         key={1}
                         initialValues={{
-                            body: day.notes ? day.notes[state.noteToEdit].body : '',
-                            title: day.notes ? day.notes[state.noteToEdit].title : '',
+                            body: day.notes
+                                ? day.notes[state.noteToEdit].body
+                                : '',
+                            title: day.notes
+                                ? day.notes[state.noteToEdit].title
+                                : ''
                         }}
                         validate={validateNote}
                         onSubmit={editNoteHandler}
                     >
-                        {({ values, errors, touched, handleChange, handleSubmit }) => (
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleSubmit
+                        }) => (
                             <Dialog
                                 fullWidth={true}
                                 maxWidth={'sm'}
@@ -270,24 +299,35 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
 
                                 <form onSubmit={handleSubmit} noValidate={true}>
                                     <DialogContent>
-                                        <FormControl margin="normal" fullWidth={true}>
+                                        <FormControl
+                                            margin="normal"
+                                            fullWidth={true}
+                                        >
                                             <Input
                                                 id="title"
                                                 name="title"
                                                 label="Title"
-                                                error={errors.title && touched.title}
+                                                error={
+                                                    errors.title &&
+                                                    touched.title
+                                                }
                                                 value={values.title}
                                                 onChange={handleChange}
                                             />
                                         </FormControl>
-                                        <FormControl margin="normal" fullWidth={true}>
+                                        <FormControl
+                                            margin="normal"
+                                            fullWidth={true}
+                                        >
                                             <Input
                                                 id="body"
                                                 name="body"
                                                 label="Note"
                                                 multiline={true}
                                                 rows={6}
-                                                error={errors.body && touched.body}
+                                                error={
+                                                    errors.body && touched.body
+                                                }
                                                 value={values.body}
                                                 onChange={handleChange}
                                             />
@@ -301,7 +341,10 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                                             >
                                                 Save
                                             </Button>
-                                            <Button onClick={closeEditDialog} color="primary">
+                                            <Button
+                                                onClick={closeEditDialog}
+                                                color="primary"
+                                            >
                                                 Cancel
                                             </Button>
                                         </DialogActions>
@@ -318,12 +361,18 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                         key={2}
                         initialValues={{
                             body: '',
-                            title: '',
+                            title: ''
                         }}
                         validate={validateNote}
                         onSubmit={submitHandler}
                     >
-                        {({ values, errors, touched, handleChange, handleSubmit }) => (
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleSubmit
+                        }) => (
                             <Dialog
                                 fullWidth={true}
                                 maxWidth={'sm'}
@@ -333,18 +382,27 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                                 <DialogTitle>New Note</DialogTitle>
                                 <form onSubmit={handleSubmit} noValidate={true}>
                                     <DialogContent>
-                                        <FormControl margin="normal" fullWidth={true}>
+                                        <FormControl
+                                            margin="normal"
+                                            fullWidth={true}
+                                        >
                                             <Input
                                                 id="title"
                                                 name="title"
                                                 label="Title"
                                                 required={true}
                                                 onChange={handleChange}
-                                                error={errors.title && touched.title}
+                                                error={
+                                                    errors.title &&
+                                                    touched.title
+                                                }
                                                 value={values.title}
                                             />
                                         </FormControl>
-                                        <FormControl margin="normal" fullWidth={true}>
+                                        <FormControl
+                                            margin="normal"
+                                            fullWidth={true}
+                                        >
                                             <Input
                                                 id="body"
                                                 name="body"
@@ -353,16 +411,25 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                                                 required={true}
                                                 rows={6}
                                                 onChange={handleChange}
-                                                error={errors.body && touched.body}
+                                                error={
+                                                    errors.body && touched.body
+                                                }
                                                 value={values.body}
                                             />
                                         </FormControl>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button type="submit" color="primary" variant="contained">
+                                        <Button
+                                            type="submit"
+                                            color="primary"
+                                            variant="contained"
+                                        >
                                             Save
                                         </Button>
-                                        <Button onClick={closeAddNoteDialog} color="primary">
+                                        <Button
+                                            onClick={closeAddNoteDialog}
+                                            color="primary"
+                                        >
                                             Cancel
                                         </Button>
                                     </DialogActions>
@@ -383,11 +450,15 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                     >
                         <DialogTitle>
                             {`${state.activeNote.title}`}
-                            <DialogContentText>{state.activeNote.time}</DialogContentText>
+                            <DialogContentText>
+                                {state.activeNote.time}
+                            </DialogContentText>
                         </DialogTitle>
 
                         <DialogContent>
-                            <Typography variant="subtitle1">{state.activeNote.body}</Typography>
+                            <Typography variant="subtitle1">
+                                {state.activeNote.body}
+                            </Typography>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={closeNoteDialog} color="primary">
@@ -395,7 +466,7 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                             </Button>
                         </DialogActions>
                     </Dialog>
-                ),
+                )
             ].filter(Boolean)}
 
             <NoteBox>
@@ -415,7 +486,10 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                     {day.notes &&
                         day.notes.map((note, i) => {
                             const clickHandler = () =>
-                                dispatch({ data: note, type: 'SET_ACTIVE_NOTE' });
+                                dispatch({
+                                    data: note,
+                                    type: 'SET_ACTIVE_NOTE'
+                                });
                             const editHandler = (event) => {
                                 event.stopPropagation();
                                 openEditModal(i);
@@ -428,12 +502,18 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                             return (
                                 <Note key={i} onClick={clickHandler}>
                                     <NoteTitle>
-                                        <Typography variant="body1" noWrap={true}>
+                                        <Typography
+                                            variant="body1"
+                                            noWrap={true}
+                                        >
                                             {note.title}
                                         </Typography>
                                     </NoteTitle>
                                     <NoteBody>
-                                        <Typography variant="subtitle1" noWrap={true}>
+                                        <Typography
+                                            variant="subtitle1"
+                                            noWrap={true}
+                                        >
                                             {note.body}
                                         </Typography>
 
@@ -442,11 +522,16 @@ function Notes({ day, index, userData, errorMessage, successMessage }) {
                                             noWrap={true}
                                             color="textSecondary"
                                         >
-                                            {note.edited ? `${note.time} (edited)` : note.time}
+                                            {note.edited
+                                                ? `${note.time} (edited)`
+                                                : note.time}
                                         </Typography>
                                     </NoteBody>
                                     <NoteActions>
-                                        <NoteMenu remove={confirmHandler} edit={editHandler} />
+                                        <NoteMenu
+                                            remove={confirmHandler}
+                                            edit={editHandler}
+                                        />
                                     </NoteActions>
                                 </Note>
                             );

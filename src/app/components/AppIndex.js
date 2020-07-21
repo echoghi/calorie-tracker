@@ -9,6 +9,7 @@ import Loading from './Loading';
 import ErrorBoundary from './Error/ErrorBoundary';
 import Notifications from './Notifications';
 import NavBar from './Nav';
+import Habits from './Habits';
 
 // routes
 const Calendar = lazy(() => import('./Calendar'));
@@ -19,19 +20,28 @@ const mapStateToProps = (state) => ({
     data: state.adminState.data,
     loading: state.adminState.loading,
     userData: state.adminState.userData,
-    userLoading: state.adminState.userLoading,
+    userLoading: state.adminState.userLoading
 });
 
 const mapDispatchToProps = {
     getData: (id) => fetchData(id),
-    saveUser: (user) => saveUserData(user),
+    saveUser: (user) => saveUserData(user)
 };
 
 const SettingsImport = () => <Settings />;
+const HabitsImport = () => <Habits />;
 const CalendarImport = (props) => <Calendar {...props} />;
 const NutritionImport = () => <Nutrition />;
 
-function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }) {
+function AppIndex({
+    getData,
+    userData,
+    data,
+    loading,
+    history,
+    userLoading,
+    saveUser
+}) {
     useEffect(() => {
         Firebase.auth.onAuthStateChanged((user) => {
             if (user) {
@@ -52,19 +62,42 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
 
     return (
         <div>
-            {!loading && !userLoading && !isEmpty(userData) && !isEmpty(data) ? (
+            {!loading &&
+            !userLoading &&
+            !isEmpty(userData) &&
+            !isEmpty(data) ? (
                 <Fragment>
                     <NavBar />
                     <Notifications />
                     <Suspense fallback={<Loading />}>
                         <ErrorBoundary>
-                            <Route exact={true} path="/" render={CalendarImport} name="Overview" />
+                            <Route
+                                exact={true}
+                                path="/"
+                                render={CalendarImport}
+                                name="Overview"
+                            />
                         </ErrorBoundary>
                         <ErrorBoundary>
-                            <Route path="/settings" render={SettingsImport} name="Settings" />
+                            <Route
+                                path="/settings"
+                                render={SettingsImport}
+                                name="Settings"
+                            />
                         </ErrorBoundary>
                         <ErrorBoundary>
-                            <Route path="/nutrition" render={NutritionImport} name="Nutrition" />
+                            <Route
+                                path="/habits"
+                                render={HabitsImport}
+                                name="Habits"
+                            />
+                        </ErrorBoundary>
+                        <ErrorBoundary>
+                            <Route
+                                path="/nutrition"
+                                render={NutritionImport}
+                                name="Nutrition"
+                            />
                         </ErrorBoundary>
                     </Suspense>
                 </Fragment>
@@ -75,4 +108,6 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
     );
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AppIndex));
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(AppIndex)
+);

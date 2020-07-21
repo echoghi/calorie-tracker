@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Fade from '@material-ui/core/Fade';
 import { Formik } from 'formik';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
 import isEmpty from 'lodash.isempty';
 
 import Input from '../Inputs/Input';
@@ -20,23 +19,22 @@ import {
     SignUpText,
     SignUp,
     Divider,
-    LoginFooter,
+    LoginFooter
 } from './styles';
 import { validateLogIn, validateLinkAccount } from '../validation';
 import Firebase from '../firebase';
-import firebase from 'firebase';
 import GoogleButton from './GoogleButton';
 import FacebookButton from './FacebookButton';
 import config from '@config';
 
 const mapStateToProps = (state) => ({
-    userData: state.adminState.userData,
+    userData: state.adminState.userData
 });
 
 const mapDispatchToProps = {
     getUser: (id) => fetchData(id),
     saveUser: (data) => saveUserData(data),
-    showError: (message, duration) => errorNotification(message, duration),
+    showError: (message, duration) => errorNotification(message, duration)
 };
 
 const validationConfig = (values) => {
@@ -197,12 +195,14 @@ const Login = ({ saveUser, history, userData, getUser, showError }) => {
                             touched,
                             handleChange,
                             handleSubmit,
-                            isSubmitting,
+                            isSubmitting
                         }) => (
                             <Fade in={true}>
                                 <Form onSubmit={handleSubmit} noValidate={true}>
                                     <FormControl fullWidth={true} margin="none">
-                                        <FacebookButton onClick={logInFacebook} />
+                                        <FacebookButton
+                                            onClick={logInFacebook}
+                                        />
                                         <GoogleButton onClick={logInGoogle} />
                                     </FormControl>
                                     <Divider>
@@ -216,28 +216,43 @@ const Login = ({ saveUser, history, userData, getUser, showError }) => {
                                             label="Email"
                                             value={values.email}
                                             onChange={handleChange}
-                                            error={errors.email && touched.email}
+                                            error={
+                                                errors.email && touched.email
+                                            }
                                         />
                                         <ErrorMessage>
-                                            {errors.email && touched.email && errors.email}
+                                            {errors.email &&
+                                                touched.email &&
+                                                errors.email}
                                         </ErrorMessage>
                                     </FormControl>
 
-                                    <FormControl fullWidth={true} margin="normal">
+                                    <FormControl
+                                        fullWidth={true}
+                                        margin="normal"
+                                    >
                                         <Input
                                             id="password"
                                             name="password"
                                             label="Password"
                                             value={values.password}
                                             type="password"
-                                            error={errors.password && touched.password}
+                                            error={
+                                                errors.password &&
+                                                touched.password
+                                            }
                                             onChange={handleChange}
                                         />
                                         <ErrorMessage>
-                                            {errors.password && touched.password && errors.password}
+                                            {errors.password &&
+                                                touched.password &&
+                                                errors.password}
                                         </ErrorMessage>
                                     </FormControl>
-                                    <FormControl fullWidth={true} margin="normal">
+                                    <FormControl
+                                        fullWidth={true}
+                                        margin="normal"
+                                    >
                                         <Button
                                             disabled={isSubmitting}
                                             type="submit"
@@ -250,7 +265,9 @@ const Login = ({ saveUser, history, userData, getUser, showError }) => {
                                     <LoginFooter>
                                         <SignUp>
                                             <SignUpText>New User?</SignUpText>
-                                            <SignUpLink to="/register">Sign Up</SignUpLink>
+                                            <SignUpLink to="/register">
+                                                Sign Up
+                                            </SignUpLink>
                                         </SignUp>
 
                                         <SignUp>
@@ -275,26 +292,34 @@ const Login = ({ saveUser, history, userData, getUser, showError }) => {
                             touched,
                             handleChange,
                             handleSubmit,
-                            isSubmitting,
+                            isSubmitting
                         }) => (
                             <Fade in={true}>
                                 <Form onSubmit={handleSubmit} noValidate={true}>
                                     <FormControl fullWidth={true} margin="none">
-                                        <FacebookButton onClick={logInFacebook} />
+                                        <FacebookButton
+                                            onClick={logInFacebook}
+                                        />
                                         <GoogleButton onClick={logInGoogle} />
                                     </FormControl>
                                     <Divider>
                                         <span>continue with password</span>
                                     </Divider>
 
-                                    <FormControl fullWidth={true} margin="normal">
+                                    <FormControl
+                                        fullWidth={true}
+                                        margin="normal"
+                                    >
                                         <Input
                                             id="password"
                                             name="password"
                                             label="Password"
                                             value={values.password}
                                             type="password"
-                                            error={errors.password && touched.password}
+                                            error={
+                                                errors.password &&
+                                                touched.password
+                                            }
                                             onChange={handleChange}
                                         />
                                         <ErrorMessage>
@@ -304,7 +329,10 @@ const Login = ({ saveUser, history, userData, getUser, showError }) => {
                                                     errors.password)}
                                         </ErrorMessage>
                                     </FormControl>
-                                    <FormControl fullWidth={true} margin="normal">
+                                    <FormControl
+                                        fullWidth={true}
+                                        margin="normal"
+                                    >
                                         <Button
                                             disabled={isSubmitting}
                                             type="submit"
@@ -317,7 +345,9 @@ const Login = ({ saveUser, history, userData, getUser, showError }) => {
                                     <LoginFooter>
                                         <SignUp>
                                             <SignUpText>New User?</SignUpText>
-                                            <SignUpLink to="/register">Sign Up</SignUpLink>
+                                            <SignUpLink to="/register">
+                                                Sign Up
+                                            </SignUpLink>
                                         </SignUp>
 
                                         <SignUp>

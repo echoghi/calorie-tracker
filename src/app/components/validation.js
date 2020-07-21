@@ -69,7 +69,7 @@ export function validateLogIn(values) {
     if (validateEmail(values.email) || validatePassword(values.password)) {
         return {
             email: validateEmail(values.email),
-            password: validatePassword(values.password),
+            password: validatePassword(values.password)
         };
     } else {
         return {};
@@ -85,7 +85,7 @@ export function validateSignUp(values) {
         return {
             email: validateEmail(values.email),
             name: defaultValidator(values.name),
-            password: validatePassword(values.password),
+            password: validatePassword(values.password)
         };
     } else {
         return {};
@@ -95,7 +95,7 @@ export function validateSignUp(values) {
 export function validateResetPassword(values) {
     if (validateEmail(values.email)) {
         return {
-            email: validateEmail(values.email),
+            email: validateEmail(values.email)
         };
     } else {
         return {};
@@ -105,7 +105,7 @@ export function validateResetPassword(values) {
 export function validateLinkAccount(values) {
     if (validatePassword(values.password)) {
         return {
-            password: validatePassword(values.password),
+            password: validatePassword(values.password)
         };
     } else {
         return {};
@@ -114,10 +114,13 @@ export function validateLinkAccount(values) {
 
 // nutrition
 export function validateMeal(values) {
-    if (defaultValidator(values.name) || defaultNumberValidator(+values.servings)) {
+    if (
+        defaultValidator(values.name) ||
+        defaultNumberValidator(+values.servings)
+    ) {
         return {
             name: defaultValidator(values.name),
-            servings: defaultNumberValidator(+values.servings),
+            servings: defaultNumberValidator(+values.servings)
         };
     } else {
         return {};
@@ -128,7 +131,7 @@ export function validateNewMeal(values) {
     if (defaultValidator(values.name) || defaultValidator(values.servingSize)) {
         return {
             name: defaultValidator(values.name),
-            servings: defaultValidator(values.servingSize),
+            servings: defaultValidator(values.servingSize)
         };
     } else {
         return {};
@@ -139,7 +142,7 @@ export function validateNote(values) {
     if (defaultValidator(values.title) || defaultValidator(values.body)) {
         return {
             body: defaultValidator(values.body),
-            title: defaultValidator(values.title),
+            title: defaultValidator(values.title)
         };
     } else {
         return {};
@@ -157,7 +160,7 @@ export function validateAccountInfo(values) {
             dob: validateBirthday(values.dob),
             gender: defaultValidator(values.gender),
             height: defaultNumberValidator(+values.height),
-            weight: defaultNumberValidator(+values.weight),
+            weight: defaultNumberValidator(+values.weight)
         };
     } else {
         return {};
@@ -175,7 +178,7 @@ export function validateGoalsInfo(values) {
             age: defaultNumberValidator(values.carbs),
             gender: defaultNumberValidator(values.calories),
             height: defaultNumberValidator(values.fat),
-            weight: defaultNumberValidator(values.protein),
+            weight: defaultNumberValidator(values.protein)
         };
     } else {
         return {};
@@ -185,7 +188,17 @@ export function validateGoalsInfo(values) {
 export function validateGeneralInfo(values) {
     if (defaultValidator(values.name)) {
         return {
-            name: defaultValidator(values.name),
+            name: defaultValidator(values.name)
+        };
+    } else {
+        return {};
+    }
+}
+
+export function validateHabit(values) {
+    if (defaultValidator(values.habit)) {
+        return {
+            habit: defaultValidator(values.habit)
         };
     } else {
         return {};
