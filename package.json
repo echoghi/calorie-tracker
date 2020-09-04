@@ -98,7 +98,7 @@
         "json-loader": "^0.5.7",
         "loader-utils": "^1.1.0",
         "mini-css-extract-plugin": "^0.4.1",
-        "node-sass": "4.5.3",
+        "node-sass": "4.13.1",
         "nodemon": "1.17.5",
         "path": "^0.12.7",
         "progress-bar-webpack-plugin": "1.12.1",
