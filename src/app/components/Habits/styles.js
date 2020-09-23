@@ -47,7 +47,7 @@ const Box = styled.div`
 const Header = styled.h1`
     color: ${config.palette.primary};
     text-align: left;
-    margin-top: 170px;
+    margin-top: 190px;
 
     @media (max-width: 768px) {
         margin: 100px 1rem 0;

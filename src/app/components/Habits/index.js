@@ -1,4 +1,15 @@
 import React, { useState } from 'react';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import { Formik } from 'formik';
+import { connect } from 'react-redux';
+import moment from 'moment';
+
 import {
     Container,
     Header,
@@ -8,21 +19,11 @@ import {
     FormButton,
     HabitInput
 } from './styles';
-import Button from '@material-ui/core/Button';
-import Fade from '@material-ui/core/Fade';
-import { Formik } from 'formik';
 import Firebase from '../firebase';
 import { validateHabit } from '../validation';
 import { ErrorMessage } from '../Login/styles';
-import Typography from '@material-ui/core/Typography';
-import { connect } from 'react-redux';
 import { successNotification, errorNotification } from '../actions';
 import HabitMenu from './HabitMenu';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import moment from 'moment';
 import Table, { tableStyle, Header as TableHeader } from '../Table';
 
 const mapDispatchToProps = {
@@ -59,15 +60,16 @@ function Habits({ errorMessage, successMessage, userData, data }) {
         if (alreadyExists) {
             errorMessage('Habit already exists');
         } else {
-            habitRef.push(habitData, (error) => {
+            await habitRef.push(habitData, (error) => {
                 if (error) {
                     errorMessage();
+                } else {
+                    actions.resetForm();
                 }
             });
         }
 
         actions.setSubmitting(false);
-        actions.resetForm();
     }
 
     const removeHabit = (name) => {
@@ -125,7 +127,9 @@ function Habits({ errorMessage, successMessage, userData, data }) {
     return (
         <Container>
             <Header>Sobriety Tracker</Header>
-            <SubHead>Enter an addiction you would like to track daily</SubHead>
+            <SubHead>
+                Enter a habit or addiction you would like to track daily
+            </SubHead>
 
             <Formik
                 initialValues={{ habit: '' }}
@@ -175,7 +179,7 @@ function Habits({ errorMessage, successMessage, userData, data }) {
                         {
                             Header: (props) => (
                                 <TableHeader
-                                    name="Name"
+                                    name="Addiction"
                                     sorted={sorted}
                                     {...props}
                                 />

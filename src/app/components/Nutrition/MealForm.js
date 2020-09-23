@@ -66,7 +66,23 @@ function MealForm({
     const saveMeal = (values, actions) => {
         const { calories, fat, protein, carbs, servings, name } = values;
 
-        const mealData = produce(day, payload => {
+        if (servings <= 0) {
+            actions.setSubmitting(false);
+            actions.resetForm();
+
+            setFormValues({
+                calories,
+                carbs,
+                fat,
+                name,
+                protein,
+                servings: '0'
+            });
+
+            return errorMessage('Please enter a valid amount of servings');
+        }
+
+        const mealData = produce(day, (payload) => {
             // convert moment object back to original format
             payload.day = {
                 date: day.day.date(),
@@ -104,7 +120,7 @@ function MealForm({
             .child(userData.uid)
             .child(`calendar/${index}`);
 
-        dayRef.set(mealData, error => {
+        dayRef.set(mealData, (error) => {
             if (error) {
                 errorMessage();
             } else {
@@ -134,7 +150,8 @@ function MealForm({
 
         return (
             <CounterContainer>
-                <Counter color={countColor}>{`${count}`}</Counter>/<span>{`${goal} cal`}</span>
+                <Counter color={countColor}>{`${count}`}</Counter>/
+                <span>{`${goal} cal`}</span>
             </CounterContainer>
         );
     }
@@ -144,7 +161,10 @@ function MealForm({
             <MealsHeader>
                 <span>Meals</span>
 
-                <CalorieCount count={day.nutrition.calories} goal={data.user.goals.calories} />
+                <CalorieCount
+                    count={day.nutrition.calories}
+                    goal={data.user.goals.calories}
+                />
             </MealsHeader>
 
             <Formik
@@ -153,7 +173,14 @@ function MealForm({
                 onSubmit={saveMeal}
                 enableReinitialize={true}
             >
-                {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleSubmit,
+                    isSubmitting
+                }) => (
                     <Form onSubmit={handleSubmit} noValidate={true}>
                         <InputWrapper>
                             <InputControl>
