@@ -43,16 +43,7 @@ interface MealForm {
     meal: MealFormState;
 }
 
-function MealForm({
-    clearMeal,
-    data,
-    day,
-    errorMessage,
-    index,
-    userData,
-    meal,
-    successMessage
-}: MealForm) {
+function MealForm({ clearMeal, data, day, errorMessage, index, userData, meal, successMessage }: MealForm) {
     const { calories, carbs, fat, name, protein, servings } = meal;
 
     // populate form on copy
@@ -79,7 +70,41 @@ function MealForm({
     const saveMeal = (values: MealValues, actions: FormikActions<MealValues>) => {
         const { calories, fat, protein, carbs, servings, name } = values;
 
-        const mealData = produce(day, payload => {
+        if (+servings <= 0) {
+            actions.setSubmitting(false);
+            actions.resetForm();
+
+            setFormValues({
+                calories,
+                carbs,
+                fat,
+                name,
+                protein,
+                servings: '0'
+            });
+
+            return errorMessage('Please enter a valid amount of servings');
+        }
+
+        if (+calories < 0 || +fat < 0 || +carbs < 0 || +protein < 0) {
+            actions.setSubmitting(false);
+            actions.resetForm();
+
+            const safeValue = (val: string) => (+val < 0 ? '0' : val);
+
+            setFormValues({
+                calories: safeValue(calories),
+                carbs: safeValue(carbs),
+                fat: safeValue(fat),
+                name,
+                protein: safeValue(protein),
+                servings
+            });
+
+            return errorMessage('Please check your values and try again');
+        }
+
+        const mealData = produce(day, (payload) => {
             // convert moment object back to original format
             payload.day = {
                 date: day.day.date(),
@@ -112,12 +137,9 @@ function MealForm({
             });
         });
 
-        const dayRef = Firebase.db
-            .ref('users')
-            .child(userData.uid)
-            .child(`calendar/${index}`);
+        const dayRef = Firebase.db.ref('users').child(userData.uid).child(`calendar/${index}`);
 
-        dayRef.set(mealData, error => {
+        dayRef.set(mealData, (error) => {
             if (error) {
                 errorMessage();
             } else {
@@ -160,12 +182,7 @@ function MealForm({
                 <CalorieCount count={day.nutrition.calories} goal={data.user.goals.calories} />
             </MealsHeader>
 
-            <Formik
-                initialValues={formValues}
-                validate={validateMeal}
-                onSubmit={saveMeal}
-                enableReinitialize={true}
-            >
+            <Formik initialValues={formValues} validate={validateMeal} onSubmit={saveMeal} enableReinitialize={true}>
                 {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                     <Form onSubmit={handleSubmit} noValidate={true}>
                         <InputWrapper>
