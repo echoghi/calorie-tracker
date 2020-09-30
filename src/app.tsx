@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import LogRocket from 'logrocket';
 
 import { theme, GlobalStyle } from './app/components/theme';
 import { store } from './store';
@@ -36,4 +37,6 @@ ReactDOM.render(
 
 if (NODE_ENV === 'production') {
     registerServiceWorker();
+
+    LogRocket.init('znmebt/doughboy');
 }
