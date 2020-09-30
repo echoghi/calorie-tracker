@@ -2,7 +2,7 @@ declare module '*.png';
 declare module '*.jpg';
 declare module '*.json';
 declare module '*.svg';
-declare module 'the-platform';
+declare module '@echoghi/hooks';
 declare module 'lodash.isempty';
 declare module 'react-lottie';
 declare module 'query-string';

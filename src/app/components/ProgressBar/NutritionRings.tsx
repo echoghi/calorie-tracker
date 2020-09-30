@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { NutritionRingContainer } from './styles';
 import moment from 'moment';
-import config from 'Config';
+import config from '@config';
 
 interface NutritionRings {
     goals: {
@@ -30,13 +30,13 @@ interface RingProps {
 }
 
 const Ring = styled.circle`
-    stroke-dasharray: ${props => props.circumference};
+    stroke-dasharray: ${(props) => props.circumference};
     stroke-linecap: round;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
-    animation: ${props => (props.animate ? props.animation : 'none')};
-    stroke-dashoffset: ${props => props.dashoffset};
-    stroke: ${props => props.color}
+    animation: ${(props) => (props.animate ? props.animation : 'none')};
+    stroke-dashoffset: ${(props) => props.dashoffset};
+    stroke: ${(props) => props.color}
     stroke-width: 6;
     fill: none;
 `;
@@ -85,14 +85,7 @@ const NutritionRings = ({ day, goals, ...props }: NutritionRings) => {
 
         return (
             <Fragment>
-                <circle
-                    cx={45}
-                    cy={45}
-                    r={radius}
-                    fill="none"
-                    stroke={trailColor}
-                    strokeWidth={6}
-                />
+                <circle cx={45} cy={45} r={radius} fill="none" stroke={trailColor} strokeWidth={6} />
                 <Ring cx={45} cy={45} r={radius} {...ringProps} />
             </Fragment>
         );

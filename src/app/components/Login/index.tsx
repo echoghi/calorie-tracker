@@ -28,7 +28,7 @@ import firebase from 'firebase';
 import { RootState } from '../types';
 import GoogleButton from './GoogleButton';
 import FacebookButton from './FacebookButton';
-import config from 'Config';
+import config from '@config';
 
 interface LoginProps extends RouteComponentProps {
     saveUser: (data: firebase.UserInfo) => void;
@@ -181,14 +181,10 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
 
     function initiateLinkMode(err: any) {
         if (err.code === 'auth/account-exists-with-different-credential') {
-            err.message =
-                'A Doughboy account with the same email already exists. Enter your password to link them.';
+            err.message = 'A Doughboy account with the same email already exists. Enter your password to link them.';
             setAuthError(err);
         } else if (err.code === 'auth/web-storage-unsupported') {
-            showError(
-                'Oops! This authentication method is not currently supported by this browser.',
-                6000
-            );
+            showError('Oops! This authentication method is not currently supported by this browser.', 6000);
         }
     }
 
@@ -205,14 +201,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                         validate={validationConfig}
                         onSubmit={formHandler}
                     >
-                        {({
-                            values,
-                            errors,
-                            touched,
-                            handleChange,
-                            handleSubmit,
-                            isSubmitting
-                        }) => (
+                        {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                             <Fade in={true}>
                                 <Form onSubmit={handleSubmit} noValidate={true}>
                                     <FormControl fullWidth={true} margin="none">
@@ -232,9 +221,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                             onChange={handleChange}
                                             error={errors.email && touched.email}
                                         />
-                                        <ErrorMessage>
-                                            {errors.email && touched.email && errors.email}
-                                        </ErrorMessage>
+                                        <ErrorMessage>{errors.email && touched.email && errors.email}</ErrorMessage>
                                     </FormControl>
 
                                     <FormControl fullWidth={true} margin="normal">
@@ -268,9 +255,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                         </SignUp>
 
                                         <SignUp>
-                                            <SignUpLink to="/reset-password">
-                                                Forgot your password?
-                                            </SignUpLink>
+                                            <SignUpLink to="/reset-password">Forgot your password?</SignUpLink>
                                         </SignUp>
                                     </LoginFooter>
                                 </Form>
@@ -278,19 +263,8 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                         )}
                     </Formik>
                 ) : (
-                    <Formik
-                        initialValues={{ password: '' }}
-                        validate={linkValidationConfig}
-                        onSubmit={linkFormHandler}
-                    >
-                        {({
-                            values,
-                            errors,
-                            touched,
-                            handleChange,
-                            handleSubmit,
-                            isSubmitting
-                        }) => (
+                    <Formik initialValues={{ password: '' }} validate={linkValidationConfig} onSubmit={linkFormHandler}>
+                        {({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => (
                             <Fade in={true}>
                                 <Form onSubmit={handleSubmit} noValidate={true}>
                                     <FormControl fullWidth={true} margin="none">
@@ -313,9 +287,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                         />
                                         <ErrorMessage>
                                             {authError.message ||
-                                                (errors.password &&
-                                                    touched.password &&
-                                                    errors.password)}
+                                                (errors.password && touched.password && errors.password)}
                                         </ErrorMessage>
                                     </FormControl>
                                     <FormControl fullWidth={true} margin="normal">
@@ -335,9 +307,7 @@ const Login = ({ saveUser, history, userData, getUser, showError }: LoginProps) 
                                         </SignUp>
 
                                         <SignUp>
-                                            <SignUpLink to="/reset-password">
-                                                Forgot your password?
-                                            </SignUpLink>
+                                            <SignUpLink to="/reset-password">Forgot your password?</SignUpLink>
                                         </SignUp>
                                     </LoginFooter>
                                 </Form>

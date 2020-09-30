@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import UserMenu from './UserMenu';
 import { Nav, Brand, Name, BrandIcon } from './styles';
 import SubNav from './SubNav';
-import config from 'Config';
+import config from '@config';
 
 const Icon = () => {
     return (

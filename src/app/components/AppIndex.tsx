@@ -3,6 +3,7 @@ import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash.isempty';
 import firebase from 'firebase';
+import LogRocket from 'logrocket';
 
 import { fetchData, saveUserData } from './actions';
 import Firebase from './firebase';
@@ -44,7 +45,7 @@ const NutritionImport = () => <Nutrition />;
 
 function AppIndex({ getData, userData, data, loading, history, userLoading, saveUser }: AppIndex) {
     useEffect(() => {
-        Firebase.auth.onAuthStateChanged(user => {
+        Firebase.auth.onAuthStateChanged((user) => {
             if (user) {
                 saveUser(user);
             } else {
@@ -55,7 +56,13 @@ function AppIndex({ getData, userData, data, loading, history, userLoading, save
 
     useEffect(() => {
         if (!isEmpty(userData) && !userLoading) {
-            getData(userData.uid);
+            const { displayName, email, uid } = userData;
+            LogRocket.identify(uid, {
+                name: displayName,
+                email
+            });
+
+            getData(uid);
         } else if (isEmpty(userData) && !userLoading) {
             history.push('/login');
         }

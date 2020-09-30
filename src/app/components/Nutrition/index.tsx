@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loading from '../Loading';
-import { useWindowSize } from 'the-platform';
+import { useWindowSize } from '@echoghi/hooks';
 import isEmpty from 'lodash.isempty';
 import moment from 'moment';
 
@@ -117,9 +117,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
         const { trailColor, color } = progressBarConfig[type];
 
         const progress: number = day.nutrition[type] / data.user.goals[type];
-        const text: string = `${Math.round(
-            (day.nutrition[type] / data.user.goals[type]) * 100
-        )}% of daily goal`;
+        const text: string = `${Math.round((day.nutrition[type] / data.user.goals[type]) * 100)}% of daily goal`;
 
         const options = {
             className: '',
@@ -143,9 +141,7 @@ const Nutrition = ({ data, history }: NutritionProps) => {
     }
 
     function navigateDayBack() {
-        const date = location.search
-            ? parseUrlDay().subtract(1, 'days')
-            : moment().subtract(1, 'days');
+        const date = location.search ? parseUrlDay().subtract(1, 'days') : moment().subtract(1, 'days');
 
         history.push(`/nutrition?d=${date.format('x')}`);
     }
@@ -180,22 +176,10 @@ const Nutrition = ({ data, history }: NutritionProps) => {
                     <h1>Nutrition</h1>
                 </HeaderContent>
                 <HeaderContent>
-                    <NavIcon
-                        className="icon-chevrons-left"
-                        active={dayIndex !== 0}
-                        onClick={rewind}
-                    />
-                    <NavIcon
-                        className="icon-chevron-left"
-                        onClick={navigateDayBack}
-                        active={dayIndex !== 0}
-                    />
+                    <NavIcon className="icon-chevrons-left" active={dayIndex !== 0} onClick={rewind} />
+                    <NavIcon className="icon-chevron-left" onClick={navigateDayBack} active={dayIndex !== 0} />
                     <h3>{!isEmpty(day.day) ? day.day.format('dddd, MMMM Do, YYYY') : ''}</h3>
-                    <NavIcon
-                        className="icon-chevron-right"
-                        active={!today}
-                        onClick={navigateDayForward}
-                    />
+                    <NavIcon className="icon-chevron-right" active={!today} onClick={navigateDayForward} />
                     <NavIcon className="icon-chevrons-right" active={!today} onClick={goToToday} />
                 </HeaderContent>
             </HeaderWrapper>

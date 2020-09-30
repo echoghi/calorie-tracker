@@ -23,16 +23,9 @@ const Settings = require('dotenv');
 // load .env settings
 Settings.load();
 
-const {
-    FIREBASEKEY,
-    AUTHDOMAIN,
-    DATABASEURL,
-    STORAGEBUCKET,
-    PROJECTID,
-    MESSAGINGSENDERID
-} = process.env;
+const { FIREBASEKEY, AUTHDOMAIN, DATABASEURL, STORAGEBUCKET, PROJECTID, MESSAGINGSENDERID } = process.env;
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const isProd = argv.mode === 'production';
 
     return {
@@ -52,8 +45,8 @@ module.exports = function(env, argv) {
             path: publicPath,
             filename: '[name].js',
             devtoolModuleFilenameTemplate: isProd
-                ? info => path.relative(sourcePath, info.absoluteResourcePath).replace(/\\/g, '/')
-                : info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
+                ? (info) => path.relative(sourcePath, info.absoluteResourcePath).replace(/\\/g, '/')
+                : (info) => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
         },
         module: {
             rules: [
@@ -187,19 +180,11 @@ module.exports = function(env, argv) {
             ]
         },
         resolve: {
-            extensions: [
-                '.webpack-loader.js',
-                '.web-loader.js',
-                '.loader.js',
-                '.js',
-                '.jsx',
-                '.ts',
-                '.tsx'
-            ],
+            extensions: ['.webpack-loader.js', '.web-loader.js', '.loader.js', '.js', '.jsx', '.ts', '.tsx'],
             modules: [path.resolve(__dirname, 'node_modules'), sourcePath],
 
             alias: {
-                Config: path.resolve(__dirname, 'src/config')
+                '@config': path.resolve(__dirname, 'src/config')
             }
         },
 
@@ -327,7 +312,7 @@ module.exports = function(env, argv) {
             inline: !isProd,
             hot: false,
             quiet: true,
-            before: function(app) {
+            before: function (app) {
                 // This lets us open files from the runtime error overlay.
                 app.use(errorOverlayMiddleware());
             }

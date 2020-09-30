@@ -6,7 +6,7 @@ import { ChartContainer, ChartBox, MealsHeader } from './styles';
 import { Line } from 'react-chartjs-2';
 import { RootState } from '../types';
 import moment from 'moment';
-import config from 'Config';
+import config from '@config';
 
 const mapStateToProps = (state: RootState) => ({
     stateData: state.adminState.data,
@@ -18,10 +18,7 @@ function CalorieGraph({ userData, stateData }: any) {
      * Prepares Datasets for Chart.js graphs
      */
     function makeData() {
-        const queryRef = Firebase.db
-            .ref('users')
-            .child(userData.uid)
-            .child('calendar');
+        const queryRef = Firebase.db.ref('users').child(userData.uid).child('calendar');
 
         let data: any;
         let months: number[] = [];

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import config from 'Config';
+import config from '@config';
 
 const Container = styled.div`
     background: rgb(250, 250, 250);

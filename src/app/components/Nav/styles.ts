@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import config from 'Config';
+import config from '@config';
 
 export const Brand = styled(NavLink)`
     position: relative;
