@@ -9,7 +9,7 @@ A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Host
 -   Forms built with [Formik](https://jaredpalmer.com/formik/).
 -   Nutrition calendar component build with CSS grid.
 -   TypeScript, react-error-overlay, and eslint/tslint powered Webpack dev environment.
--   Error Logging with [LogRocket](https://logrocket.com/).
+-   Error logging with [LogRocket](https://logrocket.com/).
 
 ## 🚀 Quick start
 
@@ -28,7 +28,7 @@ A nutrition tracker built with React, TypeScript, Material-UI and Firebase. Host
 
     ```sh
     # start dev server
-    yarn dev
+    yarn start
 
     # build for prod with bundle analyzer
     yarn build:debug
